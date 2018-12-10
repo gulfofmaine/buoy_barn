@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 
-from .models import Program, Platform, Deployment, MooringType, StationType, DataType, BufferType, TimeSeries, ProgramAttribution
+from .models import Program, Platform, Deployment, MooringType, StationType, DataType, BufferType, TimeSeries, ProgramAttribution, ErddapServer
 
 
 
@@ -32,3 +32,4 @@ admin.site.register(MooringType)
 admin.site.register(StationType)
 admin.site.register(DataType)
 admin.site.register(BufferType)
+admin.site.register(ErddapServer)

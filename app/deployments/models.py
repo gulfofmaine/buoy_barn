@@ -1,14 +1,15 @@
+from collections import defaultdict
 from datetime import datetime
-from enum import Enum
+import logging
 
 from django.contrib.gis.db import models
+from erddapy import ERDDAP
 import requests
 
+from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
 
-class ChoiceEnum(Enum):
-    @classmethod
-    def choices(cls):
-        return tuple((x.name, x.value) for x in cls)
+
+logger = logging.getLogger(__name__)
 
 
 class Program(models.Model):
@@ -36,6 +37,37 @@ class Platform(models.Model):
     @property
     def current_deployment(self):
         return self.deployment_set.filter(end_time=None).order_by('-start_time').first()
+
+    def group_timeseries_by_erddap_dataset(self):
+        datasets = defaultdict(list)
+
+        for ts in self.timeseries_set.filter(end_time=None).select_related('data_type', 'erddap_server'):
+            datasets[(ts.erddap_server, ts.erddap_dataset)].append(ts)
+        
+        return datasets
+    
+    def latest_erddap_values(self):
+        readings = []
+
+        for (server, dataset), timeseries in self.group_timeseries_by_erddap_dataset().items():
+            df = filter_dataframe(retrieve_dataframe(server, dataset, timeseries))
+
+            for series in timeseries:
+                try:
+                    row = df[df['depth'] == series.depth].iloc[-1]
+                except IndexError:
+                    logger.warning(f'Unable to find position in dataframe for {self.name} - {series.variable}')
+                    reading = None
+                    time = None
+                else:
+                    reading = row[series.variable]
+                    time = row['time'].strftime('%Y-%m-%dT%H:%M:%SZ')
+                readings.append({'value': reading, 
+                                'time': time,
+                                'depth': series.depth,
+                                'data_type': series.data_type.json,
+                                'variable': series.variable})
+        return readings
 
     def latest_legacy_readings(self):
         r = requests.get(f'http://neracoos.org/data/json/buoyrecentdata.php?platform={self.name}&mp=no&hb=24&tsdt=all').json()
@@ -106,6 +138,15 @@ class DataType(models.Model):
 
     def __str__(self):
         return f'{self.standard_name} - {self.long_name} ({self.units})'
+    
+    @property
+    def json(self):
+        return {
+            'standard_name': self.standard_name,
+            'short_name': self.short_name,
+            'long_name': self.long_name,
+            'units': self.units
+        }
 
 
 class BufferType(models.Model):
@@ -116,15 +157,24 @@ class BufferType(models.Model):
 
 
 class ErddapServer(models.Model):
-    name = models.CharField('Server Name', max_length=64)
+    name = models.CharField('Server Name', max_length=64, null=True)
     base_url = models.CharField('ERDDAP API base URL', max_length=256)
     program = models.ForeignKey(Program, on_delete=models.CASCADE, null=True, blank=True)
     contact = models.TextField('Contact information', null=True, blank=True)
+
+    def __str__(self):
+        if self.name:
+            return self.name
+        return self.base_url
+    
+    def connection(self):
+        return ERDDAP(self.base_url)
 
 
 class TimeSeries(models.Model):
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
     data_type = models.ForeignKey(DataType, on_delete=models.CASCADE)
+    variable = models.CharField(max_length=256)
 
     depth = models.FloatField(default=0)
 

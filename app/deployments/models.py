@@ -38,6 +38,10 @@ class Platform(models.Model):
     def current_deployment(self):
         return self.deployment_set.filter(end_time=None).order_by('-start_time').first()
 
+    @property
+    def location(self):
+        return self.current_deployment.geom
+
     def group_timeseries_by_erddap_dataset(self):
         datasets = defaultdict(list)
 
@@ -66,6 +70,7 @@ class Platform(models.Model):
                                 'time': time,
                                 'depth': series.depth,
                                 'data_type': series.data_type.json,
+                                'server': series.erddap_server.base_url,
                                 'variable': series.variable})
         return readings
 

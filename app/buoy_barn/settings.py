@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'debug_toolbar',
 
+    'rest_framework',
+    'rest_framework_gis',
+
     # User management
     'account',
 

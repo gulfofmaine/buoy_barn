@@ -33,6 +33,8 @@ class Platform(models.Model):
     uscg_light_num = models.CharField(max_length=16, null=True, blank=True)
     watch_circle_radius = models.IntegerField(null=True, blank=True)
 
+    geom = models.PointField("Location", null=True, blank=True)
+
     def __str__(self):
         return self.name
 
@@ -42,7 +44,11 @@ class Platform(models.Model):
 
     @property
     def location(self):
-        return self.current_deployment.geom
+        if self.geom:
+            return self.geom
+        if self.current_deployment:
+            return self.current_deployment.geom
+        return None
 
     @memoize(timeout=15*60)
     def group_timeseries_by_erddap_dataset(self):

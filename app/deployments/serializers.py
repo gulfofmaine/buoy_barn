@@ -6,8 +6,8 @@ from .models import Platform
 
 # class PlatformSerializer(serializers.ModelSerializer):
 class PlatformSerializer(GeoFeatureModelSerializer):
+    
     readings = serializers.SerializerMethodField()
-
     def get_readings(self, obj):
         return obj.latest_erddap_values()
 
@@ -17,6 +17,10 @@ class PlatformSerializer(GeoFeatureModelSerializer):
             return obj.location
         except AttributeError:
             return None
+    
+    # attribution = serializers.SerializerMethodField()
+    # def get_attribution(self, obj):
+    #     pass
 
     class Meta:
         model = Platform

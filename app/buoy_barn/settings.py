@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_gis',
 
+    'memoize',
+
     # User management
     'account',
 

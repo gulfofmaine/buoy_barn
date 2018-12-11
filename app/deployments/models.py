@@ -5,6 +5,7 @@ import logging
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
+from memoize import memoize
 import requests
 
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
@@ -43,6 +44,7 @@ class Platform(models.Model):
     def location(self):
         return self.current_deployment.geom
 
+    @memoize(timeout=15*60)
     def group_timeseries_by_erddap_dataset(self):
         datasets = defaultdict(list)
 
@@ -53,6 +55,7 @@ class Platform(models.Model):
 
         return datasets
 
+    @memoize(timeout=15*60)
     def latest_erddap_values(self):
         readings = []
 
@@ -65,7 +68,6 @@ class Platform(models.Model):
             for series in timeseries:
                 filtered_df = filter_dataframe(df, series.variable)
                 try:
-                    # row = df[df["depth"] == series.depth].iloc[-1]
                     row = filtered_df.iloc[-1]
                 except IndexError:
                     logger.warning(

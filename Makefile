@@ -36,3 +36,12 @@ user:
 
 shell:
 	docker-compose exec web python manage.py shell
+
+test:
+	docker-compose exec web python manage.py test -v 2
+
+coverage:
+	docker-compose exec web coverage run --source='.' manage.py test
+	docker-compose exec web coverage report
+	docker-compose exec web coverage html
+	open app/htmlcov/index.html

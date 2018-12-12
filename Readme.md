@@ -28,6 +28,17 @@ If you wish to keep track of deployments for particular platforms, you can manag
 
 You can manage different which TimeSeries are associated with a Platform from the admin, or you can attempt to automatically add them from the python shell.
 
+## Testing
+
+Tests can be run with `make test`.
+Django will initialize a new database, run migrations, run tests in transactions, and then delete the database.
+
+### Test Coverage
+
+Tests coverage can be run with `make coverage`.
+After the tests are run, and the report displayed in the command line, it will also generate an html report.
+This report can be viewed by opening `app/htmlcov/index.html` which will also attempt to automatically open in the default browser.
+
 ## Initial Configuration
 
 ### Settings
@@ -94,6 +105,7 @@ You can use Django fixtures to quickly save models from the database and reload 
 - `load` - Load Django fixtures in `/app/dump.json`
 - `user` - Create a new Django admin/super user.
 - `shell` - Launch a Python shell from the Django `manage.py`
+- `test` - Run unit tests.
 
 ## Common Problems
 

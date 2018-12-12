@@ -14,3 +14,6 @@ sentry-sdk==0.5.5
 # dev
 ipython==7.0.1
 django-debug-toolbar==1.11
+
+# testing
+coverage==4.5.2

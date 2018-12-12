@@ -18,9 +18,9 @@ class PlatformSerializer(GeoFeatureModelSerializer):
         except AttributeError:
             return None
     
-    # attribution = serializers.SerializerMethodField()
-    # def get_attribution(self, obj):
-    #     pass
+    attribution = serializers.SerializerMethodField()
+    def get_attribution(self, obj):
+        return [attr.json for attr in obj.programattribution_set.all().select_related('program')]
 
     class Meta:
         model = Platform

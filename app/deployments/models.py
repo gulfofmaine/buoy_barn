@@ -21,6 +21,13 @@ class Program(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def json(self):
+        return {
+            'name': self.name,
+            'website': self.website
+        }
+
 
 class Platform(models.Model):
     name = models.CharField("Platform name", max_length=50)
@@ -129,6 +136,15 @@ class ProgramAttribution(models.Model):
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
     attribution = models.TextField()
 
+    def __str__(self):
+        return f'{platform.name} - {program.name}'
+
+    @property
+    def json(self):
+        return {
+            'program': self.program.json,
+            'attribution': self.attribution
+        }
 
 class MooringType(models.Model):
     name = models.CharField("Mooring type", max_length=64)

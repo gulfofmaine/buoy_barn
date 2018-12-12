@@ -7,7 +7,7 @@ Lightweight ERDDAP frontend API for NERACOOS buoy information and recent reading
 
 If you are setting it up for the first time see [Initial Configuration](#initial-configuration) down below.
 
-Otherwise you can use `make up` to start the server, which you can then access at [localhost:8080/admin/](http://localhost:8080/admin/).
+Otherwise you can use `make up` to start the server, which you can then access the admin at [localhost:8080/admin/](http://localhost:8080/admin/) and api at [localhost:8080/api/](http://localhost:8080/api/).
 
 If you `ctrl-c` out of the logs (or close the window), you can get the logs back with `make logs`.
 
@@ -82,6 +82,7 @@ You can use Django fixtures to quickly save models from the database and reload 
 
 ## Make commands
 
+- `build` - Builds containers in parallel
 - `up` - Builds and starts Docker containers before following the logs.
 - `down` - Stops and removed Docker containers.
 - `stop` - Stops Docker containers.

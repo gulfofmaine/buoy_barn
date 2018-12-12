@@ -1,8 +1,10 @@
 from django.urls import path
+from rest_framework import routers
 
-from .views import PlatformList, PlatformDetail
+from .views import PlatformViewset
 
-urlpatterns = [
-    path('platforms', PlatformList.as_view()),
-    path('platforms/<str:pk>', PlatformDetail.as_view())
-]
+
+router = routers.DefaultRouter()
+router.register('platforms', PlatformViewset)
+
+urlpatterns = router.urls

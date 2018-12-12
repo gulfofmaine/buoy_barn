@@ -1,5 +1,9 @@
-up: down
-	docker-compose up -d --build
+build:
+	docker-compose build --parallel
+
+up: down build
+	# docker-compose up -d --build
+	docker-compose up -d
 	docker-compose logs -f
 
 down:

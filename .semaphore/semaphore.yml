@@ -1,19 +1,20 @@
 version: v1.0
-name: First pipeline example
+name: buoy_barn Build and Test pipeline
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
 
 blocks:
-  - name: "Build"
+  - name: "Build and Test"
     task:
       prologue:
         commands:
           - checkout
           - make build
           - docker-compose up -d
-          - app/utils/wait-for-it.sh localhost:5432
+          - docker-compose exec db pg_isready -U buoy_barn -d buoy_barn
+
       jobs:
       - name: Test
         commands:

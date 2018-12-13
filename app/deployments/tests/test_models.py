@@ -15,6 +15,11 @@ class ProgramTestCase(TestCase):
         self.assertEquals(neracoos.name, "NERACOOS")
         self.assertEquals(neracoos.website, "http://neracoos.org")
 
+    def test_program_str(self):
+        neracoos = Program.objects.get(name='NERACOOS')
+
+        self.assertEquals(str(neracoos), 'NERACOOS')
+
     def test_program_json(self):
         neracoos = Program.objects.get(name="NERACOOS")
 
@@ -37,6 +42,11 @@ class PlatformTestCase(TestCase):
             name="A01",
             mooring_site_desc="MAssachusetts Bay"
         )
+    
+    def test_platform_str(self):
+        n01 = Platform.objects.get(name='N01')
+
+        self.assertEquals(str(n01), 'N01')
 
     def test_platform_attributes(self):
         n01 = Platform.objects.get(name="N01")

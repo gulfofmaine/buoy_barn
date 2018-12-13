@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from deployments.models import Deployment, Program, Platform, ProgramAttribution, StationType
+from deployments.models import Deployment, Program, Platform, ProgramAttribution, StationType, MooringType
 
 
 class ProgramTestCase(TestCase):
@@ -159,3 +159,19 @@ class DeploymentTestCase(TestCase):
         self.assertIn('2018-07-10', deployment_str)
         self.assertIn('2018-09-27', deployment_str)
         self.assertIn('80 days', deployment_str)
+
+
+class MooringTypeTestCase(TestCase):
+    def setUp(self):
+        self.mooring = MooringType.objects.get(name='Slack')
+    
+    def test_mooring_str(self):
+        self.assertEqual(str(self.mooring), 'Slack')
+
+
+class StationTypeTestCase(TestCase):
+    def setUp(self):
+        self.station = StationType.objects.get(name='Surface Mooring')
+    
+    def test_station_str(self):
+        self.assertEqual(str(self.station), 'Surface Mooring')

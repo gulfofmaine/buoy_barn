@@ -1,0 +1,312 @@
+- model: deployments.datatype
+  pk: 1
+  fields: {standard_name: air_temperature, short_name: AT, long_name: Air Temperature,
+    units: celsius}
+- model: deployments.datatype
+  pk: 2
+  fields: {standard_name: amps, short_name: AMPS, long_name: Amps, units: counts}
+- model: deployments.datatype
+  pk: 3
+  fields: {standard_name: average_wave_period, short_name: AWP, long_name: Average
+      Wave Period, units: seconds}
+- model: deployments.datatype
+  pk: 4
+  fields: {standard_name: solar_zenith_angle, short_name: SZA, long_name: Solar Zenith
+      Angle, units: radians}
+- model: deployments.datatype
+  pk: 5
+  fields: {standard_name: dew_point_temperature, short_name: DEWP, long_name: Dewpoint
+      Temperature, units: celsius}
+- model: deployments.datatype
+  pk: 6
+  fields: {standard_name: direction_of_sea_water_velocity, short_name: CDIR, long_name: Current
+      Direction, units: angular_degrees}
+- model: deployments.datatype
+  pk: 7
+  fields: {standard_name: dissolved_oxygen, short_name: DO, long_name: Dissolved Oxygen,
+    units: ml/l}
+- model: deployments.datatype
+  pk: 8
+  fields: {standard_name: dominant_wave_period, short_name: DWP, long_name: Dominant
+      Wave Period, units: seconds}
+- model: deployments.datatype
+  pk: 9
+  fields: {standard_name: eastward_sea_water_velocity, short_name: u, long_name: East
+      Velocity Component, units: cm/s}
+- model: deployments.datatype
+  pk: 10
+  fields: {standard_name: lat_offset, short_name: latoff, long_name: Latitudinal Offset,
+    units: angular_minute}
+- model: deployments.datatype
+  pk: 11
+  fields: {standard_name: lon_offset, short_name: lonoff, long_name: Longitudinal
+      Offset, units: angular_minute}
+- model: deployments.datatype
+  pk: 12
+  fields: {standard_name: max_visibility, short_name: VISMAX, long_name: Maximum Visibility,
+    units: meters}
+- model: deployments.datatype
+  pk: 13
+  fields: {standard_name: mean_wave_direction, short_name: MWD, long_name: Mean Wave
+      Direction, units: degrees}
+- model: deployments.datatype
+  pk: 14
+  fields: {standard_name: min_visibility, short_name: VISMIN, long_name: Minimum Visibility,
+    units: meters}
+- model: deployments.datatype
+  pk: 15
+  fields: {standard_name: northward_sea_water_velocity, short_name: v, long_name: North
+      Velocity Component, units: cm/s}
+- model: deployments.datatype
+  pk: 16
+  fields: {standard_name: oxygen_saturation, short_name: DO, long_name: Oxygen Saturation,
+    units: ml/l}
+- model: deployments.datatype
+  pk: 17
+  fields: {standard_name: percent_oxygen_saturation, short_name: POXSAT, long_name: Percent
+      Oxygen Saturation, units: percent}
+- model: deployments.datatype
+  pk: 18
+  fields: {standard_name: predicted_sea_water_level, short_name: PWL, long_name: Predicted
+      level of sea water, units: m}
+- model: deployments.datatype
+  pk: 19
+  fields: {standard_name: pressure_tendency, short_name: PTDY, long_name: Pressure
+      Tendency, units: degrees}
+- model: deployments.datatype
+  pk: 20
+  fields: {standard_name: sea_level_pressure, short_name: BARO, long_name: Sea Level
+      Pressure, units: hPa}
+- model: deployments.datatype
+  pk: 21
+  fields: {standard_name: sea_water_density, short_name: SIGMAT, long_name: Sigma-T,
+    units: kg/m^3}
+- model: deployments.datatype
+  pk: 22
+  fields: {standard_name: sea_water_level, short_name: SWL, long_name: Sea water level
+      relative to the mean, units: m}
+- model: deployments.datatype
+  pk: 23
+  fields: {standard_name: sea_water_salinity, short_name: S, long_name: Salinity,
+    units: psu}
+- model: deployments.datatype
+  pk: 24
+  fields: {standard_name: sea_water_speed, short_name: CSPD, long_name: Current Speed,
+    units: cm/s}
+- model: deployments.datatype
+  pk: 25
+  fields: {standard_name: sea_water_temperature, short_name: WT, long_name: Water
+      Temperature, units: celsius}
+- model: deployments.datatype
+  pk: 26
+  fields: {standard_name: significant_height_of_wind_and_swell_waves, short_name: WVHT,
+    long_name: Significant Wave Height, units: m}
+- model: deployments.datatype
+  pk: 27
+  fields: {standard_name: transmissivity_voltage, short_name: TRANSV, long_name: Transmissivity
+      Voltage, units: percent}
+- model: deployments.datatype
+  pk: 28
+  fields: {standard_name: transmissivity, short_name: TRANS, long_name: Transmissivity,
+    units: percent}
+- model: deployments.datatype
+  pk: 29
+  fields: {standard_name: visibility_in_air, short_name: VIS, long_name: Visibility,
+    units: meters}
+- model: deployments.datatype
+  pk: 30
+  fields: {standard_name: wind_direction_kvh, short_name: WDIR, long_name: Mean Wind
+      Direction, units: degrees magnetic}
+- model: deployments.datatype
+  pk: 31
+  fields: {standard_name: wind_direction_stddev, short_name: WDIRSTD, long_name: Wind
+      Direction Standard Deviation, units: degrees}
+- model: deployments.datatype
+  pk: 32
+  fields: {standard_name: wind_direction_uv_stddev, short_name: WDSTDEV, long_name: Unit
+      Vector Mean Wind Direction Standard Deviation, units: degrees}
+- model: deployments.datatype
+  pk: 33
+  fields: {standard_name: wind_direction_uv, short_name: WD, long_name: Unit Vector
+      Mean Wind Direction, units: degrees}
+- model: deployments.datatype
+  pk: 34
+  fields: {standard_name: wind_direction_ve_stddev, short_name: WDSTD, long_name: Vector
+      Averaged Wind Direction Standard Deviation, units: degrees}
+- model: deployments.datatype
+  pk: 35
+  fields: {standard_name: wind_direction_ve, short_name: WD, long_name: Vector Averaged
+      Wind Direction, units: degrees}
+- model: deployments.datatype
+  pk: 36
+  fields: {standard_name: wind_from_direction, short_name: WD, long_name: Wind Direction,
+    units: degrees}
+- model: deployments.datatype
+  pk: 37
+  fields: {standard_name: wind_gust, short_name: GST, long_name: Wind Gust, units: cm/s}
+- model: deployments.datatype
+  pk: 38
+  fields: {standard_name: wind_min, short_name: WMSPD, long_name: Wind Minimum Speed,
+    units: cm/s}
+- model: deployments.datatype
+  pk: 39
+  fields: {standard_name: wind_peak, short_name: WPEAK, long_name: Wind Peak (1 sec),
+    units: cm/s}
+- model: deployments.datatype
+  pk: 40
+  fields: {standard_name: wind_speed_sc, short_name: WSPD, long_name: Scalar Average
+      Wind Speed, units: m/s}
+- model: deployments.datatype
+  pk: 41
+  fields: {standard_name: wind_speed_ve, short_name: WSPD, long_name: Vector Average
+      Wind Speed, units: m/s}
+- model: deployments.datatype
+  pk: 42
+  fields: {standard_name: wind_speed, short_name: WSPD, long_name: Wind Speed, units: m/s}
+- model: deployments.datatype
+  pk: 43
+  fields: {standard_name: wind_speed_and_direction, short_name: WS+DIR, long_name: Wind
+      Speed and Direction, units: 'm/s,degrees'}
+- model: deployments.datatype
+  pk: 44
+  fields: {standard_name: chlorophyll, short_name: CHL, long_name: Chlorophyll, units: chl/m3}
+- model: deployments.datatype
+  pk: 45
+  fields: {standard_name: par, short_name: PAR, long_name: Photosynthetically Available
+      Radiation, units: "\xB5E/m2/sec"}
+- model: deployments.datatype
+  pk: 46
+  fields: {standard_name: percent_clear_sky, short_name: PCTSKY, long_name: Percent
+      Clear Sky, units: percent}
+- model: deployments.datatype
+  pk: 47
+  fields: {standard_name: turbidity, short_name: TRBD, long_name: Turbidity, units: ntu}
+- model: deployments.datatype
+  pk: 48
+  fields: {standard_name: count, short_name: CNT, long_name: COUNT, units: count}
+- model: deployments.datatype
+  pk: 49
+  fields: {standard_name: sun_icon, short_name: SI, long_name: Sun Icon, units: '1'}
+- model: deployments.datatype
+  pk: 50
+  fields: {standard_name: Ed_PAR, short_name: 'Ed(PAR,0+)', long_name: Downwelling
+      Irradiance of PAR (400-700nm), units: microE/m^2/s}
+- model: deployments.datatype
+  pk: 51
+  fields: {standard_name: percent_sun, short_name: PS, long_name: Percent Sun, units: percent}
+- model: deployments.datatype
+  pk: 52
+  fields: {standard_name: sea_water_electrical_conductivity, short_name: COND, long_name: Conductivity,
+    units: siemens/m}
+- model: deployments.datatype
+  pk: 53
+  fields: {standard_name: surface_partial_pressure_of_carbon_dioxide_in_air, short_name: PC02,
+    long_name: Atmospheric CO2 Partial Pressure, units: microATM}
+- model: deployments.datatype
+  pk: 54
+  fields: {standard_name: surface_partial_pressure_of_carbon_dioxide_in_sea_water,
+    short_name: PC02, long_name: Sea Surface CO2 Partial Pressure, units: microATM}
+- model: deployments.datatype
+  pk: 55
+  fields: {standard_name: max_wave_height, short_name: MWH, long_name: Maximum Wave
+      Height, units: m}
+- model: deployments.datatype
+  pk: 56
+  fields: {standard_name: wave_direction_spread, short_name: WDS, long_name: Wave
+      Direction Spread, units: degrees}
+- model: deployments.datatype
+  pk: 57
+  fields: {standard_name: significant_wave_height, short_name: SWH, long_name: Significant
+      Wave Height, units: m}
+- model: deployments.datatype
+  pk: 58
+  fields: {standard_name: sea_water_pH_reported_on_total_scale, short_name: pH, long_name: pH
+      (Total), units: '1'}
+- model: deployments.datatype
+  pk: 59
+  fields: {standard_name: sea_water_alkalinity_expressed_as_mole_equivalent, short_name: TotAlk,
+    long_name: Total Alkalinity, units: microM/kg}
+- model: deployments.datatype
+  pk: 60
+  fields: {standard_name: attenuation, short_name: attn, long_name: Beam Attenuation,
+    units: m-1}
+- model: deployments.datatype
+  pk: 61
+  fields: {standard_name: concentration_of_colored_dissolved_organic_matter_in_sea_water,
+    short_name: CDOM, long_name: Chromophoric Dissolved Organic Matter, units: ppbQSE}
+- model: deployments.datatype
+  pk: 62
+  fields: {standard_name: mole_concentration_of_nitrate_in_sea_water, short_name: NO3,
+    long_name: Nitrate Concentration, units: microM}
+- model: deployments.datatype
+  pk: 63
+  fields: {standard_name: mole_concentration_of_phosphate_in_sea_water, short_name: PO4,
+    long_name: Phosphate Concentration, units: microM/l}
+- model: deployments.datatype
+  pk: 64
+  fields: {standard_name: significant_height_of_wind_and_swell_waves_3, short_name: WVHT,
+    long_name: Significant Wave Height, units: m}
+- model: deployments.datatype
+  pk: 65
+  fields: {standard_name: dominant_wave_period_3, short_name: DWP, long_name: Dominant
+      Wave Period, units: seconds}
+- model: deployments.datatype
+  pk: 66
+  fields: {standard_name: sea_water_velocity, short_name: CSPD, long_name: Current
+      Speed, units: cm/s}
+- model: deployments.datatype
+  pk: 67
+  fields: {standard_name: period, short_name: DWP, long_name: Dominant Wave Period,
+    units: s}
+- model: deployments.datatype
+  pk: 68
+  fields: {standard_name: barometric_pressure, short_name: BP, long_name: Barometric
+      Pressure, units: millibars}
+- model: deployments.datatype
+  pk: 69
+  fields: {standard_name: wind_speed_of_gust, short_name: WGST, long_name: Wind Gust,
+    units: m/s}
+- model: deployments.datatype
+  pk: 70
+  fields: {standard_name: volume_fraction_of_oxygen_in_sea_water, short_name: DO,
+    long_name: Dissolved Oxygen, units: ml/l}
+- model: deployments.datatype
+  pk: 71
+  fields: {standard_name: fractional_saturation_of_oxygen_in_sea_water, short_name: POXSAT,
+    long_name: Percent Oxygen Saturation, units: percent}
+- model: deployments.datatype
+  pk: 72
+  fields: {standard_name: sea_surface_wave_significant_height, short_name: null, long_name: Wave
+      Height, units: m}
+- model: deployments.datatype
+  pk: 73
+  fields: {standard_name: sea_surface_swell_wave_period, short_name: null, long_name: 'Wave
+      Period, Dominant', units: s}
+- model: deployments.datatype
+  pk: 74
+  fields: {standard_name: sea_surface_wave_to_direction, short_name: null, long_name: Wave
+      Direction, units: degrees_true}
+- model: deployments.datatype
+  pk: 75
+  fields: {standard_name: air_pressure_at_sea_level, short_name: null, long_name: Air
+      Pressure, units: hPa}
+- model: deployments.datatype
+  pk: 76
+  fields: {standard_name: sea_surface_temperature, short_name: null, long_name: SST,
+    units: degree_C}
+- model: deployments.datatype
+  pk: 77
+  fields: {standard_name: tendency_of_air_pressure, short_name: null, long_name: Pressure
+      Tendency, units: hPa}
+- model: deployments.datatype
+  pk: 78
+  fields: {standard_name: surface_altitude, short_name: null, long_name: Water Level,
+    units: m}
+- model: deployments.datatype
+  pk: 79
+  fields: {standard_name: eastward_wind, short_name: null, long_name: 'Wind Speed,
+      Zonal', units: m s-1}
+- model: deployments.datatype
+  pk: 80
+  fields: {standard_name: northward_wind, short_name: null, long_name: 'Wind Speed,
+      Meridional', units: m s-1}

@@ -1,0 +1,38 @@
+- model: deployments.deployment
+  pk: 4
+  fields: {deployment_name: N0121, platform: 4, start_time: ! '2018-07-08 13:00:00+00:00',
+    end_time: null, geom: SRID=4326;POINT (-67.587890625 43.154296875), magnetic_variation: -17.8,
+    water_depth: 225.0, mooring_type: 1, mooring_site_id: N0121, station_type: 2}
+- model: deployments.deployment
+  pk: 5
+  fields: {deployment_name: '44005', platform: 12, start_time: ! '2003-07-16 12:38:49+00:00',
+    end_time: null, geom: SRID=4326;POINT (-69.664306640625 43.187255859375), magnetic_variation: 0.0,
+    water_depth: 21.9, mooring_type: null, mooring_site_id: Cashes Ledge, station_type: 3}
+- model: deployments.deployment
+  pk: 6
+  fields: {deployment_name: MDRM1, platform: 13, start_time: ! '2003-07-19 12:38:50+00:00',
+    end_time: null, geom: SRID=4326;POINT (-68.994140625 43.9453125), magnetic_variation: 0.0,
+    water_depth: -9.0, mooring_type: null, mooring_site_id: MDRM1, station_type: 3}
+- model: deployments.deployment
+  pk: 7
+  fields: {deployment_name: BGXN3, platform: 14, start_time: ! '2009-08-16 10:14:02+00:00',
+    end_time: null, geom: SRID=4326;POINT (-70.86181640625 43.096618652344), magnetic_variation: 0.0,
+    water_depth: 1.0, mooring_type: null, mooring_site_id: 'Great Bay Reserve, NH',
+    station_type: 3}
+- model: deployments.deployment
+  pk: 8
+  fields: {deployment_name: CDIP221, platform: 15, start_time: ! '2016-05-23 10:12:56+00:00',
+    end_time: null, geom: SRID=4326;POINT (-70.381164550782 41.863403320313), magnetic_variation: 0.0,
+    water_depth: 26.0, mooring_type: null, mooring_site_id: 'Cape Cod Bay, MA', station_type: 3}
+- model: deployments.deployment
+  pk: 9
+  fields: {deployment_name: LDLC3, platform: 16, start_time: ! '2009-07-22 14:42:27+00:00',
+    end_time: null, geom: SRID=4326;POINT (-72.083187103273 41.31202697754), magnetic_variation: 0.0,
+    water_depth: 0.0, mooring_type: null, mooring_site_id: New London Ledge Light,
+    station_type: 3}
+- model: deployments.deployment
+  pk: 10
+  fields: {deployment_name: EXRX, platform: 17, start_time: ! '2013-08-16 09:02:40+00:00',
+    end_time: null, geom: SRID=4326;POINT (-73.73680114746099 40.868797302246), magnetic_variation: 0.0,
+    water_depth: 22.5, mooring_type: null, mooring_site_id: Execution Rocks Long Island
+      Sound, station_type: 3}

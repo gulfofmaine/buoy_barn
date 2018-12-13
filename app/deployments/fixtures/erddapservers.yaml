@@ -1,0 +1,8 @@
+- model: deployments.erddapserver
+  pk: 1
+  fields: {name: NERACOOS, base_url: 'http://www.neracoos.org/erddap', program: null,
+    contact: ''}
+- model: deployments.erddapserver
+  pk: 2
+  fields: {name: Coastwatch, base_url: 'https://coastwatch.pfeg.noaa.gov/erddap',
+    program: null, contact: ''}

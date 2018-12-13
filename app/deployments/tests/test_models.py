@@ -15,14 +15,23 @@ class ProgramTestCase(TestCase):
 
 
 class PlatformTestCase(TestCase):
+
     def setUp(self):
         self.platform = Platform.objects.create(
             name='N01',
             mooring_site_desc='Northeast Channel',
-            geom='SRID=4326;POINT(-65.9 42.34)'
+            geom='SRID=4326;POINT(-65.9 42.34)',
         )
 
     def test_platform_attributes(self):
         n01 = Platform.objects.get(name='N01')
 
         self.assertEquals(self.platform.name, n01.name)
+    
+    def test_location(self):
+        n01 = Platform.objects.get(name='N01')
+
+        self.assertIsNotNone(n01.location)
+        self.assertEquals(n01.location.x, -65.9)
+        self.assertEquals(n01.location.y, 42.34)
+        self.assertEquals(n01.location.srid, 4326)

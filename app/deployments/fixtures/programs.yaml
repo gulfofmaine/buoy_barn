@@ -1,0 +1,6 @@
+- model: deployments.program
+  pk: 1
+  fields: {name: University of Maine, website: ''}
+- model: deployments.program
+  pk: 2
+  fields: {name: NERACOOS, website: 'http://neracoos.org'}

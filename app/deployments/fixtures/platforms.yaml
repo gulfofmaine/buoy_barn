@@ -1,0 +1,53 @@
+- model: deployments.platform
+  pk: 4
+  fields: {name: N01, mooring_site_desc: Northeast Channel, nbdc_site_id: null, uscg_light_letter: null,
+    uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT (-68.02734375
+      42.890625)}
+- model: deployments.platform
+  pk: 5
+  fields: {name: A01, mooring_site_desc: Massachusetts Bay, nbdc_site_id: null, uscg_light_letter: null,
+    uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 6
+  fields: {name: B01, mooring_site_desc: Western Maine Shelf, nbdc_site_id: null,
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 8
+  fields: {name: E01, mooring_site_desc: Central Maine Shelf, nbdc_site_id: null,
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 9
+  fields: {name: F01, mooring_site_desc: Penobscot Bay, nbdc_site_id: null, uscg_light_letter: null,
+    uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 10
+  fields: {name: I01, mooring_site_desc: Eastern Maine Shelf, nbdc_site_id: null,
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 11
+  fields: {name: M01, mooring_site_desc: Jordan Basin, nbdc_site_id: null, uscg_light_letter: null,
+    uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 12
+  fields: {name: '44005', mooring_site_desc: Cashes Ledge, nbdc_site_id: '44005',
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 13
+  fields: {name: MDRM1, mooring_site_desc: Mount Desert Rock, nbdc_site_id: MDRM1,
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 14
+  fields: {name: BGXN3, mooring_site_desc: 'Great Bay Reserve, NH', nbdc_site_id: BGXN3,
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 15
+  fields: {name: CDIP221, mooring_site_desc: 'Cape Cod Bay, MA', nbdc_site_id: '44090',
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 16
+  fields: {name: LDLC3, mooring_site_desc: New London Ledge Light, nbdc_site_id: LDLC3,
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}
+- model: deployments.platform
+  pk: 17
+  fields: {name: EXRX, mooring_site_desc: Execution Rocks Long Island Sound, nbdc_site_id: '44022',
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: null}

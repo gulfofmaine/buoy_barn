@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from deployments.models import Deployment, Program, Platform, ProgramAttribution, StationType, MooringType
+from deployments.models import Deployment, Program, Platform, ProgramAttribution, StationType, MooringType, DataType, BufferType, ErddapServer
 
 
 class ProgramTestCase(TestCase):
@@ -175,3 +175,63 @@ class StationTypeTestCase(TestCase):
     
     def test_station_str(self):
         self.assertEqual(str(self.station), 'Surface Mooring')
+
+
+class DataTypeTestCase(TestCase):
+    def test_data_str(self):
+        temp = DataType.objects.get(standard_name='air_temperature')
+
+        self.assertIn('air_temperature', str(temp))
+        self.assertIn('Air Temperature', str(temp))
+        self.assertIn('celsius', str(temp))
+    
+    def test_data_json(self):
+        temp = DataType.objects.get(standard_name='air_temperature')
+
+        self.assertIn('standard_name', temp.json)
+        self.assertEquals('air_temperature', temp.json['standard_name'])
+
+        self.assertIn('short_name', temp.json)
+        self.assertEquals('AT', temp.json['short_name'])
+
+        self.assertIn('long_name', temp.json)
+        self.assertEquals('Air Temperature', temp.json['long_name'])
+
+        self.assertIn('units', temp.json)
+        self.assertEquals('celsius', temp.json['units'])
+
+
+class BufferTypeTestCase(TestCase):
+    def test_buffer_str(self):
+        buffer = BufferType.objects.get(name='doppler')
+
+        self.assertEquals(str(buffer), 'doppler')
+
+
+class ErddapServerTestCase(TestCase):
+    fixtures = ['programs']
+
+    def setUp(self):
+        self.program = Program.objects.get(name='NERACOOS')
+
+        self.server_with_name = ErddapServer.objects.create(
+            name='NERACOOS',
+            base_url='http://www.neracoos.org/erddap',
+            program=self.program,
+            contact='Eric'
+        )
+
+        self.server_without_name = ErddapServer.objects.create(
+            base_url='http://www.neracoos.org/erddap'
+        )
+
+    def test_server_str_with_name(self):
+        self.assertEquals(str(self.server_with_name), 'NERACOOS')
+    
+    def test_server_str_without_name(self):
+        self.assertEquals(str(self.server_without_name), 'http://www.neracoos.org/erddap')
+
+    def test_server_connection(self):
+        from erddapy import ERDDAP
+
+        self.assertIsInstance(self.server_with_name.connection(), ERDDAP)

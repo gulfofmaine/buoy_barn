@@ -105,31 +105,6 @@ class Platform(models.Model):
                 )
         return readings
 
-    def latest_legacy_readings(self):
-        r = requests.get(
-            f"http://neracoos.org/data/json/buoyrecentdata.php?platform={self.name}&mp=no&hb=24&tsdt=all"
-        ).json()
-
-        readings = {}
-        for name in r:
-            if "time_series" in name:
-                time = sorted(
-                    r[name],
-                    key=lambda dt: datetime.strptime(dt + "00", "%Y-%m-%d %H:%M:%S%z"),
-                    reverse=True,
-                )[0]
-                time_series_readings = r[name][time]
-
-                name = name.split("-")[1]
-
-                readings[name] = {
-                    "readings": [
-                        dict(**reading, time=time) for reading in time_series_readings
-                    ]
-                }
-
-        return readings
-
 
 class ProgramAttribution(models.Model):
     program = models.ForeignKey(Program, on_delete=models.CASCADE)

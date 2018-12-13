@@ -32,6 +32,11 @@ class PlatformTestCase(TestCase):
             mooring_site_desc="Northeast Channel",
             geom="SRID=4326;POINT(-65.9 42.34)",
         )
+        
+        self.other_platform = Platform.objects.create(
+            name="A01",
+            mooring_site_desc="MAssachusetts Bay"
+        )
 
     def test_platform_attributes(self):
         n01 = Platform.objects.get(name="N01")
@@ -45,6 +50,11 @@ class PlatformTestCase(TestCase):
         self.assertEquals(n01.location.x, -65.9)
         self.assertEquals(n01.location.y, 42.34)
         self.assertEquals(n01.location.srid, 4326)
+    
+    def test_platform_null_location(self):
+        a01 = Platform.objects.get(name='A01')
+
+        self.assertIsNone(a01.location)
 
 
 class ProgramAttributionTestCase(TestCase):

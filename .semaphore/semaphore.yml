@@ -1,0 +1,20 @@
+version: v1.0
+name: First pipeline example
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Build"
+    prologue:
+      commands:
+        - checkout
+        - make build
+        - docker-compose up -d
+        - app/utils/wait-for-it.sh localhost:5432
+      jobs:
+      - name: Test
+        commands:
+          - docker-compose exec web coverage run --source='.' manage.py test -v 2
+	        - docker-compose exec web coverage report

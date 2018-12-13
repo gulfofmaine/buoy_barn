@@ -1,0 +1,28 @@
+from django.test import TestCase
+
+from deployments.models import Program, Platform
+
+
+class ProgramTestCase(TestCase):
+    def setUp(self):
+        self.program = Program.objects.create(name='NERACOOS', website='http://neracoos.org')
+    
+    def test_program_attributes(self):
+        neracoos = Program.objects.get(name='NERACOOS')
+
+        self.assertEquals(neracoos.name, 'NERACOOS')
+        self.assertEquals(neracoos.website, 'http://neracoos.org')
+
+
+class PlatformTestCase(TestCase):
+    def setUp(self):
+        self.platform = Platform.objects.create(
+            name='N01',
+            mooring_site_desc='Northeast Channel',
+            geom='SRID=4326;POINT(-65.9 42.34)'
+        )
+
+    def test_platform_attributes(self):
+        n01 = Platform.objects.get(name='N01')
+
+        self.assertEquals(self.platform.name, n01.name)

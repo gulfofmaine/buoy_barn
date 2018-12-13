@@ -31,7 +31,7 @@ class Program(models.Model):
 
 class Platform(models.Model):
     name = models.CharField("Platform name", max_length=50)
-    mooring_site_Desc = models.TextField("Mooring Site Description")
+    mooring_site_desc = models.TextField("Mooring Site Description")
 
     programs = models.ManyToManyField(Program, through="ProgramAttribution")
 

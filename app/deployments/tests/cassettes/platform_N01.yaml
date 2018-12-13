@@ -1,0 +1,388 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['20']
+      Content-Type: [text/plain]
+      Date: ['Thu, 13 Dec 2018 20:58:06 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Location: ['http://www.neracoos.org/erddap/index.html']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding,User-Agent']
+    status: {code: 302, message: Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap/tabledap/N01_aanderaa_all.nc?time,current_direction&depth=2.0&time%3E=1544648286.764484
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_aanderaa_all_b112_dd70_760b.nc]
+      Content-Encoding: [gzip]
+      Content-Length: ['3316']
+      Content-Type: [application/x-netcdf]
+      Date: ['Thu, 13 Dec 2018 20:58:06 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Thu, 13 Dec 2018 20:58:06 GMT']
+      Server: [Apache-Coyote/1.1]
+      Vary: [User-Agent]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: GET
+    uri: http://www.neracoos.org/erddap/tabledap/N01_aanderaa_all.nc?time,current_direction&depth=2.0&time%3E=1544648286.764484
+  response:
+    body:
+      string: !!binary |
+        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
+        fwHKnLYnWCQAAA==
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_aanderaa_all_b112_dd70_760b.nc]
+      Content-Encoding: [gzip]
+      Content-Type: [application/x-netcdf]
+      Date: ['Thu, 13 Dec 2018 20:58:06 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Thu, 13 Dec 2018 20:58:06 GMT']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['20']
+      Content-Type: [text/plain]
+      Date: ['Thu, 13 Dec 2018 20:58:06 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Location: ['http://www.neracoos.org/erddap/index.html']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding,User-Agent']
+    status: {code: 302, message: Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap/tabledap/N01_sbe37_all.nc?time,temperature&depth=1.0&time%3E=1544648286.964346
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_sbe37_all_a5f9_a1eb_a82c.nc]
+      Content-Encoding: [gzip]
+      Content-Length: ['2931']
+      Content-Type: [application/x-netcdf]
+      Date: ['Thu, 13 Dec 2018 20:58:07 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Thu, 13 Dec 2018 20:58:07 GMT']
+      Server: [Apache-Coyote/1.1]
+      Vary: [User-Agent]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: GET
+    uri: http://www.neracoos.org/erddap/tabledap/N01_sbe37_all.nc?time,temperature&depth=1.0&time%3E=1544648286.964346
+  response:
+    body:
+      string: !!binary |
+        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
+        zYyhazsmPD7pQxh9XN7/AobQObFwGwAA
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_sbe37_all_a5f9_a1eb_a82c.nc]
+      Content-Encoding: [gzip]
+      Content-Type: [application/x-netcdf]
+      Date: ['Thu, 13 Dec 2018 20:58:07 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Thu, 13 Dec 2018 20:58:07 GMT']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['20']
+      Content-Type: [text/plain]
+      Date: ['Thu, 13 Dec 2018 20:58:06 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Location: ['http://www.neracoos.org/erddap/index.html']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding,User-Agent']
+    status: {code: 302, message: Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap/tabledap/N01_sbe37_all.nc?time,temperature,salinity&depth=100.0&time%3E=1544648287.144062
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_sbe37_all_34c9_179d_47ab.nc]
+      Content-Encoding: [gzip]
+      Content-Length: ['2994']
+      Content-Type: [application/x-netcdf]
+      Date: ['Thu, 13 Dec 2018 20:58:07 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Thu, 13 Dec 2018 20:58:07 GMT']
+      Server: [Apache-Coyote/1.1]
+      Vary: [User-Agent]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: GET
+    uri: http://www.neracoos.org/erddap/tabledap/N01_sbe37_all.nc?time,temperature,salinity&depth=100.0&time%3E=1544648287.144062
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_sbe37_all_34c9_179d_47ab.nc]
+      Content-Encoding: [gzip]
+      Content-Type: [application/x-netcdf]
+      Date: ['Thu, 13 Dec 2018 20:58:07 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Thu, 13 Dec 2018 20:58:07 GMT']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 200, message: OK}
+version: 1

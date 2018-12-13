@@ -7,6 +7,7 @@ from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
 from memoize import memoize
 import requests
+from requests import HTTPError
 
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
 
@@ -76,33 +77,46 @@ class Platform(models.Model):
             (server, dataset, constraints),
             timeseries,
         ) in self.group_timeseries_by_erddap_dataset().items():
-            df = retrieve_dataframe(server, dataset, dict(constraints), timeseries)
+            try:
+                df = retrieve_dataframe(server, dataset, dict(constraints), timeseries)
 
-            for series in timeseries:
-                filtered_df = filter_dataframe(df, series.variable)
-                try:
-                    row = filtered_df.iloc[-1]
-                except IndexError:
-                    logger.warning(
-                        f"Unable to find position in dataframe for {self.name} - {series.variable}"
+                for series in timeseries:
+                    filtered_df = filter_dataframe(df, series.variable)
+                    try:
+                        row = filtered_df.iloc[-1]
+                    except IndexError:
+                        logger.warning(
+                            f"Unable to find position in dataframe for {self.name} - {series.variable}"
+                        )
+                        reading = None
+                        time = None
+                    else:
+                        reading = row[series.variable]
+                        time = row["time"].strftime("%Y-%m-%dT%H:%M:%SZ")
+                    readings.append(
+                        {
+                            "value": reading,
+                            "time": time,
+                            "depth": series.depth,
+                            "data_type": series.data_type.json,
+                            "server": series.erddap_server.base_url,
+                            "variable": series.variable,
+                            'constraints': series.constraints,
+                            'dataset': series.erddap_dataset
+                        }
                     )
-                    reading = None
-                    time = None
-                else:
-                    reading = row[series.variable]
-                    time = row["time"].strftime("%Y-%m-%dT%H:%M:%SZ")
-                readings.append(
-                    {
-                        "value": reading,
-                        "time": time,
+            except HTTPError:
+                for series in timeseries:
+                    readings.append({
+                        "value": None,
+                        "time": None,
                         "depth": series.depth,
                         "data_type": series.data_type.json,
                         "server": series.erddap_server.base_url,
                         "variable": series.variable,
-                        'constraints': series.constraints,
-                        'dataset': series.erddap_dataset
-                    }
-                )
+                        "constraints": series.constraints,
+                        "dataset": series.erddap_dataset
+                    })
         return readings
 
 

@@ -1,7 +1,12 @@
 import geojson
 from rest_framework.test import APITestCase
+import vcr
 
 from deployments.models import Platform, TimeSeries, ErddapServer, DataType, BufferType
+
+
+my_vcr = vcr.VCR(cassette_library_dir='deployments/tests/cassettes/',
+                 match_on=['method', 'scheme', 'host', 'port', 'path'])
 
 
 class BuoyBarnAPITestCase(APITestCase):
@@ -103,6 +108,7 @@ class BuoyBarnAPITestCase(APITestCase):
         
         self.assertEqual(0, len(geo['properties']['readings']))
 
+    @my_vcr.use_cassette('platform_N01.yaml')
     def test_platform_detail_with_time_series(self):
         response = self.client.get('/api/platforms/N01/', format='json')
 
@@ -132,6 +138,7 @@ class BuoyBarnAPITestCase(APITestCase):
             for key in ('standard_name', 'short_name', 'long_name', 'units'):
                 self.assertIn(key, reading['data_type'])
 
+    @my_vcr.use_cassette('platform_list.yaml')
     def test_platform_list(self):
         response = self.client.get('/api/platforms/', format='json')
 
@@ -141,3 +148,43 @@ class BuoyBarnAPITestCase(APITestCase):
         self.assertEqual('FeatureCollection', geo['type'])
 
         self.assertEqual(13, len(geo['features']))
+
+
+class BuoyBarn500APITestCase(APITestCase):
+    fixtures = ['platforms', 'erddapservers']
+
+    def setUp(self):
+        self.platform = Platform.objects.get(name="44005")
+        self.erddap = ErddapServer.objects.get(base_url='https://coastwatch.pfeg.noaa.gov/erddap')
+        self.data_type = DataType.objects.get(standard_name="visibility_in_air")
+
+        self.ts = TimeSeries.objects.create(
+            platform=self.platform,
+            data_type=self.data_type,
+            variable='vis',
+            constraints={"station=": "41010"},
+            depth=None,
+            start_time="1970-02-26 20:00:00+00",
+            end_time=None,
+            buffer_type=None,
+            erddap_dataset='cwwcNDBCMet',
+            erddap_server=self.erddap
+        )
+    
+    @my_vcr.use_cassette('no_rows_returned.yaml')
+    def test_erddap_returns_no_rows(self):
+        response = self.client.get('/api/platforms/44005/')
+
+        for key in ('id', 'type', 'geometry', 'properties'):
+            self.assertIn(key, response.data, msg=f'{key} not in top level of response')
+
+        geo = geojson.loads(response.content)
+
+        self.assertTrue(geo.is_valid)
+        self.assertEqual('Feature', geo['type'])
+
+        self.assertEqual(1, len(geo['properties']['readings']))
+
+        for reading in geo['properties']['readings']:
+            self.assertIsNone(reading['value'])
+            self.assertIsNone(reading['value'])

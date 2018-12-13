@@ -1,0 +1,43 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: https://coastwatch.pfeg.noaa.gov/erddap
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [close]
+      Content-Type: [text/plain; charset=UTF-8]
+      Date: ['Thu, 13 Dec 2018 20:48:25 GMT']
+      Location: ['https://coastwatch.pfeg.noaa.gov/erddap/index.html']
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains]
+      Transfer-Encoding: [chunked]
+    status: {code: 302, message: ''}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: https://coastwatch.pfeg.noaa.gov/erddap/tabledap/cwwcNDBCMet.nc?time,vis&station=%2241010%22&time%3E=1544647705.309346
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [close]
+      Content-Language: [en]
+      Content-Type: [text/html;charset=utf-8]
+      Date: ['Thu, 13 Dec 2018 20:48:25 GMT']
+      Last-Modified: ['Thu, 13 Dec 2018 20:48:25 GMT']
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains]
+      Transfer-Encoding: [chunked]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 500, message: ''}
+version: 1

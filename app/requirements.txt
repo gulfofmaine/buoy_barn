@@ -19,3 +19,4 @@ django-debug-toolbar==1.11
 coverage==4.5.2
 PyYAML==3.13
 geojson==2.4.1
+vcrpy==2.0.1

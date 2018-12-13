@@ -114,6 +114,14 @@ class DeploymentTestCase(TestCase):
 
         self.assertIsNotNone(deployment)
         self.assertIsNone(deployment.end_time)
+
+    def test_platform_deployment_location(self):
+        a01 = Platform.objects.get(name='A01')
+
+        self.assertIsNotNone(a01.location)
+        self.assertEquals(a01.location.x, -70.56)
+        self.assertEquals(a01.location.y, 42.53)
+        self.assertEquals(a01.location.srid, 4326)
     
     def test_deployment_str_with_no_end(self):
         deployment_str = str(Deployment.objects.get(deployment_name='A0140'))

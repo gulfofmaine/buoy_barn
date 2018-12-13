@@ -16,6 +16,7 @@ blocks:
       prologue:
         commands:
           - checkout
+          - mv ~/docker-data/secret.env docker-data/secret.env
           - docker-compose up -d --build
           - docker-compose exec db pg_isready -U buoy_barn -d buoy_barn -t 30
 

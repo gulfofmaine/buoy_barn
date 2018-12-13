@@ -12,6 +12,7 @@ blocks:
     task:
       secrets:
         - name: buoy_barn_files
+
       prologue:
         commands:
           - checkout

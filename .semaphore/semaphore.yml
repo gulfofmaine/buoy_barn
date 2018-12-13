@@ -10,6 +10,8 @@ execution_time_limit:
 blocks:
   - name: Build and Test
     task:
+      secrets:
+        - name: buoy_barn_files
       prologue:
         commands:
           - checkout

@@ -137,7 +137,7 @@ class ProgramAttribution(models.Model):
     attribution = models.TextField()
 
     def __str__(self):
-        return f'{platform.name} - {program.name}'
+        return f'{self.platform.name} - {self.program.name}'
 
     @property
     def json(self):

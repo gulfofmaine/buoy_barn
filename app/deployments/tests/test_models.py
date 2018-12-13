@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from deployments.models import Program, Platform
+from deployments.models import Program, Platform, ProgramAttribution
 
 
 class ProgramTestCase(TestCase):
@@ -35,3 +35,20 @@ class PlatformTestCase(TestCase):
         self.assertEquals(n01.location.x, -65.9)
         self.assertEquals(n01.location.y, 42.34)
         self.assertEquals(n01.location.srid, 4326)
+
+
+class ProgramAttributionTestCase(TestCase):
+    fixtures = ['programs', 'platforms']
+
+    def setUp(self):
+        self.platform = Platform.objects.get(name='N01')
+
+        self.neracoos = Program.objects.get(name='NERACOOS')
+
+        self.attribution = ProgramAttribution(program=self.neracoos, platform=self.platform, attribution='Managed by NERACOOS')
+    
+    def test_attribution(self):
+        attribution_string = str(self.attribution)
+
+        self.assertIn('N01', attribution_string)
+        self.assertIn('NERACOOS', attribution_string)

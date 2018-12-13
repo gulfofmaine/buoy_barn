@@ -13,8 +13,7 @@ blocks:
       prologue:
         commands:
           - checkout
-          - make build
-          - docker-compose up -d
+          - docker-compose up -d --build
           - docker-compose exec db pg_isready -U buoy_barn -d buoy_barn -t 30
 
       jobs:

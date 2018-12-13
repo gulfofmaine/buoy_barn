@@ -67,3 +67,14 @@ class ProgramAttributionTestCase(TestCase):
         self.assertIn("N01", attribution_string)
         self.assertIn("NERACOOS", attribution_string)
 
+    def test_attribution_json(self):
+        attribution = ProgramAttribution.objects.get(
+            program=self.neracoos, platform=self.platform
+        )
+
+        self.assertIn("program", attribution.json)
+        self.assertEquals("NERACOOS", attribution.json["program"]["name"])
+
+        self.assertIn("attribution", attribution.json)
+        self.assertIn("Managed", attribution.json["attribution"])
+

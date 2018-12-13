@@ -4,19 +4,21 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
+execution_time_limit:
+  minutes: 15
 
 blocks:
-  - name: "Build and Test"
+  - name: Build and Test
     task:
       prologue:
         commands:
           - checkout
           - make build
           - docker-compose up -d
-          - docker-compose exec db pg_isready -U buoy_barn -d buoy_barn
+          - docker-compose exec db pg_isready -U buoy_barn -d buoy_barn -t 30
 
       jobs:
       - name: Test
         commands:
           - docker-compose exec web coverage run --source='.' manage.py test -v 2
-	        - docker-compose exec web coverage report
+          - docker-compose exec web coverage report

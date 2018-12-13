@@ -2,3 +2,4 @@
 omit =
     */test*
     */migrations/*
+    */wsgi.py

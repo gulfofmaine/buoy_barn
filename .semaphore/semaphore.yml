@@ -7,12 +7,13 @@ agent:
 
 blocks:
   - name: "Build"
-    prologue:
-      commands:
-        - checkout
-        - make build
-        - docker-compose up -d
-        - app/utils/wait-for-it.sh localhost:5432
+    task:
+      prologue:
+        commands:
+          - checkout
+          - make build
+          - docker-compose up -d
+          - app/utils/wait-for-it.sh localhost:5432
       jobs:
       - name: Test
         commands:

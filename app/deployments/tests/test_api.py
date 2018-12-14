@@ -1,12 +1,12 @@
 import geojson
 from rest_framework.test import APITestCase
-import vcr
 
 from deployments.models import Platform, TimeSeries, ErddapServer, DataType, BufferType
+from .vcr import my_vcr
 
 
-my_vcr = vcr.VCR(cassette_library_dir='deployments/tests/cassettes/',
-                 match_on=['method', 'scheme', 'host', 'port', 'path'])
+# my_vcr = vcr.VCR(cassette_library_dir='deployments/tests/cassettes/',
+#                  match_on=['method', 'scheme', 'host', 'port', 'path'])
 
 
 class BuoyBarnAPITestCase(APITestCase):

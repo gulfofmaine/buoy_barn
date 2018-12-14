@@ -1,0 +1,607 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['20']
+      Content-Type: [text/plain]
+      Date: ['Fri, 14 Dec 2018 19:32:48 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Location: ['http://www.neracoos.org/erddap/index.html']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding,User-Agent']
+    status: {code: 302, message: Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap/info/N01_accelerometer_all/index.csv
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_accelerometer_all_info.csv]
+      Content-Encoding: [gzip]
+      Content-Length: ['3656']
+      Content-Type: [text/csv;charset=ISO-8859-1]
+      Date: ['Fri, 14 Dec 2018 19:32:48 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Server: [Apache-Coyote/1.1]
+      Vary: [User-Agent]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [www.neracoos.org]
+      User-Agent: [Python-urllib/3.7]
+    method: GET
+    uri: http://www.neracoos.org/erddap/info/N01_accelerometer_all/index.csv
+  response:
+    body: {string: 'Row Type,Variable Name,Attribute Name,Data Type,Value
+
+        attribute,NC_GLOBAL,breakout_id,int,7
+
+        attribute,NC_GLOBAL,buffer_type,String,accelerometer
+
+        attribute,NC_GLOBAL,cdm_data_type,String,TimeSeries
+
+        attribute,NC_GLOBAL,cdm_timeseries_variables,String,"station, longitude, latitude"
+
+        attribute,NC_GLOBAL,contact,String,"nealp@maine.edu,ljm@umeoce.maine.edu,bfleming@umeoce.maine.edu"
+
+        attribute,NC_GLOBAL,Conventions,String,"CF-1.6, COARDS, Unidata Dataset Discovery
+        v1.0"
+
+        attribute,NC_GLOBAL,creator_email,String,"nealp@maine.edu,ljm@umeoce.maine.edu,bfleming@umeoce.maine.edu"
+
+        attribute,NC_GLOBAL,creator_name,String,Neal Pettigrew
+
+        attribute,NC_GLOBAL,creator_url,String,http://gyre.umeoce.maine.edu
+
+        attribute,NC_GLOBAL,defaultGraphQuery,String,"time,significant_wave_height&time%3E=now-7days&.draw=lines&.color=0x000000"
+
+        attribute,NC_GLOBAL,delta_t,int,60
+
+        attribute,NC_GLOBAL,Easternmost_Easting,double,-65.90915
+
+        attribute,NC_GLOBAL,ending_julian_day_number,double,57961.83333333349
+
+        attribute,NC_GLOBAL,ending_julian_day_string,String,2017-07-27 20:00:00
+
+        attribute,NC_GLOBAL,featureType,String,TimeSeries
+
+        attribute,NC_GLOBAL,geospatial_lat_max,double,42.3247
+
+        attribute,NC_GLOBAL,geospatial_lat_min,double,42.3233
+
+        attribute,NC_GLOBAL,geospatial_lat_units,String,degrees_north
+
+        attribute,NC_GLOBAL,geospatial_lon_max,double,-65.90915
+
+        attribute,NC_GLOBAL,geospatial_lon_min,double,-65.9267
+
+        attribute,NC_GLOBAL,geospatial_lon_units,String,degrees_east
+
+        attribute,NC_GLOBAL,geospatial_vertical_max,double,0.0
+
+        attribute,NC_GLOBAL,geospatial_vertical_min,double,0.0
+
+        attribute,NC_GLOBAL,geospatial_vertical_positive,String,down
+
+        attribute,NC_GLOBAL,geospatial_vertical_units,String,m
+
+        attribute,NC_GLOBAL,history,String,"2018-03-09 18:22:39:  revised dominant_wave_period_qc  flag_values
+        and flag_meanings attributes\n2018-03-09 18:22:37:  revised significant_wave_height_qc  flag_values
+        and flag_meanings attributes\nFri Jul 28 18:29:21 2017: /usr/local/bin/ncrcat
+        N01.accelerometer.historical.nc N0120.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nFri
+        Aug 19 15:21:11 2016: /usr/local/bin/ncrcat N01.accelerometer.historical.nc
+        N0119.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nWed Nov  4
+        02:56:02 2015: /usr/local/bin/ncrcat N01.accelerometer.historical.nc N0118.accelerometer.realtime.nc
+        N01.accelerometer.historical.nc.new\nThu Sep 18 17:03:52 2014: /usr/local/bin/ncrcat
+        N01.accelerometer.historical.nc N0117.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nWed
+        Jul  2 15:56:29 2014: /usr/local/bin/ncrcat N01.accelerometer.historical.nc
+        N0116.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nFri Jun
+        21 19:28:25 2013: /usr/local/bin/ncrcat N01.accelerometer.historical.nc N0115.accelerometer.realtime.nc
+        N01.accelerometer.historical.nc.new\nWed Oct 24 18:18:08 2012: /usr/local/bin/ncrcat
+        N01.accelerometer.historical.nc N0114.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nThu
+        Apr 12 02:18:59 2012: /usr/local/bin/ncrcat N01.accelerometer.historical.nc
+        N0113.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nTue Aug
+        23 22:28:14 2011: /usr/local/bin/ncrcat N01.accelerometer.historical.nc N0112.accelerometer.realtime.nc
+        N01.accelerometer.historical.nc.new\nSun Aug  1 14:45:23 2010: /usr/local/bin/ncrcat
+        N01.accelerometer.historical.nc N0111.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nMon
+        Sep 21 12:50:46 2009: /usr/local/bin/ncrcat N01.accelerometer.historical.nc
+        N0110.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nMon Mar
+        30 16:59:59 2009: /usr/local/bin/ncrcat N01.accelerometer.historical.nc N0109.accelerometer.realtime.nc
+        N01.accelerometer.historical.nc.new\nSat Apr 19 12:43:20 2008: /usr/local/bin/ncrcat
+        N01.accelerometer.historical.nc N0108.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nWed
+        Apr 11 17:13:03 2007: /usr/local/bin/ncrcat -d time,0 /data/gomoos/buoy/archive/N01/N01.accelerometer.historical.nc
+        /data/gomoos/buoy/archive/N01/N01.accelerometer.historical.nc.save000\nMon
+        Mar 26 12:48:10 2007: /usr/local/bin/ncrcat N01.accelerometer.historical.nc
+        N0106.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nSat Sep
+        16 21:40:00 2006: /usr/local/bin/ncrcat N01.accelerometer.historical.nc N0105.accelerometer.realtime.nc
+        N01.accelerometer.historical.nc.new\nSat Oct  1 11:53:31 2005: /usr/local/nco/bin/ncrcat
+        N01.accelerometer.historical.nc N0104.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nTue
+        Jul 19 12:44:11 2005: /usr/local/nco/bin/ncrcat N01.accelerometer.historical.nc
+        N0103.accelerometer.realtime.nc N01.accelerometer.historical.nc.new\nMon May  2
+        19:54:38 2005: /usr/local/nco/bin/ncrcat N01.accelerometer.historical.nc N0102.accelerometer.realtime.nc
+        N01.accelerometer.historical.nc.new\n"
+
+        attribute,NC_GLOBAL,id,String,N01-accelerometer
+
+        attribute,NC_GLOBAL,infoUrl,String,http://www.neracoos.org
+
+        attribute,NC_GLOBAL,institution,String,Univ. of Maine
+
+        attribute,NC_GLOBAL,institution_url,String,http://gyre.umeoce.maine.edu
+
+        attribute,NC_GLOBAL,julian_day_convention,String,Julian date convention starts
+        at 00:00:00 UTC on 17 November 1858 AD
+
+        attribute,NC_GLOBAL,keywords,String,"accelerometer, agg, b01, buoy, chemistry,
+        chlorophyll, circulation, conductivity, control, currents, data, density,
+        department, depth, dominant, dominant_wave_period data_quality, dsg, Earth
+        Science > Oceans > Ocean Chemistry > Chlorophyll, Earth Science > Oceans >
+        Ocean Chemistry > Oxygen, Earth Science > Oceans > Ocean Circulation > Ocean
+        Currents, Earth Science > Oceans > Ocean Optics > Turbidity, Earth Science
+        > Oceans > Ocean Pressure > Sea Level Pressure, Earth Science > Oceans > Ocean
+        Temperature > Water Temperature, Earth Science > Oceans > Ocean Waves > Significant
+        Wave Height, Earth Science > Oceans > Ocean Waves > Swells, Earth Science
+        > Oceans > Ocean Waves > Wave Period, Earth Science > Oceans > Ocean Winds
+        > Surface Winds, Earth Science > Oceans > Salinity/Density > Conductivity,
+        Earth Science > Oceans > Salinity/Density > Density, Earth Science > Oceans
+        > Salinity/Density > Salinity, height, level, maine, marine, name, neracoos,
+        o2, ocean, oceanography, oceans, optics, oxygen, period, physical, pressure,
+        quality, salinity, school, sciences, sea, seawater, sensor, significant, significant_height_of_wind_and_swell_waves,
+        significant_wave_height data_quality, station, station_name, surface, surface
+        waves, swell, swells, temperature, time, turbidity, university, water, wave,
+        waves, wind, winds"
+
+        attribute,NC_GLOBAL,keywords_vocabulary,String,GCMD Science Keywords
+
+        attribute,NC_GLOBAL,license,String,"The data may be used and redistributed
+        for free but is not intended\nfor legal use, since it may contain inaccuracies.
+        Neither the data\nContributor, ERD, NOAA, nor the United States Government,
+        nor any\nof their employees or contractors, makes any warranty, express or\nimplied,
+        including warranties of merchantability and fitness for a\nparticular purpose,
+        or assumes any legal liability for the accuracy,\ncompleteness, or usefulness,
+        of this information."
+
+        attribute,NC_GLOBAL,long_name,String,N01 Northeast Channel Accelerometer
+
+        attribute,NC_GLOBAL,Metadata_Conventions,String,"CF-1.6, COARDS, Unidata Dataset
+        Discovery v1.0"
+
+        attribute,NC_GLOBAL,mooring_site_id,String,N01
+
+        attribute,NC_GLOBAL,naming_authority,String,edu.maine
+
+        attribute,NC_GLOBAL,nco_openmp_thread_number,int,1
+
+        attribute,NC_GLOBAL,neracoos_data_provider,String,UMO
+
+        attribute,NC_GLOBAL,Northernmost_Northing,double,42.3247
+
+        attribute,NC_GLOBAL,processing,String,historical
+
+        attribute,NC_GLOBAL,project,String,NERACOOS
+
+        attribute,NC_GLOBAL,project_url,String,http://gomoos.org
+
+        attribute,NC_GLOBAL,publisher,String,NERACOOS
+
+        attribute,NC_GLOBAL,publisher_email,String,info@neracoos.org
+
+        attribute,NC_GLOBAL,publisher_name,String,Northeastern Regional Association
+        of Coastal and Ocean Observing Systems (NERACOOS)
+
+        attribute,NC_GLOBAL,publisher_phone,String,(603) 319 1785
+
+        attribute,NC_GLOBAL,publisher_url,String,http://www.neracoos.org/
+
+        attribute,NC_GLOBAL,references,String,http://gyre.umeoce.maine.edu/data/gomoos/buoy/doc/buoy_system_doc/buoy_system/book1.html
+
+        attribute,NC_GLOBAL,short_name,String,N01
+
+        attribute,NC_GLOBAL,source,String,Ocean Data Acquisition Systems (ODAS) Buoy
+
+        attribute,NC_GLOBAL,sourceUrl,String,(local files)
+
+        attribute,NC_GLOBAL,Southernmost_Northing,double,42.3233
+
+        attribute,NC_GLOBAL,standard_name_vocabulary,String,CF-1.6
+
+        attribute,NC_GLOBAL,starting_julian_day_number,double,53159.875
+
+        attribute,NC_GLOBAL,starting_julian_day_string,String,2004-06-03 21:00:00
+
+        attribute,NC_GLOBAL,station_name,String,N01
+
+        attribute,NC_GLOBAL,subsetVariables,String,"station, longitude, latitude,
+        depth, significant_wave_height_qc, dominant_wave_period_qc"
+
+        attribute,NC_GLOBAL,summary,String,"Ocean observation data from the Northeastern
+        Regional Association of Coastal &amp; Ocean Observing Systems (NERACOOS).
+        The NERACOOS region includes the northeast United States and Canadian Maritime
+        provinces, as part of the United States Integrated Ocean Observing System
+        (IOOS).  These data are served by Unidata''s Thematic Realtime Environmental
+        Distributed Data Services (THREDDS) Data Server (TDS) in a variety of interoperable
+        data services and output formats."
+
+        attribute,NC_GLOBAL,time_coverage_end,String,2018-12-14T18:00:00Z
+
+        attribute,NC_GLOBAL,time_coverage_start,String,2004-06-03T21:00:00Z
+
+        attribute,NC_GLOBAL,time_zone,String,UTC
+
+        attribute,NC_GLOBAL,title,String,N01 Accelerometer - Waves
+
+        attribute,NC_GLOBAL,water_depth,int,225
+
+        attribute,NC_GLOBAL,Westernmost_Easting,double,-65.9267
+
+        variable,station,,String,
+
+        attribute,station,cf_role,String,timeseries_id
+
+        attribute,station,ioos_category,String,Identifier
+
+        attribute,station,long_name,String,Station N01
+
+        variable,time,,double,
+
+        attribute,time,_CoordinateAxisType,String,Time
+
+        attribute,time,actual_range,double,"1.0862964E9, 1.5448104E9"
+
+        attribute,time,axis,String,T
+
+        attribute,time,calendar,String,gregorian
+
+        attribute,time,ioos_category,String,Time
+
+        attribute,time,long_name,String,Time
+
+        attribute,time,standard_name,String,time
+
+        attribute,time,time_origin,String,01-JAN-1970 00:00:00
+
+        attribute,time,units,String,seconds since 1970-01-01T00:00:00Z
+
+        variable,mooring_site_desc,,String,
+
+        attribute,mooring_site_desc,ioos_category,String,Location
+
+        attribute,mooring_site_desc,long_name,String,Station Description
+
+        variable,significant_wave_height,,float,
+
+        attribute,significant_wave_height,_FillValue,float,-999.0
+
+        attribute,significant_wave_height,actual_range,float,"0.0, 16.85596"
+
+        attribute,significant_wave_height,ancillary_variables,String,significant_wave_height_qc
+
+        attribute,significant_wave_height,colorBarMaximum,double,10.0
+
+        attribute,significant_wave_height,colorBarMinimum,double,0.0
+
+        attribute,significant_wave_height,coordinates,String,time lon lat depth
+
+        attribute,significant_wave_height,epic_code,int,4061
+
+        attribute,significant_wave_height,ioos_category,String,Surface Waves
+
+        attribute,significant_wave_height,is_dead,double,0.0
+
+        attribute,significant_wave_height,long_name,String,Significant Wave Height
+
+        attribute,significant_wave_height,short_name,String,SWH
+
+        attribute,significant_wave_height,standard_name,String,significant_height_of_wind_and_swell_waves
+
+        attribute,significant_wave_height,units,String,m
+
+        attribute,significant_wave_height,valid_range,float,"0.0, 40.0"
+
+        variable,significant_wave_height_qc,,byte,
+
+        attribute,significant_wave_height_qc,_FillValue,byte,-128
+
+        attribute,significant_wave_height_qc,actual_range,byte,"0, 99"
+
+        attribute,significant_wave_height_qc,colorBarMaximum,double,128.0
+
+        attribute,significant_wave_height_qc,colorBarMinimum,double,0.0
+
+        attribute,significant_wave_height_qc,coordinates,String,time lon lat depth
+
+        attribute,significant_wave_height_qc,flag_meanings,String,quality_good out_of_range
+        sensor_nonfunctional algorithm_failure_no_infl_pt other_auto_qc off_station
+        suspect_or_other_manual_qc
+
+        attribute,significant_wave_height_qc,flag_values,byte,"0, 1, 2, 3, 40, 60,
+        99"
+
+        attribute,significant_wave_height_qc,intent,String,data_quality
+
+        attribute,significant_wave_height_qc,ioos_category,String,Quality
+
+        attribute,significant_wave_height_qc,long_name,String,Significant Wave Height
+        Quality Control
+
+        attribute,significant_wave_height_qc,short_name,String,SWHQC
+
+        attribute,significant_wave_height_qc,standard_name,String,significant_height_of_wind_and_swell_waves
+        data_quality
+
+        attribute,significant_wave_height_qc,units,String,1
+
+        attribute,significant_wave_height_qc,valid_range,byte,"-127, 127"
+
+        variable,dominant_wave_period,,float,
+
+        attribute,dominant_wave_period,_FillValue,float,-999.0
+
+        attribute,dominant_wave_period,actual_range,float,"1.032258, 16.0"
+
+        attribute,dominant_wave_period,ancillary_variables,String,dominant_wave_period_qc
+
+        attribute,dominant_wave_period,colorBarMaximum,double,40.0
+
+        attribute,dominant_wave_period,colorBarMinimum,double,0.0
+
+        attribute,dominant_wave_period,coordinates,String,time lon lat depth
+
+        attribute,dominant_wave_period,epic_code,int,4063
+
+        attribute,dominant_wave_period,ioos_category,String,Surface Waves
+
+        attribute,dominant_wave_period,is_dead,double,0.0
+
+        attribute,dominant_wave_period,long_name,String,Dominant Wave Period
+
+        attribute,dominant_wave_period,sensor_depth,double,0.0
+
+        attribute,dominant_wave_period,short_name,String,DWP
+
+        attribute,dominant_wave_period,standard_name,String,period
+
+        attribute,dominant_wave_period,units,String,s
+
+        attribute,dominant_wave_period,valid_range,float,"0.0, 32.0"
+
+        variable,dominant_wave_period_qc,,byte,
+
+        attribute,dominant_wave_period_qc,_FillValue,byte,-128
+
+        attribute,dominant_wave_period_qc,actual_range,byte,"0, 99"
+
+        attribute,dominant_wave_period_qc,colorBarMaximum,double,128.0
+
+        attribute,dominant_wave_period_qc,colorBarMinimum,double,0.0
+
+        attribute,dominant_wave_period_qc,coordinates,String,time lon lat depth
+
+        attribute,dominant_wave_period_qc,flag_meanings,String,quality_good out_of_range
+        sensor_nonfunctional algorithm_failure_no_infl_pt other_auto_qc off_station
+        suspect_or_other_manual_qc
+
+        attribute,dominant_wave_period_qc,flag_values,byte,"0, 1, 2, 3, 40, 60, 99"
+
+        attribute,dominant_wave_period_qc,intent,String,data_quality
+
+        attribute,dominant_wave_period_qc,ioos_category,String,Quality
+
+        attribute,dominant_wave_period_qc,long_name,String,Dominant Wave Period Quality
+
+        attribute,dominant_wave_period_qc,short_name,String,DWPQ
+
+        attribute,dominant_wave_period_qc,standard_name,String,period data_quality
+
+        attribute,dominant_wave_period_qc,units,String,1
+
+        attribute,dominant_wave_period_qc,valid_range,byte,"-127, 127"
+
+        variable,longitude,,float,
+
+        attribute,longitude,_CoordinateAxisType,String,Lon
+
+        attribute,longitude,actual_range,float,"-65.9267, -65.90915"
+
+        attribute,longitude,axis,String,X
+
+        attribute,longitude,colorBarMaximum,double,180.0
+
+        attribute,longitude,colorBarMinimum,double,-180.0
+
+        attribute,longitude,ioos_category,String,Location
+
+        attribute,longitude,long_name,String,Longitude
+
+        attribute,longitude,standard_name,String,longitude
+
+        attribute,longitude,units,String,degrees_east
+
+        variable,latitude,,float,
+
+        attribute,latitude,_CoordinateAxisType,String,Lat
+
+        attribute,latitude,actual_range,float,"42.3233, 42.3247"
+
+        attribute,latitude,axis,String,Y
+
+        attribute,latitude,colorBarMaximum,double,90.0
+
+        attribute,latitude,colorBarMinimum,double,-90.0
+
+        attribute,latitude,ioos_category,String,Location
+
+        attribute,latitude,long_name,String,Latitude
+
+        attribute,latitude,standard_name,String,latitude
+
+        attribute,latitude,units,String,degrees_north
+
+        variable,depth,,float,
+
+        attribute,depth,_CoordinateAxisType,String,Height
+
+        attribute,depth,_CoordinateZisPositive,String,down
+
+        attribute,depth,actual_range,float,"0.0, 0.0"
+
+        attribute,depth,axis,String,Z
+
+        attribute,depth,colorBarMaximum,double,8000.0
+
+        attribute,depth,colorBarMinimum,double,0.0
+
+        attribute,depth,colorBarPalette,String,OceanDepth
+
+        attribute,depth,ioos_category,String,Location
+
+        attribute,depth,long_name,String,Depth
+
+        attribute,depth,positive,String,down
+
+        attribute,depth,standard_name,String,depth
+
+        attribute,depth,units,String,m
+
+'}
+    headers:
+      Connection: [close]
+      Content-Disposition: [attachment;filename=N01_accelerometer_all_info.csv]
+      Content-Encoding: [identity]
+      Content-Type: [text/csv;charset=ISO-8859-1]
+      Date: ['Fri, 14 Dec 2018 19:32:48 GMT']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding,User-Agent']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap/tabledap/N01_accelerometer_all.nc?significant_wave_height,dominant_wave_period&depth=0.0&time%3E=1544729569.062432
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_accelerometer_all_20ae_78fa_798f.nc]
+      Content-Encoding: [gzip]
+      Content-Length: ['3295']
+      Content-Type: [application/x-netcdf]
+      Date: ['Fri, 14 Dec 2018 19:32:49 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Fri, 14 Dec 2018 19:32:49 GMT']
+      Server: [Apache-Coyote/1.1]
+      Vary: [User-Agent]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: GET
+    uri: http://www.neracoos.org/erddap/tabledap/N01_accelerometer_all.nc?significant_wave_height,dominant_wave_period&depth=0.0&time%3E=1544729569.062432
+  response:
+    body:
+      string: !!binary |
+        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
+        29rvnmibLRquYVG2tATRkb9nyi6FAYzhMfIUoTFf69wehFtFCOXzYXuV7X8wZJA49CL3bSCUJjL0
+        qnZiK/1xj0jIS5iQS5iLs8Nu25ZCeU+Io9Tj5BXiyzQXuGT7Vx44ebhUAtKTenjs/StUA4duMLr3
+        5vBgWAWFAshusMkBkpAhLx6HpCECv4XAIXRZXjqykcRO5bPC7fFZW5E5Uvk6IMnpqb+NfFmf52KT
+        YVwe0uxQUVNF4Y6+Y//wJ2qLxtg7BI5jEa3aC2TjyF5UjtiO8zDd8qn664jm5c5LigbxBILCCiKD
+        Oo/arjn0pe99Zn7bny/SPjNcE52B4L7/GqB4uH34llDz7Fb3zfcbcsk4azeDZnev3zUW/3VpECH3
+        0ox1/3bA2EqEMISoeO6PKvVjv9JGZYmo4HdbtomM34rkHclu9x/IjtnkV00MUxe9d+oTSV7T1cF2
+        Gx4YXnoQP4Pik71D0jdqH2ivy6cfoPJEnx3tjnfPlcf8oU6H3EXvaCPitxL1hvqlwv0swcJPx8bu
+        +iPeewaZsTV42v1B8DRvPnXfwucV7Xp42jvcjK6DpdL/HUtvfshY2lOK5NCbpJNsw+QwMQxrxxqI
+        s9LpE1QehrNtiZYHYCi2R0MxNJboHxi6++v6G9l39L+e42Q75rede2p+66H39L/8/gn90t4v6P/W
+        Z+e3/uJt/cK+5/RvnH9Vv/Tbt/XXLx7Sf/POq/rrT13SH9n1nJ767+/0Hz/6K/2Nf31Rf+EZT/9B
+        4x/6y8/cqX/zzu/rF17bqV849xP9+Xen9WeeO6q/8ORh/eL79+o//M+K/uIvG/or7uf0p0+m9Gdv
+        Oaf/7NSb+nets/qPJr6ln9t+XL/4sff077z1vP7VV239yZ97+tdec/VvP/Su/uy9l2DrHtW/8sRb
+        C/ecvzD/yiu/pofK8XdcVt/n8Xz5wbt769ar/1Af7Cfsqzkq/w9fdkolWCYAAA==
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=N01_accelerometer_all_20ae_78fa_798f.nc]
+      Content-Encoding: [gzip]
+      Content-Type: [application/x-netcdf]
+      Date: ['Fri, 14 Dec 2018 19:32:49 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Last-Modified: ['Fri, 14 Dec 2018 19:32:49 GMT']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      erddap-server: ['1.82']
+      xdods-server: [dods/3.7]
+    status: {code: 200, message: OK}
+version: 1

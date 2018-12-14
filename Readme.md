@@ -27,6 +27,38 @@ If you wish to keep track of deployments for particular platforms, you can manag
 
 You can manage different which TimeSeries are associated with a Platform from the admin, or you can attempt to automatically add them from the python shell.
 
+Lets use the automatic loader.
+
+From a dataset page (for example [N01 Sbe](http://www.neracoos.org/erddap/tabledap/N01_sbe37_all.html)) the first thing to do is figure out our constraints.
+
+For this we are worried about a specific depth, so let's choose that from the dropdown.
+You'll notice the optional constraint 1 for depth has changed to an `=` and our depth is in the field next to it.
+
+We don't need to worry about time as a constraint, the loader will automatically find that.
+In some cases we may need to select a specific station, but we don't need to do that here.
+
+We pass our constraints as a dict with the key being the variable and the `=` sign, and the value being the selected value. 
+Therefore our constraints are `{'depth=': 50.0}`.
+
+To do that we will use `add_timeseries(platform, erddap_url, dataset, constraints)`.
+- `platform` - takes a `Platform` instance
+- `erddap_url` - takes the base url for the ERDDAP server
+- `dataset` - takes the Dataset ID
+- `constraints` - uses the constraints that you just figured out
+
+Now with a shell (`make shell`).
+
+```python
+>>> from deployments.utils.erddap_loader import add_timeseries
+>>> from deployments.models import Platform
+
+>>> n01 = Platform.objects.get(name='N01')
+
+>>> add_timeseries(n01, 'http://www.neracoos.org/erddap', 'N01_accelerometer_all', {'depth=': 50.0})
+```
+
+`add_timeseries` will retireve the dataset info, figure out the time range the dataset is valid for, find which variables are avaliabe, find or create data_types for those variables, and add the `TimeSeries` to the given platforms.
+
 ## Testing
 
 Tests can be run with `make test`.

@@ -1,5 +1,4 @@
-Buoy Barn
-=========
+# Buoy Barn [![Semaphore Dashboard](https://img.shields.io/badge/Semaphore-Dashboard-lightgrey.svg)](https://gmri.semaphoreci.com/projects/Neracoos-1-Buoy-App)
 
 Lightweight ERDDAP frontend API for NERACOOS buoy information and recent readings.
 
@@ -32,6 +31,9 @@ You can manage different which TimeSeries are associated with a Platform from th
 
 Tests can be run with `make test`.
 Django will initialize a new database, run migrations, run tests in transactions, and then delete the database.
+Tests that attempt to access external servers (for getting ERDDAP data) should be mocked out using [VCR](https://vcrpy.readthedocs.io/en/latest/) to make sure they are more repeatable despite network, server, or dataset issues.
+
+Automated tests are run after code is pushed to GitHub by [Semaphore](https://vcrpy.readthedocs.io/en/latest/), and test status is indicated on pull requests.
 
 ### Test Coverage
 

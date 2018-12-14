@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'memoize',
 
     # User management
-    'account',
+    'account.apps.AccountConfig',
 
     'deployments.apps.DeploymentsConfig'
 ]

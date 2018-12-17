@@ -127,8 +127,9 @@ class BuoyBarnAPITestCase(APITestCase):
         self.assertEqual(4, len(geo['properties']['readings']))
 
         for reading in geo['properties']['readings']:
-            for key in ('value', 'time', 'depth', 'data_type', 'server', 'variable', 'constraints', 'dataset'):
+            for key in ('value', 'time', 'depth', 'data_type', 'server', 'variable', 'constraints', 'dataset', 'start_time'):
                 self.assertIn(key, reading, msg=f'{key} not found in reading: {reading}')
+                self.assertIsNotNone(reading[key], msg=f'{reading[key]}: is none')
 
             self.assertIsInstance(reading['value'], float, msg=f"reading['value']: {reading} is not a float")
             self.assertEqual(reading['server'], "http://www.neracoos.org/erddap")

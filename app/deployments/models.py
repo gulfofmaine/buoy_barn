@@ -102,7 +102,8 @@ class Platform(models.Model):
                             "server": series.erddap_server.base_url,
                             "variable": series.variable,
                             'constraints': series.constraints,
-                            'dataset': series.erddap_dataset
+                            'dataset': series.erddap_dataset,
+                            'start_time': series.start_time
                         }
                     )
             except HTTPError:

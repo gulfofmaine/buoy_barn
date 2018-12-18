@@ -12,6 +12,7 @@ blocks:
     task:
       secrets:
         - name: buoy_barn_files
+        - name: buoy_barn_env
 
       prologue:
         commands:
@@ -27,3 +28,5 @@ blocks:
         commands:
           - docker-compose exec web coverage run --source='.' manage.py test -v 2
           - docker-compose exec web coverage report
+          - docker-compose exec web coverage xml
+          - docker-compose exec web python-codacy-coverage -r coverage.xml

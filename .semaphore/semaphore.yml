@@ -19,6 +19,7 @@ blocks:
           - checkout
           - mkdir docker-data
           - mv /docker-data/secret.env docker-data/secret.env
+          - pip install --user codacy-coverage
           - docker-compose up -d --build
           - sleep 5
           - docker-compose exec db pg_isready -U buoy_barn -d buoy_barn -t 30
@@ -29,4 +30,4 @@ blocks:
           - docker-compose exec web coverage run --source='.' manage.py test -v 2
           - docker-compose exec web coverage report
           - docker-compose exec web coverage xml
-          - docker-compose exec web python-codacy-coverage -r coverage.xml
+          - ~/.local/bin/python-codacy-coverage -r app/coverage.xml

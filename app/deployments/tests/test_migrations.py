@@ -129,7 +129,7 @@ class DataMigrationTestCase(TestCase):
             "optics_s.std_small",
             "aanderaa_z",
             "buoy"]
-        
+
         for name in buffers:
             buffer = BufferType.objects.get(name=name)
             self.assertEquals(buffer.name, name)

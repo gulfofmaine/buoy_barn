@@ -4,7 +4,6 @@ from typing import List
 
 from erddapy import ERDDAP
 from pandas import DataFrame
-import pandas as pd
 
 
 logger = getLogger(__name__)
@@ -26,7 +25,7 @@ def setup_variables(server: ERDDAP, dataset: str, variables: List[str], constrai
 
     if not time:
         time = datetime.utcnow() - timedelta(hours=24)
-    
+
     constraints['time>='] = time
     server.constraints = constraints
 
@@ -36,7 +35,7 @@ def setup_variables(server: ERDDAP, dataset: str, variables: List[str], constrai
 
 
 def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFrame:
-    e = setup_variables(server.connection(), 
+    e = setup_variables(server.connection(),
                         dataset, 
                         list(set(series.variable for series in timeseries)),
                         constraints=constraints)

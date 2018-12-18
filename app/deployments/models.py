@@ -1,12 +1,10 @@
 from collections import defaultdict
-from datetime import datetime
 import logging
 
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
 from memoize import memoize
-import requests
 from requests import HTTPError
 
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe

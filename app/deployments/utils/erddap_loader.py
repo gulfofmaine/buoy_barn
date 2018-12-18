@@ -21,8 +21,8 @@ def add_timeseries(platform: Platform, server: str, dataset: str, constraints):
 
     info = pd.read_csv(e.get_info_url(dataset, response='csv'))
     info_vars = info[info['Row Type'] == 'variable']
-    variables = [var for var in info_vars['Variable Name'] 
-                 if var not in ['time', 'station', 'mooring_site_desc', 'longitude', 'latitude', 'depth'] 
+    variables = [var for var in info_vars['Variable Name']
+                 if var not in ['time', 'station', 'mooring_site_desc', 'longitude', 'latitude', 'depth']
                  and  '_qc' not in var]
     
     # extract times
@@ -39,7 +39,7 @@ def add_timeseries(platform: Platform, server: str, dataset: str, constraints):
     e.protocol = 'tabledap'
     e.constraints = constraints.copy()
     e.constraints['time>='] = yesterday
-    
+
     try:
         ds = e.to_xarray()
     except HTTPError:
@@ -84,7 +84,7 @@ def add_timeseries(platform: Platform, server: str, dataset: str, constraints):
 
 
                 else:
-                    logger.warning('Unable to load or create datatype for', var)
+                    logger.warning(f'Unable to load or create datatype for {var}')
 
             finally:
                 if data_type:
@@ -102,4 +102,4 @@ def add_timeseries(platform: Platform, server: str, dataset: str, constraints):
                         time_series.buffer_type=buffer
 
                     time_series.save()
-        data_type = None    
+        data_type = None

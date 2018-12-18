@@ -171,7 +171,7 @@ class BuoyBarn500APITestCase(APITestCase):
             erddap_dataset='cwwcNDBCMet',
             erddap_server=self.erddap
         )
-    
+
     @my_vcr.use_cassette('no_rows_returned.yaml')
     def test_erddap_returns_no_rows(self):
         response = self.client.get('/api/platforms/44005/')

@@ -12,7 +12,6 @@ class ErddapLoaderTestCase(TestCase):
         self.platform = Platform.objects.get(name='N01')
         self.erddap_url = 'http://www.neracoos.org/erddap'
         self.erddap_server = ErddapServer.objects.get(base_url=self.erddap_url)
-    
 
     @my_vcr.use_cassette('erddap_loader.yaml')
     def test_load_dataset_from_erddap_and_create_timeseries(self):

@@ -332,5 +332,5 @@ class TimeSeriesTestCase(TestCase):
 
         for values in group.values():
             time_series += values
-        
+
         self.assertEquals(4, len(time_series))

@@ -141,7 +141,7 @@ def create_buffer_type(apps, schema_editor):
         "optics_s.std_small",
         "aanderaa_z",
         "buoy"]
-    
+
     BufferType = apps.get_model('deployments', 'BufferType')
 
     for name in buffers:

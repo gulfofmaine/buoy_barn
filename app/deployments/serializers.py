@@ -4,7 +4,6 @@ from rest_framework_gis.serializers import GeoFeatureModelSerializer, GeometrySe
 from .models import Platform
 
 
-# class PlatformSerializer(serializers.ModelSerializer):
 class PlatformSerializer(GeoFeatureModelSerializer):
     
     readings = serializers.SerializerMethodField()
@@ -17,7 +16,7 @@ class PlatformSerializer(GeoFeatureModelSerializer):
             return obj.location
         except AttributeError:
             return None
-    
+
     attribution = serializers.SerializerMethodField()
     def get_attribution(self, obj):
         return [attr.json for attr in obj.programattribution_set.all().select_related('program')]

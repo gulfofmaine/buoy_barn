@@ -36,7 +36,7 @@ def setup_variables(server: ERDDAP, dataset: str, variables: List[str], constrai
 
 def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFrame:
     e = setup_variables(server.connection(),
-                        dataset, 
+                        dataset,
                         list(set(series.variable for series in timeseries)),
                         constraints=constraints)
 

@@ -5,7 +5,7 @@ from .models import Platform
 
 
 class PlatformSerializer(GeoFeatureModelSerializer):
-    
+
     readings = serializers.SerializerMethodField()
     def get_readings(self, obj):
         return obj.latest_erddap_values()

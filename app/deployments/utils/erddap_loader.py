@@ -31,7 +31,7 @@ def add_timeseries(platform: Platform, server: str, dataset: str, constraints):
     yesterday = datetime.utcnow() - timedelta(hours=24)
     if end_time > yesterday:
         end_time = None
-    
+
     # get depths
     e.dataset_id = dataset
     e.response = 'nc'

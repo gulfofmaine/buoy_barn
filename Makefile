@@ -45,3 +45,9 @@ coverage:
 	docker-compose exec web coverage report
 	docker-compose exec web coverage html
 	open app/htmlcov/index.html
+
+requirements-compile:
+	docker-compose exec web pip-compile requirements.in
+
+requirements-tree:
+	docker-compose exec web pipdeptree

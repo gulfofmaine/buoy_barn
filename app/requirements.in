@@ -1,0 +1,28 @@
+Django==2.1.2
+gunicorn==19.9.0
+psycopg2-binary==2.7.5
+djangorestframework==3.8.2
+djangorestframework-gis==0.14
+django-memoize==2.2.0
+
+erddapy==0.2.0
+xarray==0.11.0
+netCDF4==1.4.2
+
+sentry-sdk==0.5.5
+django-cors-headers==2.4.0
+
+
+# development
+ipython==7.0.1
+django-debug-toolbar==1.11
+
+# testing
+coverage==4.5.2
+PyYAML==3.13
+geojson==2.4.1
+vcrpy==2.0.1
+
+# dependency management
+pip_tools==3.2.0
+pipdeptree==0.13.1

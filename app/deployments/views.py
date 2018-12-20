@@ -10,7 +10,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
     """
     A viewset for viewing Platforms
     """
-    queryset = Platform.objects.all()
+    queryset = Platform.objects.filter(active=True)
     serializer_class = PlatformSerializer
 
     def retrieve(self, request, pk=None):

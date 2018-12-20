@@ -31,10 +31,11 @@ class Program(models.Model):
 class Platform(models.Model):
     name = models.CharField("Platform name", max_length=50)
     mooring_site_desc = models.TextField("Mooring Site Description")
+    active = models.BooleanField(default=True)
 
     programs = models.ManyToManyField(Program, through="ProgramAttribution")
 
-    nbdc_site_id = models.CharField(max_length=100, null=True, blank=True)
+    ndbc_site_id = models.CharField(max_length=100, null=True, blank=True)
     uscg_light_letter = models.CharField(max_length=10, null=True, blank=True)
     uscg_light_num = models.CharField(max_length=16, null=True, blank=True)
     watch_circle_radius = models.IntegerField(null=True, blank=True)
@@ -56,7 +57,7 @@ class Platform(models.Model):
             return self.current_deployment.geom
         return None
 
-    @memoize(timeout=15*60)
+    @memoize(timeout=30*60)
     def group_timeseries_by_erddap_dataset(self):
         datasets = defaultdict(list)
 
@@ -67,7 +68,7 @@ class Platform(models.Model):
 
         return datasets
 
-    @memoize(timeout=15*60)
+    @memoize(timeout=30*60)
     def latest_erddap_values(self):
         readings = []
 

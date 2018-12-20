@@ -19,6 +19,7 @@ class DeploymentAdmin(admin.GeoModelAdmin):
 
 
 class PlatformAdmin(admin.GeoModelAdmin):
+    ordering = ['name']
     inlines = [
         TimeSeriesInline,
         ProgramAttributionInline

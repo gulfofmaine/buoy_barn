@@ -57,7 +57,6 @@ class Platform(models.Model):
             return self.current_deployment.geom
         return None
 
-    @memoize(timeout=30*60)
     def group_timeseries_by_erddap_dataset(self):
         datasets = defaultdict(list)
 

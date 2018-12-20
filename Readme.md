@@ -8,6 +8,8 @@ If you are setting it up for the first time see [Initial Configuration](#initial
 
 Otherwise you can use `make up` to start the server, which you can then access the admin at [localhost:8080/admin/](http://localhost:8080/admin/) and api at [localhost:8080/api/](http://localhost:8080/api/).
 
+To force a refresh of the latest data for platforms hit [localhost:8080/api/platforms/refresh/](http://localhost:8080/api/platforms/refresh/).
+
 If you `ctrl-c` out of the logs (or close the window), you can get the logs back with `make logs`.
 
 The Docker containers are launched in the background with `make up`, so they won't dissapear if you close the window or logs. Therefore when you are done, `ctrl-c` out of the logs and run `make down` to shut down the server and database.
@@ -82,12 +84,15 @@ This report can be viewed by opening `app/htmlcov/index.html` which will also at
 
 To start the database, you'll need to configure it with a username and password. You'll also need to set a secret key that Django will use to protect sessions.
 
+Redis also runs as a cache, and the uri to the cache instance should be included.
+
 To do so create a `secret.env` file in `./docker-data/` that looks something like this.
 
 ```bash
 POSTGRES_PASSWORD=secret_string
 POSTGRES_USER=a_user_name
 SECRET_KEY=a_really_long_random_string_that_no_one_should_no_and_should_probably_be_gibberish
+REDIS_CACHE=rediss://cache:6379/0
 ```
 
 ### Starting Docker

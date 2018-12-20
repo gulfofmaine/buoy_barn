@@ -14,6 +14,7 @@ decorator==4.3.0          # via ipython, traitlets
 django-cors-headers==2.4.0
 django-debug-toolbar==1.11
 django-memoize==2.2.0
+django-redis==4.10.0
 django==2.1.2
 djangorestframework-gis==0.14
 djangorestframework==3.8.2
@@ -40,6 +41,7 @@ pygments==2.3.1           # via ipython
 python-dateutil==2.7.5    # via pandas
 pytz==2018.7              # via django, pandas
 pyyaml==3.13
+redis==3.0.1              # via django-redis
 requests==2.21.0          # via erddapy
 sentry-sdk==0.5.5
 simplegeneric==0.8.1      # via ipython

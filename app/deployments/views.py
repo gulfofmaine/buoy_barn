@@ -19,7 +19,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
         platform = get_object_or_404(self.queryset, name=pk)
         serializer = self.serializer_class(platform)
         return Response(serializer.data)
-    
+
     @action(detail=False)
     def refresh(self, request):
         # delete_memoized('deployments.models.Platform.latest_erddap_values')

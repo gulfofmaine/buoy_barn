@@ -1,4 +1,6 @@
 from collections import defaultdict
+from datetime import date
+from enum import Enum
 import logging
 
 from django.contrib.gis.db import models
@@ -13,6 +15,14 @@ from deployments.utils.erddap_datasets import filter_dataframe, retrieve_datafra
 logger = logging.getLogger(__name__)
 
 
+class ChoiceEnum(Enum):
+    """ Special Enum that can format it's options for a django choice field"""
+
+    @classmethod
+    def choices(cls):
+        return tuple((x.name, x.value) for x in cls)
+
+
 class Program(models.Model):
     name = models.CharField(max_length=50)
     website = models.TextField(null=True, blank=True)
@@ -22,10 +32,7 @@ class Program(models.Model):
 
     @property
     def json(self):
-        return {
-            'name': self.name,
-            'website': self.website
-        }
+        return {"name": self.name, "website": self.website}
 
 
 class Platform(models.Model):
@@ -51,10 +58,10 @@ class Platform(models.Model):
 
     @property
     def location(self):
-        if self.geom:
-            return self.geom
         if self.current_deployment:
             return self.current_deployment.geom
+        if self.geom:
+            return self.geom
         return None
 
     def group_timeseries_by_erddap_dataset(self):
@@ -63,11 +70,13 @@ class Platform(models.Model):
         for ts in self.timeseries_set.filter(end_time=None).select_related(
             "data_type", "erddap_server"
         ):
-            datasets[(ts.erddap_server, ts.erddap_dataset, tuple(ts.constraints.items()))].append(ts)
+            datasets[
+                (ts.erddap_server, ts.erddap_dataset, tuple(ts.constraints.items()))
+            ].append(ts)
 
         return datasets
 
-    @memoize(timeout=30*60)
+    @memoize(timeout=30 * 60)
     def latest_erddap_values(self):
         readings = []
 
@@ -99,24 +108,31 @@ class Platform(models.Model):
                             "data_type": series.data_type.json,
                             "server": series.erddap_server.base_url,
                             "variable": series.variable,
-                            'constraints': series.constraints,
-                            'dataset': series.erddap_dataset,
-                            'start_time': series.start_time
+                            "constraints": series.constraints,
+                            "dataset": series.erddap_dataset,
+                            "start_time": series.start_time,
                         }
                     )
             except HTTPError:
                 for series in timeseries:
-                    readings.append({
-                        "value": None,
-                        "time": None,
-                        "depth": series.depth,
-                        "data_type": series.data_type.json,
-                        "server": series.erddap_server.base_url,
-                        "variable": series.variable,
-                        "constraints": series.constraints,
-                        "dataset": series.erddap_dataset
-                    })
+                    readings.append(
+                        {
+                            "value": None,
+                            "time": None,
+                            "depth": series.depth,
+                            "data_type": series.data_type.json,
+                            "server": series.erddap_server.base_url,
+                            "variable": series.variable,
+                            "constraints": series.constraints,
+                            "dataset": series.erddap_dataset,
+                        }
+                    )
         return readings
+
+    def current_alerts(self):
+        return self.alerts.filter(end_time__gt=date.today()) | self.alerts.filter(
+            end_time=None
+        )
 
 
 class ProgramAttribution(models.Model):
@@ -125,14 +141,12 @@ class ProgramAttribution(models.Model):
     attribution = models.TextField()
 
     def __str__(self):
-        return f'{self.platform.name} - {self.program.name}'
+        return f"{self.platform.name} - {self.program.name}"
 
     @property
     def json(self):
-        return {
-            'program': self.program.json,
-            'attribution': self.attribution
-        }
+        return {"program": self.program.json, "attribution": self.attribution}
+
 
 class MooringType(models.Model):
     name = models.CharField("Mooring type", max_length=64)
@@ -234,7 +248,9 @@ class TimeSeries(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null=True, blank=True)
 
-    buffer_type = models.ForeignKey(BufferType, on_delete=models.CASCADE, null=True, blank=True)
+    buffer_type = models.ForeignKey(
+        BufferType, on_delete=models.CASCADE, null=True, blank=True
+    )
     erddap_dataset = models.CharField(max_length=256, null=True, blank=True)
     erddap_server = models.ForeignKey(
         ErddapServer, on_delete=models.CASCADE, null=True, blank=True
@@ -242,3 +258,33 @@ class TimeSeries(models.Model):
 
     def __str__(self):
         return f"{self.platform.name} - {self.data_type.standard_name} - {self.depth}"
+
+
+class Alert(models.Model):
+    platform = models.ForeignKey(
+        Platform, on_delete=models.CASCADE, related_name="alerts"
+    )
+    start_time = models.DateField(default=date.today)
+    end_time = models.DateField(blank=True, null=True)
+    message = models.TextField()
+
+    class Level(ChoiceEnum):
+        INFO = "info"
+        WARNING = "warning"
+        DANGER = "danger"
+
+    level = models.CharField(
+        "Alert level", choices=Level.choices(), default=Level.INFO, max_length=16
+    )
+
+    def __str__(self):
+        return f"{self.platform.name} - {self.level} - {self.start_time}:{self.end_time} - {self.message}"
+
+    @property
+    def json(self):
+        return {
+            "start_time": self.start_time,
+            "end_time": self.end_time,
+            "message": self.message,
+            "level": self.level,
+        }

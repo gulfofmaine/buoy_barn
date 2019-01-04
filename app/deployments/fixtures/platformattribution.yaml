@@ -1,0 +1,6 @@
+- model: deployments.programattribution
+  pk: 5
+  fields: {program: 2, platform: 127, attribution: Data management by NERACOOS}
+- model: deployments.programattribution
+  pk: 6
+  fields: {program: 1, platform: 127, attribution: Buoy deployment by UMaine}

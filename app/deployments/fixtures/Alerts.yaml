@@ -1,0 +1,11 @@
+- model: deployments.alert
+  pk: 1
+  fields: {platform: 127, start_time: 2019-01-04, end_time: 2019-06-01, message: "Buoy
+      N01 has slipped free of it's anchor. As it's currently still collecting data
+      from the same region, we are still displaying data from it.\r\n\r\nCurrently
+      recovery is expected this spring, but exact plans have not been made yet.",
+    level: INFO}
+- model: deployments.alert
+  pk: 2
+  fields: {platform: 127, start_time: 2019-01-04, end_time: null, message: Test alert
+      with none, level: WARNING}

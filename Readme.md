@@ -115,41 +115,41 @@ You can use Django fixtures to quickly save models from the database and reload 
 
 ## Structure
 
--   `app/`
-    -   `account/` Django user account app.
-    -   `buoy_barn/` Primary Django application.
-    -   `deployments/` Database models and API.
-    -   `utils/`
-        -   `wait-for-it.sh` Shell script that can wait until specified services are avaliable before finishing. Helps `make up` launch Django more reliably.
-    -   `Dockerfile` Django server build steps
-    -   `manage.py` Django management script
-    -   `requirements.txt` Python package requirements
--   `docker-data/`
-    -   `postgres/` Database storage
-    -   `secret.env` Environment variables to manage database connection and similar configuration.
--   `.gitignore` Files that should be ignored by git
--   `.prospector.yaml` Linting configuration
--   `docker-compose.yaml` Database and server docker container configuration
--   `Makefile` Common commands made easier to remember.
--   `Readme.md` You are here.
+- `app/`
+  - `account/` Django user account app.
+  - `buoy_barn/` Primary Django application.
+  - `deployments/` Database models and API.
+  - `utils/`
+    - `wait-for-it.sh` Shell script that can wait until specified services are avaliable before finishing. Helps `make up` launch Django more reliably.
+  - `Dockerfile` Django server build steps
+  - `manage.py` Django management script
+  - `requirements.txt` Python package requirements
+- `docker-data/`
+  - `postgres/` Database storage
+  - `secret.env` Environment variables to manage database connection and similar configuration.
+- `.gitignore` Files that should be ignored by git
+- `.prospector.yaml` Linting configuration
+- `docker-compose.yaml` Database and server docker container configuration
+- `Makefile` Common commands made easier to remember.
+- `Readme.md` You are here.
 
 ## Make commands
 
--   `build` Builds containers in parallel
--   `up` Builds and starts Docker containers before following the logs.
--   `down` Stops and removed Docker containers.
--   `stop` Stops Docker containers.
--   `logs` Follow logs for currently running Docker containers.
--   `migrations` Attempt to auto-detect and create new migrations for any Django models that have new fields.
--   `migrate` Run database migrations
--   `prune` Clear out old Docker layers and containers systemwide (not just this project)
--   `dump` Dump Deployments database instances to `/app/dump.json`
--   `load` Load Django fixtures in `/app/dump.json`
--   `user` Create a new Django admin/super user.
--   `shell` Launch a Python shell from the Django `manage.py`
--   `test` Run unit tests.
--   `requirements-compile` Take the high level requirements files generate a pinned requirements.txt file.
--   `requirements-tree` See the dependency tree of the requirements and any issues.
+- `build` Builds containers in parallel
+- `up` Builds and starts Docker containers before following the logs.
+- `down` Stops and removed Docker containers.
+- `stop` Stops Docker containers.
+- `logs` Follow logs for currently running Docker containers.
+- `migrations` Attempt to auto-detect and create new migrations for any Django models that have new fields.
+- `migrate` Run database migrations
+- `prune` Clear out old Docker layers and containers systemwide (not just this project)
+- `fixtures` Dump Deployments models to `/app/deployments/fixtures/`
+- `load` Load Django fixtures in `/app/deployments/fixtures/*.yaml`
+- `user` Create a new Django admin/super user.
+- `shell` Launch a Python shell from the Django `manage.py`
+- `test` Run unit tests.
+- `requirements-compile` Take the high level requirements files generate a pinned requirements.txt file.
+- `requirements-tree` See the dependency tree of the requirements and any issues.
 
 ## Common Problems
 

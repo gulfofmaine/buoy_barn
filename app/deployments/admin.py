@@ -1,7 +1,18 @@
 from django.contrib.gis import admin
 
-from .models import Program, Platform, Deployment, MooringType, StationType, DataType, BufferType, TimeSeries, ProgramAttribution, ErddapServer
-
+from .models import (
+    Alert,
+    Program,
+    Platform,
+    Deployment,
+    MooringType,
+    StationType,
+    DataType,
+    BufferType,
+    TimeSeries,
+    ProgramAttribution,
+    ErddapServer,
+)
 
 
 class TimeSeriesInline(admin.TabularInline):
@@ -14,16 +25,18 @@ class ProgramAttributionInline(admin.TabularInline):
     extra = 0
 
 
+class AlertInline(admin.TabularInline):
+    model = Alert
+    extra = 0
+
+
 class DeploymentAdmin(admin.GeoModelAdmin):
     save_as = True
 
 
 class PlatformAdmin(admin.GeoModelAdmin):
-    ordering = ['name']
-    inlines = [
-        TimeSeriesInline,
-        ProgramAttributionInline
-    ]
+    ordering = ["name"]
+    inlines = [AlertInline, TimeSeriesInline, ProgramAttributionInline]
 
 
 admin.site.register(Program)

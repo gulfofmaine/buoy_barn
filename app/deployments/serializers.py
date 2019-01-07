@@ -4,7 +4,7 @@ from rest_framework_gis.serializers import (
     GeometrySerializerMethodField,
 )
 
-from .models import Platform, Forecast, ErddapServer
+from .models import Platform, Forecast
 
 
 class PlatformSerializer(GeoFeatureModelSerializer):
@@ -46,12 +46,12 @@ class ForecastSerializer(serializers.ModelSerializer):
 
     server = serializers.SerializerMethodField()
 
-    def get_server(self, obj):
+    def get_server(self, obj):  # pylint: disable=R0201
         return obj.erddap_server.base_url
 
     latest_coverage_time = serializers.SerializerMethodField()
 
-    def get_latest_coverage_time(self, obj):
+    def get_latest_coverage_time(self, obj):  # pylint: disable=R0201
         return obj.latest_coverage_time()
 
     class Meta:

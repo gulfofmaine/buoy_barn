@@ -4,8 +4,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Platform
-from .serializers import PlatformSerializer
+from .models import Platform, Forecast
+from .serializers import PlatformSerializer, ForecastSerializer
 
 
 class PlatformViewset(viewsets.ReadOnlyModelViewSet):
@@ -28,3 +28,12 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
 
         serializer = self.get_serializer(self.queryset.all(), many=True)
         return Response(serializer.data)
+
+
+class ForecastViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    A viewset for displaying forecast datasets
+    """
+
+    queryset = Forecast.objects.all()
+    serializer_class = ForecastSerializer

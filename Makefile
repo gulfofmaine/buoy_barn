@@ -61,3 +61,5 @@ fixtures:
 	docker-compose exec web python manage.py dumpdata --format yaml deployments.ErddapServer -o deployments/fixtures/erddapservers.yaml
 	docker-compose exec web python manage.py dumpdata --format yaml deployments.TimeSeries -o deployments/fixtures/TimeSeries.yaml
 	docker-compose exec web python manage.py dumpdata --format yaml deployments.Alert -o deployments/fixtures/Alerts.yaml
+	docker-compose exec web python manage.py dumpdata --format yaml deployments.Forecast -o deployments/fixtures/Forecasts.yaml
+

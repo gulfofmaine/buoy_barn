@@ -4,7 +4,7 @@ from rest_framework_gis.serializers import (
     GeometrySerializerMethodField,
 )
 
-from .models import Platform
+from .models import Platform, Forecast, ErddapServer
 
 
 class PlatformSerializer(GeoFeatureModelSerializer):
@@ -41,3 +41,19 @@ class PlatformSerializer(GeoFeatureModelSerializer):
         id_field = "name"
         geo_field = "location_point"
 
+
+class ForecastSerializer(serializers.ModelSerializer):
+
+    server = serializers.SerializerMethodField()
+
+    def get_server(self, obj):
+        return obj.erddap_server.base_url
+
+    latest_coverage_time = serializers.SerializerMethodField()
+
+    def get_latest_coverage_time(self, obj):
+        return obj.latest_coverage_time()
+
+    class Meta:
+        model = Forecast
+        exclude = ["id", "erddap_server"]

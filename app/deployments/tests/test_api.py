@@ -9,7 +9,7 @@ from .vcr import my_vcr
 #                  match_on=['method', 'scheme', 'host', 'port', 'path'])
 
 
-class BuoyBarnAPITestCase(APITestCase):
+class BuoyBarnPlatformAPITestCase(APITestCase):
     fixtures = ["platforms", "erddapservers"]
 
     def setUp(self):
@@ -199,7 +199,28 @@ class BuoyBarnAPITestCase(APITestCase):
         )
 
 
+class BuoyBarnForecastAPITestCase(APITestCase):
+    fixtures = ["erddapservers", "Forecasts"]
+
+    @my_vcr.use_cassette("forecast_api.yaml")
+    def test_erddap_forecasts(self):
+        response = self.client.get("/api/forecasts/")
+
+        json = response.json()
+
+        self.assertEqual(len(json), 2)
+
+        for i in json:
+            if i["name"] == "Bedford Institute Wave Model":
+                self.assertEqual(i["latest_coverage_time"], "2019-01-09T12:00:00Z")
+
+            elif i["name"] == "WW3 Global Model Predicted Wave Height":
+                self.assertEqual(i["latest_coverage_time"], "2019-01-09T09:00:00Z")
+
+
 class BuoyBarn500APITestCase(APITestCase):
+    """ Test that the server doesn't return a 500 when an ERDDAP datasource doesn't return any rows"""
+
     fixtures = ["platforms", "erddapservers"]
 
     def setUp(self):

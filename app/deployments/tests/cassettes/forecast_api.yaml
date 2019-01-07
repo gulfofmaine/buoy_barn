@@ -1,0 +1,796 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['20']
+      Content-Type: [text/plain]
+      Date: ['Mon, 07 Jan 2019 22:06:19 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Location: ['http://www.neracoos.org/erddap/index.html']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding,User-Agent']
+    status: {code: 302, message: Found}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: http://www.neracoos.org/erddap/info/WW3_72_GulfOfMaine_latest/index.csv
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [Keep-Alive]
+      Content-Disposition: [attachment;filename=WW3_72_GulfOfMaine_latest_info.csv]
+      Content-Encoding: [gzip]
+      Content-Length: ['1957']
+      Content-Type: [text/csv;charset=ISO-8859-1]
+      Date: ['Mon, 07 Jan 2019 22:06:19 GMT']
+      Keep-Alive: ['timeout=5, max=100']
+      Server: [Apache-Coyote/1.1]
+      Vary: [User-Agent]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [www.neracoos.org]
+      User-Agent: [Python-urllib/3.7]
+    method: GET
+    uri: http://www.neracoos.org/erddap/info/WW3_72_GulfOfMaine_latest/index.csv
+  response:
+    body: {string: 'Row Type,Variable Name,Attribute Name,Data Type,Value
+
+        attribute,NC_GLOBAL,area,String,Gulf of Main 03 arc min grd3
+
+        attribute,NC_GLOBAL,cdm_data_type,String,Grid
+
+        attribute,NC_GLOBAL,Conventions,String,"COARDS, CF-1.6, ACDD-1.3"
+
+        attribute,NC_GLOBAL,creator_name,String,"Principal Investigator"">Dr. William
+        Perrie"
+
+        attribute,NC_GLOBAL,creator_url,String,http://www.bio.gc.ca/
+
+        attribute,NC_GLOBAL,Easternmost_Easting,double,-60.0
+
+        attribute,NC_GLOBAL,geospatial_lat_max,double,46.0
+
+        attribute,NC_GLOBAL,geospatial_lat_min,double,38.0
+
+        attribute,NC_GLOBAL,geospatial_lat_resolution,double,0.05
+
+        attribute,NC_GLOBAL,geospatial_lat_units,String,degrees_north
+
+        attribute,NC_GLOBAL,geospatial_lon_max,double,-60.0
+
+        attribute,NC_GLOBAL,geospatial_lon_min,double,-76.0
+
+        attribute,NC_GLOBAL,geospatial_lon_resolution,double,0.05
+
+        attribute,NC_GLOBAL,geospatial_lon_units,String,degrees_east
+
+        attribute,NC_GLOBAL,infoUrl,String,http://www.neracoos.org
+
+        attribute,NC_GLOBAL,institution,String,Bedford Institute of Oceanography
+
+        attribute,NC_GLOBAL,keywords,String,"data, density, dir, direction, earth,
+        Earth Science > Oceans > Ocean Waves > Significant Wave Height, Earth Science
+        > Oceans > Ocean Waves > Wave Frequency, Earth Science > Oceans > Ocean Waves
+        > Wave Period, Earth Science > Oceans > Ocean Waves > Wave Spectra, Earth
+        Science > Oceans > Ocean Waves > Wave Speed/Direction, Earth Science > Oceans
+        > Ocean Waves > Wind Waves, sea_surface_wave_from_direction, sea_surface_wave_peak_frequency,
+        sea_surface_wave_significant_height"
+
+        attribute,NC_GLOBAL,keywords_vocabulary,String,GCMD Science Keywords
+
+        attribute,NC_GLOBAL,license,String,"The data may be used and redistributed
+        for free but is not intended\nfor legal use, since it may contain inaccuracies.
+        Neither the data\nContributor, ERD, NOAA, nor the United States Government,
+        nor any\nof their employees or contractors, makes any warranty, express or\nimplied,
+        including warranties of merchantability and fitness for a\nparticular purpose,
+        or assumes any legal liability for the accuracy,\ncompleteness, or usefulness,
+        of this information."
+
+        attribute,NC_GLOBAL,maximum_altitude,String,9000 m
+
+        attribute,NC_GLOBAL,minimum_altitude,String,-12000 m
+
+        attribute,NC_GLOBAL,Northernmost_Northing,double,46.0
+
+        attribute,NC_GLOBAL,product_name,String,ww3.20190106.nc
+
+        attribute,NC_GLOBAL,SIN4_namelist_parameter_BETAMAX,float,1.65
+
+        attribute,NC_GLOBAL,sourceUrl,String,(local files)
+
+        attribute,NC_GLOBAL,Southernmost_Northing,double,38.0
+
+        attribute,NC_GLOBAL,standard_name_vocabulary,String,CF Standard Name Table
+        v29
+
+        attribute,NC_GLOBAL,summary,String,BIO Wave Watch III Latest 72 hour Forecasts
+        Gulf Of Maine
+
+        attribute,NC_GLOBAL,testOutOfDate,String,now+2days
+
+        attribute,NC_GLOBAL,time_coverage_end,String,2019-01-09T12:00:00Z
+
+        attribute,NC_GLOBAL,time_coverage_start,String,2019-01-06T12:00:00Z
+
+        attribute,NC_GLOBAL,title,String,BIO WAVEWATCH_III 72 hour Forecast. Gulf
+        of Maine
+
+        attribute,NC_GLOBAL,WAVEWATCH_III_switches,String,F90 SHRD NOGRB NOPA LRB4
+        NC4 TRKNC PR3 UQ FLX0 LN1 ST4 STAB0 NL1 BT1 DB1 MLIM IC0 IS0 REF0 WNT2 WNX2
+        RWND CRT1 CRX1 TR0 BS0 XX0 O0 O1 O2 O3 O4 O5 O6 O7
+
+        attribute,NC_GLOBAL,WAVEWATCH_III_version_number,String,5.16
+
+        attribute,NC_GLOBAL,Westernmost_Easting,double,-76.0
+
+        dimension,time,,double,"nValues=73, evenlySpaced=true, averageSpacing=1h 0m
+        0s"
+
+        attribute,time,_ChunkSizes,int,512
+
+        attribute,time,_CoordinateAxisType,String,Time
+
+        attribute,time,actual_range,double,"1.546776E9, 1.5470352E9"
+
+        attribute,time,axis,String,T
+
+        attribute,time,conventions,String,relative julian days with decimal part (as
+        parts of the day )
+
+        attribute,time,ioos_category,String,Time
+
+        attribute,time,long_name,String,julian day (UT)
+
+        attribute,time,standard_name,String,time
+
+        attribute,time,time_origin,String,01-JAN-1970 00:00:00
+
+        attribute,time,units,String,seconds since 1970-01-01T00:00:00Z
+
+        dimension,latitude,,float,"nValues=161, evenlySpaced=true, averageSpacing=0.05"
+
+        attribute,latitude,_ChunkSizes,int,161
+
+        attribute,latitude,_CoordinateAxisType,String,Lat
+
+        attribute,latitude,actual_range,float,"38.0, 46.0"
+
+        attribute,latitude,axis,String,Y
+
+        attribute,latitude,ioos_category,String,Location
+
+        attribute,latitude,long_name,String,Latitude
+
+        attribute,latitude,standard_name,String,latitude
+
+        attribute,latitude,units,String,degrees_north
+
+        attribute,latitude,valid_max,float,180.0
+
+        attribute,latitude,valid_min,float,-90.0
+
+        dimension,longitude,,float,"nValues=321, evenlySpaced=true, averageSpacing=0.05"
+
+        attribute,longitude,_ChunkSizes,int,321
+
+        attribute,longitude,_CoordinateAxisType,String,Lon
+
+        attribute,longitude,actual_range,float,"-76.0, -60.0"
+
+        attribute,longitude,axis,String,X
+
+        attribute,longitude,ioos_category,String,Location
+
+        attribute,longitude,long_name,String,Longitude
+
+        attribute,longitude,standard_name,String,longitude
+
+        attribute,longitude,units,String,degrees_east
+
+        attribute,longitude,valid_max,float,360.0
+
+        attribute,longitude,valid_min,float,-180.0
+
+        variable,hs,,float,"time, latitude, longitude"
+
+        attribute,hs,_ChunkSizes,int,"1, 161, 321"
+
+        attribute,hs,_FillValue,float,9.96921E36
+
+        attribute,hs,colorBarMaximum,double,10.0
+
+        attribute,hs,colorBarMinimum,double,0.0
+
+        attribute,hs,globwave_name,String,significant_wave_height
+
+        attribute,hs,ioos_category,String,Surface Waves
+
+        attribute,hs,long_name,String,significant height of wind and swell waves
+
+        attribute,hs,standard_name,String,sea_surface_wave_significant_height
+
+        attribute,hs,units,String,m
+
+        attribute,hs,valid_max,float,32000.0
+
+        attribute,hs,valid_min,float,0.0
+
+        variable,fp,,float,"time, latitude, longitude"
+
+        attribute,fp,_ChunkSizes,int,"1, 161, 321"
+
+        attribute,fp,_FillValue,float,9.96921E36
+
+        attribute,fp,colorBarMaximum,double,15000.0
+
+        attribute,fp,colorBarMinimum,double,0.0
+
+        attribute,fp,globwave_name,String,dominant_wave_frequency
+
+        attribute,fp,ioos_category,String,Surface Waves
+
+        attribute,fp,long_name,String,wave peak frequency
+
+        attribute,fp,standard_name,String,sea_surface_wave_peak_frequency
+
+        attribute,fp,units,String,s-1
+
+        attribute,fp,valid_max,float,10000.0
+
+        attribute,fp,valid_min,float,0.0
+
+        variable,dir,,float,"time, latitude, longitude"
+
+        attribute,dir,_ChunkSizes,int,"1, 161, 321"
+
+        attribute,dir,_FillValue,float,9.96921E36
+
+        attribute,dir,colorBarMaximum,double,360.0
+
+        attribute,dir,colorBarMinimum,double,0.0
+
+        attribute,dir,globwave_name,String,wave_from_direction
+
+        attribute,dir,ioos_category,String,Surface Waves
+
+        attribute,dir,long_name,String,wave mean direction
+
+        attribute,dir,standard_name,String,sea_surface_wave_from_direction
+
+        attribute,dir,units,String,degree
+
+        attribute,dir,valid_max,float,3600.0
+
+        attribute,dir,valid_min,float,0.0
+
+'}
+    headers:
+      Connection: [close]
+      Content-Disposition: [attachment;filename=WW3_72_GulfOfMaine_latest_info.csv]
+      Content-Encoding: [identity]
+      Content-Type: [text/csv;charset=ISO-8859-1]
+      Date: ['Mon, 07 Jan 2019 22:06:19 GMT']
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: ['Accept-Encoding,User-Agent']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: https://coastwatch.pfeg.noaa.gov/erddap
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [close]
+      Content-Type: [text/plain; charset=UTF-8]
+      Date: ['Mon, 07 Jan 2019 22:06:19 GMT']
+      Location: ['https://coastwatch.pfeg.noaa.gov/erddap/index.html']
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains]
+      Transfer-Encoding: [chunked]
+    status: {code: 302, message: ''}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.21.0]
+    method: HEAD
+    uri: https://coastwatch.pfeg.noaa.gov/erddap/info/NWW3_Global_Best/index.csv
+  response:
+    body: {string: ''}
+    headers:
+      Connection: [close]
+      Content-Disposition: [attachment;filename=NWW3_Global_Best_info.csv]
+      Content-Encoding: [gzip]
+      Content-Length: ['3144']
+      Content-Type: [text/csv;charset=ISO-8859-1]
+      Date: ['Mon, 07 Jan 2019 22:06:21 GMT']
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains]
+    status: {code: 200, message: ''}
+- request:
+    body: null
+    headers:
+      Connection: [close]
+      Host: [coastwatch.pfeg.noaa.gov]
+      User-Agent: [Python-urllib/3.7]
+    method: GET
+    uri: https://coastwatch.pfeg.noaa.gov/erddap/info/NWW3_Global_Best/index.csv
+  response:
+    body: {string: 'Row Type,Variable Name,Attribute Name,Data Type,Value
+
+        attribute,NC_GLOBAL,_CoordSysBuilder,String,ucar.nc2.dataset.conv.CF1Convention
+
+        attribute,NC_GLOBAL,acknowledgement,String,The Pacific Islands Ocean Observing
+        System (PacIOOS) is funded through the National Oceanic and Atmospheric Administration
+        (NOAA) as a Regional Association within the U.S. Integrated Ocean Observing
+        System (IOOS). PacIOOS is coordinated by the University of Hawaii School of
+        Ocean and Earth Science and Technology (SOEST).
+
+        attribute,NC_GLOBAL,cdm_data_type,String,Grid
+
+        attribute,NC_GLOBAL,comment,String,Model runs produced by Dr. Kwok Fai Cheung
+        (cheung@hawaii.edu).
+
+        attribute,NC_GLOBAL,contributor_name,String,Jim Potemra
+
+        attribute,NC_GLOBAL,contributor_role,String,distributor
+
+        attribute,NC_GLOBAL,Conventions,String,"CF-1.6, ACDD-1.3"
+
+        attribute,NC_GLOBAL,creator_email,String,cheung@hawaii.edu
+
+        attribute,NC_GLOBAL,creator_institution,String,University of Hawaii
+
+        attribute,NC_GLOBAL,creator_name,String,Kwok Fai Cheung
+
+        attribute,NC_GLOBAL,creator_type,String,person
+
+        attribute,NC_GLOBAL,creator_url,String,http://www.ore.hawaii.edu/OE/cheung_research.htm
+
+        attribute,NC_GLOBAL,date_created,String,2010-06-20
+
+        attribute,NC_GLOBAL,date_issued,String,2010-06-20
+
+        attribute,NC_GLOBAL,date_metadata_modified,String,2017-01-30
+
+        attribute,NC_GLOBAL,date_modified,String,2014-06-23
+
+        attribute,NC_GLOBAL,defaultGraphQuery,String,Thgt
+
+        attribute,NC_GLOBAL,Easternmost_Easting,double,359.5
+
+        attribute,NC_GLOBAL,geospatial_bounds,String,"POLYGON ((-77.5 -180.0, 77.5
+        -180.0, 77.5 180.0, -77.5 180.0, -77.5 -180.0))"
+
+        attribute,NC_GLOBAL,geospatial_bounds_crs,String,EPSG:4326
+
+        attribute,NC_GLOBAL,geospatial_lat_max,double,77.5
+
+        attribute,NC_GLOBAL,geospatial_lat_min,double,-77.5
+
+        attribute,NC_GLOBAL,geospatial_lat_resolution,double,0.5
+
+        attribute,NC_GLOBAL,geospatial_lat_units,String,degrees_north
+
+        attribute,NC_GLOBAL,geospatial_lon_max,double,359.5
+
+        attribute,NC_GLOBAL,geospatial_lon_min,double,0.0
+
+        attribute,NC_GLOBAL,geospatial_lon_resolution,double,0.5
+
+        attribute,NC_GLOBAL,geospatial_lon_units,String,degrees_east
+
+        attribute,NC_GLOBAL,history,String,FMRC Best Dataset
+
+        attribute,NC_GLOBAL,id,String,ww3_global
+
+        attribute,NC_GLOBAL,infoUrl,String,http://www.pacioos.hawaii.edu/waves/model-global/
+
+        attribute,NC_GLOBAL,institution,String,University of Hawaii
+
+        attribute,NC_GLOBAL,instrument,String,Not Applicable > Not Applicable
+
+        attribute,NC_GLOBAL,instrument_vocabulary,String,GCMD Instrument Keywords
+
+        attribute,NC_GLOBAL,ISO_Topic_Categories,String,oceans
+
+        attribute,NC_GLOBAL,keywords,String,"Earth Science > Oceans > Ocean Waves
+        > Significant Wave Height, Earth Science > Oceans > Ocean Waves > Wave Period,
+        Earth Science > Oceans > Ocean Waves > Wave Speed/Direction, Earth Science
+        Services > Models > Ocean General Circulation Models (OGCM)/Regional Ocean
+        Models, Earth Science Services > Models > Weather Research/Forecast Models"
+
+        attribute,NC_GLOBAL,keywords_vocabulary,String,GCMD Science Keywords
+
+        attribute,NC_GLOBAL,license,String,"The data may be used and redistributed
+        for free but is not intended for legal use, since it may contain inaccuracies.
+        Neither the data Contributor, University of Hawaii, PacIOOS, NOAA, State of
+        Hawaii nor the United States Government, nor any of their employees or contractors,
+        makes any warranty, express or implied, including warranties of merchantability
+        and fitness for a particular purpose, or assumes any legal liability for the
+        accuracy, completeness, or usefulness, of this information."
+
+        attribute,NC_GLOBAL,location,String,Proto fmrc:WaveWatch_III_Global_Wave_Model
+
+        attribute,NC_GLOBAL,locations,String,Geographic Region > Global Ocean
+
+        attribute,NC_GLOBAL,locations_vocabulary,String,GCMD Location Keywords
+
+        attribute,NC_GLOBAL,Metadata_Link,String,http://www.pacioos.hawaii.edu/metadata/ww3_global.html
+
+        attribute,NC_GLOBAL,naming_authority,String,org.pacioos
+
+        attribute,NC_GLOBAL,Northernmost_Northing,double,77.5
+
+        attribute,NC_GLOBAL,platform,String,Models/Analyses > > Operational Models
+
+        attribute,NC_GLOBAL,platform_vocabulary,String,GCMD Platform Keywords
+
+        attribute,NC_GLOBAL,program,String,Pacific Islands Ocean Observing System
+        (PacIOOS)
+
+        attribute,NC_GLOBAL,project,String,Pacific Islands Ocean Observing System
+        (PacIOOS)
+
+        attribute,NC_GLOBAL,publisher_email,String,info@pacioos.org
+
+        attribute,NC_GLOBAL,publisher_institution,String,University of Hawaii
+
+        attribute,NC_GLOBAL,publisher_name,String,Pacific Islands Ocean Observing
+        System (PacIOOS)
+
+        attribute,NC_GLOBAL,publisher_type,String,group
+
+        attribute,NC_GLOBAL,publisher_url,String,http://www.pacioos.hawaii.edu
+
+        attribute,NC_GLOBAL,references,String,"http://www.pacioos.hawaii.edu/waves/model-global/,
+        http://polar.ncep.noaa.gov/waves/wavewatch/"
+
+        attribute,NC_GLOBAL,source,String,WaveWatch III (WW3) numerical wave model
+
+        attribute,NC_GLOBAL,sourceUrl,String,http://localhost:8080/thredds/dodsC/hioos/model/wav/ww3/WaveWatch_III_Global_Wave_Model_best.ncd
+
+        attribute,NC_GLOBAL,Southernmost_Northing,double,-77.5
+
+        attribute,NC_GLOBAL,standard_name_vocabulary,String,CF Standard Name Table
+        v39
+
+        attribute,NC_GLOBAL,summary,String,"Through a collaborative effort with NOAA/NCEP
+        and NWS Honolulu, the University of Hawaii has implemented a global-scale
+        WaveWatch III (WW3) 7-day model with a 5-day hourly forecast at approximately
+        50-km or 0.5-deg resolution. The global model is forced with NOAA/NCEP''s
+        Global Forecast System (GFS) winds. This model is designed to capture the
+        large-scale ocean waves and provide spectral boundary conditions for the Hawaii
+        regional WW3 model. While considerable effort has been made to implement all
+        model components in a thorough, correct, and accurate manner, numerous sources
+        of error are possible. As such, please use these data with the caution appropriate
+        for any ocean related activity."
+
+        attribute,NC_GLOBAL,testOutOfDate,String,now+105hours
+
+        attribute,NC_GLOBAL,time_coverage_end,String,2019-01-09T09:00:00Z
+
+        attribute,NC_GLOBAL,time_coverage_resolution,String,PT1H
+
+        attribute,NC_GLOBAL,time_coverage_start,String,2010-11-07T21:00:00Z
+
+        attribute,NC_GLOBAL,title,String,WaveWatch III (WW3) Global Wave Model
+
+        attribute,NC_GLOBAL,Westernmost_Easting,double,0.0
+
+        dimension,time,,double,"nValues=70797, evenlySpaced=false, averageSpacing=1h
+        0m 42s"
+
+        attribute,time,_CoordinateAxisType,String,Time
+
+        attribute,time,actual_range,double,"1.2891636E9, 1.5470244E9"
+
+        attribute,time,axis,String,T
+
+        attribute,time,calendar,String,proleptic_gregorian
+
+        attribute,time,ioos_category,String,Time
+
+        attribute,time,long_name,String,Forecast time for ForecastModelRunCollection
+
+        attribute,time,missing_value,double,NaN
+
+        attribute,time,standard_name,String,time
+
+        attribute,time,time_origin,String,01-JAN-1970 00:00:00
+
+        attribute,time,units,String,seconds since 1970-01-01T00:00:00Z
+
+        dimension,depth,,float,"nValues=1, onlyValue=0.0"
+
+        attribute,depth,_CoordinateAxisType,String,Height
+
+        attribute,depth,_CoordinateZisPositive,String,down
+
+        attribute,depth,actual_range,float,"0.0, 0.0"
+
+        attribute,depth,axis,String,Z
+
+        attribute,depth,ioos_category,String,Location
+
+        attribute,depth,long_name,String,Depth
+
+        attribute,depth,positive,String,down
+
+        attribute,depth,short_name,String,depth
+
+        attribute,depth,standard_name,String,depth
+
+        attribute,depth,units,String,m
+
+        dimension,latitude,,float,"nValues=311, evenlySpaced=true, averageSpacing=0.5"
+
+        attribute,latitude,_CoordinateAxisType,String,Lat
+
+        attribute,latitude,actual_range,float,"-77.5, 77.5"
+
+        attribute,latitude,axis,String,Y
+
+        attribute,latitude,ioos_category,String,Location
+
+        attribute,latitude,long_name,String,Latitude
+
+        attribute,latitude,short_name,String,lat
+
+        attribute,latitude,standard_name,String,latitude
+
+        attribute,latitude,units,String,degrees_north
+
+        dimension,longitude,,float,"nValues=720, evenlySpaced=true, averageSpacing=0.5"
+
+        attribute,longitude,_CoordinateAxisType,String,Lon
+
+        attribute,longitude,actual_range,float,"0.0, 359.5"
+
+        attribute,longitude,axis,String,X
+
+        attribute,longitude,ioos_category,String,Location
+
+        attribute,longitude,long_name,String,Longitude
+
+        attribute,longitude,short_name,String,lon
+
+        attribute,longitude,standard_name,String,longitude
+
+        attribute,longitude,units,String,degrees_east
+
+        variable,Tdir,,float,"time, depth, latitude, longitude"
+
+        attribute,Tdir,_FillValue,float,NaN
+
+        attribute,Tdir,colorBarMaximum,double,360.0
+
+        attribute,Tdir,colorBarMinimum,double,0.0
+
+        attribute,Tdir,coordinates,String,time_run time z lat lon
+
+        attribute,Tdir,ioos_category,String,Surface Waves
+
+        attribute,Tdir,long_name,String,peak wave direction
+
+        attribute,Tdir,short_name,String,Tdir
+
+        attribute,Tdir,standard_name,String,sea_surface_wave_from_direction
+
+        attribute,Tdir,units,String,degrees
+
+        attribute,Tdir,valid_range,float,"0.0, 360.0"
+
+        variable,Tper,,float,"time, depth, latitude, longitude"
+
+        attribute,Tper,_FillValue,float,NaN
+
+        attribute,Tper,colorBarMaximum,double,20.0
+
+        attribute,Tper,colorBarMinimum,double,0.0
+
+        attribute,Tper,coordinates,String,time_run time z lat lon
+
+        attribute,Tper,ioos_category,String,Surface Waves
+
+        attribute,Tper,long_name,String,peak wave period
+
+        attribute,Tper,short_name,String,Tper
+
+        attribute,Tper,standard_name,String,sea_surface_wave_period_at_variance_spectral_density_maximum
+
+        attribute,Tper,units,String,second
+
+        attribute,Tper,valid_range,float,"0.0, 60.0"
+
+        variable,Thgt,,float,"time, depth, latitude, longitude"
+
+        attribute,Thgt,_FillValue,float,NaN
+
+        attribute,Thgt,colorBarMaximum,double,10.0
+
+        attribute,Thgt,colorBarMinimum,double,0.0
+
+        attribute,Thgt,coordinates,String,time_run time z lat lon
+
+        attribute,Thgt,ioos_category,String,Surface Waves
+
+        attribute,Thgt,long_name,String,significant wave height
+
+        attribute,Thgt,short_name,String,Thgt
+
+        attribute,Thgt,standard_name,String,sea_surface_wave_significant_height
+
+        attribute,Thgt,units,String,meters
+
+        attribute,Thgt,valid_range,float,"0.0, 60.0"
+
+        variable,sdir,,float,"time, depth, latitude, longitude"
+
+        attribute,sdir,_FillValue,float,NaN
+
+        attribute,sdir,colorBarMaximum,double,360.0
+
+        attribute,sdir,colorBarMinimum,double,0.0
+
+        attribute,sdir,coordinates,String,time_run time z lat lon
+
+        attribute,sdir,ioos_category,String,Surface Waves
+
+        attribute,sdir,long_name,String,swell peak wave direction
+
+        attribute,sdir,short_name,String,sdir
+
+        attribute,sdir,standard_name,String,sea_surface_swell_wave_from_direction
+
+        attribute,sdir,units,String,degrees
+
+        attribute,sdir,valid_range,float,"0.0, 360.0"
+
+        variable,sper,,float,"time, depth, latitude, longitude"
+
+        attribute,sper,_FillValue,float,NaN
+
+        attribute,sper,colorBarMaximum,double,20.0
+
+        attribute,sper,colorBarMinimum,double,0.0
+
+        attribute,sper,coordinates,String,time_run time z lat lon
+
+        attribute,sper,ioos_category,String,Surface Waves
+
+        attribute,sper,long_name,String,swell peak wave period
+
+        attribute,sper,short_name,String,sper
+
+        attribute,sper,standard_name,String,sea_surface_swell_wave_period
+
+        attribute,sper,units,String,seconds
+
+        attribute,sper,valid_range,float,"0.0, 60.0"
+
+        variable,shgt,,float,"time, depth, latitude, longitude"
+
+        attribute,shgt,_FillValue,float,NaN
+
+        attribute,shgt,colorBarMaximum,double,10.0
+
+        attribute,shgt,colorBarMinimum,double,0.0
+
+        attribute,shgt,coordinates,String,time_run time z lat lon
+
+        attribute,shgt,ioos_category,String,Surface Waves
+
+        attribute,shgt,long_name,String,swell significant wave height
+
+        attribute,shgt,short_name,String,shgt
+
+        attribute,shgt,standard_name,String,sea_surface_swell_wave_significant_height
+
+        attribute,shgt,units,String,meters
+
+        attribute,shgt,valid_range,float,"0.0, 60.0"
+
+        variable,wdir,,float,"time, depth, latitude, longitude"
+
+        attribute,wdir,_FillValue,float,NaN
+
+        attribute,wdir,colorBarMaximum,double,360.0
+
+        attribute,wdir,colorBarMinimum,double,0.0
+
+        attribute,wdir,coordinates,String,time_run time z lat lon
+
+        attribute,wdir,ioos_category,String,Surface Waves
+
+        attribute,wdir,long_name,String,wind peak wave direction
+
+        attribute,wdir,short_name,String,wdir
+
+        attribute,wdir,standard_name,String,sea_surface_wind_wave_from_direction
+
+        attribute,wdir,units,String,degrees
+
+        attribute,wdir,valid_range,float,"0.0, 360.0"
+
+        variable,wper,,float,"time, depth, latitude, longitude"
+
+        attribute,wper,_FillValue,float,NaN
+
+        attribute,wper,colorBarMaximum,double,20.0
+
+        attribute,wper,colorBarMinimum,double,0.0
+
+        attribute,wper,coordinates,String,time_run time z lat lon
+
+        attribute,wper,ioos_category,String,Surface Waves
+
+        attribute,wper,long_name,String,wind peak wave period
+
+        attribute,wper,short_name,String,wper
+
+        attribute,wper,standard_name,String,sea_surface_wind_wave_period
+
+        attribute,wper,units,String,seconds
+
+        attribute,wper,valid_range,float,"0.0, 60.0"
+
+        variable,whgt,,float,"time, depth, latitude, longitude"
+
+        attribute,whgt,_FillValue,float,NaN
+
+        attribute,whgt,colorBarMaximum,double,10.0
+
+        attribute,whgt,colorBarMinimum,double,0.0
+
+        attribute,whgt,coordinates,String,time_run time z lat lon
+
+        attribute,whgt,ioos_category,String,Surface Waves
+
+        attribute,whgt,long_name,String,wind significant wave height
+
+        attribute,whgt,short_name,String,whgt
+
+        attribute,whgt,standard_name,String,sea_surface_wind_wave_significant_height
+
+        attribute,whgt,units,String,meters
+
+        attribute,whgt,valid_range,float,"0.0, 60.0"
+
+'}
+    headers:
+      Connection: [close]
+      Content-Disposition: [attachment;filename=NWW3_Global_Best_info.csv]
+      Content-Encoding: [identity]
+      Content-Type: [text/csv;charset=ISO-8859-1]
+      Date: ['Mon, 07 Jan 2019 22:06:22 GMT']
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains]
+      Transfer-Encoding: [chunked]
+    status: {code: 200, message: ''}
+version: 1

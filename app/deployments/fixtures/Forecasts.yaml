@@ -1,8 +1,0 @@
-- model: deployments.forecast
-  pk: 1
-  fields: {erddap_server: 1, erddap_dataset: WW3_72_GulfOfMaine_latest, invertLongitude: false,
-    name: Bedford Institute Wave Model, variable: hs, forecast_type: waveHeight}
-- model: deployments.forecast
-  pk: 2
-  fields: {erddap_server: 2, erddap_dataset: NWW3_Global_Best, invertLongitude: true,
-    name: WW3 Global Model Predicted Wave Height, variable: Thgt, forecast_type: waveHeight}

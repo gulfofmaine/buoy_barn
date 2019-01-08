@@ -11,7 +11,6 @@ from deployments.models import (
     BufferType,
     ErddapServer,
     TimeSeries,
-    Forecast,
 )
 
 
@@ -353,18 +352,3 @@ class TimeSeriesTestCase(TestCase):
             time_series += values
 
         self.assertEquals(4, len(time_series))
-
-
-class ForecastTestCase(TestCase):
-    fixtures = ["erddapservers", "Forecasts"]
-
-    def setUp(self):
-        self.forecast = Forecast.objects.get(name="Bedford Institute Wave Model")
-
-    def test_server_url(self):
-        self.assertEquals(
-            self.forecast.erddap_server.base_url, "http://www.neracoos.org/erddap"
-        )
-
-    def test_forecast_type(self):
-        self.assertEquals(self.forecast.forecast_type, "waveHeight")

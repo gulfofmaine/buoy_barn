@@ -1,10 +1,9 @@
 from rest_framework import routers
 
-from .views import PlatformViewset, ForecastViewset
+from .views import PlatformViewset
 
 
 router = routers.DefaultRouter()
 router.register("platforms", PlatformViewset)
-router.register("forecasts", ForecastViewset)
 
 urlpatterns = router.urls

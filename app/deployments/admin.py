@@ -2,7 +2,6 @@ from django.contrib.gis import admin
 
 from .models import (
     Alert,
-    Forecast,
     Program,
     Platform,
     Deployment,
@@ -48,4 +47,3 @@ admin.site.register(StationType)
 admin.site.register(DataType)
 admin.site.register(BufferType)
 admin.site.register(ErddapServer)
-admin.site.register(Forecast)

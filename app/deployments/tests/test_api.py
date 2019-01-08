@@ -153,10 +153,10 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
         self.assertEqual(4, len(geo["properties"]["readings"]))
 
         for reading in geo["properties"]["readings"]:
+            self.assertIn("depth", reading)  # Ok for depth to be none
             for key in (
                 "value",
                 "time",
-                "depth",
                 "data_type",
                 "server",
                 "variable",
@@ -167,7 +167,7 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
                 self.assertIn(
                     key, reading, msg=f"{key} not found in reading: {reading}"
                 )
-                self.assertIsNotNone(reading[key], msg=f"{reading[key]}: is none")
+                self.assertIsNotNone(reading[key], msg=f"reading[{key}]: is none")
 
             self.assertIsInstance(
                 reading["value"],
@@ -175,10 +175,13 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
                 msg=f"reading['value']: {reading} is not a float",
             )
             self.assertEqual(reading["server"], "http://www.neracoos.org/erddap")
-            self.assertIn(
-                reading["variable"], ("salinity", "temperature", "current_direction")
+
+            self.assertIsNotNone(
+                reading["variable"], msg=f"{reading} is missing a variable"
             )
-            self.assertIn(reading["dataset"], ("N01_sbe37_all", "N01_aanderaa_all"))
+            self.assertIsNotNone(
+                reading["dataset"], msg=f"{reading} is missing a dataset"
+            )
 
             for key in ("standard_name", "short_name", "long_name", "units"):
                 self.assertIn(key, reading["data_type"])
@@ -197,25 +200,6 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             len(geo["features"]),
             msg="Should be the same as the number of platforms in the fixture file. This may need to be changed after fixtures are regenerated.",
         )
-
-
-class BuoyBarnForecastAPITestCase(APITestCase):
-    fixtures = ["erddapservers", "Forecasts"]
-
-    @my_vcr.use_cassette("forecast_api.yaml")
-    def test_erddap_forecasts(self):
-        response = self.client.get("/api/forecasts/")
-
-        json = response.json()
-
-        self.assertEqual(len(json), 2)
-
-        for i in json:
-            if i["name"] == "Bedford Institute Wave Model":
-                self.assertEqual(i["latest_coverage_time"], "2019-01-09T12:00:00Z")
-
-            elif i["name"] == "WW3 Global Model Predicted Wave Height":
-                self.assertEqual(i["latest_coverage_time"], "2019-01-09T09:00:00Z")
 
 
 class BuoyBarn500APITestCase(APITestCase):

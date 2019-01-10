@@ -18,7 +18,7 @@ def attribute_value(info_df: DataFrame, attribute: str) -> Union[float, str, int
 
 def coverage_time_str(info_df: DataFrame) -> str:
     start = attribute_value(info_df, "time_coverage_start")
-    start_dt = datetime.strptime(start, "%Y-%m-%dT%H:%M:%SZ")
+    start_dt = parse_time(start)
 
     now = datetime.now()
     now = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -30,16 +30,23 @@ def coverage_time_str(info_df: DataFrame) -> str:
     return f"[({start}):1:({end})]"
 
 
-def coordinate_str(info_df: DataFrame, lat: float, lon: float) -> str:
+def coordinates_str(info_df: DataFrame, lat: float, lon: float) -> str:
+    """ Return a string with coordinates formatted how ERDDAP expects """
     lat_precision = attribute_value(info_df, "geospatial_lat_resolution")
     lat_value = str(round_to(lat, lat_precision)).split(".")
+
+    lat_str = (
+        f"[({lat_value[0]}.{lat_value[1][:2]}):1:({lat_value[0]}.{lat_value[1][:2]})]"
+    )
 
     lon_precision = attribute_value(info_df, "geospatial_lon_resolution")
     lon_value = str(round_to(lon, lon_precision)).split(".")
 
-    return (
-        f"[({lat_value[0]}.{lat_value[1][:2]}):1:({lon_value[0]}.{lon_value[1][:2]})]"
+    lon_str = (
+        f"[({lon_value[0]}.{lon_value[1][:2]}):1:({lon_value[0]}.{lon_value[1][:2]})]"
     )
+
+    return lat_str + lon_str
 
 
 # From stack overflow answer https://stackoverflow.com/a/4265592
@@ -48,4 +55,10 @@ def round_to(n, precision):
     """ Round a value n to a precision """
     correction = 0.5 if n >= 0 else -0.5
     return int(n / precision + correction) * precision
+
+
+def parse_time(dt: str) -> datetime:
+    """ Return a datetime object for an ERDDAP time 
+    in the format of 2019-01-10T00:00:00Z """
+    return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%SZ")
 

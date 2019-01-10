@@ -1,3 +1,4 @@
+from datetime import datetime
 from pathlib import Path
 
 from django.test import TestCase
@@ -38,8 +39,15 @@ class ErddapUtilsTestCase(TestCase):
             msg="Coverage should be time_coverage_start or current day, whichever is later",
         )
 
-    def test_coordinate_Str(self):
-        coord_str = erddap.coordinate_str(df, 43.650608, -70.250745)
+    def test_coordinate_str(self):
+        coord_str = erddap.coordinates_str(df, 43.650608, -70.250745)
 
-        self.assertEquals(coord_str, "[(43.65):1:(-70.25)]")
+        self.assertEquals(coord_str, "[(43.65):1:(43.65)][(-70.25):1:(-70.25)]")
 
+    def test_parse_time(self):
+        time_str = "2019-01-10T00:00:00Z"
+        time = datetime(2019, 1, 10, 00, 00, 00)
+
+        parsed = erddap.parse_time(time_str)
+
+        self.assertEquals(time, parsed)

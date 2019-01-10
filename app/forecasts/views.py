@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 # from django.shortcuts import render
@@ -20,3 +21,20 @@ class ForecastViewSet(viewsets.ViewSet):
         filtered = [forecast for forecast in forecast_list if forecast.slug == pk]
         seralizer = ForecastSerializer(filtered[0])
         return Response(seralizer.data)
+
+    @action(detail=True)
+    def point(self, request, pk=None):
+        filtered = [forecast for forecast in forecast_list if forecast.slug == pk]
+        forecast = filtered[0]
+
+        lat = float(request.query_params["lat"])
+        lon = float(request.query_params["lon"])
+
+        ts = forecast.point_forecast(lat, lon)
+
+        serializer = ForecastSerializer(forecast)
+        data = serializer.data
+
+        data["ts"] = [{"time": row[0], "value": row[1]} for row in ts]
+
+        return Response(data)

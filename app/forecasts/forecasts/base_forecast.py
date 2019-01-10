@@ -13,6 +13,11 @@ class ForecastTypes(Enum):
 
 
 class BaseForecast:
+    """ Base type for forecasts.
+    All forecasts must implement these attributes, 
+    and the point_forecast method with the same signatures 
+    as this is the interface that the API will interact with. """
+
     slug: str = NotImplemented
     forecast_type: ForecastTypes = NotImplemented
     name: str = NotImplemented

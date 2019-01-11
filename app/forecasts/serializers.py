@@ -3,7 +3,7 @@ from rest_framework.reverse import reverse
 
 
 class ForecastSerializer(serializers.BaseSerializer):
-    def to_representation(self, obj):
+    def to_representation(self, obj):  # pylint: disable=no-self-use
 
         return {
             "slug": obj.slug,

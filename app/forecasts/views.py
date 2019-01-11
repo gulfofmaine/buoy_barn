@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from forecasts.forecasts import forecast_list
@@ -9,13 +9,16 @@ from forecasts.serializers import ForecastSerializer
 class ForecastViewSet(viewsets.ViewSet):
     """ A viewset for forecasts """
 
-    def list(self, request):
+    def list(self, request):  # pylint: disable=no-self-use
         serializer = ForecastSerializer(forecast_list, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk=None):  # pylint: disable=no-self-use
         filtered = [forecast for forecast in forecast_list if forecast.slug == pk]
-        forecast = filtered[0]
+        try:
+            forecast = filtered[0]
+        except IndexError:
+            raise NotFound(detail=f"Unknown forecast slug: {pk}")
         seralizer = ForecastSerializer(forecast)
         data = seralizer.data
 

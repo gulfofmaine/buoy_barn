@@ -9,6 +9,8 @@ from forecasts.forecasts.coastwatch_erddap.gfs import (
     GFSWindDirection,
 )
 
+# from forecasts.forecasts.coastwatch_erddap.wave_watch import GlobalWaveWatchHeight
+
 forecast_list = [
     BedfordWaveDirection(),
     BedfordWaveHeight(),
@@ -16,4 +18,5 @@ forecast_list = [
     GFSAirTemp(),
     GFSWindSpeed(),
     GFSWindDirection(),
+    # GlobalWaveWatchHeight(),
 ]

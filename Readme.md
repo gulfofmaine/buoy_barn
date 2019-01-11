@@ -17,7 +17,7 @@ Therefore when you are done, `ctrl-c` out of the logs and run `make down` to shu
 
 ### Forecasts
 
-See [forecasts/Readme.md](forecasts/Readme.md) for details about how the forecasts API works and how to add new forecasts.
+See [forecasts/Readme.md](app/forecasts/Readme.md) for details about how the forecasts API works and how to add new forecasts.
 
 ### Adding / Editing Platforms
 
@@ -123,7 +123,7 @@ You can use Django fixtures to quickly save models from the database and reload 
 - `app/`
   - `account/` Django user account app.
   - `buoy_barn/` Primary Django application.
-  - `deployments/` Database models and API.
+  - `deployments/` Database models and API
   - `forecasts/` Forecast models and API
   - `utils/`
     - `wait-for-it.sh` Shell script that can wait until specified services are avaliable before finishing. Helps `make up` launch Django more reliably.

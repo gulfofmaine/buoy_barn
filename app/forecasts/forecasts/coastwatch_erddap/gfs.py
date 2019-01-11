@@ -1,13 +1,12 @@
 from dataclasses import dataclass
 from datetime import datetime
-from math import degrees, hypot, sin, sqrt
+from math import degrees, hypot, sin
 from typing import List, Tuple
 
 from forecasts.forecasts.base_forecast import ForecastTypes
 from forecasts.forecasts.coastwatch_erddap.base_coastwatch import (
     BaseCoastWatchRDDAPForecast,
 )
-from forecasts.utils import erddap as erddap_utils
 
 
 class BaseGFSForecast(BaseCoastWatchRDDAPForecast):
@@ -32,7 +31,7 @@ class GFSAirTemp(BaseGFSForecast):
 
 @dataclass
 class WindReading:
-    """ Class for a wind measurement at a given time 
+    """ Class for a wind measurement at a given time
     
     Attributes:
         time (datetime): Time of forecasted value
@@ -70,7 +69,7 @@ class BaseGFSWindForecast(BaseGFSForecast):
         return [self.east_wind_field, self.north_wind_field]
 
     def time_series(self, lat: float, lon: float) -> List[WindReading]:
-        """ Return a list of WindReadings for a given lat, lon forecast point 
+        """ Return a list of WindReadings for a given lat, lon forecast point
         
         Args:
             lat (float): Latitude in degrees North
@@ -102,7 +101,7 @@ class GFSWindSpeed(BaseGFSWindForecast):
     forecast_type = ForecastTypes.WIND_SPEED
 
     def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
-        """ Return a list of tuples for the wind speed 
+        """ Return a list of tuples for the wind speed
         
         Args:
             lat (float): Latitude in degrees North
@@ -121,7 +120,7 @@ class GFSWindDirection(BaseGFSWindForecast):
 
     def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
         """ Return a list of tuples for the wind direction 
-        
+
         Args:
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East

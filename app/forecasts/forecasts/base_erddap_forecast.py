@@ -6,21 +6,11 @@ from erddapy import ERDDAP
 # from memoize import memoize
 import pandas as pd
 import requests
-from requests import HTTPError
+
+# from requests import HTTPError
 
 from forecasts.forecasts.base_forecast import BaseForecast
 from forecasts.utils import erddap as erddap_utils
-
-
-# http://www.neracoos.org/erddap/griddap/WW3_72_GulfOfMaine_latest.json?
-# hs
-# [(2019-01-10T12:00:00Z):1:(2019-01-10T12:00:00Z)]
-# [(38.0):1:(46.0)][(-76.0):1:(-60.0)]
-
-
-# https://coastwatch.pfeg.noaa.gov/erddap/griddap/NCEP_Global_Best.json?
-# ugrd10m[(2019-01-07):1:(2019-01-10T12:00:00Z)][(45):1:(45)][(256):1:(256)],
-# vgrd10m[(2019-01-07):1:(2019-01-10T12:00:00Z)][(45):1:(45)][(256):1:(256)]
 
 
 class BaseERDDAPForecast(BaseForecast):
@@ -67,7 +57,7 @@ class BaseERDDAPForecast(BaseForecast):
             for row in rows
         ]
 
-    def offset_value(self, value: float) -> float:
+    def offset_value(self, value: float) -> float:  # pylint: disable=no-self-use
         """ Allows you to override a value to return something more helpful (say Celsius rather than Kelvin) """
         return value
 
@@ -95,7 +85,7 @@ class BaseERDDAPForecast(BaseForecast):
         """ Retrieve the most recent metadata for a dataset to find valid time and coordinates
         
         Returns:
-            Pandas DataFrame 
+            Pandas DataFrame
         """
         conn = self.connection()
 
@@ -122,7 +112,7 @@ class BaseERDDAPForecast(BaseForecast):
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
         
-        Returns: 
+        Returns:
             Query string for dataset with variables, times, and coordinates
         """
         info_df = self.dataset_info_df()
@@ -132,8 +122,10 @@ class BaseERDDAPForecast(BaseForecast):
             for variable in self.request_variables()
         )
 
-    def coverage_time_str(self, info_df=pd.DataFrame) -> str:
-        """ Formatted query string element for forecast coverage time range 
+    def coverage_time_str(
+        self, info_df=pd.DataFrame
+    ) -> str:  # pylint: disable=no-self-use
+        """ Formatted query string element for forecast coverage time range
         
         Args:
             info_df (pd.DataFrame): Pandas DataFrame
@@ -151,7 +143,7 @@ class BaseERDDAPForecast(BaseForecast):
 
     def coordinates_str(self, info_df: pd.DataFrame, lat: float, lon: float) -> str:
         """ Create coordinates query string element
-        
+
         Arguments:
             info_df(pd.DataFrame): Dataset metadata DataFrame
             lat (float): Latitude in degrees North

@@ -2,12 +2,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-# from django.shortcuts import render
-
 from forecasts.forecasts import forecast_list
 from forecasts.serializers import ForecastSerializer
-
-# Create your views here.
 
 
 class ForecastViewSet(viewsets.ViewSet):
@@ -19,22 +15,30 @@ class ForecastViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         filtered = [forecast for forecast in forecast_list if forecast.slug == pk]
-        seralizer = ForecastSerializer(filtered[0])
-        return Response(seralizer.data)
-
-    @action(detail=True)
-    def point(self, request, pk=None):
-        filtered = [forecast for forecast in forecast_list if forecast.slug == pk]
         forecast = filtered[0]
+        seralizer = ForecastSerializer(forecast)
+        data = seralizer.data
 
-        lat = float(request.query_params["lat"])
-        lon = float(request.query_params["lon"])
+        if "lat" in request.query_params:
+            lat = float(request.query_params["lat"])
+            data["latitude"] = lat
+        else:
+            data["latitude"] = "`lat` parameter not specified"
 
-        ts = forecast.point_forecast(lat, lon)
+        if "lon" in request.query_params:
+            lon = float(request.query_params["lon"])
+            data["longitude"] = lon
+        else:
+            data["longitude"] = "`lon` parameter not specified"
 
-        serializer = ForecastSerializer(forecast)
-        data = serializer.data
+        if "lat" in request.query_params and "lon" in request.query_params:
+            time_series = forecast.point_forecast(lat, lon)
 
-        data["ts"] = [{"time": row[0], "value": row[1]} for row in ts]
+            data["time_series"] = [
+                {"time": reading[0], "value": reading[1]} for reading in time_series
+            ]
+
+        else:
+            data["time_series"] = "No `lat` and/or `lon` parameter specified"
 
         return Response(data)

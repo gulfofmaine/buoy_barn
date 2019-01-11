@@ -32,28 +32,53 @@ class GFSAirTemp(BaseGFSForecast):
 
 @dataclass
 class WindReading:
-    """ Class for a wind measurement at a given time """
+    """ Class for a wind measurement at a given time 
+    
+    Attributes:
+        time (datetime): Time of forecasted value
+        east (float): Wind component in m/s to the East
+        north (float): Wind component in m/s to the North
+    """
 
     time: datetime
     east: float
     north: float
 
     def speed(self) -> float:
+        """ Return the speed of the wind in m/s """
         return hypot(self.east, self.north)
 
     def direction(self) -> float:
+        """ Return the angle from North of the wind """
         return (360 + degrees(sin(self.north / self.east))) % 360
 
 
 class BaseGFSWindForecast(BaseGFSForecast):
+    """ The GFS forecast breaks down wind into two components, m/s to the East and the North.
+    This means that we have to compute the direction and speed from those components, and retrieve both from the server
+
+    Attributes:
+        east_wind_field (str): ERDDAP dataset variable for the East component of the wind data
+        north_wind_field (str): ERDDAP dataset variable for the North component of the wind data
+    """
+
     east_wind_field = "ugrd10m"
     north_wind_field = "vgrd10m"
 
     def request_variables(self) -> List[str]:
+        """ Return both the East and North wind fields to be requested """
         return [self.east_wind_field, self.north_wind_field]
 
     def time_series(self, lat: float, lon: float) -> List[WindReading]:
-        """ Return a list of WindReadings for a given lat, lon forecast point """
+        """ Return a list of WindReadings for a given lat, lon forecast point 
+        
+        Args:
+            lat (float): Latitude in degrees North
+            lon (float): Longitude in degrees East
+        
+        Returns:
+            List of WindReading instances
+        """
         json = self.request_dataset(lat, lon)
 
         columnNames = json["columnNames"]
@@ -77,6 +102,12 @@ class GFSWindSpeed(BaseGFSWindForecast):
     forecast_type = ForecastTypes.WIND_SPEED
 
     def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
+        """ Return a list of tuples for the wind speed 
+        
+        Args:
+            lat (float): Latitude in degrees North
+            lon (float): Longitude in degrees East
+        """
         readings = self.time_series(lat, lon)
 
         return [(reading.time, reading.speed()) for reading in readings]
@@ -89,6 +120,12 @@ class GFSWindDirection(BaseGFSWindForecast):
     forecast_type = ForecastTypes.WIND_DIRECTION
 
     def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
+        """ Return a list of tuples for the wind direction 
+        
+        Args:
+            lat (float): Latitude in degrees North
+            lon (float): Longitude in degrees East
+        """
         readings = self.time_series(lat, lon)
 
         return [(reading.time, reading.direction()) for reading in readings]

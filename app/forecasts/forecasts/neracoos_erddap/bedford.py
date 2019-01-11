@@ -10,7 +10,7 @@ class BaseBedfordForecast(BaseNERACOOSERDDAPForecast):
 
 
 class BedfordWaveHeight(BaseBedfordForecast):
-    slug = "neracoos_bedford_ww3_wave_height"
+    slug = "bedford_ww3_wave_height"
     name = "Bedford Institute Wave Model - Height"
     description = "Wave Height from the Bedford Institute Wave Model"
     forecast_type = ForecastTypes.WAVE_HEIGHT
@@ -19,7 +19,7 @@ class BedfordWaveHeight(BaseBedfordForecast):
 
 
 class BedfordWavePeriod(BaseBedfordForecast):
-    slug = "neracoos_bedford_ww3_wave_period"
+    slug = "bedford_ww3_wave_period"
     name = "Bedford Institute Wave Model - Height"
     description = "Wave Height from the Bedford Institute Wave Model"
     forecast_type = ForecastTypes.WAVE_PERIOD
@@ -28,7 +28,7 @@ class BedfordWavePeriod(BaseBedfordForecast):
 
 
 class BedfordWaveDirection(BaseBedfordForecast):
-    slug = "neracoos_bedford_ww3_wave_direction"
+    slug = "bedford_ww3_wave_direction"
     name = "Bedford Institute Wave Model - Direction"
     description = "Wave Direction from the Bedford Institute Wave Model"
     forecast_type = ForecastTypes.WAVE_DIRECTION

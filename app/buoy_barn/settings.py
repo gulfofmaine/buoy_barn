@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # User management
     "account.apps.AccountConfig",
     "deployments.apps.DeploymentsConfig",
+    "forecasts.apps.ForecastsConfig",
 ]
 
 AUTH_USER_MODEL = "account.User"

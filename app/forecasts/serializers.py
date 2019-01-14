@@ -12,4 +12,5 @@ class ForecastSerializer(serializers.BaseSerializer):
             "description": obj.description,
             "source_url": obj.source_url,
             "point_forecast": reverse("forecast-detail", kwargs={"pk": obj.slug}),
+            "units": obj.units,
         }

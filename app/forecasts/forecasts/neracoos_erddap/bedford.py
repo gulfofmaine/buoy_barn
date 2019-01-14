@@ -14,6 +14,7 @@ class BedfordWaveHeight(BaseBedfordForecast):
     name = "Bedford Institute Wave Model - Height"
     description = "Wave Height from the Bedford Institute Wave Model"
     forecast_type = ForecastTypes.WAVE_HEIGHT
+    units = "meters"
 
     field = "hs"
 
@@ -23,6 +24,7 @@ class BedfordWavePeriod(BaseBedfordForecast):
     name = "Bedford Institute Wave Model - Height"
     description = "Wave Height from the Bedford Institute Wave Model"
     forecast_type = ForecastTypes.WAVE_PERIOD
+    units = "seconds"
 
     field = "fp"
 
@@ -32,5 +34,6 @@ class BedfordWaveDirection(BaseBedfordForecast):
     name = "Bedford Institute Wave Model - Direction"
     description = "Wave Direction from the Bedford Institute Wave Model"
     forecast_type = ForecastTypes.WAVE_DIRECTION
+    units = "degrees"
 
     field = "dir"

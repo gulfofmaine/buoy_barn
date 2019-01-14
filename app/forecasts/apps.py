@@ -98,8 +98,17 @@ def check_forecasts(app_configs, **kwargs):
             errors.append(
                 Error(
                     "source_url is not implemented",
-                    hint=f"{forecast_str} has not implemented a source_ur attributel",
+                    hint=f"{forecast_str} has not implemented a source_url attributel",
                     id="forecasts.E016",
+                )
+            )
+
+        if forecast.units == NotImplemented:
+            errors.append(
+                Error(
+                    "units is not implemented",
+                    hint=f"{forecast_str} has not implemented a units attribute",
+                    id="forecasts.E017",
                 )
             )
 

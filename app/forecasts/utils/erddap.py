@@ -61,4 +61,3 @@ def parse_time(dt: str) -> datetime:
     """ Return a datetime object for an ERDDAP time 
     in the format of 2019-01-10T00:00:00Z """
     return datetime.strptime(dt, "%Y-%m-%dT%H:%M:%SZ")
-

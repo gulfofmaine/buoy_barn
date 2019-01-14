@@ -21,6 +21,7 @@ class GFSAirTemp(BaseGFSForecast):
     name = "NOAA/NCEP Global Forecast System - Air Temperature"
     description = "Air Temperature from NOAA/NCEP's Global Forecast System"
     forecast_type = ForecastTypes.AIR_TEMPERATURE
+    units = "Celsius"
 
     field = "tmp2m"
 
@@ -100,6 +101,8 @@ class GFSWindSpeed(BaseGFSWindForecast):
     description = "Wind Speed from NOAA/NCEP's Global Forecast System"
     forecast_type = ForecastTypes.WIND_SPEED
 
+    units = "m/s"
+
     def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
         """ Return a list of tuples for the wind speed
         
@@ -117,6 +120,8 @@ class GFSWindDirection(BaseGFSWindForecast):
     name = "NOAA/NCEP Global Forecast System - Wind Direction"
     description = "Wind Direction from NOAA/NCEP's Global Forecast System"
     forecast_type = ForecastTypes.WIND_DIRECTION
+
+    units = "degrees"
 
     def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
         """ Return a list of tuples for the wind direction 

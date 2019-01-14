@@ -38,7 +38,7 @@ class ForecastViewSet(viewsets.ViewSet):
             time_series = forecast.point_forecast(lat, lon)
 
             data["time_series"] = [
-                {"time": reading[0], "value": reading[1]} for reading in time_series
+                {"time": reading[0], "reading": reading[1]} for reading in time_series
             ]
 
         else:

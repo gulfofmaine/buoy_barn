@@ -4,6 +4,7 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+astroid==2.0.4            # via prospector, pylint, pylint-celery, pylint-flask, requirements-detector
 backcall==0.1.0           # via ipython
 certifi==2018.11.29       # via requests, sentry-sdk
 cftime==1.0.3.4           # via netcdf4
@@ -18,39 +19,62 @@ django-redis==4.10.0
 django==2.1.2
 djangorestframework-gis==0.14
 djangorestframework==3.8.2
+dodgy==0.1.9              # via prospector
 erddapy==0.2.0
+freezegun==0.3.11
 geojson==2.4.1
 gunicorn==19.9.0
 idna==2.8                 # via requests, yarl
 ipython-genutils==0.2.0   # via traitlets
 ipython==7.0.1
+isort==4.3.4              # via pylint
 jedi==0.13.2              # via ipython
+lazy-object-proxy==1.3.1  # via astroid
+mccabe==0.6.1             # via prospector, pylint
 multidict==4.5.2          # via yarl
+mypy-extensions==0.4.1    # via mypy
+mypy==0.650               # via prospector
 netcdf4==1.4.2
 numpy==1.15.4             # via cftime, netcdf4, pandas, xarray
 pandas==0.23.4            # via erddapy, xarray
 parso==0.3.1              # via jedi
+pep8-naming==0.4.1        # via prospector
 pexpect==4.6.0            # via ipython
 pickleshare==0.7.5        # via ipython
 pip_tools==3.2.0
 pipdeptree==0.13.1
 prompt-toolkit==2.0.7     # via ipython
+prospector[with_mypy,with_vulture]==1.1.6.2
 psycopg2-binary==2.7.5
 ptyprocess==0.6.0         # via pexpect
+pycodestyle==2.4.0        # via prospector
+pydocstyle==3.0.0         # via prospector
+pyflakes==1.6.0           # via prospector
 pygments==2.3.1           # via ipython
-python-dateutil==2.7.5    # via pandas
+pylint-celery==0.3        # via prospector
+pylint-django==2.0.2      # via prospector
+pylint-flask==0.5         # via prospector
+pylint-plugin-utils==0.4  # via prospector, pylint-celery, pylint-django, pylint-flask
+pylint==2.1.1             # via prospector, pylint-celery, pylint-django, pylint-flask, pylint-plugin-utils
+python-dateutil==2.7.5    # via freezegun, pandas
 pytz==2018.7              # via django, pandas
 pyyaml==3.13
 redis==3.0.1              # via django-redis
 requests==2.21.0          # via erddapy
+requirements-detector==0.6  # via prospector
 sentry-sdk==0.5.5
+setoptconf==0.2.0         # via prospector
 simplegeneric==0.8.1      # via ipython
-six==1.12.0               # via pip-tools, prompt-toolkit, python-dateutil, traitlets, vcrpy
+six==1.12.0               # via astroid, freezegun, pip-tools, prompt-toolkit, pydocstyle, python-dateutil, traitlets, vcrpy
+snowballstemmer==1.2.1    # via pydocstyle
 sqlparse==0.2.4           # via django-debug-toolbar
 traitlets==4.3.2          # via ipython
+typed-ast==1.1.1          # via mypy
 urllib3==1.24.1           # via requests, sentry-sdk
+uwsgi==2.0.17.1
 vcrpy==2.0.1
+vulture==0.24             # via prospector
 wcwidth==0.1.7            # via prompt-toolkit
-wrapt==1.10.11            # via vcrpy
+wrapt==1.10.11            # via astroid, vcrpy
 xarray==0.11.0
 yarl==1.3.0               # via vcrpy

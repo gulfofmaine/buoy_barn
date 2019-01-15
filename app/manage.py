@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Django management module"""
 import os
 import sys
 

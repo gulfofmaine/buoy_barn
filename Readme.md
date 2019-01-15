@@ -1,6 +1,6 @@
 # Buoy Barn [![Semaphore Dashboard](https://img.shields.io/badge/Semaphore-Dashboard-lightgrey.svg)](https://gmri.semaphoreci.com/projects/Neracoos-1-Buoy-App) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76fde26fc3c54127bba8075b3ea9da99)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=gulfofmaine/buoy_barn&utm_campaign=Badge_Grade) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/76fde26fc3c54127bba8075b3ea9da99)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=gulfofmaine/buoy_barn&utm_campaign=Badge_Coverage)
 
-Lightweight ERDDAP frontend API for NERACOOS buoy information and recent readings.
+Lightweight ERDDAP frontend API for NERACOOS buoy information, recent readings, and for generating point forecasts from different model sources.
 
 ## Usage
 
@@ -12,7 +12,12 @@ To force a refresh of the latest data for platforms hit [localhost:8080/api/plat
 
 If you `ctrl-c` out of the logs (or close the window), you can get the logs back with `make logs`.
 
-The Docker containers are launched in the background with `make up`, so they won't dissapear if you close the window or logs. Therefore when you are done, `ctrl-c` out of the logs and run `make down` to shut down the server and database.
+The Docker containers are launched in the background with `make up`, so they won't dissapear if you close the window or logs.
+Therefore when you are done, `ctrl-c` out of the logs and run `make down` to shut down the server and database.
+
+### Forecasts
+
+See [forecasts/Readme.md](app/forecasts/Readme.md) for details about how the forecasts API works and how to add new forecasts.
 
 ### Adding / Editing Platforms
 
@@ -78,7 +83,7 @@ Tests coverage can be run with `make coverage`.
 After the tests are run, and the report displayed in the command line, it will also generate an html report.
 This report can be viewed by opening `app/htmlcov/index.html` which will also attempt to automatically open in the default browser.
 
-## Initial Configuration
+## Initial Configuration for Development
 
 ### Settings
 
@@ -93,6 +98,7 @@ POSTGRES_PASSWORD=secret_string
 POSTGRES_USER=a_user_name
 SECRET_KEY=a_really_long_random_string_that_no_one_should_no_and_should_probably_be_gibberish
 REDIS_CACHE=rediss://cache:6379/0
+DJANGO_DEBUG=True
 ```
 
 ### Starting Docker
@@ -119,6 +125,7 @@ You can use Django fixtures to quickly save models from the database and reload 
   - `account/` Django user account app.
   - `buoy_barn/` Primary Django application.
   - `deployments/` Database models and API.
+  - `forecasts/` Forecast models and API.
   - `utils/`
     - `wait-for-it.sh` Shell script that can wait until specified services are avaliable before finishing. Helps `make up` launch Django more reliably.
   - `Dockerfile` Django server build steps
@@ -150,8 +157,9 @@ You can use Django fixtures to quickly save models from the database and reload 
 - `test` Run unit tests.
 - `requirements-compile` Take the high level requirements files generate a pinned requirements.txt file.
 - `requirements-tree` See the dependency tree of the requirements and any issues.
+- `lint` Run prospector (and associated linting tools).
 
-## Common Problems
+## Common Tasks and Problems
 
 ### Migrations
 

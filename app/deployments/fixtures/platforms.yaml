@@ -304,3 +304,13 @@
   fields: {name: J01, mooring_site_desc: Cobscook Bay, active: true, ndbc_site_id: null,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-66.997 44.8868)}
+- model: deployments.platform
+  pk: 154
+  fields: {name: J03, mooring_site_desc: Cobscook Bay, active: true, ndbc_site_id: null,
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
+      (-67.018833160399 44.888763427734)}
+- model: deployments.platform
+  pk: 155
+  fields: {name: J04, mooring_site_desc: Machias Bay, active: true, ndbc_site_id: null,
+    uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
+      (-67.368850708008 44.608955383301)}

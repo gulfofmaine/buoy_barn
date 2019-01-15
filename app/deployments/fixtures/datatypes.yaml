@@ -310,3 +310,11 @@
   pk: 80
   fields: {standard_name: northward_wind, short_name: null, long_name: 'Wind Speed,
       Meridional', units: m s-1}
+- model: deployments.datatype
+  pk: 81
+  fields: {standard_name: sea_water_pressure, short_name: WP, long_name: Pressure,
+    units: decibars}
+- model: deployments.datatype
+  pk: 82
+  fields: {standard_name: wind_percent_good, short_name: WSPD, long_name: Wind Percent
+      Good, units: '1'}

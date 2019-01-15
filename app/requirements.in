@@ -13,16 +13,20 @@ netCDF4==1.4.2
 sentry-sdk==0.5.5
 django-cors-headers==2.4.0
 
+# deployment
+uWSGI==2.0.17.1
 
 # development
 ipython==7.0.1
 django-debug-toolbar==1.11
+prospector[with_mypy,with_vulture]==1.1.6.2
 
 # testing
 coverage==4.5.2
 PyYAML==3.13
 geojson==2.4.1
 vcrpy==2.0.1
+freezegun==0.3.11
 
 # dependency management
 pip_tools==3.2.0

@@ -1,0 +1,105 @@
+,Row Type,Variable Name,Attribute Name,Data Type,Value
+0,attribute,NC_GLOBAL,area,String,Gulf of Main 03 arc min grd3
+1,attribute,NC_GLOBAL,cdm_data_type,String,Grid
+2,attribute,NC_GLOBAL,Conventions,String,"COARDS, CF-1.6, ACDD-1.3"
+3,attribute,NC_GLOBAL,creator_name,String,"Principal Investigator"">Dr. William Perrie"
+4,attribute,NC_GLOBAL,creator_url,String,http://www.bio.gc.ca/
+5,attribute,NC_GLOBAL,Easternmost_Easting,double,-60.0
+6,attribute,NC_GLOBAL,geospatial_lat_max,double,46.0
+7,attribute,NC_GLOBAL,geospatial_lat_min,double,38.0
+8,attribute,NC_GLOBAL,geospatial_lat_resolution,double,0.05
+9,attribute,NC_GLOBAL,geospatial_lat_units,String,degrees_north
+10,attribute,NC_GLOBAL,geospatial_lon_max,double,-60.0
+11,attribute,NC_GLOBAL,geospatial_lon_min,double,-76.0
+12,attribute,NC_GLOBAL,geospatial_lon_resolution,double,0.05
+13,attribute,NC_GLOBAL,geospatial_lon_units,String,degrees_east
+14,attribute,NC_GLOBAL,infoUrl,String,http://www.neracoos.org
+15,attribute,NC_GLOBAL,institution,String,Bedford Institute of Oceanography
+16,attribute,NC_GLOBAL,keywords,String,"data, density, dir, direction, earth, Earth Science > Oceans > Ocean Waves > Significant Wave Height, Earth Science > Oceans > Ocean Waves > Wave Frequency, Earth Science > Oceans > Ocean Waves > Wave Period, Earth Science > Oceans > Ocean Waves > Wave Spectra, Earth Science > Oceans > Ocean Waves > Wave Speed/Direction, Earth Science > Oceans > Ocean Waves > Wind Waves, sea_surface_wave_from_direction, sea_surface_wave_peak_frequency, sea_surface_wave_significant_height"
+17,attribute,NC_GLOBAL,keywords_vocabulary,String,GCMD Science Keywords
+18,attribute,NC_GLOBAL,license,String,"The data may be used and redistributed for free but is not intended\nfor legal use, since it may contain inaccuracies. Neither the data\nContributor, ERD, NOAA, nor the United States Government, nor any\nof their employees or contractors, makes any warranty, express or\nimplied, including warranties of merchantability and fitness for a\nparticular purpose, or assumes any legal liability for the accuracy,\ncompleteness, or usefulness, of this information."
+19,attribute,NC_GLOBAL,maximum_altitude,String,9000 m
+20,attribute,NC_GLOBAL,minimum_altitude,String,-12000 m
+21,attribute,NC_GLOBAL,Northernmost_Northing,double,46.0
+22,attribute,NC_GLOBAL,product_name,String,ww3.20190108.nc
+23,attribute,NC_GLOBAL,SIN4_namelist_parameter_BETAMAX,float,1.65
+24,attribute,NC_GLOBAL,sourceUrl,String,(local files)
+25,attribute,NC_GLOBAL,Southernmost_Northing,double,38.0
+26,attribute,NC_GLOBAL,standard_name_vocabulary,String,CF Standard Name Table v29
+27,attribute,NC_GLOBAL,summary,String,BIO Wave Watch III Latest 72 hour Forecasts Gulf Of Maine
+28,attribute,NC_GLOBAL,testOutOfDate,String,now+2days
+29,attribute,NC_GLOBAL,time_coverage_end,String,2019-01-11T00:00:00Z
+30,attribute,NC_GLOBAL,time_coverage_start,String,2019-01-08T00:00:00Z
+31,attribute,NC_GLOBAL,title,String,BIO WAVEWATCH_III 72 hour Forecast. Gulf of Maine
+32,attribute,NC_GLOBAL,WAVEWATCH_III_switches,String,F90 SHRD NOGRB NOPA LRB4 NC4 TRKNC PR3 UQ FLX0 LN1 ST4 STAB0 NL1 BT1 DB1 MLIM IC0 IS0 REF0 WNT2 WNX2 RWND CRT1 CRX1 TR0 BS0 XX0 O0 O1 O2 O3 O4 O5 O6 O7
+33,attribute,NC_GLOBAL,WAVEWATCH_III_version_number,String,5.16
+34,attribute,NC_GLOBAL,Westernmost_Easting,double,-76.0
+35,dimension,time,,double,"nValues=73, evenlySpaced=true, averageSpacing=1h 0m 0s"
+36,attribute,time,_ChunkSizes,int,512
+37,attribute,time,_CoordinateAxisType,String,Time
+38,attribute,time,actual_range,double,"1.5469056E9, 1.5471648E9"
+39,attribute,time,axis,String,T
+40,attribute,time,conventions,String,relative julian days with decimal part (as parts of the day )
+41,attribute,time,ioos_category,String,Time
+42,attribute,time,long_name,String,julian day (UT)
+43,attribute,time,standard_name,String,time
+44,attribute,time,time_origin,String,01-JAN-1970 00:00:00
+45,attribute,time,units,String,seconds since 1970-01-01T00:00:00Z
+46,dimension,latitude,,float,"nValues=161, evenlySpaced=true, averageSpacing=0.05"
+47,attribute,latitude,_ChunkSizes,int,161
+48,attribute,latitude,_CoordinateAxisType,String,Lat
+49,attribute,latitude,actual_range,float,"38.0, 46.0"
+50,attribute,latitude,axis,String,Y
+51,attribute,latitude,ioos_category,String,Location
+52,attribute,latitude,long_name,String,Latitude
+53,attribute,latitude,standard_name,String,latitude
+54,attribute,latitude,units,String,degrees_north
+55,attribute,latitude,valid_max,float,180.0
+56,attribute,latitude,valid_min,float,-90.0
+57,dimension,longitude,,float,"nValues=321, evenlySpaced=true, averageSpacing=0.05"
+58,attribute,longitude,_ChunkSizes,int,321
+59,attribute,longitude,_CoordinateAxisType,String,Lon
+60,attribute,longitude,actual_range,float,"-76.0, -60.0"
+61,attribute,longitude,axis,String,X
+62,attribute,longitude,ioos_category,String,Location
+63,attribute,longitude,long_name,String,Longitude
+64,attribute,longitude,standard_name,String,longitude
+65,attribute,longitude,units,String,degrees_east
+66,attribute,longitude,valid_max,float,360.0
+67,attribute,longitude,valid_min,float,-180.0
+68,variable,hs,,float,"time, latitude, longitude"
+69,attribute,hs,_ChunkSizes,int,"1, 161, 321"
+70,attribute,hs,_FillValue,float,9.96921E36
+71,attribute,hs,colorBarMaximum,double,10.0
+72,attribute,hs,colorBarMinimum,double,0.0
+73,attribute,hs,globwave_name,String,significant_wave_height
+74,attribute,hs,ioos_category,String,Surface Waves
+75,attribute,hs,long_name,String,significant height of wind and swell waves
+76,attribute,hs,standard_name,String,sea_surface_wave_significant_height
+77,attribute,hs,units,String,m
+78,attribute,hs,valid_max,float,32000.0
+79,attribute,hs,valid_min,float,0.0
+80,variable,fp,,float,"time, latitude, longitude"
+81,attribute,fp,_ChunkSizes,int,"1, 161, 321"
+82,attribute,fp,_FillValue,float,9.96921E36
+83,attribute,fp,colorBarMaximum,double,15000.0
+84,attribute,fp,colorBarMinimum,double,0.0
+85,attribute,fp,globwave_name,String,dominant_wave_frequency
+86,attribute,fp,ioos_category,String,Surface Waves
+87,attribute,fp,long_name,String,wave peak frequency
+88,attribute,fp,standard_name,String,sea_surface_wave_peak_frequency
+89,attribute,fp,units,String,s-1
+90,attribute,fp,valid_max,float,10000.0
+91,attribute,fp,valid_min,float,0.0
+92,variable,dir,,float,"time, latitude, longitude"
+93,attribute,dir,_ChunkSizes,int,"1, 161, 321"
+94,attribute,dir,_FillValue,float,9.96921E36
+95,attribute,dir,colorBarMaximum,double,360.0
+96,attribute,dir,colorBarMinimum,double,0.0
+97,attribute,dir,globwave_name,String,wave_from_direction
+98,attribute,dir,ioos_category,String,Surface Waves
+99,attribute,dir,long_name,String,wave mean direction
+100,attribute,dir,standard_name,String,sea_surface_wave_from_direction
+101,attribute,dir,units,String,degree
+102,attribute,dir,valid_max,float,3600.0
+103,attribute,dir,valid_min,float,0.0

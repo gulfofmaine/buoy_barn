@@ -1,3 +1,4 @@
+"""Viewset for displaying forecasts, and fetching point forecast data is lat,lon are specified"""
 from rest_framework import viewsets
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
@@ -7,13 +8,15 @@ from forecasts.serializers import ForecastSerializer
 
 
 class ForecastViewSet(viewsets.ViewSet):
-    """ A viewset for forecasts """
+    """A viewset for forecasts"""
 
-    def list(self, request):  # pylint: disable=no-self-use
+    def list(self, request):  # pylint: disable=no-self-use,unused-argument
+        """List all forecasts"""
         serializer = ForecastSerializer(forecast_list, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):  # pylint: disable=no-self-use
+        """Display a detail endpoint with point forecast information if lat, lon are given"""
         filtered = [forecast for forecast in forecast_list if forecast.slug == pk]
         try:
             forecast = filtered[0]

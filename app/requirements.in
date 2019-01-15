@@ -13,10 +13,13 @@ netCDF4==1.4.2
 sentry-sdk==0.5.5
 django-cors-headers==2.4.0
 
+# deployment
+uWSGI==2.0.17.1
 
 # development
 ipython==7.0.1
 django-debug-toolbar==1.11
+prospector[with_mypy,with_vulture]==1.1.6.2
 
 # testing
 coverage==4.5.2

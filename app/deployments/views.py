@@ -16,16 +16,16 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
     queryset = Platform.objects.filter(active=True)
     serializer_class = PlatformSerializer
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument
+        pk = kwargs["pk"]
         platform = get_object_or_404(self.queryset, name=pk)
         serializer = self.serializer_class(platform)
         return Response(serializer.data)
 
     @action(detail=False)
-    def refresh(self, request):
+    def refresh(self, request):  # pylint: disable=unused-argument
         # delete_memoized('deployments.models.Platform.latest_erddap_values')
         delete_memoized(Platform.latest_erddap_values)
 
         serializer = self.get_serializer(self.queryset.all(), many=True)
         return Response(serializer.data)
-

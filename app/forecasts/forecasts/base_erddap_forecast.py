@@ -100,7 +100,7 @@ class BaseERDDAPForecast(BaseForecast):
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
         
-        Returns: 
+        Returns:
             Dataset URL
         """
         return f"{self.server}/griddap/{self.dataset}.json?{self.dataset_query_string(lat, lon)}"
@@ -135,7 +135,7 @@ class BaseERDDAPForecast(BaseForecast):
     def request_variables(self) -> List[str]:
         """ The variables that should be requested from the dataset.
         Can be overridden for more complicated datasets that require multiple fields
-        
+
         Returns:
             List of ERDDAP variable strings
         """

@@ -12,11 +12,15 @@ logger = logging.getLogger(__name__)
 
 
 def convert_time(time: str) -> datetime:
-    "Convert's from ERDDAP time style to python"
+    """Convert's from ERDDAP time style to python"""
     return datetime.fromisoformat(time.replace("Z", ""))
 
 
-def add_timeseries(platform: Platform, server: str, dataset: str, constraints):
+def add_timeseries(
+    platform: Platform, server: str, dataset: str, constraints
+):  # pylint: disable=too-many-locals
+    """Add datatypes for a new dataset to a platform.
+    See instructions in Readme.md"""
     e = ERDDAP(server)
 
     info = pd.read_csv(e.get_info_url(dataset, response="csv"))

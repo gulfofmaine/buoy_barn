@@ -98,6 +98,7 @@ POSTGRES_PASSWORD=secret_string
 POSTGRES_USER=a_user_name
 SECRET_KEY=a_really_long_random_string_that_no_one_should_no_and_should_probably_be_gibberish
 REDIS_CACHE=rediss://cache:6379/0
+DJANGO_DEBUG=True
 ```
 
 ### Starting Docker
@@ -123,8 +124,8 @@ You can use Django fixtures to quickly save models from the database and reload 
 - `app/`
   - `account/` Django user account app.
   - `buoy_barn/` Primary Django application.
-  - `deployments/` Database models and API
-  - `forecasts/` Forecast models and API
+  - `deployments/` Database models and API.
+  - `forecasts/` Forecast models and API.
   - `utils/`
     - `wait-for-it.sh` Shell script that can wait until specified services are avaliable before finishing. Helps `make up` launch Django more reliably.
   - `Dockerfile` Django server build steps
@@ -156,6 +157,7 @@ You can use Django fixtures to quickly save models from the database and reload 
 - `test` Run unit tests.
 - `requirements-compile` Take the high level requirements files generate a pinned requirements.txt file.
 - `requirements-tree` See the dependency tree of the requirements and any issues.
+- `lint` Run prospector (and associated linting tools).
 
 ## Common Tasks and Problems
 

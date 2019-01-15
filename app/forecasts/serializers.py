@@ -1,16 +1,19 @@
+"""Forecast JSON serializer"""
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
 
 class ForecastSerializer(serializers.BaseSerializer):
-    def to_representation(self, obj):  # pylint: disable=no-self-use
+    """Serialize forecast information to JSON"""
 
+    def to_representation(self, instance):  # pylint: disable=no-self-use
+        """Convert forecast instance to JSON"""
         return {
-            "slug": obj.slug,
-            "forecast_type": obj.forecast_type.value,
-            "name": obj.name,
-            "description": obj.description,
-            "source_url": obj.source_url,
-            "point_forecast": reverse("forecast-detail", kwargs={"pk": obj.slug}),
-            "units": obj.units,
+            "slug": instance.slug,
+            "forecast_type": instance.forecast_type.value,
+            "name": instance.name,
+            "description": instance.description,
+            "source_url": instance.source_url,
+            "point_forecast": reverse("forecast-detail", kwargs={"pk": instance.slug}),
+            "units": instance.units,
         }

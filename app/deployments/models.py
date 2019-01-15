@@ -7,7 +7,6 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
 from memoize import memoize
-import pandas as pd
 from requests import HTTPError
 
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe

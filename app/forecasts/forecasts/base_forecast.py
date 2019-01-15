@@ -40,7 +40,7 @@ class BaseForecast:
         Args:
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
-        
+
         Returns:
             List of tuples of forecasted times and values
         """

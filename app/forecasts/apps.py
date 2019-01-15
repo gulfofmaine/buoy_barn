@@ -14,7 +14,8 @@ class ForecastsConfig(AppConfig):
 
 
 @register()
-def check_forecasts(app_configs, **kwargs):
+def check_duplicate_forecasts(app_configs, **kwargs):  # pylint: disable=unused-argument
+    """ Return errors for any forecasts with duplicate slugs """
     errors = []
 
     slug_counter = Counter([forecast.slug for forecast in forecast_list])
@@ -45,6 +46,14 @@ def check_forecasts(app_configs, **kwargs):
                     id="forecasts.E002",
                 )
             )
+
+    return errors
+
+
+@register()
+def check_forecasts(app_configs, **kwargs):  # pylint: disable=unused-argument
+    """ Check forecast attributes and methods are implemented """
+    errors = []
 
     for forecast in forecast_list:
         forecast_str = str(forecast.__class__)

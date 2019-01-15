@@ -104,8 +104,8 @@ class GFSWindSpeed(BaseGFSWindForecast):
     units = "m/s"
 
     def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
-        """ Return a list of tuples for the wind speed
-        
+        """Return a list of tuples for the wind speed
+
         Args:
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East

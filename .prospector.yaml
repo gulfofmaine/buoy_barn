@@ -1,3 +1,19 @@
+ignore-patterns:
+  - "(^|/)migrations(/|$)"
+
+# doc-warnings: true
+
+uses:
+  - django
+
 pylint:
   disable:
     - logging-fstring-interpolation
+pep257:
+  disable:
+    - D203
+    - D213
+# mypy:
+#   run: true
+# vulture:
+#   run: true

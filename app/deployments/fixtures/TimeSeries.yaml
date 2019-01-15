@@ -363,435 +363,6 @@
     erddap_dataset: cwwcNDBCMet
     erddap_server: 2
 - model: deployments.timeseries
-  pk: 477
-  fields:
-    platform: 93
-    data_type: 36
-    variable: wd
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 478
-  fields:
-    platform: 93
-    data_type: 42
-    variable: wspd
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 479
-  fields:
-    platform: 93
-    data_type: 69
-    variable: gst
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 480
-  fields:
-    platform: 93
-    data_type: 72
-    variable: wvht
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 481
-  fields:
-    platform: 93
-    data_type: 73
-    variable: dpd
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 484
-  fields:
-    platform: 93
-    data_type: 75
-    variable: bar
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 485
-  fields:
-    platform: 93
-    data_type: 1
-    variable: atmp
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 486
-  fields:
-    platform: 93
-    data_type: 76
-    variable: wtmp
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 488
-  fields:
-    platform: 93
-    data_type: 29
-    variable: vis
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 491
-  fields:
-    platform: 93
-    data_type: 79
-    variable: wspu
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 492
-  fields:
-    platform: 93
-    data_type: 80
-    variable: wspv
-    constraints: {station=: '44030'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 493
-  fields:
-    platform: 98
-    data_type: 36
-    variable: wd
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 494
-  fields:
-    platform: 98
-    data_type: 42
-    variable: wspd
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 495
-  fields:
-    platform: 98
-    data_type: 69
-    variable: gst
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 496
-  fields:
-    platform: 98
-    data_type: 72
-    variable: wvht
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 497
-  fields:
-    platform: 98
-    data_type: 73
-    variable: dpd
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 500
-  fields:
-    platform: 98
-    data_type: 75
-    variable: bar
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 501
-  fields:
-    platform: 98
-    data_type: 1
-    variable: atmp
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 502
-  fields:
-    platform: 98
-    data_type: 76
-    variable: wtmp
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 504
-  fields:
-    platform: 98
-    data_type: 29
-    variable: vis
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 507
-  fields:
-    platform: 98
-    data_type: 79
-    variable: wspu
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 508
-  fields:
-    platform: 98
-    data_type: 80
-    variable: wspv
-    constraints: {station=: '44037'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 509
-  fields:
-    platform: 103
-    data_type: 36
-    variable: wd
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 510
-  fields:
-    platform: 103
-    data_type: 42
-    variable: wspd
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 511
-  fields:
-    platform: 103
-    data_type: 69
-    variable: gst
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 512
-  fields:
-    platform: 103
-    data_type: 72
-    variable: wvht
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 513
-  fields:
-    platform: 103
-    data_type: 73
-    variable: dpd
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 516
-  fields:
-    platform: 103
-    data_type: 75
-    variable: bar
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 517
-  fields:
-    platform: 103
-    data_type: 1
-    variable: atmp
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 518
-  fields:
-    platform: 103
-    data_type: 76
-    variable: wtmp
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 520
-  fields:
-    platform: 103
-    data_type: 29
-    variable: vis
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 523
-  fields:
-    platform: 103
-    data_type: 79
-    variable: wspu
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 524
-  fields:
-    platform: 103
-    data_type: 80
-    variable: wspv
-    constraints: {station=: '44032'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
   pk: 525
   fields:
     platform: 107
@@ -1325,149 +896,6 @@
     erddap_dataset: cwwcNDBCMet
     erddap_server: 2
 - model: deployments.timeseries
-  pk: 589
-  fields:
-    platform: 113
-    data_type: 36
-    variable: wd
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 590
-  fields:
-    platform: 113
-    data_type: 42
-    variable: wspd
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 591
-  fields:
-    platform: 113
-    data_type: 69
-    variable: gst
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 592
-  fields:
-    platform: 113
-    data_type: 72
-    variable: wvht
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 593
-  fields:
-    platform: 113
-    data_type: 73
-    variable: dpd
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 596
-  fields:
-    platform: 113
-    data_type: 75
-    variable: bar
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 597
-  fields:
-    platform: 113
-    data_type: 1
-    variable: atmp
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 598
-  fields:
-    platform: 113
-    data_type: 76
-    variable: wtmp
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 600
-  fields:
-    platform: 113
-    data_type: 29
-    variable: vis
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 603
-  fields:
-    platform: 113
-    data_type: 79
-    variable: wspu
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 604
-  fields:
-    platform: 113
-    data_type: 80
-    variable: wspv
-    constraints: {station=: '44034'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
   pk: 605
   fields:
     platform: 114
@@ -1760,136 +1188,6 @@
     data_type: 80
     variable: wspv
     constraints: {station=: '44020'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 637
-  fields:
-    platform: 120
-    data_type: 36
-    variable: wd
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 638
-  fields:
-    platform: 120
-    data_type: 42
-    variable: wspd
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 639
-  fields:
-    platform: 120
-    data_type: 69
-    variable: gst
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 640
-  fields:
-    platform: 120
-    data_type: 72
-    variable: wvht
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 641
-  fields:
-    platform: 120
-    data_type: 73
-    variable: dpd
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 644
-  fields:
-    platform: 120
-    data_type: 75
-    variable: bar
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 645
-  fields:
-    platform: 120
-    data_type: 1
-    variable: atmp
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 646
-  fields:
-    platform: 120
-    data_type: 76
-    variable: wtmp
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 651
-  fields:
-    platform: 120
-    data_type: 79
-    variable: wspu
-    constraints: {station=: '44033'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 652
-  fields:
-    platform: 120
-    data_type: 80
-    variable: wspv
-    constraints: {station=: '44033'}
     depth: null
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
@@ -2690,149 +1988,6 @@
     erddap_dataset: cwwcNDBCMet
     erddap_server: 2
 - model: deployments.timeseries
-  pk: 749
-  fields:
-    platform: 143
-    data_type: 36
-    variable: wd
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 750
-  fields:
-    platform: 143
-    data_type: 42
-    variable: wspd
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 751
-  fields:
-    platform: 143
-    data_type: 69
-    variable: gst
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 752
-  fields:
-    platform: 143
-    data_type: 72
-    variable: wvht
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 753
-  fields:
-    platform: 143
-    data_type: 73
-    variable: dpd
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 756
-  fields:
-    platform: 143
-    data_type: 75
-    variable: bar
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 757
-  fields:
-    platform: 143
-    data_type: 1
-    variable: atmp
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 758
-  fields:
-    platform: 143
-    data_type: 76
-    variable: wtmp
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 760
-  fields:
-    platform: 143
-    data_type: 29
-    variable: vis
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 763
-  fields:
-    platform: 143
-    data_type: 79
-    variable: wspu
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
-  pk: 764
-  fields:
-    platform: 143
-    data_type: 80
-    variable: wspv
-    constraints: {station=: '44029'}
-    depth: null
-    start_time: 1970-02-26 20:00:00+00:00
-    end_time: null
-    buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
-- model: deployments.timeseries
   pk: 765
   fields:
     platform: 144
@@ -3468,4 +2623,2552 @@
     end_time: null
     buffer_type: 18
     erddap_dataset: N01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 840
+  fields:
+    platform: 143
+    data_type: 26
+    variable: significant_wave_height
+    constraints: {}
+    depth: null
+    start_time: 2002-03-09 00:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: A01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 841
+  fields:
+    platform: 143
+    data_type: 67
+    variable: dominant_wave_period
+    constraints: {}
+    depth: null
+    start_time: 2002-03-09 00:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: A01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 842
+  fields:
+    platform: 143
+    data_type: 1
+    variable: air_temperature
+    constraints: {}
+    depth: null
+    start_time: 2001-07-10 03:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: A01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 843
+  fields:
+    platform: 143
+    data_type: 68
+    variable: barometric_pressure
+    constraints: {}
+    depth: null
+    start_time: 2001-07-10 03:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: A01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 844
+  fields:
+    platform: 143
+    data_type: 69
+    variable: wind_gust
+    constraints: {}
+    depth: null
+    start_time: 2001-07-10 03:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: A01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 845
+  fields:
+    platform: 143
+    data_type: 42
+    variable: wind_speed
+    constraints: {}
+    depth: null
+    start_time: 2001-07-10 03:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: A01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 846
+  fields:
+    platform: 143
+    data_type: 36
+    variable: wind_direction
+    constraints: {}
+    depth: null
+    start_time: 2001-07-10 03:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: A01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 847
+  fields:
+    platform: 143
+    data_type: 29
+    variable: visibility
+    constraints: {}
+    depth: null
+    start_time: 2001-07-10 03:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: A01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 848
+  fields:
+    platform: 143
+    data_type: 70
+    variable: dissolved_oxygen
+    constraints: {}
+    depth: null
+    start_time: 2008-10-01 15:00:00+00:00
+    end_time: null
+    buffer_type: 30
+    erddap_dataset: A01_optode_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 849
+  fields:
+    platform: 143
+    data_type: 16
+    variable: oxygen_saturation
+    constraints: {}
+    depth: null
+    start_time: 2008-10-01 15:00:00+00:00
+    end_time: null
+    buffer_type: 30
+    erddap_dataset: A01_optode_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 850
+  fields:
+    platform: 143
+    data_type: 71
+    variable: percent_oxygen_saturation
+    constraints: {}
+    depth: null
+    start_time: 2008-10-01 15:00:00+00:00
+    end_time: null
+    buffer_type: 30
+    erddap_dataset: A01_optode_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 851
+  fields:
+    platform: 143
+    data_type: 25
+    variable: temperature
+    constraints: {}
+    depth: null
+    start_time: 2008-10-01 15:00:00+00:00
+    end_time: null
+    buffer_type: 30
+    erddap_dataset: A01_optode_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 852
+  fields:
+    platform: 143
+    data_type: 70
+    variable: dissolved_oxygen
+    constraints: {}
+    depth: null
+    start_time: 2018-09-28 06:00:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: A01_sbe16_disox_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 853
+  fields:
+    platform: 143
+    data_type: 16
+    variable: oxygen_saturation
+    constraints: {}
+    depth: null
+    start_time: 2018-09-28 06:00:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: A01_sbe16_disox_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 854
+  fields:
+    platform: 143
+    data_type: 71
+    variable: percent_oxygen_saturation
+    constraints: {}
+    depth: null
+    start_time: 2018-09-28 06:00:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: A01_sbe16_disox_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 855
+  fields:
+    platform: 143
+    data_type: 52
+    variable: conductivity
+    constraints: {}
+    depth: null
+    start_time: 2018-09-28 06:00:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: A01_sbe16_disox_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 856
+  fields:
+    platform: 143
+    data_type: 25
+    variable: temperature
+    constraints: {}
+    depth: null
+    start_time: 2018-09-28 06:00:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: A01_sbe16_disox_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 857
+  fields:
+    platform: 143
+    data_type: 23
+    variable: salinity
+    constraints: {}
+    depth: null
+    start_time: 2018-09-28 06:00:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: A01_sbe16_disox_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 858
+  fields:
+    platform: 143
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-10 04:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: A01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 859
+  fields:
+    platform: 143
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-10 04:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: A01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 860
+  fields:
+    platform: 143
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-10 04:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: A01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 861
+  fields:
+    platform: 143
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-10 04:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: A01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 862
+  fields:
+    platform: 143
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-10 04:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: A01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 863
+  fields:
+    platform: 143
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-10 04:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: A01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 864
+  fields:
+    platform: 143
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-10 04:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: A01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 865
+  fields:
+    platform: 143
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-10 04:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: A01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 866
+  fields:
+    platform: 93
+    data_type: 26
+    variable: significant_wave_height
+    constraints: {}
+    depth: null
+    start_time: 2002-03-28 21:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: B01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 867
+  fields:
+    platform: 93
+    data_type: 67
+    variable: dominant_wave_period
+    constraints: {}
+    depth: null
+    start_time: 2002-03-28 21:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: B01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 868
+  fields:
+    platform: 93
+    data_type: 1
+    variable: air_temperature
+    constraints: {}
+    depth: null
+    start_time: 2018-10-01 15:30:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: B01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 869
+  fields:
+    platform: 93
+    data_type: 68
+    variable: barometric_pressure
+    constraints: {}
+    depth: null
+    start_time: 2018-10-01 15:30:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: B01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 870
+  fields:
+    platform: 93
+    data_type: 69
+    variable: wind_gust
+    constraints: {}
+    depth: null
+    start_time: 2018-10-01 15:30:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: B01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 871
+  fields:
+    platform: 93
+    data_type: 42
+    variable: wind_speed
+    constraints: {}
+    depth: null
+    start_time: 2018-10-01 15:30:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: B01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 872
+  fields:
+    platform: 93
+    data_type: 36
+    variable: wind_direction
+    constraints: {}
+    depth: null
+    start_time: 2018-10-01 15:30:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: B01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 873
+  fields:
+    platform: 93
+    data_type: 29
+    variable: visibility
+    constraints: {}
+    depth: null
+    start_time: 2018-10-01 15:30:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: B01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 874
+  fields:
+    platform: 93
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 875
+  fields:
+    platform: 93
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 876
+  fields:
+    platform: 93
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 877
+  fields:
+    platform: 93
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 878
+  fields:
+    platform: 93
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 879
+  fields:
+    platform: 93
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 880
+  fields:
+    platform: 93
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 881
+  fields:
+    platform: 93
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 882
+  fields:
+    platform: 93
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 883
+  fields:
+    platform: 93
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 884
+  fields:
+    platform: 93
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 885
+  fields:
+    platform: 93
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-09 21:15:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: B01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 886
+  fields:
+    platform: 103
+    data_type: 66
+    variable: current_speed
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: E01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 887
+  fields:
+    platform: 103
+    data_type: 6
+    variable: current_direction
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: E01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 888
+  fields:
+    platform: 103
+    data_type: 25
+    variable: temperature
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: E01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 889
+  fields:
+    platform: 103
+    data_type: 26
+    variable: significant_wave_height
+    constraints: {}
+    depth: null
+    start_time: 2002-01-08 20:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: E01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 890
+  fields:
+    platform: 103
+    data_type: 67
+    variable: dominant_wave_period
+    constraints: {}
+    depth: null
+    start_time: 2002-01-08 20:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: E01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 891
+  fields:
+    platform: 103
+    data_type: 1
+    variable: air_temperature
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: E01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 892
+  fields:
+    platform: 103
+    data_type: 68
+    variable: barometric_pressure
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: E01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 893
+  fields:
+    platform: 103
+    data_type: 69
+    variable: wind_gust
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: E01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 894
+  fields:
+    platform: 103
+    data_type: 42
+    variable: wind_speed
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: E01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 895
+  fields:
+    platform: 103
+    data_type: 36
+    variable: wind_direction
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: E01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 896
+  fields:
+    platform: 103
+    data_type: 29
+    variable: visibility
+    constraints: {}
+    depth: null
+    start_time: 2001-07-09 12:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: E01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 897
+  fields:
+    platform: 103
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 898
+  fields:
+    platform: 103
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 899
+  fields:
+    platform: 103
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 900
+  fields:
+    platform: 103
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 901
+  fields:
+    platform: 103
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 902
+  fields:
+    platform: 103
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 903
+  fields:
+    platform: 103
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 904
+  fields:
+    platform: 103
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 905
+  fields:
+    platform: 103
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 906
+  fields:
+    platform: 103
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 907
+  fields:
+    platform: 103
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 908
+  fields:
+    platform: 103
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2018-09-29 02:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: E01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 909
+  fields:
+    platform: 120
+    data_type: 26
+    variable: significant_wave_height
+    constraints: {}
+    depth: null
+    start_time: 2002-01-08 17:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: F01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 910
+  fields:
+    platform: 120
+    data_type: 67
+    variable: dominant_wave_period
+    constraints: {}
+    depth: null
+    start_time: 2002-01-08 17:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: F01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 911
+  fields:
+    platform: 120
+    data_type: 1
+    variable: air_temperature
+    constraints: {}
+    depth: null
+    start_time: 2000-07-10 19:00:02+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: F01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 912
+  fields:
+    platform: 120
+    data_type: 68
+    variable: barometric_pressure
+    constraints: {}
+    depth: null
+    start_time: 2000-07-10 19:00:02+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: F01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 913
+  fields:
+    platform: 120
+    data_type: 69
+    variable: wind_gust
+    constraints: {}
+    depth: null
+    start_time: 2000-07-10 19:00:02+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: F01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 914
+  fields:
+    platform: 120
+    data_type: 42
+    variable: wind_speed
+    constraints: {}
+    depth: null
+    start_time: 2000-07-10 19:00:02+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: F01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 915
+  fields:
+    platform: 120
+    data_type: 36
+    variable: wind_direction
+    constraints: {}
+    depth: null
+    start_time: 2000-07-10 19:00:02+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: F01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 916
+  fields:
+    platform: 120
+    data_type: 29
+    variable: visibility
+    constraints: {}
+    depth: null
+    start_time: 2000-07-10 19:00:02+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: F01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 917
+  fields:
+    platform: 120
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 918
+  fields:
+    platform: 120
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 919
+  fields:
+    platform: 120
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 920
+  fields:
+    platform: 120
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 921
+  fields:
+    platform: 120
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 922
+  fields:
+    platform: 120
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 923
+  fields:
+    platform: 120
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 924
+  fields:
+    platform: 120
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 925
+  fields:
+    platform: 120
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 926
+  fields:
+    platform: 120
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 927
+  fields:
+    platform: 120
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 928
+  fields:
+    platform: 120
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-08 00:34:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: F01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 929
+  fields:
+    platform: 113
+    data_type: 66
+    variable: current_speed
+    constraints: {}
+    depth: null
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: I01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 930
+  fields:
+    platform: 113
+    data_type: 6
+    variable: current_direction
+    constraints: {}
+    depth: null
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: I01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 931
+  fields:
+    platform: 113
+    data_type: 25
+    variable: temperature
+    constraints: {}
+    depth: null
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: I01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 932
+  fields:
+    platform: 113
+    data_type: 26
+    variable: significant_wave_height
+    constraints: {}
+    depth: null
+    start_time: 2002-01-06 17:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: I01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 933
+  fields:
+    platform: 113
+    data_type: 67
+    variable: dominant_wave_period
+    constraints: {}
+    depth: null
+    start_time: 2002-01-06 17:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: I01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 934
+  fields:
+    platform: 113
+    data_type: 1
+    variable: air_temperature
+    constraints: {}
+    depth: null
+    start_time: 2018-09-29 18:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: I01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 935
+  fields:
+    platform: 113
+    data_type: 68
+    variable: barometric_pressure
+    constraints: {}
+    depth: null
+    start_time: 2018-09-29 18:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: I01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 936
+  fields:
+    platform: 113
+    data_type: 69
+    variable: wind_gust
+    constraints: {}
+    depth: null
+    start_time: 2018-09-29 18:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: I01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 937
+  fields:
+    platform: 113
+    data_type: 42
+    variable: wind_speed
+    constraints: {}
+    depth: null
+    start_time: 2018-09-29 18:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: I01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 938
+  fields:
+    platform: 113
+    data_type: 36
+    variable: wind_direction
+    constraints: {}
+    depth: null
+    start_time: 2018-09-29 18:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: I01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 939
+  fields:
+    platform: 113
+    data_type: 29
+    variable: visibility
+    constraints: {}
+    depth: null
+    start_time: 2018-09-29 18:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: I01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 940
+  fields:
+    platform: 113
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 941
+  fields:
+    platform: 113
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 942
+  fields:
+    platform: 113
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 943
+  fields:
+    platform: 113
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 1.0}
+    depth: 1.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 944
+  fields:
+    platform: 113
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 945
+  fields:
+    platform: 113
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 946
+  fields:
+    platform: 113
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 947
+  fields:
+    platform: 113
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 20.0}
+    depth: 20.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 948
+  fields:
+    platform: 113
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 949
+  fields:
+    platform: 113
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 950
+  fields:
+    platform: 113
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 951
+  fields:
+    platform: 113
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 50.0}
+    depth: 50.0
+    start_time: 2001-07-27 08:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: I01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 952
+  fields:
+    platform: 154
+    data_type: 25
+    variable: temperature
+    constraints: {}
+    depth: 2.0
+    start_time: 2018-07-17 17:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J03_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 953
+  fields:
+    platform: 154
+    data_type: 24
+    variable: current_speed
+    constraints: {}
+    depth: 2.0
+    start_time: 2018-07-17 17:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J03_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 954
+  fields:
+    platform: 154
+    data_type: 6
+    variable: current_direction
+    constraints: {}
+    depth: 2.0
+    start_time: 2018-07-17 17:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J03_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 955
+  fields:
+    platform: 154
+    data_type: 23
+    variable: salinity
+    constraints: {}
+    depth: 2.0
+    start_time: 2018-07-17 17:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J03_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 956
+  fields:
+    platform: 154
+    data_type: 26
+    variable: significant_wave_height
+    constraints: {}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: J03_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 957
+  fields:
+    platform: 154
+    data_type: 67
+    variable: dominant_wave_period
+    constraints: {}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: J03_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 958
+  fields:
+    platform: 154
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 25}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 959
+  fields:
+    platform: 154
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 25}
+    depth: 25.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 960
+  fields:
+    platform: 154
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 25}
+    depth: 25.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 961
+  fields:
+    platform: 154
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 25}
+    depth: 25.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 962
+  fields:
+    platform: 154
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 963
+  fields:
+    platform: 154
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 964
+  fields:
+    platform: 154
+    data_type: 81
+    variable: pressure
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 965
+  fields:
+    platform: 154
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 966
+  fields:
+    platform: 154
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 967
+  fields:
+    platform: 154
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 968
+  fields:
+    platform: 154
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 969
+  fields:
+    platform: 154
+    data_type: 81
+    variable: pressure
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 970
+  fields:
+    platform: 154
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 971
+  fields:
+    platform: 154
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J03_sbe_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 972
+  fields:
+    platform: 154
+    data_type: 1
+    variable: air_temperature
+    constraints: {}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J03_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 973
+  fields:
+    platform: 154
+    data_type: 69
+    variable: wind_gust
+    constraints: {}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J03_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 974
+  fields:
+    platform: 154
+    data_type: 42
+    variable: wind_speed
+    constraints: {}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J03_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 975
+  fields:
+    platform: 154
+    data_type: 69
+    variable: wind_gust_1s
+    constraints: {}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J03_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 976
+  fields:
+    platform: 154
+    data_type: 36
+    variable: wind_direction
+    constraints: {}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J03_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 977
+  fields:
+    platform: 154
+    data_type: 82
+    variable: wind_percent_good
+    constraints: {}
+    depth: null
+    start_time: 2018-07-17 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J03_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 978
+  fields:
+    platform: 155
+    data_type: 66
+    variable: current_speed
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 15:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J04_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 979
+  fields:
+    platform: 155
+    data_type: 6
+    variable: current_direction
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 15:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J04_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 980
+  fields:
+    platform: 155
+    data_type: 9
+    variable: current_u
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 15:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J04_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 981
+  fields:
+    platform: 155
+    data_type: 15
+    variable: current_v
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 15:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J04_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 982
+  fields:
+    platform: 155
+    data_type: 25
+    variable: temperature
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 15:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: J04_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 983
+  fields:
+    platform: 155
+    data_type: 26
+    variable: significant_wave_height
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 15:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: J04_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 984
+  fields:
+    platform: 155
+    data_type: 67
+    variable: dominant_wave_period
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 15:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: J04_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 985
+  fields:
+    platform: 155
+    data_type: 52
+    variable: conductivity
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: J04_sbe16_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 986
+  fields:
+    platform: 155
+    data_type: 25
+    variable: temperature
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: J04_sbe16_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 987
+  fields:
+    platform: 155
+    data_type: 81
+    variable: pressure
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: J04_sbe16_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 988
+  fields:
+    platform: 155
+    data_type: 23
+    variable: salinity
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 3
+    erddap_dataset: J04_sbe16_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 989
+  fields:
+    platform: 155
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 990
+  fields:
+    platform: 155
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 991
+  fields:
+    platform: 155
+    data_type: 81
+    variable: pressure
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 992
+  fields:
+    platform: 155
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 993
+  fields:
+    platform: 155
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 10}
+    depth: 10.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 994
+  fields:
+    platform: 155
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 995
+  fields:
+    platform: 155
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 996
+  fields:
+    platform: 155
+    data_type: 81
+    variable: pressure
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 997
+  fields:
+    platform: 155
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 998
+  fields:
+    platform: 155
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 15}
+    depth: 15.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_pres_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 999
+  fields:
+    platform: 155
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 2}
+    depth: 2.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1000
+  fields:
+    platform: 155
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 2}
+    depth: 2.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1001
+  fields:
+    platform: 155
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 2}
+    depth: 2.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1002
+  fields:
+    platform: 155
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 2}
+    depth: 2.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1003
+  fields:
+    platform: 155
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 17}
+    depth: 17.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1004
+  fields:
+    platform: 155
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 17}
+    depth: 17.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1005
+  fields:
+    platform: 155
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 17}
+    depth: 17.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1006
+  fields:
+    platform: 155
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 17}
+    depth: 17.0
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: J04_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1007
+  fields:
+    platform: 155
+    data_type: 1
+    variable: air_temperature
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J04_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1008
+  fields:
+    platform: 155
+    data_type: 69
+    variable: wind_gust
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J04_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1009
+  fields:
+    platform: 155
+    data_type: 42
+    variable: wind_speed
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J04_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1010
+  fields:
+    platform: 155
+    data_type: 69
+    variable: wind_gust_1s
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J04_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1011
+  fields:
+    platform: 155
+    data_type: 36
+    variable: wind_direction
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J04_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1012
+  fields:
+    platform: 155
+    data_type: 82
+    variable: wind_percent_good
+    constraints: {}
+    depth: null
+    start_time: 2018-07-20 14:40:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: J04_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1013
+  fields:
+    platform: 98
+    data_type: 66
+    variable: current_speed
+    constraints: {}
+    depth: null
+    start_time: 2018-07-09 15:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: M01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1014
+  fields:
+    platform: 98
+    data_type: 6
+    variable: current_direction
+    constraints: {}
+    depth: null
+    start_time: 2018-07-09 15:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: M01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1015
+  fields:
+    platform: 98
+    data_type: 25
+    variable: temperature
+    constraints: {}
+    depth: null
+    start_time: 2018-07-09 15:00:00+00:00
+    end_time: null
+    buffer_type: 2
+    erddap_dataset: M01_aanderaa_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1016
+  fields:
+    platform: 98
+    data_type: 26
+    variable: significant_wave_height
+    constraints: {}
+    depth: null
+    start_time: 2003-07-09 05:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: M01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1017
+  fields:
+    platform: 98
+    data_type: 67
+    variable: dominant_wave_period
+    constraints: {}
+    depth: null
+    start_time: 2003-07-09 05:00:00+00:00
+    end_time: null
+    buffer_type: 23
+    erddap_dataset: M01_accelerometer_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1018
+  fields:
+    platform: 98
+    data_type: 1
+    variable: air_temperature
+    constraints: {}
+    depth: null
+    start_time: 2001-07-16 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: M01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1019
+  fields:
+    platform: 98
+    data_type: 68
+    variable: barometric_pressure
+    constraints: {}
+    depth: null
+    start_time: 2001-07-16 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: M01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1020
+  fields:
+    platform: 98
+    data_type: 69
+    variable: wind_gust
+    constraints: {}
+    depth: null
+    start_time: 2001-07-16 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: M01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1021
+  fields:
+    platform: 98
+    data_type: 42
+    variable: wind_speed
+    constraints: {}
+    depth: null
+    start_time: 2001-07-16 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: M01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1022
+  fields:
+    platform: 98
+    data_type: 36
+    variable: wind_direction
+    constraints: {}
+    depth: null
+    start_time: 2001-07-16 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: M01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1023
+  fields:
+    platform: 98
+    data_type: 29
+    variable: visibility
+    constraints: {}
+    depth: null
+    start_time: 2001-07-16 16:00:00+00:00
+    end_time: null
+    buffer_type: 6
+    erddap_dataset: M01_met_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1024
+  fields:
+    platform: 98
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 1}
+    depth: 1.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1025
+  fields:
+    platform: 98
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 1}
+    depth: 1.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1026
+  fields:
+    platform: 98
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 1}
+    depth: 1.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1027
+  fields:
+    platform: 98
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 1}
+    depth: 1.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1028
+  fields:
+    platform: 98
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 50}
+    depth: 50.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1029
+  fields:
+    platform: 98
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 50}
+    depth: 50.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1030
+  fields:
+    platform: 98
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 50}
+    depth: 50.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1031
+  fields:
+    platform: 98
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 50}
+    depth: 50.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1032
+  fields:
+    platform: 98
+    data_type: 52
+    variable: conductivity
+    constraints: {depth=: 100}
+    depth: 100.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1033
+  fields:
+    platform: 98
+    data_type: 25
+    variable: temperature
+    constraints: {depth=: 100}
+    depth: 100.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1034
+  fields:
+    platform: 98
+    data_type: 23
+    variable: salinity
+    constraints: {depth=: 100}
+    depth: 100.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
+    erddap_server: 1
+- model: deployments.timeseries
+  pk: 1035
+  fields:
+    platform: 98
+    data_type: 21
+    variable: sigma_t
+    constraints: {depth=: 100}
+    depth: 100.0
+    start_time: 2001-07-16 15:35:01+00:00
+    end_time: null
+    buffer_type: 18
+    erddap_dataset: M01_sbe37_all
     erddap_server: 1

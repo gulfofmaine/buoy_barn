@@ -83,7 +83,7 @@ Tests coverage can be run with `make coverage`.
 After the tests are run, and the report displayed in the command line, it will also generate an html report.
 This report can be viewed by opening `app/htmlcov/index.html` which will also attempt to automatically open in the default browser.
 
-## Initial Configuration
+## Initial Configuration for Development
 
 ### Settings
 

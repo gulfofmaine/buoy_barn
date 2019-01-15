@@ -196,7 +196,7 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
         self.assertEqual("FeatureCollection", geo["type"])
 
         self.assertEqual(
-            58,
+            60,
             len(geo["features"]),
             msg="Should be the same as the number of platforms in the fixture file. This may need to be changed after fixtures are regenerated.",
         )

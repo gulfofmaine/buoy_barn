@@ -22,6 +22,7 @@ web:
   volumes:
     - ./app:/app
     - ./.prospector.yaml:/app/.prospector.yaml
+    - ./docker-data/django-static:/static
   ports:
     - "8080:8080"
   env_file:

@@ -26,7 +26,15 @@ prune:
 	docker system prune -a
 
 load:
-	docker-compose exec web python manage.py loaddata deployments/fixtures/*.yaml
+	# docker-compose exec web python manage.py loaddata deployments/fixtures/*.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/platforms.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/Alerts.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/datatypes.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/deployments.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/erddapservers.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/programs.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/platformattribution.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/
 
 user:
 	docker-compose exec web python manage.py createsuperuser

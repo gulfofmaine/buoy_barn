@@ -27,6 +27,8 @@ web:
     - ./docker-data/django-static:/static
   ports:
     - "8080:8080"
+  environment:
+    DJANGO_MANAGEPY_COLLECTSTATIC: "on"
   env_file:
     - ./docker-data/secret.env
   links:

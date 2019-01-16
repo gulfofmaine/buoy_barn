@@ -99,7 +99,10 @@ POSTGRES_USER=a_user_name
 SECRET_KEY=a_really_long_random_string_that_no_one_should_no_and_should_probably_be_gibberish
 REDIS_CACHE=rediss://cache:6379/0
 DJANGO_DEBUG=True
+DJANGO_MANAGEPY_MIGRATE=off
 ```
+
+An additional environment variable is currently configured in `docker-compose.yaml` as it is unlikely to need to be changed.
 
 ### Starting Docker
 

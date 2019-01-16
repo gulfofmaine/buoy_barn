@@ -2,7 +2,7 @@
 
 # services:
 db:
-  image: mdillon/postgis:10-alpine
+  image: mdillon/postgis:10-alpine@sha256:06ee73c16ad7e5e5ca59df6aabf5f18338a3e42d9a6dfe797ef3c27e3f3f62e7
   restart: always
   env_file:
     - ./docker-data/secret.env
@@ -12,7 +12,7 @@ db:
     - ./docker-data/postgres:/var/lib/postgresql/data
 
 cache:
-  image: redis:5.0.3-alpine
+  image: redis:5.0.3-alpine@sha256:8e3ba72cd2bb6e508c430f303830e5dc5e4c210f06fd84ac91b2412352d555f7
   restart: always
 
 web:

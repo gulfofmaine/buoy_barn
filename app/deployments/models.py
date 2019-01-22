@@ -8,6 +8,7 @@ from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
 from memoize import memoize
 from requests import HTTPError
+from sentry_sdk import capture_exception, capture_message
 
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
 
@@ -92,9 +93,9 @@ class Platform(models.Model):
                     try:
                         row = filtered_df.iloc[-1]
                     except IndexError:
-                        logger.warning(
-                            f"Unable to find position in dataframe for {self.name} - {series.variable}"
-                        )
+                        message = f"Unable to find position in dataframe for {self.name} - {series.variable}"
+                        logger.warning(message)
+                        capture_message(message)
                         reading = None
                         time = None
                     else:
@@ -113,7 +114,8 @@ class Platform(models.Model):
                             "start_time": series.start_time,
                         }
                     )
-            except HTTPError:
+            except HTTPError as error:
+                capture_exception(error)
                 for series in timeseries:
                     readings.append(
                         {

@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# from https://www.caktusgroup.com/blog/2017/03/14/production-ready-dockerfile-your-python-django-app/
+# entrypoint design
+
 set -e
 
 until pg_isready -h $POSTGRES_HOST; do

@@ -11,6 +11,28 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import logging
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+logger = logging.getLogger(__name__)
+
+# SECURITY WARNING: don't run with debug turned on in production!
+try:
+    DEBUG = bool(os.environ["DJANGO_DEBUG"] != "False")
+except KeyError:
+    DEBUG = False
+
+try:
+    sentry_sdk.init(
+        dsn=os.environ["SENTRY_DSN"],
+        integrations=[DjangoIntegration()],
+        environment="dev" if DEBUG else "prod",
+    )
+    logger.info("Sentry initialized")
+except KeyError:
+    logger.warning("SENTRY_DSN missing. Sentry is not initalized")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,12 +43,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["SECRET_KEY"]
-
-# SECURITY WARNING: don't run with debug turned on in production!
-try:
-    DEBUG = bool(os.environ["DJANGO_DEBUG"] != "False")
-except KeyError:
-    DEBUG = False
 
 
 ALLOWED_HOSTS = ["*"]

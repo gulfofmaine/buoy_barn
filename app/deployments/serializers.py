@@ -3,6 +3,7 @@ from rest_framework_gis.serializers import (
     GeoFeatureModelSerializer,
     GeometrySerializerMethodField,
 )
+from sentry_sdk import capture_message
 
 from .models import Platform
 
@@ -20,6 +21,9 @@ class PlatformSerializer(GeoFeatureModelSerializer):
         try:
             return obj.location
         except AttributeError:
+            capture_message(
+                f"Platform ({obj.name}) does not have a valid location attribute"
+            )
             return None
 
     attribution = serializers.SerializerMethodField()

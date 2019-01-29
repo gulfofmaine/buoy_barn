@@ -23,6 +23,6 @@ COPY ./requirements.txt /app/
 RUN pip install -r requirements.txt
 
 # Copy app to working directory
-COPY ./* /app/
+COPY ./ /app/
 
 ENTRYPOINT ["/app/utils/entrypoint.sh"]

@@ -8,19 +8,6 @@ execution_time_limit:
   minutes: 15
 
 blocks:
-  - name: Lint
-    task:
-      prologue:
-        commands:
-          - wget https://github.com/garethr/kubeval/releases/download/0.6.0/kubeval-darwin-amd64.tar.gz
-          - tar xf kubeval-darwin-amd64.tar.gz
-          - cp kubeval /usr/local/bin
-          - checkout
-      jobs:
-        - name: Kubeval
-          commands:
-            - kubeval k8s/*
-
   - name: Build and Test
     task:
       secrets:

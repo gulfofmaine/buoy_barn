@@ -17,9 +17,9 @@ blocks:
           - cp kubeval /usr/local/bin
           - checkout
       jobs:
-        name: Kubeval
-        commands:
-          - kubeval k8s/*
+        - name: Kubeval
+          commands:
+            - kubeval k8s/*
 
   - name: Build and Test
     task:

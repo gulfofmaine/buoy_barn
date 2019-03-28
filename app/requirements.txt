@@ -20,7 +20,7 @@ django==2.1.5
 djangorestframework-gis==0.14
 djangorestframework==3.8.2
 dodgy==0.1.9              # via prospector
-erddapy==0.2.0
+erddapy==0.4.0
 freezegun==0.3.11
 geojson==2.4.1
 gunicorn==19.9.0

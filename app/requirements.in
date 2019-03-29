@@ -1,7 +1,7 @@
-Django==2.1.5
+Django==2.1.7
 gunicorn==19.9.0
 psycopg2-binary==2.7.5
-djangorestframework==3.8.2
+djangorestframework==3.9.2
 djangorestframework-gis==0.14
 django-memoize==2.2.0
 django-redis==4.10.0
@@ -12,6 +12,10 @@ netCDF4==1.4.2
 
 sentry-sdk==0.5.5
 django-cors-headers==2.4.0
+
+# tasks
+celery[redis]==4.3.0rc3
+django_celery_monitor==1.1.2
 
 # deployment
 uWSGI==2.0.17.1

@@ -32,6 +32,7 @@ load:
 	docker-compose exec web python manage.py loaddata deployments/fixtures/datatypes.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/deployments.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/erddapservers.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/ErddapDataset.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/programs.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/platformattribution.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/
@@ -65,6 +66,7 @@ fixtures:
 	docker-compose exec web python manage.py dumpdata --format yaml deployments.DataType -o deployments/fixtures/datatypes.yaml
 	docker-compose exec web python manage.py dumpdata --format yaml deployments.ErddapServer -o deployments/fixtures/erddapservers.yaml
 	docker-compose exec web python manage.py dumpdata --format yaml deployments.TimeSeries -o deployments/fixtures/TimeSeries.yaml
+	docker-compose exec web python manage.py dumpdata --format yaml deployments.ErddapDataset -o deployments/fixtures/ErddapDataset.yaml
 	docker-compose exec web python manage.py dumpdata --format yaml deployments.Alert -o deployments/fixtures/Alerts.yaml
 
 lint:

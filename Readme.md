@@ -10,7 +10,19 @@ Otherwise you can use `make up` to start the server, which you can then access t
 
 You can also launch it quickly in your current Kubernetes cluster. See [Kubernetes](#kubernetes) below
 
-To force a refresh of the latest data for platforms hit [localhost:8080/api/platforms/refresh/](http://localhost:8080/api/platforms/refresh/).
+There are two ways to refresh data.
+
+- First, you can refresh the values for a specific dataset.
+  This is designed to work with the ERDDAP subscription service, allowing the ERDDAP server to notify Buoy Barn when there is new data, which is more efficient than refreshing on a schedule.
+
+  - First navagate to `datasets/` in the API, then find the slug of the dataset that should be refreshed.
+    Append that value to `datasets/` and then you can add `refresh/` after that, so `/api/datasets/<SLUG>/refresh/` will trigger the dataset to update the associated timeseries data.
+
+  - Then go to the erddap server that contains the dataset, say Coastwatch, and find the subscription service (it should be on the home page).
+    From the [add page](https://coastwatch.pfeg.noaa.gov/erddap/subscriptions/add.html), you can then enter the dataset ID, your email, and the URL that you just found previously to subscribe to updates.
+
+- Second, you can refresh all timeseries from a specific server.
+  This is for timeseries that do not use the ERDDAP subscription service.
 
 If you `ctrl-c` out of the logs (or close the window), you can get the logs back with `make logs`.
 

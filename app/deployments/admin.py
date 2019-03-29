@@ -12,6 +12,7 @@ from .models import (
     TimeSeries,
     ProgramAttribution,
     ErddapServer,
+    ErddapDataset,
 )
 
 
@@ -47,3 +48,4 @@ admin.site.register(StationType)
 admin.site.register(DataType)
 admin.site.register(BufferType)
 admin.site.register(ErddapServer)
+admin.site.register(ErddapDataset)

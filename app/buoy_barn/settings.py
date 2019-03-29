@@ -63,8 +63,10 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "corsheaders",
     "memoize",
+    "django_celery_monitor",
     # User management
     "account.apps.AccountConfig",
+    # Dataset and forecast management
     "deployments.apps.DeploymentsConfig",
     "forecasts.apps.ForecastsConfig",
 ]
@@ -163,3 +165,5 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = "/static/"
 
+# Celery TASK management
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")

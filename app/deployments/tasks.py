@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def update_values_for_timeseries(timeseries):
     """ Update values and most recent times for a group of timeseries that have the same constraints """
-    logger.info("Working on timeseries:", timeseries)
+    logger.info(f"Working on timeseries: {timeseries}")
     try:
         df = retrieve_dataframe(
             timeseries[0].dataset.server,
@@ -44,9 +44,7 @@ def update_values_for_timeseries(timeseries):
                     series.value_time = row["time"].to_pydatetime()
                     series.save()
                 except TypeError as error:
-                    # breakpoint()
-                    logger.warning(error)
-                # logger.warning(f"Couldn't save row: {row}, {row["time"]})
+                    logger.warning(f"Could not save {series.variable} from {row}")
 
 
 @shared_task

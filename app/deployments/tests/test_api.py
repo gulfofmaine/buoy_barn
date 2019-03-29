@@ -1,7 +1,8 @@
+from unittest.mock import patch
+
 import geojson
 from rest_framework.test import APITestCase
 
-from deployments import tasks
 from deployments.models import (
     Platform,
     TimeSeries,
@@ -216,3 +217,58 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             len(geo["features"]),
             msg="Should be the same as the number of platforms in the fixture file. This may need to be changed after fixtures are regenerated.",
         )
+
+    def test_server_list(self):
+        response = self.client.get("/api/servers/", format="json")
+
+        self.assertEqual(2, len(response.data))
+        self.assertIn(b"NERACOOS", response.content)
+
+    def test_server_detail(self):
+        response = self.client.get("/api/servers/1/", format="json")
+
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertIn("name", response.data)
+        self.assertIn("base_url", response.data)
+        self.assertIn("url", response.data)
+
+    @patch("deployments.tasks.refresh_server.delay")
+    def test_server_refresh(self, refresh_server):
+        response = self.client.get("/api/servers/1/refresh/", format="json")
+
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertIn("name", response.data)
+        self.assertIn("base_url", response.data)
+        self.assertIn("url", response.data)
+        refresh_server.assert_called_once()
+
+    def test_dataset_list(self):
+        response = self.client.get("/api/datasets/", format="json")
+
+        self.assertIn(b"N01_sbe37_all", response.content)
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertEqual(2, len(response.data))
+
+    def test_dataset_detail(self):
+        response = self.client.get(
+            "/api/datasets/NERACOOS-N01_sbe37_all/", format="json"
+        )
+
+        self.assertIn(b"N01_sbe37_all", response.content)
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertIn("name", response.data)
+        self.assertIn("server", response.data)
+        self.assertIn("name", response.data["server"])
+
+    @my_vcr.use_cassette("dataset_detail.yaml")
+    @patch("deployments.tasks.refresh_dataset.delay")
+    def test_dataset_refresh(self, refresh_dataset):
+        response = self.client.get(
+            "/api/datasets/NERACOOS-N01_sbe37_all/refresh/", format="json"
+        )
+        self.assertIn(b"N01_sbe37_all", response.content)
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertIn("name", response.data)
+        self.assertIn("server", response.data)
+        self.assertIn("name", response.data["server"])
+        refresh_dataset.assert_called_once()

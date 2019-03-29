@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from memoize import delete_memoized
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response

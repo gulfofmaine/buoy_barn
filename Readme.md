@@ -8,6 +8,8 @@ If you are setting it up for the first time see [Initial Configuration](#initial
 
 Otherwise you can use `make up` to start the server, which you can then access the admin at [localhost:8080/admin/](http://localhost:8080/admin/) and api at [localhost:8080/api/](http://localhost:8080/api/).
 
+You can also launch it quickly in your current Kubernetes cluster. See [Kubernetes](#kubernetes) below
+
 To force a refresh of the latest data for platforms hit [localhost:8080/api/platforms/refresh/](http://localhost:8080/api/platforms/refresh/).
 
 If you `ctrl-c` out of the logs (or close the window), you can get the logs back with `make logs`.
@@ -194,3 +196,31 @@ To add a dependency, copy it (and the version) into `requirements.in`.
 Then run `make requirements-compile` to run pip-tools to regenerate the `requirements.txt` file to pin the whole dependency tree.
 
 You can also run `make requirement-tree` to see the whole requirements tree and if there are any conflicts.
+
+## Kubernetes
+
+As we are moving towards using Kubernetes, you can launch Buoy Barn in a Kubernetes cluster.
+See the `/k8s/` directory to see the configs.
+
+To start create the secrets needed for the cluster in `/k8s/secrets.yaml`.
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: buoy-barn-shared
+type: Opaque
+data:
+  SENTRY_DSN: base64 encoded DSN
+  SECRET_KEY: base64 encoded key
+```
+
+The cluster also needs a [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) controller, and the [KubeDB](https://kubedb.com) operator.
+
+We are also using a custom Postgresql version for KubeDB with the PostGIS extensions from [abkfenris/kubedb-postgis].
+You'll need to clone or download that repo, then use `kubectl apply -f 10.2/postgis\:10.2-v2.yaml` to add the custom PostgresVersion.
+
+Once those are set up, you can run `skaffold dev` to launch a easily interactive version of the cluster.
+Use `ctrl-c` to shutdown the cluster, and [Skaffold](https://skaffold.dev) will tear down what it set up.
+
+> Note: If you remove a spec from the `skaffold.yaml` while the cluster is up, Skaffold will not remove those resources from the cluster.

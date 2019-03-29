@@ -25,9 +25,9 @@ blocks:
           - docker-compose exec db pg_isready -U buoy_barn -d buoy_barn -t 30
 
       jobs:
-      - name: Test
-        commands:
-          - docker-compose exec web coverage run --source='.' manage.py test -v 2
-          - docker-compose exec web coverage report
-          - docker-compose exec web coverage xml
-          - ~/.local/bin/python-codacy-coverage -r app/coverage.xml
+        - name: Test
+          commands:
+            - docker-compose exec web coverage run --source='.' manage.py test -v 2
+            - docker-compose exec web coverage report
+            - docker-compose exec web coverage xml
+            - ~/.local/bin/python-codacy-coverage -r app/coverage.xml

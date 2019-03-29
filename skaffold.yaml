@@ -1,0 +1,18 @@
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+    - image: web
+      context: app
+deploy:
+  kubectl:
+    manifests:
+      # - k8s/cache-deployment.yaml
+      # - k8s/cache-service.yaml
+      - k8s/cache.yaml
+      - k8s/config.yaml
+      - k8s/secrets.yaml
+      - k8s/web-deployment.yaml
+      - k8s/web-service.yaml
+      - k8s/db.yaml
+      - k8s/ingress.yaml

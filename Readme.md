@@ -103,7 +103,7 @@ This report can be viewed by opening `app/htmlcov/index.html` which will also at
 
 To start the database, you'll need to configure it with a username and password. You'll also need to set a secret key that Django will use to protect sessions.
 
-Redis also runs as a cache, and the uri to the cache instance should be included.
+Redis also runs as a cache and a task queue, and the uri to the cache instance should be included.
 
 To do so create a `secret.env` file in `./docker-data/` that looks something like this.
 
@@ -115,6 +115,7 @@ REDIS_CACHE=rediss://cache:6379/0
 DJANGO_DEBUG=True
 DJANGO_MANAGEPY_MIGRATE=off
 SENTRY_DSN=some_long_string_from_sentry
+CELERY_BROKER_URL=rediss://cache:6379/1
 ```
 
 An additional environment variable is currently configured in `docker-compose.yaml` as it is unlikely to need to be changed.

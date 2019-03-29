@@ -10,6 +10,8 @@ db:
     PGDATA: /var/lib/postgresql/data/PGDATA
   volumes:
     - ./docker-data/postgres:/var/lib/postgresql/data
+  ports:
+    - "5432:5432"
 
 cache:
   image: redis:5.0.3-alpine@sha256:8e3ba72cd2bb6e508c430f303830e5dc5e4c210f06fd84ac91b2412352d555f7
@@ -17,10 +19,10 @@ cache:
 
 web:
   build: ./app
-  # command: bash -c "./utils/wait-for-it.sh db:5432 &&  python manage.py runserver 0:8080"
-  # command: "uwsgi --http :8080 --wsgi-file buoy_barn/wsgi.py  --master --processes 4 --threads 2"
-  command: "uwsgi --module=buoy_barn.wsgi:application --master --pidfile=/tmp/project-master.pid --http :8080 --uid=1000 --gid=2000 --max-requests=5000 --vacuum --processes 4"
-  # command: "gunicorn --bind 0.0.0.0:8080 buoy_barn.wsgi:application"
+  command: bash -c "./utils/wait-for-it.sh db:5432 &&  python manage.py runserver 0:8080"
+  # # command: "uwsgi --http :8080 --wsgi-file buoy_barn/wsgi.py  --master --processes 4 --threads 2"
+  # command: "uwsgi --module=buoy_barn.wsgi:application --master --pidfile=/tmp/project-master.pid --http :8080 --uid=1000 --gid=2000 --max-requests=5000 --vacuum --processes 4"
+  # # command: "gunicorn --bind 0.0.0.0:8080 buoy_barn.wsgi:application"
   restart: always
   volumes:
     - ./app:/app
@@ -30,6 +32,26 @@ web:
     - "8080:8080"
   environment:
     DJANGO_MANAGEPY_COLLECTSTATIC: "on"
+  env_file:
+    - ./docker-data/secret.env
+  links:
+    - db
+    - cache
+
+celery-worker:
+  build: ./app
+  command: celery -A buoy_barn worker -l info
+  restart: always
+  env_file:
+    - ./docker-data/secret.env
+  links:
+    - db
+    - cache
+
+celery-monitor:
+  build: ./app
+  command: celery -A buoy_barn events -l info --camera django_celery_monitor.camera.Camera --frequency=2.0
+  restart: always
   env_file:
     - ./docker-data/secret.env
   links:

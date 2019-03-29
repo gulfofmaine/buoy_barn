@@ -1,12 +1,17 @@
+from unittest.mock import patch
+
 import geojson
 from rest_framework.test import APITestCase
 
-from deployments.models import Platform, TimeSeries, ErddapServer, DataType, BufferType
+from deployments.models import (
+    Platform,
+    TimeSeries,
+    ErddapServer,
+    DataType,
+    BufferType,
+    ErddapDataset,
+)
 from .vcr import my_vcr
-
-
-# my_vcr = vcr.VCR(cassette_library_dir='deployments/tests/cassettes/',
-#                  match_on=['method', 'scheme', 'host', 'port', 'path'])
 
 
 class BuoyBarnPlatformAPITestCase(APITestCase):
@@ -27,6 +32,10 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
 
         self.buffer_type = BufferType.objects.get(name="sbe37")
 
+        self.ds_N01_sbe37 = ErddapDataset.objects.create(
+            name="N01_sbe37_all", server=self.erddap
+        )
+
         # two time series from the same dataset and constraints
         self.ts1 = TimeSeries.objects.create(
             platform=self.platform,
@@ -37,8 +46,9 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             start_time="2004-06-03 21:00:00+00",
             end_time=None,
             buffer_type=self.buffer_type,
-            erddap_dataset="N01_sbe37_all",
-            erddap_server=self.erddap,
+            dataset=self.ds_N01_sbe37,
+            value=32.97419,
+            value_time="2019-03-22 00:00:00+00",
         )
         self.ts2 = TimeSeries.objects.create(
             platform=self.platform,
@@ -49,8 +59,9 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             start_time="2004-06-03 21:00:00+00",
             end_time=None,
             buffer_type=self.buffer_type,
-            erddap_dataset="N01_sbe37_all",
-            erddap_server=self.erddap,
+            dataset=self.ds_N01_sbe37,
+            value=5.706,
+            value_time="2019-03-22 00:00:00+00",
         )
 
         # one with the same dataset but a different constraint
@@ -63,8 +74,13 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             start_time="2004-06-03 21:00:00+00",
             end_time=None,
             buffer_type=self.buffer_type,
-            erddap_dataset="N01_sbe37_all",
-            erddap_server=self.erddap,
+            dataset=self.ds_N01_sbe37,
+            value=3.787,
+            value_time="2019-03-22 00:00:00+00",
+        )
+
+        self.ds_N01_aanderaa = ErddapDataset.objects.create(
+            name="N01_aanderaa_all", server=self.erddap
         )
 
         # one with a different dataset
@@ -77,8 +93,9 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             start_time="2004-06-03 21:00:00+00",
             end_time=None,
             buffer_type=None,
-            erddap_dataset="N01_aanderaa_all",
-            erddap_server=self.erddap,
+            dataset=self.ds_N01_aanderaa,
+            value=18.3632,
+            value_time="2019-03-22 00:00:00+00",
         )
 
         # one that has an end_time so it should not be offered
@@ -91,8 +108,7 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             start_time="2004-06-03 21:00:00+00",
             end_time="2007-06-03 21:00:00+00",
             buffer_type=self.buffer_type,
-            erddap_dataset="N01_sbe37_all",
-            erddap_server=self.erddap,
+            dataset=self.ds_N01_sbe37,
         )
 
     def test_platform_detail_with_no_time_series(self):
@@ -154,6 +170,7 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
 
         for reading in geo["properties"]["readings"]:
             self.assertIn("depth", reading)  # Ok for depth to be none
+
             for key in (
                 "value",
                 "time",
@@ -201,47 +218,57 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             msg="Should be the same as the number of platforms in the fixture file. This may need to be changed after fixtures are regenerated.",
         )
 
+    def test_server_list(self):
+        response = self.client.get("/api/servers/", format="json")
 
-class BuoyBarn500APITestCase(APITestCase):
-    """ Test that the server doesn't return a 500 when an ERDDAP datasource doesn't return any rows"""
+        self.assertEqual(2, len(response.data))
+        self.assertIn(b"NERACOOS", response.content)
 
-    fixtures = ["platforms", "erddapservers"]
+    def test_server_detail(self):
+        response = self.client.get("/api/servers/1/", format="json")
 
-    def setUp(self):
-        self.platform = Platform.objects.get(name="44005")
-        self.erddap = ErddapServer.objects.get(
-            base_url="https://coastwatch.pfeg.noaa.gov/erddap"
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertIn("name", response.data)
+        self.assertIn("base_url", response.data)
+        self.assertIn("url", response.data)
+
+    @patch("deployments.tasks.refresh_server.delay")
+    def test_server_refresh(self, refresh_server):
+        response = self.client.get("/api/servers/1/refresh/", format="json")
+
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertIn("name", response.data)
+        self.assertIn("base_url", response.data)
+        self.assertIn("url", response.data)
+        refresh_server.assert_called_once()
+
+    def test_dataset_list(self):
+        response = self.client.get("/api/datasets/", format="json")
+
+        self.assertIn(b"N01_sbe37_all", response.content)
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertEqual(2, len(response.data))
+
+    def test_dataset_detail(self):
+        response = self.client.get(
+            "/api/datasets/NERACOOS-N01_sbe37_all/", format="json"
         )
-        self.data_type = DataType.objects.get(standard_name="visibility_in_air")
 
-        self.ts = TimeSeries.objects.create(
-            platform=self.platform,
-            data_type=self.data_type,
-            variable="vis",
-            constraints={"station=": "41010"},
-            depth=None,
-            start_time="1970-02-26 20:00:00+00",
-            end_time=None,
-            buffer_type=None,
-            erddap_dataset="cwwcNDBCMet",
-            erddap_server=self.erddap,
+        self.assertIn(b"N01_sbe37_all", response.content)
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertIn("name", response.data)
+        self.assertIn("server", response.data)
+        self.assertIn("name", response.data["server"])
+
+    @my_vcr.use_cassette("dataset_detail.yaml")
+    @patch("deployments.tasks.refresh_dataset.delay")
+    def test_dataset_refresh(self, refresh_dataset):
+        response = self.client.get(
+            "/api/datasets/NERACOOS-N01_sbe37_all/refresh/", format="json"
         )
-
-    @my_vcr.use_cassette("no_rows_returned.yaml")
-    def test_erddap_returns_no_rows(self):
-        response = self.client.get("/api/platforms/44005/")
-
-        for key in ("id", "type", "geometry", "properties"):
-            self.assertIn(key, response.data, msg=f"{key} not in top level of response")
-
-        geo = geojson.loads(response.content)
-
-        self.assertTrue(geo.is_valid)
-        self.assertEqual("Feature", geo["type"])
-
-        self.assertEqual(1, len(geo["properties"]["readings"]))
-
-        for reading in geo["properties"]["readings"]:
-            self.assertIsNone(reading["value"])
-            self.assertIsNone(reading["value"])
-
+        self.assertIn(b"N01_sbe37_all", response.content)
+        self.assertIn(b"NERACOOS", response.content)
+        self.assertIn("name", response.data)
+        self.assertIn("server", response.data)
+        self.assertIn("name", response.data["server"])
+        refresh_dataset.assert_called_once()

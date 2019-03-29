@@ -1,0 +1,117 @@
+- model: deployments.erddapdataset
+  pk: 1
+  fields: {name: cwwcNDBCMet, server: 2}
+- model: deployments.erddapdataset
+  pk: 2
+  fields: {name: N01_aanderaa_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 3
+  fields: {name: N01_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 4
+  fields: {name: N01_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 5
+  fields: {name: N01_sbe37_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 6
+  fields: {name: F01_sbe37_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 7
+  fields: {name: J03_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 8
+  fields: {name: J03_sbe37_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 9
+  fields: {name: J03_sbe_pres_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 10
+  fields: {name: J04_aanderaa_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 11
+  fields: {name: J04_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 12
+  fields: {name: J04_sbe16_pres_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 13
+  fields: {name: A01_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 14
+  fields: {name: A01_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 15
+  fields: {name: A01_optode_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 16
+  fields: {name: A01_sbe16_disox_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 17
+  fields: {name: A01_sbe37_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 18
+  fields: {name: B01_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 19
+  fields: {name: B01_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 20
+  fields: {name: B01_sbe37_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 21
+  fields: {name: I01_aanderaa_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 22
+  fields: {name: I01_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 23
+  fields: {name: I01_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 24
+  fields: {name: I01_sbe37_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 25
+  fields: {name: J04_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 26
+  fields: {name: E01_aanderaa_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 27
+  fields: {name: E01_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 28
+  fields: {name: E01_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 29
+  fields: {name: E01_sbe37_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 30
+  fields: {name: F01_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 31
+  fields: {name: F01_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 32
+  fields: {name: J03_aanderaa_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 33
+  fields: {name: J03_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 34
+  fields: {name: J04_sbe37_pres_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 35
+  fields: {name: J04_sbe37_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 36
+  fields: {name: M01_aanderaa_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 37
+  fields: {name: M01_accelerometer_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 38
+  fields: {name: M01_met_all, server: 1}
+- model: deployments.erddapdataset
+  pk: 39
+  fields: {name: M01_sbe37_all, server: 1}

@@ -9,8 +9,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:58.515115+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 414
   fields:
@@ -22,8 +24,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:56.240280+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 415
   fields:
@@ -35,8 +39,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:56.249948+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 422
   fields:
@@ -48,8 +54,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:56.295584+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 427
   fields:
@@ -61,8 +69,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:56.320448+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 428
   fields:
@@ -74,8 +84,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:56.326164+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 429
   fields:
@@ -87,8 +99,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:55.461166+00:00
+    value: 210.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 430
   fields:
@@ -100,8 +114,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:55.466203+00:00
+    value: 2.59999990463257
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 436
   fields:
@@ -113,8 +129,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:55.438646+00:00
+    value: 1021.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 437
   fields:
@@ -126,8 +144,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:55.471717+00:00
+    value: 7.30000019073486
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 439
   fields:
@@ -139,8 +159,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:55.477114+00:00
+    value: 4.80000019073486
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 441
   fields:
@@ -152,8 +174,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:35:47.034407+00:00
+    value: -3.0
+    value_time: 2019-03-28 17:00:00+00:00
 - model: deployments.timeseries
   pk: 443
   fields:
@@ -165,8 +189,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:55.451496+00:00
+    value: 1.29999995231628
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 444
   fields:
@@ -178,8 +204,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:55.456356+00:00
+    value: 2.29999995231628
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 445
   fields:
@@ -191,8 +219,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:06.631529+00:00
+    value: 170.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 446
   fields:
@@ -204,8 +234,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:06.609094+00:00
+    value: 8.19999980926514
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 447
   fields:
@@ -217,8 +249,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:49:59.827557+00:00
+    value: 14.8999996185303
+    value_time: 2019-03-28 18:00:00+00:00
 - model: deployments.timeseries
   pk: 452
   fields:
@@ -230,8 +264,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:06.598391+00:00
+    value: 1019.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 453
   fields:
@@ -243,8 +279,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:06.619907+00:00
+    value: 4.69999980926514
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 457
   fields:
@@ -256,8 +294,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:06.625493+00:00
+    value: 0.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 459
   fields:
@@ -269,8 +309,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:06.637092+00:00
+    value: -1.39999997615814
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 460
   fields:
@@ -282,8 +324,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:06.642126+00:00
+    value: 8.10000038146973
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 461
   fields:
@@ -295,8 +339,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:56.422628+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 462
   fields:
@@ -308,8 +354,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:09.165618+00:00
+    value: 1.5
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 469
   fields:
@@ -321,8 +369,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:09.171837+00:00
+    value: 5.59999990463257
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 471
   fields:
@@ -334,8 +384,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:09.176964+00:00
+    value: 2.40000009536743
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 475
   fields:
@@ -347,8 +399,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:09.182045+00:00
+    value: -0.300000011920929
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 476
   fields:
@@ -360,8 +414,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:09.187565+00:00
+    value: 1.5
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 525
   fields:
@@ -373,8 +429,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:56.572406+00:00
+    value: 200.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 526
   fields:
@@ -386,8 +444,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:35:50.353027+00:00
+    value: 11.8000001907349
+    value_time: 2019-03-28 18:00:00+00:00
 - model: deployments.timeseries
   pk: 527
   fields:
@@ -399,8 +459,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:56.578042+00:00
+    value: 8.80000019073486
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 532
   fields:
@@ -412,8 +474,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:56.547289+00:00
+    value: 1018.20001220703
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 533
   fields:
@@ -425,8 +489,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:56.583240+00:00
+    value: 4.59999990463257
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 537
   fields:
@@ -438,8 +504,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:56.554190+00:00
+    value: -0.400000005960464
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 539
   fields:
@@ -451,8 +519,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:56.560252+00:00
+    value: 2.59999990463257
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 540
   fields:
@@ -464,8 +534,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:56.566714+00:00
+    value: 7.19999980926514
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 541
   fields:
@@ -477,8 +549,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:56.796809+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 542
   fields:
@@ -490,8 +564,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.464176+00:00
+    value: 5.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 543
   fields:
@@ -503,8 +579,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.412641+00:00
+    value: 7.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 544
   fields:
@@ -516,8 +594,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.468545+00:00
+    value: 0.899999976158142
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 545
   fields:
@@ -529,8 +609,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.418937+00:00
+    value: 10.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 546
   fields:
@@ -542,8 +624,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.424213+00:00
+    value: 5.30000019073486
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 547
   fields:
@@ -555,8 +639,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.429006+00:00
+    value: 73.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 548
   fields:
@@ -568,8 +654,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.433976+00:00
+    value: 1018.79998779297
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 549
   fields:
@@ -581,8 +669,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.439937+00:00
+    value: 6.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 550
   fields:
@@ -594,8 +684,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.445434+00:00
+    value: 4.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 551
   fields:
@@ -607,8 +699,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.450563+00:00
+    value: 3.90000009536743
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 553
   fields:
@@ -620,8 +714,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.455358+00:00
+    value: -1.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 555
   fields:
@@ -633,8 +729,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.459793+00:00
+    value: -1.70000004768372
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 556
   fields:
@@ -646,8 +744,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:10.472868+00:00
+    value: 4.69999980926514
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 557
   fields:
@@ -659,8 +759,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.699161+00:00
+    value: 200.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 558
   fields:
@@ -672,8 +774,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:35:52.756636+00:00
+    value: 5.0
+    value_time: 2019-03-28 19:00:00+00:00
 - model: deployments.timeseries
   pk: 559
   fields:
@@ -685,8 +789,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.760168+00:00
+    value: 10.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 560
   fields:
@@ -698,8 +804,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.705982+00:00
+    value: 1.29999995231628
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 561
   fields:
@@ -711,8 +819,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.712053+00:00
+    value: 10.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 562
   fields:
@@ -724,8 +834,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.717176+00:00
+    value: 4.90000009536743
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 563
   fields:
@@ -737,8 +849,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.722375+00:00
+    value: 106.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 564
   fields:
@@ -750,8 +864,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.727555+00:00
+    value: 1020.59997558594
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 565
   fields:
@@ -763,8 +879,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.732482+00:00
+    value: 7.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 566
   fields:
@@ -776,8 +894,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.737301+00:00
+    value: 5.30000019073486
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 567
   fields:
@@ -789,8 +909,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.766008+00:00
+    value: 6.30000019073486
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 569
   fields:
@@ -802,8 +924,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.743085+00:00
+    value: -1.10000002384186
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 571
   fields:
@@ -815,8 +939,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.749224+00:00
+    value: 3.09999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 572
   fields:
@@ -828,8 +954,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:57.754650+00:00
+    value: 8.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 576
   fields:
@@ -841,8 +969,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:58.831462+00:00
+    value: 1.5
+    value_time: 2019-03-29 06:00:00+00:00
 - model: deployments.timeseries
   pk: 577
   fields:
@@ -854,8 +984,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:58.843292+00:00
+    value: 6.0
+    value_time: 2019-03-29 06:00:00+00:00
 - model: deployments.timeseries
   pk: 578
   fields:
@@ -867,8 +999,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:58.837175+00:00
+    value: 4.90000009536743
+    value_time: 2019-03-29 06:00:00+00:00
 - model: deployments.timeseries
   pk: 579
   fields:
@@ -880,8 +1014,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:35:53.912022+00:00
+    value: 183.0
+    value_time: 2019-03-28 18:00:00+00:00
 - model: deployments.timeseries
   pk: 582
   fields:
@@ -893,8 +1029,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:58.824470+00:00
+    value: 4.19999980926514
+    value_time: 2019-03-29 06:00:00+00:00
 - model: deployments.timeseries
   pk: 605
   fields:
@@ -906,8 +1044,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.045633+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 606
   fields:
@@ -919,8 +1059,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:11.587403+00:00
+    value: 6.69999980926514
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 607
   fields:
@@ -932,8 +1074,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:11.544076+00:00
+    value: 6.69999980926514
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 612
   fields:
@@ -945,8 +1089,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:11.554339+00:00
+    value: 1009.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 613
   fields:
@@ -958,8 +1104,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:11.561748+00:00
+    value: 8.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 615
   fields:
@@ -971,8 +1119,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:11.568145+00:00
+    value: 4.59999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 617
   fields:
@@ -984,8 +1134,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.117883+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 619
   fields:
@@ -997,8 +1149,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:11.574901+00:00
+    value: 4.30000019073486
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 620
   fields:
@@ -1010,8 +1164,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:11.581163+00:00
+    value: 5.09999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 621
   fields:
@@ -1023,8 +1179,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.145366+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 622
   fields:
@@ -1036,8 +1194,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.727694+00:00
+    value: 7.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 623
   fields:
@@ -1049,8 +1209,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.814278+00:00
+    value: 9.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 624
   fields:
@@ -1062,8 +1224,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.734827+00:00
+    value: 0.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 625
   fields:
@@ -1075,8 +1239,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.741921+00:00
+    value: 3.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 626
   fields:
@@ -1088,8 +1254,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.748340+00:00
+    value: 3.29999995231628
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 627
   fields:
@@ -1101,8 +1269,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.756959+00:00
+    value: 192.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 628
   fields:
@@ -1114,8 +1284,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.762794+00:00
+    value: 1021.40002441406
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 629
   fields:
@@ -1127,8 +1299,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.770050+00:00
+    value: 6.09999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 630
   fields:
@@ -1140,8 +1314,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.777574+00:00
+    value: 4.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 631
   fields:
@@ -1153,8 +1329,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.784332+00:00
+    value: 4.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 633
   fields:
@@ -1166,8 +1344,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.791994+00:00
+    value: 0.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 635
   fields:
@@ -1179,8 +1359,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.799317+00:00
+    value: 1.20000004768372
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 636
   fields:
@@ -1192,8 +1374,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:12.807784+00:00
+    value: 6.90000009536743
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 653
   fields:
@@ -1205,8 +1389,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:59.971089+00:00
+    value: 190.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 654
   fields:
@@ -1218,8 +1404,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:59.978611+00:00
+    value: 6.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 655
   fields:
@@ -1231,8 +1419,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:59.984546+00:00
+    value: 8.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 656
   fields:
@@ -1244,8 +1434,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:59.990838+00:00
+    value: 1.60000002384186
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 657
   fields:
@@ -1257,8 +1449,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:55:59.997245+00:00
+    value: 7.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 658
   fields:
@@ -1270,8 +1464,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:00.051163+00:00
+    value: 5.40000009536743
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 659
   fields:
@@ -1283,8 +1479,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:00.003534+00:00
+    value: 218.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 660
   fields:
@@ -1296,8 +1494,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:00.009934+00:00
+    value: 1019.29998779297
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 661
   fields:
@@ -1309,8 +1509,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:00.016372+00:00
+    value: 5.09999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 662
   fields:
@@ -1322,8 +1524,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:00.023903+00:00
+    value: 4.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 663
   fields:
@@ -1335,8 +1539,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:00.030419+00:00
+    value: 3.70000004768372
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 665
   fields:
@@ -1348,8 +1554,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:00.037678+00:00
+    value: 0.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 667
   fields:
@@ -1361,8 +1569,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:00.044078+00:00
+    value: 1.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 668
   fields:
@@ -1374,8 +1584,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:50:08.935899+00:00
+    value: 10.8000001907349
+    value_time: 2019-03-28 19:00:00+00:00
 - model: deployments.timeseries
   pk: 669
   fields:
@@ -1387,8 +1599,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.769845+00:00
+    value: 210.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 670
   fields:
@@ -1400,8 +1614,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:50:13.693471+00:00
+    value: 11.0
+    value_time: 2019-03-28 19:00:00+00:00
 - model: deployments.timeseries
   pk: 671
   fields:
@@ -1413,8 +1629,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.775773+00:00
+    value: 6.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 672
   fields:
@@ -1426,8 +1644,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.780690+00:00
+    value: 1.29999995231628
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 673
   fields:
@@ -1439,8 +1659,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.785392+00:00
+    value: 6.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 674
   fields:
@@ -1452,8 +1674,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.790319+00:00
+    value: 5.19999980926514
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 675
   fields:
@@ -1465,8 +1689,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.794653+00:00
+    value: 137.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 676
   fields:
@@ -1478,8 +1704,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.798803+00:00
+    value: 1017.59997558594
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 677
   fields:
@@ -1491,8 +1719,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.803028+00:00
+    value: 4.59999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 678
   fields:
@@ -1504,8 +1734,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.806783+00:00
+    value: 3.59999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 679
   fields:
@@ -1517,8 +1749,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.810759+00:00
+    value: 3.09999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 681
   fields:
@@ -1530,8 +1764,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.815348+00:00
+    value: -0.699999988079071
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 683
   fields:
@@ -1543,8 +1779,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.819400+00:00
+    value: 2.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 684
   fields:
@@ -1556,8 +1794,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:02.824692+00:00
+    value: 4.30000019073486
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 685
   fields:
@@ -1569,8 +1809,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.320060+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 686
   fields:
@@ -1582,8 +1824,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:13.999227+00:00
+    value: 7.69999980926514
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 687
   fields:
@@ -1595,8 +1839,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:13.951121+00:00
+    value: 8.19999980926514
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 692
   fields:
@@ -1608,8 +1854,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:13.960189+00:00
+    value: 1018.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 693
   fields:
@@ -1621,8 +1869,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:13.969100+00:00
+    value: 5.69999980926514
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 695
   fields:
@@ -1634,8 +1884,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:13.976516+00:00
+    value: 3.09999990463257
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 697
   fields:
@@ -1647,8 +1899,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:13.988223+00:00
+    value: -0.800000011920929
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 699
   fields:
@@ -1660,8 +1914,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:13.994627+00:00
+    value: 2.59999990463257
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 700
   fields:
@@ -1673,8 +1929,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:14.004490+00:00
+    value: 7.19999980926514
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 701
   fields:
@@ -1686,8 +1944,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.232954+00:00
+    value: 190.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 702
   fields:
@@ -1699,8 +1959,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.279636+00:00
+    value: 5.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 703
   fields:
@@ -1712,8 +1974,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:50:12.534507+00:00
+    value: 10.0
+    value_time: 2019-03-28 19:00:00+00:00
 - model: deployments.timeseries
   pk: 704
   fields:
@@ -1725,8 +1989,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.238791+00:00
+    value: 1.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 705
   fields:
@@ -1738,8 +2004,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.243567+00:00
+    value: 10.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 706
   fields:
@@ -1751,8 +2019,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.247881+00:00
+    value: 4.59999990463257
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 707
   fields:
@@ -1764,8 +2034,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.252252+00:00
+    value: 109.0
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 708
   fields:
@@ -1777,8 +2049,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.256214+00:00
+    value: 1019.90002441406
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 709
   fields:
@@ -1790,8 +2064,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.260091+00:00
+    value: 5.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 711
   fields:
@@ -1803,8 +2079,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.263879+00:00
+    value: 2.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 713
   fields:
@@ -1816,8 +2094,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.267575+00:00
+    value: -0.5
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 715
   fields:
@@ -1829,8 +2109,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.271307+00:00
+    value: 0.899999976158142
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 716
   fields:
@@ -1842,8 +2124,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:01.275607+00:00
+    value: 4.90000009536743
+    value_time: 2019-03-29 13:00:00+00:00
 - model: deployments.timeseries
   pk: 718
   fields:
@@ -1855,8 +2139,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.585923+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 724
   fields:
@@ -1868,8 +2154,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:14.991862+00:00
+    value: 1022.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 725
   fields:
@@ -1881,8 +2169,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:14.998463+00:00
+    value: 8.39999961853027
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 727
   fields:
@@ -1894,8 +2184,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:15.003733+00:00
+    value: 5.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 729
   fields:
@@ -1907,8 +2199,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:15.008627+00:00
+    value: 0.0
+    value_time: 2019-03-29 11:00:00+00:00
 - model: deployments.timeseries
   pk: 736
   fields:
@@ -1920,8 +2214,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.642477+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 737
   fields:
@@ -1933,8 +2229,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:16.033194+00:00
+    value: 6.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 740
   fields:
@@ -1946,8 +2244,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:16.042221+00:00
+    value: 1019.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 741
   fields:
@@ -1959,8 +2259,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:16.062815+00:00
+    value: 5.40000009536743
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 742
   fields:
@@ -1972,8 +2274,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:16.049514+00:00
+    value: 4.30000019073486
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 745
   fields:
@@ -1985,8 +2289,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:16.056588+00:00
+    value: -0.400000005960464
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 765
   fields:
@@ -1998,8 +2304,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:03.890936+00:00
+    value: 200.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 766
   fields:
@@ -2011,8 +2319,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:03.896400+00:00
+    value: 1.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 773
   fields:
@@ -2024,8 +2334,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:03.901039+00:00
+    value: 6.80000019073486
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 775
   fields:
@@ -2037,8 +2349,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 20:50:17.935029+00:00
+    value: -4.40000009536743
+    value_time: 2019-03-28 18:00:00+00:00
 - model: deployments.timeseries
   pk: 779
   fields:
@@ -2050,8 +2364,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:03.905610+00:00
+    value: 0.300000011920929
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 780
   fields:
@@ -2063,8 +2379,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:03.911474+00:00
+    value: 0.899999976158142
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 781
   fields:
@@ -2076,8 +2394,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.820987+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 782
   fields:
@@ -2089,8 +2409,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:17.125952+00:00
+    value: 7.19999980926514
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 783
   fields:
@@ -2102,8 +2424,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:17.133627+00:00
+    value: 8.19999980926514
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 788
   fields:
@@ -2115,8 +2439,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:17.156990+00:00
+    value: 1022.5
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 789
   fields:
@@ -2128,8 +2454,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.868121+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 793
   fields:
@@ -2141,8 +2469,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:17.139633+00:00
+    value: 0.0
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 795
   fields:
@@ -2154,8 +2484,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:17.145915+00:00
+    value: 3.59999990463257
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 796
   fields:
@@ -2167,8 +2499,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-29 14:56:17.151382+00:00
+    value: 6.19999980926514
+    value_time: 2019-03-29 12:00:00+00:00
 - model: deployments.timeseries
   pk: 797
   fields:
@@ -2180,8 +2514,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.915903+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 798
   fields:
@@ -2193,8 +2529,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.921276+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 799
   fields:
@@ -2206,8 +2544,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:58.656481+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 800
   fields:
@@ -2219,8 +2559,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.926522+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 805
   fields:
@@ -2232,8 +2574,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.956602+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 807
   fields:
@@ -2245,8 +2589,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.968283+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 811
   fields:
@@ -2258,8 +2604,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.986399+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 812
   fields:
@@ -2271,8 +2619,10 @@
     start_time: 1970-02-26 20:00:00+00:00
     end_time: null
     buffer_type: null
-    erddap_dataset: cwwcNDBCMet
-    erddap_server: 2
+    dataset: 1
+    update_time: 2019-03-28 15:37:57.992366+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 813
   fields:
@@ -2284,8 +2634,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: N01_aanderaa_all
-    erddap_server: 1
+    dataset: 2
+    update_time: 2019-03-29 15:00:45.547346+00:00
+    value: 13.4918003082275
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 814
   fields:
@@ -2297,8 +2649,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: N01_aanderaa_all
-    erddap_server: 1
+    dataset: 2
+    update_time: 2019-03-29 15:00:45.559717+00:00
+    value: 43.7299995422363
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 815
   fields:
@@ -2310,8 +2664,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: N01_aanderaa_all
-    erddap_server: 1
+    dataset: 2
+    update_time: 2019-03-29 15:00:45.565381+00:00
+    value: 16.5444984436035
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 816
   fields:
@@ -2323,8 +2679,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: N01_accelerometer_all
-    erddap_server: 1
+    dataset: 3
+    update_time: 2019-03-29 15:00:45.714600+00:00
+    value: 4.73678970336914
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 817
   fields:
@@ -2336,8 +2694,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: N01_accelerometer_all
-    erddap_server: 1
+    dataset: 3
+    update_time: 2019-03-29 15:00:45.723419+00:00
+    value: 10.6666669845581
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 818
   fields:
@@ -2349,8 +2709,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: N01_met_all
-    erddap_server: 1
+    dataset: 4
+    update_time: 2019-03-29 15:00:45.964743+00:00
+    value: 13.8599996566772
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 819
   fields:
@@ -2362,8 +2724,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: N01_met_all
-    erddap_server: 1
+    dataset: 4
+    update_time: 2019-03-29 15:00:45.998194+00:00
+    value: 1026.3642578125
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 820
   fields:
@@ -2375,8 +2739,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: N01_met_all
-    erddap_server: 1
+    dataset: 4
+    update_time: 2019-03-29 15:00:45.972788+00:00
+    value: 12.539999961853
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 821
   fields:
@@ -2388,8 +2754,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: N01_met_all
-    erddap_server: 1
+    dataset: 4
+    update_time: 2019-03-29 15:00:45.979087+00:00
+    value: 10.1300001144409
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 822
   fields:
@@ -2401,8 +2769,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: N01_met_all
-    erddap_server: 1
+    dataset: 4
+    update_time: 2019-03-29 15:00:45.985489+00:00
+    value: 50.560001373291
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 823
   fields:
@@ -2414,8 +2784,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: N01_met_all
-    erddap_server: 1
+    dataset: 4
+    update_time: 2019-03-29 15:00:45.992003+00:00
+    value: 2965.1318359375
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 824
   fields:
@@ -2427,8 +2799,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.434385+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 825
   fields:
@@ -2440,8 +2814,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.440402+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 826
   fields:
@@ -2453,8 +2829,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.446599+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 827
   fields:
@@ -2466,8 +2844,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.452995+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 828
   fields:
@@ -2479,8 +2859,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.459008+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 829
   fields:
@@ -2492,8 +2874,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.471382+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 830
   fields:
@@ -2505,8 +2889,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:58.536847+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 831
   fields:
@@ -2518,8 +2904,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.631400+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 832
   fields:
@@ -2531,8 +2919,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:58.547505+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 833
   fields:
@@ -2544,8 +2934,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.637833+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 834
   fields:
@@ -2557,8 +2949,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.644097+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 835
   fields:
@@ -2570,8 +2964,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.650752+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 836
   fields:
@@ -2583,8 +2979,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.656876+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 837
   fields:
@@ -2596,8 +2994,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.663079+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 838
   fields:
@@ -2609,8 +3009,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.669480+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 839
   fields:
@@ -2622,8 +3024,10 @@
     start_time: 2004-06-03 21:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: N01_sbe37_all
-    erddap_server: 1
+    dataset: 5
+    update_time: 2019-03-28 15:37:56.675638+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 840
   fields:
@@ -2635,8 +3039,10 @@
     start_time: 2002-03-09 00:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: A01_accelerometer_all
-    erddap_server: 1
+    dataset: 13
+    update_time: 2019-03-29 15:00:52.426554+00:00
+    value: 1.10982036590576
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 841
   fields:
@@ -2648,8 +3054,10 @@
     start_time: 2002-03-09 00:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: A01_accelerometer_all
-    erddap_server: 1
+    dataset: 13
+    update_time: 2019-03-28 15:37:56.689004+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 842
   fields:
@@ -2661,8 +3069,10 @@
     start_time: 2001-07-10 03:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: A01_met_all
-    erddap_server: 1
+    dataset: 14
+    update_time: 2019-03-29 15:00:52.651446+00:00
+    value: 5.15799999237061
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 843
   fields:
@@ -2674,8 +3084,10 @@
     start_time: 2001-07-10 03:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: A01_met_all
-    erddap_server: 1
+    dataset: 14
+    update_time: 2019-03-29 15:00:52.660022+00:00
+    value: 1017.52648925781
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 844
   fields:
@@ -2687,8 +3099,10 @@
     start_time: 2001-07-10 03:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: A01_met_all
-    erddap_server: 1
+    dataset: 14
+    update_time: 2019-03-29 15:00:52.667024+00:00
+    value: 3.21399998664856
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 845
   fields:
@@ -2700,8 +3114,10 @@
     start_time: 2001-07-10 03:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: A01_met_all
-    erddap_server: 1
+    dataset: 14
+    update_time: 2019-03-29 15:00:52.675212+00:00
+    value: 2.55900001525879
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 846
   fields:
@@ -2713,8 +3129,10 @@
     start_time: 2001-07-10 03:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: A01_met_all
-    erddap_server: 1
+    dataset: 14
+    update_time: 2019-03-29 15:00:52.682890+00:00
+    value: 289.299987792969
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 847
   fields:
@@ -2726,8 +3144,10 @@
     start_time: 2001-07-10 03:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: A01_met_all
-    erddap_server: 1
+    dataset: 14
+    update_time: 2019-03-29 15:00:52.689472+00:00
+    value: 2995.76782226562
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 848
   fields:
@@ -2739,8 +3159,10 @@
     start_time: 2008-10-01 15:00:00+00:00
     end_time: null
     buffer_type: 30
-    erddap_dataset: A01_optode_all
-    erddap_server: 1
+    dataset: 15
+    update_time: 2019-03-29 15:00:52.878897+00:00
+    value: 7.51748895645142
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 849
   fields:
@@ -2752,8 +3174,10 @@
     start_time: 2008-10-01 15:00:00+00:00
     end_time: null
     buffer_type: 30
-    erddap_dataset: A01_optode_all
-    erddap_server: 1
+    dataset: 15
+    update_time: 2019-03-29 15:00:52.886103+00:00
+    value: 7.43349027633667
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 850
   fields:
@@ -2765,8 +3189,10 @@
     start_time: 2008-10-01 15:00:00+00:00
     end_time: null
     buffer_type: 30
-    erddap_dataset: A01_optode_all
-    erddap_server: 1
+    dataset: 15
+    update_time: 2019-03-29 15:00:52.891890+00:00
+    value: 101.129997253418
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 851
   fields:
@@ -2778,8 +3204,10 @@
     start_time: 2008-10-01 15:00:00+00:00
     end_time: null
     buffer_type: 30
-    erddap_dataset: A01_optode_all
-    erddap_server: 1
+    dataset: 15
+    update_time: 2019-03-29 15:00:52.897984+00:00
+    value: 3.64000010490417
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 852
   fields:
@@ -2791,8 +3219,10 @@
     start_time: 2018-09-28 06:00:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: A01_sbe16_disox_all
-    erddap_server: 1
+    dataset: 16
+    update_time: 2019-03-29 15:00:53.090032+00:00
+    value: 7.05955791473389
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 853
   fields:
@@ -2804,8 +3234,10 @@
     start_time: 2018-09-28 06:00:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: A01_sbe16_disox_all
-    erddap_server: 1
+    dataset: 16
+    update_time: 2019-03-29 15:00:53.097304+00:00
+    value: 7.44774675369263
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 854
   fields:
@@ -2817,8 +3249,10 @@
     start_time: 2018-09-28 06:00:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: A01_sbe16_disox_all
-    erddap_server: 1
+    dataset: 16
+    update_time: 2019-03-29 15:00:53.103130+00:00
+    value: 94.7878341674805
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 855
   fields:
@@ -2830,8 +3264,10 @@
     start_time: 2018-09-28 06:00:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: A01_sbe16_disox_all
-    erddap_server: 1
+    dataset: 16
+    update_time: 2019-03-29 15:00:53.110144+00:00
+    value: 30.0846996307373
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 856
   fields:
@@ -2843,8 +3279,10 @@
     start_time: 2018-09-28 06:00:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: A01_sbe16_disox_all
-    erddap_server: 1
+    dataset: 16
+    update_time: 2019-03-29 15:00:53.121698+00:00
+    value: 3.68910002708435
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 857
   fields:
@@ -2856,8 +3294,10 @@
     start_time: 2018-09-28 06:00:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: A01_sbe16_disox_all
-    erddap_server: 1
+    dataset: 16
+    update_time: 2019-03-29 15:00:53.116275+00:00
+    value: 32.3553009033203
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 858
   fields:
@@ -2869,8 +3309,10 @@
     start_time: 2001-07-10 04:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: A01_sbe37_all
-    erddap_server: 1
+    dataset: 17
+    update_time: 2019-03-29 15:00:53.309851+00:00
+    value: 29.8174991607666
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 859
   fields:
@@ -2882,8 +3324,10 @@
     start_time: 2001-07-10 04:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: A01_sbe37_all
-    erddap_server: 1
+    dataset: 17
+    update_time: 2019-03-28 15:37:57.033428+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 860
   fields:
@@ -2895,8 +3339,10 @@
     start_time: 2001-07-10 04:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: A01_sbe37_all
-    erddap_server: 1
+    dataset: 17
+    update_time: 2019-03-29 15:00:53.303732+00:00
+    value: 31.6951580047607
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 861
   fields:
@@ -2908,8 +3354,10 @@
     start_time: 2001-07-10 04:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: A01_sbe37_all
-    erddap_server: 1
+    dataset: 17
+    update_time: 2019-03-29 15:00:53.315098+00:00
+    value: 25.1517486572266
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 862
   fields:
@@ -2921,8 +3369,10 @@
     start_time: 2001-07-10 04:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: A01_sbe37_all
-    erddap_server: 1
+    dataset: 17
+    update_time: 2019-03-28 15:37:57.064305+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 863
   fields:
@@ -2934,8 +3384,10 @@
     start_time: 2001-07-10 04:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: A01_sbe37_all
-    erddap_server: 1
+    dataset: 17
+    update_time: 2019-03-29 15:00:53.478268+00:00
+    value: 3.60349988937378
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 864
   fields:
@@ -2947,8 +3399,10 @@
     start_time: 2001-07-10 04:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: A01_sbe37_all
-    erddap_server: 1
+    dataset: 17
+    update_time: 2019-03-29 15:00:53.484260+00:00
+    value: 32.2001419067383
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 865
   fields:
@@ -2960,8 +3414,10 @@
     start_time: 2001-07-10 04:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: A01_sbe37_all
-    erddap_server: 1
+    dataset: 17
+    update_time: 2019-03-29 15:00:53.491765+00:00
+    value: 25.5971298217773
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 866
   fields:
@@ -2973,8 +3429,10 @@
     start_time: 2002-03-28 21:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: B01_accelerometer_all
-    erddap_server: 1
+    dataset: 18
+    update_time: 2019-03-29 15:00:53.661370+00:00
+    value: 1.23400449752808
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 867
   fields:
@@ -2986,8 +3444,10 @@
     start_time: 2002-03-28 21:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: B01_accelerometer_all
-    erddap_server: 1
+    dataset: 18
+    update_time: 2019-03-29 15:00:53.669255+00:00
+    value: 10.6666669845581
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 868
   fields:
@@ -2999,8 +3459,10 @@
     start_time: 2018-10-01 15:30:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: B01_met_all
-    erddap_server: 1
+    dataset: 19
+    update_time: 2019-03-29 15:00:53.876521+00:00
+    value: 4.28399991989136
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 869
   fields:
@@ -3012,8 +3474,10 @@
     start_time: 2018-10-01 15:30:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: B01_met_all
-    erddap_server: 1
+    dataset: 19
+    update_time: 2019-03-29 15:00:53.901834+00:00
+    value: 1017.03192138672
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 870
   fields:
@@ -3025,8 +3489,10 @@
     start_time: 2018-10-01 15:30:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: B01_met_all
-    erddap_server: 1
+    dataset: 19
+    update_time: 2019-03-29 15:00:53.868706+00:00
+    value: 4.86100006103516
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 871
   fields:
@@ -3038,8 +3504,10 @@
     start_time: 2018-10-01 15:30:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: B01_met_all
-    erddap_server: 1
+    dataset: 19
+    update_time: 2019-03-29 15:00:53.883330+00:00
+    value: 3.87599992752075
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 872
   fields:
@@ -3051,8 +3519,10 @@
     start_time: 2018-10-01 15:30:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: B01_met_all
-    erddap_server: 1
+    dataset: 19
+    update_time: 2019-03-29 15:00:53.889967+00:00
+    value: 173.5
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 873
   fields:
@@ -3064,8 +3534,10 @@
     start_time: 2018-10-01 15:30:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: B01_met_all
-    erddap_server: 1
+    dataset: 19
+    update_time: 2019-03-29 15:00:53.895945+00:00
+    value: 2993.36499023438
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 874
   fields:
@@ -3077,8 +3549,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.094542+00:00
+    value: 29.7418003082275
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 875
   fields:
@@ -3090,8 +3564,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-28 15:37:57.332209+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 876
   fields:
@@ -3103,8 +3579,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.081499+00:00
+    value: 32.0100860595703
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 877
   fields:
@@ -3116,8 +3594,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.088908+00:00
+    value: 25.4414100646973
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 878
   fields:
@@ -3129,8 +3609,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-28 15:37:57.361327+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 879
   fields:
@@ -3142,8 +3624,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.256015+00:00
+    value: 3.62739992141724
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 880
   fields:
@@ -3155,8 +3639,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.266871+00:00
+    value: 32.0791511535645
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 881
   fields:
@@ -3168,8 +3654,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.261667+00:00
+    value: 25.4986152648926
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 882
   fields:
@@ -3181,8 +3669,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-28 15:37:57.597623+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 883
   fields:
@@ -3194,8 +3684,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.439998+00:00
+    value: 3.97239995002747
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 884
   fields:
@@ -3207,8 +3699,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.446522+00:00
+    value: 32.4926300048828
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 885
   fields:
@@ -3220,8 +3714,10 @@
     start_time: 2001-07-09 21:15:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: B01_sbe37_all
-    erddap_server: 1
+    dataset: 20
+    update_time: 2019-03-29 15:00:54.452410+00:00
+    value: 25.7947616577148
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 886
   fields:
@@ -3233,8 +3729,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: E01_aanderaa_all
-    erddap_server: 1
+    dataset: 26
+    update_time: 2019-03-29 15:00:56.064226+00:00
+    value: 23.1707000732422
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 887
   fields:
@@ -3246,8 +3744,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: E01_aanderaa_all
-    erddap_server: 1
+    dataset: 26
+    update_time: 2019-03-29 15:00:56.072029+00:00
+    value: 176.725204467773
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 888
   fields:
@@ -3259,8 +3759,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: E01_aanderaa_all
-    erddap_server: 1
+    dataset: 26
+    update_time: 2019-03-29 15:00:56.078529+00:00
+    value: 3.10350060462952
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 889
   fields:
@@ -3272,8 +3774,10 @@
     start_time: 2002-01-08 20:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: E01_accelerometer_all
-    erddap_server: 1
+    dataset: 27
+    update_time: 2019-03-29 15:00:56.241865+00:00
+    value: 1.37215101718903
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 890
   fields:
@@ -3285,8 +3789,10 @@
     start_time: 2002-01-08 20:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: E01_accelerometer_all
-    erddap_server: 1
+    dataset: 27
+    update_time: 2019-03-28 15:37:57.932785+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 891
   fields:
@@ -3298,8 +3804,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: E01_met_all
-    erddap_server: 1
+    dataset: 28
+    update_time: 2019-03-29 15:00:56.449278+00:00
+    value: 4.36199998855591
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 892
   fields:
@@ -3311,8 +3819,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: E01_met_all
-    erddap_server: 1
+    dataset: 28
+    update_time: 2019-03-29 15:00:56.456273+00:00
+    value: 1017.50549316406
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 893
   fields:
@@ -3324,8 +3834,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: E01_met_all
-    erddap_server: 1
+    dataset: 28
+    update_time: 2019-03-29 15:00:56.463603+00:00
+    value: 4.54699993133545
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 894
   fields:
@@ -3337,8 +3849,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: E01_met_all
-    erddap_server: 1
+    dataset: 28
+    update_time: 2019-03-29 15:00:56.473761+00:00
+    value: 3.92199993133545
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 895
   fields:
@@ -3350,8 +3864,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: E01_met_all
-    erddap_server: 1
+    dataset: 28
+    update_time: 2019-03-29 15:00:56.482032+00:00
+    value: 207.199996948242
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 896
   fields:
@@ -3363,8 +3879,10 @@
     start_time: 2001-07-09 12:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: E01_met_all
-    erddap_server: 1
+    dataset: 28
+    update_time: 2019-03-29 15:00:56.487051+00:00
+    value: 2965.73266601562
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 897
   fields:
@@ -3376,8 +3894,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:56.662813+00:00
+    value: 29.1569995880127
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 898
   fields:
@@ -3389,8 +3909,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-28 15:37:57.998603+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 899
   fields:
@@ -3402,8 +3924,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:56.648302+00:00
+    value: 31.802188873291
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 900
   fields:
@@ -3415,8 +3939,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:56.656173+00:00
+    value: 25.3202819824219
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 901
   fields:
@@ -3428,8 +3954,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-28 15:37:58.015709+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 902
   fields:
@@ -3441,8 +3969,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:56.833061+00:00
+    value: 2.97900009155273
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 903
   fields:
@@ -3454,8 +3984,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:56.840322+00:00
+    value: 32.1062126159668
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 904
   fields:
@@ -3467,8 +3999,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:56.847103+00:00
+    value: 25.5774364471436
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 905
   fields:
@@ -3480,8 +4014,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-28 15:37:58.038134+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 906
   fields:
@@ -3493,8 +4029,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:57.016161+00:00
+    value: 3.28800010681152
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 907
   fields:
@@ -3506,8 +4044,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:57.023950+00:00
+    value: 32.2743492126465
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 908
   fields:
@@ -3519,8 +4059,10 @@
     start_time: 2018-09-29 02:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: E01_sbe37_all
-    erddap_server: 1
+    dataset: 29
+    update_time: 2019-03-29 15:00:57.030609+00:00
+    value: 25.6847896575928
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 909
   fields:
@@ -3532,8 +4074,10 @@
     start_time: 2002-01-08 17:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: F01_accelerometer_all
-    erddap_server: 1
+    dataset: 30
+    update_time: 2019-03-29 15:00:57.195167+00:00
+    value: 0.872525572776794
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 910
   fields:
@@ -3545,8 +4089,10 @@
     start_time: 2002-01-08 17:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: F01_accelerometer_all
-    erddap_server: 1
+    dataset: 30
+    update_time: 2019-03-28 15:37:58.066703+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 911
   fields:
@@ -3558,8 +4104,10 @@
     start_time: 2000-07-10 19:00:02+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: F01_met_all
-    erddap_server: 1
+    dataset: 31
+    update_time: 2019-03-29 15:00:57.394247+00:00
+    value: 3.45199990272522
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 912
   fields:
@@ -3571,8 +4119,10 @@
     start_time: 2000-07-10 19:00:02+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: F01_met_all
-    erddap_server: 1
+    dataset: 31
+    update_time: 2019-03-29 15:00:57.402706+00:00
+    value: 1017.37640380859
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 913
   fields:
@@ -3584,8 +4134,10 @@
     start_time: 2000-07-10 19:00:02+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: F01_met_all
-    erddap_server: 1
+    dataset: 31
+    update_time: 2019-03-29 15:00:57.409003+00:00
+    value: 4.03800010681152
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 914
   fields:
@@ -3597,8 +4149,10 @@
     start_time: 2000-07-10 19:00:02+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: F01_met_all
-    erddap_server: 1
+    dataset: 31
+    update_time: 2019-03-29 15:00:57.414951+00:00
+    value: 3.44799995422363
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 915
   fields:
@@ -3610,8 +4164,10 @@
     start_time: 2000-07-10 19:00:02+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: F01_met_all
-    erddap_server: 1
+    dataset: 31
+    update_time: 2019-03-29 15:00:57.421178+00:00
+    value: 91.3000030517578
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 916
   fields:
@@ -3623,8 +4179,10 @@
     start_time: 2000-07-10 19:00:02+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: F01_met_all
-    erddap_server: 1
+    dataset: 31
+    update_time: 2019-03-29 15:00:57.427601+00:00
+    value: 2936.89868164062
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 917
   fields:
@@ -3636,8 +4194,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-29 15:00:47.035006+00:00
+    value: 28.2486991882324
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 918
   fields:
@@ -3649,8 +4209,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:58.114420+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 919
   fields:
@@ -3662,8 +4224,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-29 15:00:47.026840+00:00
+    value: 31.2974376678467
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 920
   fields:
@@ -3675,8 +4239,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-29 15:00:47.043725+00:00
+    value: 24.9666633605957
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 921
   fields:
@@ -3688,8 +4254,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:58.125804+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 922
   fields:
@@ -3701,8 +4269,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:58.132726+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 923
   fields:
@@ -3714,8 +4284,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:58.139265+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 924
   fields:
@@ -3727,8 +4299,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:58.145852+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 925
   fields:
@@ -3740,8 +4314,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:58.154361+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 926
   fields:
@@ -3753,8 +4329,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:58.163954+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 927
   fields:
@@ -3766,8 +4344,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:56.486799+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 928
   fields:
@@ -3779,8 +4359,10 @@
     start_time: 2001-07-08 00:34:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: F01_sbe37_all
-    erddap_server: 1
+    dataset: 6
+    update_time: 2019-03-28 15:37:56.495337+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 929
   fields:
@@ -3792,8 +4374,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: I01_aanderaa_all
-    erddap_server: 1
+    dataset: 21
+    update_time: 2019-03-29 15:00:54.626350+00:00
+    value: 19.0645008087158
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 930
   fields:
@@ -3805,8 +4389,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: I01_aanderaa_all
-    erddap_server: 1
+    dataset: 21
+    update_time: 2019-03-29 15:00:54.632280+00:00
+    value: 188.531204223633
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 931
   fields:
@@ -3818,8 +4404,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: I01_aanderaa_all
-    erddap_server: 1
+    dataset: 21
+    update_time: 2019-03-29 15:00:54.643733+00:00
+    value: 2.76939988136292
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 932
   fields:
@@ -3831,8 +4419,10 @@
     start_time: 2002-01-06 17:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: I01_accelerometer_all
-    erddap_server: 1
+    dataset: 22
+    update_time: 2019-03-29 15:00:54.814429+00:00
+    value: 1.54380130767822
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 933
   fields:
@@ -3844,8 +4434,10 @@
     start_time: 2002-01-06 17:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: I01_accelerometer_all
-    erddap_server: 1
+    dataset: 22
+    update_time: 2019-03-28 15:37:57.458730+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 934
   fields:
@@ -3857,8 +4449,10 @@
     start_time: 2018-09-29 18:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: I01_met_all
-    erddap_server: 1
+    dataset: 23
+    update_time: 2019-03-29 15:00:55.014379+00:00
+    value: 4.17899990081787
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 935
   fields:
@@ -3870,8 +4464,10 @@
     start_time: 2018-09-29 18:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: I01_met_all
-    erddap_server: 1
+    dataset: 23
+    update_time: 2019-03-29 15:00:55.021946+00:00
+    value: 1018.5634765625
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 936
   fields:
@@ -3883,8 +4479,10 @@
     start_time: 2018-09-29 18:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: I01_met_all
-    erddap_server: 1
+    dataset: 23
+    update_time: 2019-03-29 15:00:55.029267+00:00
+    value: 6.58599996566772
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 937
   fields:
@@ -3896,8 +4494,10 @@
     start_time: 2018-09-29 18:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: I01_met_all
-    erddap_server: 1
+    dataset: 23
+    update_time: 2019-03-29 15:00:55.035330+00:00
+    value: 5.67899990081787
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 938
   fields:
@@ -3909,8 +4509,10 @@
     start_time: 2018-09-29 18:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: I01_met_all
-    erddap_server: 1
+    dataset: 23
+    update_time: 2019-03-29 15:00:55.041713+00:00
+    value: 206.699996948242
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 939
   fields:
@@ -3922,8 +4524,10 @@
     start_time: 2018-09-29 18:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: I01_met_all
-    erddap_server: 1
+    dataset: 23
+    update_time: 2019-03-29 15:00:55.047558+00:00
+    value: 2971.13891601562
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 940
   fields:
@@ -3935,8 +4539,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-28 15:37:57.501730+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 941
   fields:
@@ -3948,8 +4554,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.225727+00:00
+    value: 2.72499990463257
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 942
   fields:
@@ -3961,8 +4569,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.232253+00:00
+    value: 32.0614013671875
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 943
   fields:
@@ -3974,8 +4584,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.238428+00:00
+    value: 25.5626487731934
+    value_time: 2019-03-29 14:29:59.999986+00:00
 - model: deployments.timeseries
   pk: 944
   fields:
@@ -3987,8 +4599,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-28 15:37:57.688173+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 945
   fields:
@@ -4000,8 +4614,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.463943+00:00
+    value: 3.25300002098083
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 946
   fields:
@@ -4013,8 +4629,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.470811+00:00
+    value: 32.1843414306641
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 947
   fields:
@@ -4026,8 +4644,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.478233+00:00
+    value: 25.6161441802979
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 948
   fields:
@@ -4039,8 +4659,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-28 15:37:57.712314+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 949
   fields:
@@ -4052,8 +4674,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.639850+00:00
+    value: 3.67589998245239
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 950
   fields:
@@ -4065,8 +4689,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.626694+00:00
+    value: 32.3402290344238
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 951
   fields:
@@ -4078,8 +4704,10 @@
     start_time: 2001-07-27 08:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: I01_sbe37_all
-    erddap_server: 1
+    dataset: 24
+    update_time: 2019-03-29 15:00:55.633526+00:00
+    value: 25.7019004821777
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 952
   fields:
@@ -4091,8 +4719,10 @@
     start_time: 2018-07-17 17:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J03_aanderaa_all
-    erddap_server: 1
+    dataset: 32
+    update_time: 2019-03-29 13:15:39.089493+00:00
+    value: 1.58511567115784
+    value_time: 2019-03-28 14:19:59.999981+00:00
 - model: deployments.timeseries
   pk: 953
   fields:
@@ -4104,8 +4734,10 @@
     start_time: 2018-07-17 17:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J03_aanderaa_all
-    erddap_server: 1
+    dataset: 32
+    update_time: 2019-03-29 13:15:39.096598+00:00
+    value: 256.637512207031
+    value_time: 2019-03-28 14:19:59.999981+00:00
 - model: deployments.timeseries
   pk: 954
   fields:
@@ -4117,8 +4749,10 @@
     start_time: 2018-07-17 17:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J03_aanderaa_all
-    erddap_server: 1
+    dataset: 32
+    update_time: 2019-03-29 13:15:39.103339+00:00
+    value: 111.282402038574
+    value_time: 2019-03-28 14:19:59.999981+00:00
 - model: deployments.timeseries
   pk: 955
   fields:
@@ -4130,8 +4764,10 @@
     start_time: 2018-07-17 17:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J03_aanderaa_all
-    erddap_server: 1
+    dataset: 32
+    update_time: 2019-03-28 15:37:58.203966+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 956
   fields:
@@ -4143,8 +4779,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: J03_accelerometer_all
-    erddap_server: 1
+    dataset: 7
+    update_time: 2019-03-29 13:15:32.651366+00:00
+    value: 0.0828866586089134
+    value_time: 2019-03-28 15:00:00+00:00
 - model: deployments.timeseries
   pk: 957
   fields:
@@ -4156,8 +4794,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: J03_accelerometer_all
-    erddap_server: 1
+    dataset: 7
+    update_time: 2019-03-29 13:15:32.658455+00:00
+    value: 4.0
+    value_time: 2019-03-28 15:00:00+00:00
 - model: deployments.timeseries
   pk: 958
   fields:
@@ -4169,8 +4809,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe37_all
-    erddap_server: 1
+    dataset: 8
+    update_time: 2019-03-28 15:37:56.543484+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 959
   fields:
@@ -4182,8 +4824,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe37_all
-    erddap_server: 1
+    dataset: 8
+    update_time: 2019-03-29 13:15:32.853946+00:00
+    value: 2.78340005874634
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 960
   fields:
@@ -4195,8 +4839,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe37_all
-    erddap_server: 1
+    dataset: 8
+    update_time: 2019-03-28 15:37:56.556151+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 961
   fields:
@@ -4208,8 +4854,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe37_all
-    erddap_server: 1
+    dataset: 8
+    update_time: 2019-03-28 15:37:56.562105+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 962
   fields:
@@ -4221,8 +4869,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-28 15:37:56.568321+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 963
   fields:
@@ -4234,8 +4884,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-29 13:15:33.061647+00:00
+    value: 2.80940008163452
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 964
   fields:
@@ -4247,8 +4899,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-29 13:15:33.068457+00:00
+    value: 9.83500003814697
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 965
   fields:
@@ -4260,8 +4914,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-29 13:15:33.083061+00:00
+    value: 30.6120262145996
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 966
   fields:
@@ -4273,8 +4929,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-29 13:15:33.074860+00:00
+    value: 24.3990230560303
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 967
   fields:
@@ -4286,8 +4944,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-28 15:37:57.750225+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 968
   fields:
@@ -4299,8 +4959,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-29 13:15:33.264960+00:00
+    value: 2.78430008888245
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 969
   fields:
@@ -4312,8 +4974,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-29 13:15:33.271271+00:00
+    value: 14.0270004272461
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 970
   fields:
@@ -4325,8 +4989,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-29 13:15:33.277236+00:00
+    value: 30.3846435546875
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 971
   fields:
@@ -4338,8 +5004,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J03_sbe_pres_all
-    erddap_server: 1
+    dataset: 9
+    update_time: 2019-03-29 13:15:33.282822+00:00
+    value: 24.2195243835449
+    value_time: 2019-03-28 13:40:00.000004+00:00
 - model: deployments.timeseries
   pk: 972
   fields:
@@ -4351,8 +5019,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J03_met_all
-    erddap_server: 1
+    dataset: 33
+    update_time: 2019-03-29 13:15:39.306811+00:00
+    value: 3.35199999809265
+    value_time: 2019-03-28 15:00:00+00:00
 - model: deployments.timeseries
   pk: 973
   fields:
@@ -4364,8 +5034,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J03_met_all
-    erddap_server: 1
+    dataset: 33
+    update_time: 2019-03-29 13:15:39.313775+00:00
+    value: 11.75
+    value_time: 2019-03-28 15:00:00+00:00
 - model: deployments.timeseries
   pk: 974
   fields:
@@ -4377,8 +5049,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J03_met_all
-    erddap_server: 1
+    dataset: 33
+    update_time: 2019-03-29 13:15:39.320303+00:00
+    value: 5.9060001373291
+    value_time: 2019-03-28 15:00:00+00:00
 - model: deployments.timeseries
   pk: 975
   fields:
@@ -4390,8 +5064,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J03_met_all
-    erddap_server: 1
+    dataset: 33
+    update_time: 2019-03-29 13:15:39.326327+00:00
+    value: 12.6599998474121
+    value_time: 2019-03-28 15:00:00+00:00
 - model: deployments.timeseries
   pk: 976
   fields:
@@ -4403,8 +5079,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J03_met_all
-    erddap_server: 1
+    dataset: 33
+    update_time: 2019-03-29 13:15:39.332379+00:00
+    value: 217.800003051758
+    value_time: 2019-03-28 15:00:00+00:00
 - model: deployments.timeseries
   pk: 977
   fields:
@@ -4416,8 +5094,10 @@
     start_time: 2018-07-17 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J03_met_all
-    erddap_server: 1
+    dataset: 33
+    update_time: 2019-03-29 13:15:39.338041+00:00
+    value: 1.0
+    value_time: 2019-03-28 15:00:00+00:00
 - model: deployments.timeseries
   pk: 978
   fields:
@@ -4429,8 +5109,10 @@
     start_time: 2018-07-20 15:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J04_aanderaa_all
-    erddap_server: 1
+    dataset: 10
+    update_time: 2019-03-29 15:00:51.860039+00:00
+    value: 31.676399230957
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 979
   fields:
@@ -4442,8 +5124,10 @@
     start_time: 2018-07-20 15:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J04_aanderaa_all
-    erddap_server: 1
+    dataset: 10
+    update_time: 2019-03-29 15:00:51.868151+00:00
+    value: 197.624404907227
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 980
   fields:
@@ -4455,8 +5139,10 @@
     start_time: 2018-07-20 15:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J04_aanderaa_all
-    erddap_server: 1
+    dataset: 10
+    update_time: 2019-03-29 15:00:51.875415+00:00
+    value: -9.59084701538086
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 981
   fields:
@@ -4468,8 +5154,10 @@
     start_time: 2018-07-20 15:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J04_aanderaa_all
-    erddap_server: 1
+    dataset: 10
+    update_time: 2019-03-29 15:00:51.882748+00:00
+    value: -30.189567565918
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 982
   fields:
@@ -4481,8 +5169,10 @@
     start_time: 2018-07-20 15:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: J04_aanderaa_all
-    erddap_server: 1
+    dataset: 10
+    update_time: 2019-03-29 15:00:51.849860+00:00
+    value: 3.10586047172546
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 983
   fields:
@@ -4494,8 +5184,10 @@
     start_time: 2018-07-20 15:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: J04_accelerometer_all
-    erddap_server: 1
+    dataset: 11
+    update_time: 2019-03-29 15:00:52.038286+00:00
+    value: 1.01559543609619
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 984
   fields:
@@ -4507,8 +5199,10 @@
     start_time: 2018-07-20 15:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: J04_accelerometer_all
-    erddap_server: 1
+    dataset: 11
+    update_time: 2019-03-29 15:00:52.044684+00:00
+    value: 8.0
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 985
   fields:
@@ -4520,8 +5214,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: J04_sbe16_pres_all
-    erddap_server: 1
+    dataset: 12
+    update_time: 2019-03-29 15:00:52.221269+00:00
+    value: 29.0426006317139
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 986
   fields:
@@ -4533,8 +5229,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: J04_sbe16_pres_all
-    erddap_server: 1
+    dataset: 12
+    update_time: 2019-03-29 15:00:52.256065+00:00
+    value: 3.09299993515015
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 987
   fields:
@@ -4546,8 +5244,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: J04_sbe16_pres_all
-    erddap_server: 1
+    dataset: 12
+    update_time: 2019-03-29 15:00:52.233456+00:00
+    value: 9.72000026702881
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 988
   fields:
@@ -4559,8 +5259,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 3
-    erddap_dataset: J04_sbe16_pres_all
-    erddap_server: 1
+    dataset: 12
+    update_time: 2019-03-29 15:00:52.248154+00:00
+    value: 31.7203617095947
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 989
   fields:
@@ -4572,8 +5274,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-28 15:37:58.298176+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 990
   fields:
@@ -4585,8 +5289,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-29 15:00:59.811551+00:00
+    value: 3.09450006484985
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 991
   fields:
@@ -4598,8 +5304,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-29 15:00:59.816604+00:00
+    value: 10.1020002365112
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 992
   fields:
@@ -4611,8 +5319,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-29 15:00:59.822137+00:00
+    value: 31.770528793335
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 993
   fields:
@@ -4624,8 +5334,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-29 15:00:59.827894+00:00
+    value: 25.2999362945557
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 994
   fields:
@@ -4637,8 +5349,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-28 15:37:58.328229+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 995
   fields:
@@ -4650,8 +5364,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-29 15:01:00.008352+00:00
+    value: 3.08879995346069
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 996
   fields:
@@ -4663,8 +5379,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-29 15:01:00.032065+00:00
+    value: 15.4020004272461
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 997
   fields:
@@ -4676,8 +5394,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-29 15:01:00.016131+00:00
+    value: 31.8007850646973
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 998
   fields:
@@ -4689,8 +5409,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_pres_all
-    erddap_server: 1
+    dataset: 34
+    update_time: 2019-03-29 15:01:00.023825+00:00
+    value: 25.3245468139648
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 999
   fields:
@@ -4702,8 +5424,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_all
-    erddap_server: 1
+    dataset: 35
+    update_time: 2019-03-28 15:37:58.352785+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 1000
   fields:
@@ -4715,8 +5439,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_all
-    erddap_server: 1
+    dataset: 35
+    update_time: 2019-03-29 15:01:00.235233+00:00
+    value: 3.10820007324219
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1001
   fields:
@@ -4728,8 +5454,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_all
-    erddap_server: 1
+    dataset: 35
+    update_time: 2019-03-29 15:01:00.245645+00:00
+    value: 31.5651912689209
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1002
   fields:
@@ -4741,8 +5469,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_all
-    erddap_server: 1
+    dataset: 35
+    update_time: 2019-03-29 15:01:00.252625+00:00
+    value: 25.1350555419922
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1003
   fields:
@@ -4754,8 +5484,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_all
-    erddap_server: 1
+    dataset: 35
+    update_time: 2019-03-28 15:37:58.379042+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 1004
   fields:
@@ -4767,8 +5499,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_all
-    erddap_server: 1
+    dataset: 35
+    update_time: 2019-03-29 15:01:00.437464+00:00
+    value: 3.08509993553162
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1005
   fields:
@@ -4780,8 +5514,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_all
-    erddap_server: 1
+    dataset: 35
+    update_time: 2019-03-29 15:01:00.445816+00:00
+    value: 31.6992130279541
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1006
   fields:
@@ -4793,8 +5529,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: J04_sbe37_all
-    erddap_server: 1
+    dataset: 35
+    update_time: 2019-03-29 15:01:00.453664+00:00
+    value: 25.2438659667969
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1007
   fields:
@@ -4806,8 +5544,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J04_met_all
-    erddap_server: 1
+    dataset: 25
+    update_time: 2019-03-29 15:00:55.840932+00:00
+    value: 4.19799995422363
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1008
   fields:
@@ -4819,8 +5559,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J04_met_all
-    erddap_server: 1
+    dataset: 25
+    update_time: 2019-03-29 15:00:55.849568+00:00
+    value: 7.19600009918213
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1009
   fields:
@@ -4832,8 +5574,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J04_met_all
-    erddap_server: 1
+    dataset: 25
+    update_time: 2019-03-29 15:00:55.856463+00:00
+    value: 6.02500009536743
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1010
   fields:
@@ -4845,8 +5589,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J04_met_all
-    erddap_server: 1
+    dataset: 25
+    update_time: 2019-03-29 15:00:55.863956+00:00
+    value: 7.82000017166138
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1011
   fields:
@@ -4858,8 +5604,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J04_met_all
-    erddap_server: 1
+    dataset: 25
+    update_time: 2019-03-29 15:00:55.877704+00:00
+    value: 201.0
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1012
   fields:
@@ -4871,8 +5619,10 @@
     start_time: 2018-07-20 14:40:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: J04_met_all
-    erddap_server: 1
+    dataset: 25
+    update_time: 2019-03-29 15:00:55.871082+00:00
+    value: 1.0
+    value_time: 2019-03-29 14:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1013
   fields:
@@ -4884,8 +5634,10 @@
     start_time: 2018-07-09 15:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: M01_aanderaa_all
-    erddap_server: 1
+    dataset: 36
+    update_time: 2019-03-29 15:01:00.625785+00:00
+    value: 11.43869972229
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1014
   fields:
@@ -4897,8 +5649,10 @@
     start_time: 2018-07-09 15:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: M01_aanderaa_all
-    erddap_server: 1
+    dataset: 36
+    update_time: 2019-03-29 15:01:00.633091+00:00
+    value: 82.7060012817383
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1015
   fields:
@@ -4910,8 +5664,10 @@
     start_time: 2018-07-09 15:00:00+00:00
     end_time: null
     buffer_type: 2
-    erddap_dataset: M01_aanderaa_all
-    erddap_server: 1
+    dataset: 36
+    update_time: 2019-03-29 15:01:00.639308+00:00
+    value: 3.66791081428528
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1016
   fields:
@@ -4923,8 +5679,10 @@
     start_time: 2003-07-09 05:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: M01_accelerometer_all
-    erddap_server: 1
+    dataset: 37
+    update_time: 2019-03-29 15:01:00.815844+00:00
+    value: 2.17150330543518
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1017
   fields:
@@ -4936,8 +5694,10 @@
     start_time: 2003-07-09 05:00:00+00:00
     end_time: null
     buffer_type: 23
-    erddap_dataset: M01_accelerometer_all
-    erddap_server: 1
+    dataset: 37
+    update_time: 2019-03-29 15:01:00.826613+00:00
+    value: 5.33333349227905
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1018
   fields:
@@ -4949,8 +5709,10 @@
     start_time: 2001-07-16 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: M01_met_all
-    erddap_server: 1
+    dataset: 38
+    update_time: 2019-03-29 15:01:01.031438+00:00
+    value: 4.94000005722046
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1019
   fields:
@@ -4962,8 +5724,10 @@
     start_time: 2001-07-16 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: M01_met_all
-    erddap_server: 1
+    dataset: 38
+    update_time: 2019-03-29 15:01:01.039750+00:00
+    value: 1019.45880126953
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1020
   fields:
@@ -4975,8 +5739,10 @@
     start_time: 2001-07-16 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: M01_met_all
-    erddap_server: 1
+    dataset: 38
+    update_time: 2019-03-29 15:01:01.046502+00:00
+    value: 9.25
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1021
   fields:
@@ -4988,8 +5754,10 @@
     start_time: 2001-07-16 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: M01_met_all
-    erddap_server: 1
+    dataset: 38
+    update_time: 2019-03-29 15:01:01.054096+00:00
+    value: 8.01000022888184
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1022
   fields:
@@ -5001,8 +5769,10 @@
     start_time: 2001-07-16 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: M01_met_all
-    erddap_server: 1
+    dataset: 38
+    update_time: 2019-03-29 15:01:01.060880+00:00
+    value: 208.0
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1023
   fields:
@@ -5014,8 +5784,10 @@
     start_time: 2001-07-16 16:00:00+00:00
     end_time: null
     buffer_type: 6
-    erddap_dataset: M01_met_all
-    erddap_server: 1
+    dataset: 38
+    update_time: 2019-03-29 15:01:01.066979+00:00
+    value: 2963.93041992188
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1024
   fields:
@@ -5027,8 +5799,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.264806+00:00
+    value: 30.0300006866455
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1025
   fields:
@@ -5040,8 +5814,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-28 15:37:58.473589+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 1026
   fields:
@@ -5053,8 +5829,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.250926+00:00
+    value: 32.2900619506836
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1027
   fields:
@@ -5066,8 +5844,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.258354+00:00
+    value: 25.6583099365234
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1028
   fields:
@@ -5079,8 +5859,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-28 15:37:58.491666+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 1029
   fields:
@@ -5092,8 +5874,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.436986+00:00
+    value: 3.72699999809265
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1030
   fields:
@@ -5105,8 +5889,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.444733+00:00
+    value: 32.3857536315918
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1031
   fields:
@@ -5118,8 +5904,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.453203+00:00
+    value: 25.733325958252
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1032
   fields:
@@ -5131,8 +5919,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-28 15:37:58.697026+00:00
+    value: null
+    value_time: null
 - model: deployments.timeseries
   pk: 1033
   fields:
@@ -5144,8 +5934,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.626917+00:00
+    value: 5.77699995040894
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1034
   fields:
@@ -5157,8 +5949,10 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.635009+00:00
+    value: 32.9905624389648
+    value_time: 2019-03-29 11:00:00.000013+00:00
 - model: deployments.timeseries
   pk: 1035
   fields:
@@ -5170,5 +5964,7 @@
     start_time: 2001-07-16 15:35:01+00:00
     end_time: null
     buffer_type: 18
-    erddap_dataset: M01_sbe37_all
-    erddap_server: 1
+    dataset: 39
+    update_time: 2019-03-29 15:01:01.642179+00:00
+    value: 25.9923305511475
+    value_time: 2019-03-29 11:00:00.000013+00:00

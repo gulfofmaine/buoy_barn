@@ -211,7 +211,7 @@
       (-70.62 42.97)}
 - model: deployments.platform
   pk: 134
-  fields: {name: '44018', mooring_site_desc: Cape Code, active: true, ndbc_site_id: '44018',
+  fields: {name: '44018', mooring_site_desc: Cape Cod, active: true, ndbc_site_id: '44018',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.143 42.206)}
 - model: deployments.platform

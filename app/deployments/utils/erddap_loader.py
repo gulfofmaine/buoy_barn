@@ -5,7 +5,14 @@ import pandas as pd
 from erddapy import ERDDAP
 from requests.exceptions import HTTPError
 
-from ..models import Platform, TimeSeries, ErddapServer, DataType, BufferType
+from ..models import (
+    Platform,
+    TimeSeries,
+    ErddapServer,
+    DataType,
+    BufferType,
+    ErddapDataset,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -77,6 +84,9 @@ def add_timeseries(
         buffer = False
 
     erddap_server = ErddapServer.objects.get(base_url=server)
+    erddap_dataset, _ = ErddapDataset.objects.get_or_create(
+        name=dataset, server=erddap_server
+    )
 
     for var in ds.variables:
         if var not in [
@@ -133,8 +143,7 @@ def add_timeseries(
                         start_time=start_time,
                         end_time=end_time,
                         constraints=constraints,
-                        erddap_dataset=dataset,
-                        erddap_server=erddap_server,
+                        dataset=erddap_dataset,
                     )
                     if buffer:
                         time_series.buffer_type = buffer

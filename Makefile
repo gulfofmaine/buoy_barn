@@ -32,6 +32,7 @@ load:
 	docker-compose exec web python manage.py loaddata deployments/fixtures/datatypes.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/deployments.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/erddapservers.yaml
+	docker-compose exec web python manage.py loaddata deployments/fixtures/ErddapDataset.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/programs.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/platformattribution.yaml
 	docker-compose exec web python manage.py loaddata deployments/fixtures/
@@ -58,14 +59,15 @@ requirements-tree:
 	docker-compose exec web pipdeptree
 
 fixtures:
-	docker-compose exec web python manage.py dumpdata --format yaml deployments.Program -o deployments/fixtures/programs.yaml
-	docker-compose exec web python manage.py dumpdata --format yaml deployments.Platform -o deployments/fixtures/platforms.yaml
-	docker-compose exec web python manage.py dumpdata --format yaml deployments.ProgramAttribution -o deployments/fixtures/platformattribution.yaml
-	docker-compose exec web python manage.py dumpdata --format yaml deployments.Deployment -o deployments/fixtures/deployments.yaml
-	docker-compose exec web python manage.py dumpdata --format yaml deployments.DataType -o deployments/fixtures/datatypes.yaml
-	docker-compose exec web python manage.py dumpdata --format yaml deployments.ErddapServer -o deployments/fixtures/erddapservers.yaml
-	docker-compose exec web python manage.py dumpdata --format yaml deployments.TimeSeries -o deployments/fixtures/TimeSeries.yaml
-	docker-compose exec web python manage.py dumpdata --format yaml deployments.Alert -o deployments/fixtures/Alerts.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.Program -o deployments/fixtures/programs.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.Platform -o deployments/fixtures/platforms.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.ProgramAttribution -o deployments/fixtures/platformattribution.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.Deployment -o deployments/fixtures/deployments.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.DataType -o deployments/fixtures/datatypes.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.ErddapServer -o deployments/fixtures/erddapservers.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.TimeSeries -o deployments/fixtures/TimeSeries.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.ErddapDataset -o deployments/fixtures/ErddapDataset.yaml
+	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.Alert -o deployments/fixtures/Alerts.yaml
 
 lint:
 	docker-compose exec web prospector

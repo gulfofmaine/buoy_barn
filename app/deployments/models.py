@@ -7,11 +7,6 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
 from memoize import memoize
-from requests import HTTPError
-from sentry_sdk import capture_exception, capture_message
-
-from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
-
 
 logger = logging.getLogger(__name__)
 
@@ -65,70 +60,23 @@ class Platform(models.Model):
             return self.geom
         return None
 
-    def group_timeseries_by_erddap_dataset(self):
-        datasets = defaultdict(list)
-
-        for ts in self.timeseries_set.filter(end_time=None).select_related(
-            "data_type", "erddap_server"
-        ):
-            datasets[
-                (ts.erddap_server, ts.erddap_dataset, tuple(ts.constraints.items()))
-            ].append(ts)
-
-        return datasets
-
-    @memoize(timeout=30 * 60)
+    @memoize(timeout=5 * 60)
     def latest_erddap_values(self):
         readings = []
-
-        for (
-            (server, dataset, constraints),
-            timeseries,
-        ) in self.group_timeseries_by_erddap_dataset().items():
-            try:
-                df = retrieve_dataframe(server, dataset, dict(constraints), timeseries)
-
-                for series in timeseries:
-                    filtered_df = filter_dataframe(df, series.variable)
-                    try:
-                        row = filtered_df.iloc[-1]
-                    except IndexError:
-                        message = f"Unable to find position in dataframe for {self.name} - {series.variable}"
-                        logger.warning(message)
-                        capture_message(message)
-                        reading = None
-                        time = None
-                    else:
-                        reading = row[series.variable]
-                        time = row["time"].strftime("%Y-%m-%dT%H:%M:%SZ")
-                    readings.append(
-                        {
-                            "value": reading,
-                            "time": time,
-                            "depth": series.depth,
-                            "data_type": series.data_type.json,
-                            "server": series.erddap_server.base_url,
-                            "variable": series.variable,
-                            "constraints": series.constraints,
-                            "dataset": series.erddap_dataset,
-                            "start_time": series.start_time,
-                        }
-                    )
-            except HTTPError as error:
-                capture_exception(error)
-                for series in timeseries:
-                    readings.append(
-                        {
-                            "value": None,
-                            "time": None,
-                            "depth": series.depth,
-                            "data_type": series.data_type.json,
-                            "server": series.erddap_server.base_url,
-                            "variable": series.variable,
-                            "constraints": series.constraints,
-                            "dataset": series.erddap_dataset,
-                        }
-                    )
+        for series in self.timeseries_set.filter(end_time=None):
+            readings.append(
+                {
+                    "value": series.value,
+                    "time": series.value_time,
+                    "depth": series.depth,
+                    "data_type": series.data_type.json,
+                    "server": series.dataset.server.base_url,
+                    "variable": series.variable,
+                    "constraints": series.constraints,
+                    "dataset": series.dataset.name,
+                    "start_time": series.start_time,
+                }
+            )
         return readings
 
     def current_alerts(self):
@@ -218,7 +166,7 @@ class BufferType(models.Model):
 
 
 class ErddapServer(models.Model):
-    name = models.CharField("Server Name", max_length=64, null=True)
+    name = models.SlugField("Server Name", max_length=64, null=True)
     base_url = models.CharField("ERDDAP API base URL", max_length=256)
     program = models.ForeignKey(
         Program, on_delete=models.CASCADE, null=True, blank=True
@@ -232,6 +180,29 @@ class ErddapServer(models.Model):
 
     def connection(self):
         return ERDDAP(self.base_url)
+
+
+class ErddapDataset(models.Model):
+    name = models.SlugField(
+        max_length=256,
+        help_text="Or as ERDDAP knows it as the Dataset ID. EX: 'Dataset ID: A01_accelerometer_all'",
+    )
+    server = models.ForeignKey(ErddapServer, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.server.name} - {self.name}"
+
+    @property
+    def slug(self):
+        return f"{self.server.name}-{self.name}"
+
+    def group_timeseries_by_constraint(self):
+        groups = defaultdict(list)
+
+        for ts in self.timeseries_set.filter(end_time=None):
+            groups[tuple(ts.constraints.items())].append(ts)
+
+        return groups
 
 
 class TimeSeries(models.Model):
@@ -253,9 +224,16 @@ class TimeSeries(models.Model):
     buffer_type = models.ForeignKey(
         BufferType, on_delete=models.CASCADE, null=True, blank=True
     )
-    erddap_dataset = models.CharField(max_length=256, null=True, blank=True)
-    erddap_server = models.ForeignKey(
-        ErddapServer, on_delete=models.CASCADE, null=True, blank=True
+
+    dataset = models.ForeignKey(ErddapDataset, on_delete=models.CASCADE)
+
+    update_time = models.DateTimeField(
+        auto_now=True, help_text="When this value was last refreshed"
+    )
+
+    value = models.FloatField(null=True, help_text="Most recent value from ERDDAP")
+    value_time = models.DateTimeField(
+        null=True, help_text="Time of the most recent value"
     )
 
     def __str__(self):

@@ -50,7 +50,8 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
         server, dataset = pk.split("-", maxsplit=1)
         dataset = get_object_or_404(self.queryset, name=dataset, server__name=server)
 
-        refresh_dataset.delay(dataset.id)
+        dataset.healthcheck_start()
+        refresh_dataset.delay(dataset.id, healthcheck=True)
 
         serializer = self.serializer_class(dataset, context={"request": request})
         return Response(serializer.data)
@@ -70,7 +71,8 @@ class ServerViewSet(viewsets.ReadOnlyModelViewSet):
 
         server = get_object_or_404(self.queryset, pk=pk)
 
-        refresh_server.delay(server.id)
+        server.healthcheck_start()
+        refresh_server.delay(server.id, healthcheck=True)
 
         serializer = self.serializer_class(server, context={"request": request})
         return Response(serializer.data)

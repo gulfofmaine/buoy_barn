@@ -7,6 +7,7 @@ from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
 from memoize import memoize
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -172,6 +173,11 @@ class ErddapServer(models.Model):
         Program, on_delete=models.CASCADE, null=True, blank=True
     )
     contact = models.TextField("Contact information", null=True, blank=True)
+    healthcheck_url = models.URLField(
+        "URL to send healthchecks to at beginning and end of processing",
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         if self.name:
@@ -181,6 +187,30 @@ class ErddapServer(models.Model):
     def connection(self):
         return ERDDAP(self.base_url)
 
+    def healthcheck_start(self):
+        """ Signal that a process has started with Healthchecks.io """
+        hc_url = self.healthcheck_url
+
+        if hc_url:
+            try:
+                requests.get(hc_url + "/start", timeout=5)
+            except requests.RequestException as error:
+                logger.info(
+                    f"Unable to send healthcheck start for {self.name} due to: {error}"
+                )
+
+    def healthcheck_complete(self):
+        """ Signal that a process has completed with Healthchecks.io """
+        hc_url = self.healthcheck_url
+
+        if hc_url:
+            try:
+                requests.get(hc_url, timeout=5)
+            except requests.RequestException as error:
+                logger.info(
+                    f"Unable to send healthcheck completion for {self.name} due to error: {error}"
+                )
+
 
 class ErddapDataset(models.Model):
     name = models.SlugField(
@@ -189,12 +219,42 @@ class ErddapDataset(models.Model):
     )
     server = models.ForeignKey(ErddapServer, on_delete=models.CASCADE)
 
+    healthcheck_url = models.URLField(
+        "URL to send healthchecks to at beginning and end of processing",
+        null=True,
+        blank=True,
+    )
+
     def __str__(self):
         return f"{self.server.name} - {self.name}"
 
     @property
     def slug(self):
         return f"{self.server.name}-{self.name}"
+
+    def healthcheck_start(self):
+        """ Signal that a process has started with Healthchecks.io """
+        hc_url = self.healthcheck_url
+
+        if hc_url:
+            try:
+                requests.get(hc_url + "/start", timeout=5)
+            except requests.RequestException as error:
+                logger.info(
+                    f"Unable to send healthcheck start for {self.name} due to: {error}"
+                )
+
+    def healthcheck_complete(self):
+        """ Signal that a process has completed with Healthchecks.io """
+        hc_url = self.healthcheck_url
+
+        if hc_url:
+            try:
+                requests.get(hc_url, timeout=5)
+            except requests.RequestException as error:
+                logger.info(
+                    f"Unable to send healthcheck completion for {self.name} due to error: {error}"
+                )
 
     def group_timeseries_by_constraint(self):
         groups = defaultdict(list)

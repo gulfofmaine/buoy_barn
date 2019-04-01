@@ -48,8 +48,13 @@ def update_values_for_timeseries(timeseries):
 
 
 @shared_task
-def refresh_dataset(dataset_id: int):
-    """ Refresh the values for all timeseries associated with a specific dataset """
+def refresh_dataset(dataset_id: int, healthcheck: bool = False):
+    """ Refresh the values for all timeseries associated with a specific dataset 
+    
+    Params:
+        dataset_id (int): Primary key of ErddapDataset to refresh all timeseries for
+        healthcheck (bool): Should Healthchecks.io be signaled when the dataset has completed updating?
+    """
     dataset = ErddapDataset.objects.get(pk=dataset_id)
 
     groups = dataset.group_timeseries_by_constraint()
@@ -58,11 +63,22 @@ def refresh_dataset(dataset_id: int):
         timeseries = groups[constraints]
         update_values_for_timeseries(timeseries)
 
+    if healthcheck:
+        dataset.healthcheck_complete()
+
 
 @shared_task
-def refresh_server(server_id: int):
-    """ Refresh all the timeseries data for a server """
+def refresh_server(server_id: int, healthcheck: bool = False):
+    """ Refresh all the timeseries data for a server 
+    
+    Params:
+        server_id (int): Primary key of ErddapServer to update all TimeSeries for
+        healthcheck (int): Should Healthchecks.io be singled after all timeseries are updated
+    """
     server = ErddapServer.objects.get(pk=server_id)
 
     for ds in server.erddapdataset_set.all():
         refresh_dataset(ds.id)
+
+    if healthcheck:
+        server.healthcheck_complete()

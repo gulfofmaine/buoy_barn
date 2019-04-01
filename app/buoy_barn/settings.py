@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "corsheaders",
     "memoize",
-    "django_celery_monitor",
     # User management
     "account.apps.AccountConfig",
     # Dataset and forecast management

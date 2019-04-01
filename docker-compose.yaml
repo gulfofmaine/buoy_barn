@@ -47,13 +47,3 @@ celery-worker:
   links:
     - db
     - cache
-
-celery-monitor:
-  build: ./app
-  command: celery -A buoy_barn events -l info --camera django_celery_monitor.camera.Camera --frequency=2.0
-  restart: always
-  env_file:
-    - ./docker-data/secret.env
-  links:
-    - db
-    - cache

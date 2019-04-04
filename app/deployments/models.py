@@ -291,9 +291,11 @@ class TimeSeries(models.Model):
         auto_now=True, help_text="When this value was last refreshed"
     )
 
-    value = models.FloatField(null=True, help_text="Most recent value from ERDDAP")
+    value = models.FloatField(
+        null=True, blank=True, help_text="Most recent value from ERDDAP"
+    )
     value_time = models.DateTimeField(
-        null=True, help_text="Time of the most recent value"
+        null=True, blank=True, help_text="Time of the most recent value"
     )
 
     def __str__(self):

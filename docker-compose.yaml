@@ -2,7 +2,7 @@
 
 # services:
 db:
-  image: mdillon/postgis:10-alpine@sha256:06ee73c16ad7e5e5ca59df6aabf5f18338a3e42d9a6dfe797ef3c27e3f3f62e7
+  image: mdillon/postgis:10-alpine@sha256:41516e866f9ec84a7c348084e02b577961cc5bca7c827d91b4566f0f729f370c
   restart: always
   env_file:
     - ./docker-data/secret.env

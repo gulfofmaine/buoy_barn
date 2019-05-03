@@ -15,7 +15,7 @@ chardet==3.0.4            # via requests
 click==7.0                # via pip-tools
 coverage==4.5.3
 decorator==4.4.0          # via ipython, traitlets
-django-cors-headers==2.5.2
+django-cors-headers==2.5.3
 django-debug-toolbar==1.11
 django-memoize==2.2.0
 django-redis==4.10.0

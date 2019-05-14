@@ -39,7 +39,7 @@ multidict==4.5.2          # via yarl
 mypy-extensions==0.4.1    # via mypy
 mypy==0.670               # via prospector
 netcdf4==1.5.0
-numpy==1.16.2             # via cftime, netcdf4, pandas, xarray
+numpy==1.16.3             # via cftime, netcdf4, pandas, xarray
 pandas==0.24.2            # via erddapy, xarray
 parso==0.3.4              # via jedi
 pep8-naming==0.4.1        # via prospector

@@ -1,0 +1,23 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: buoy-barn-cache
+  label:
+    service: redis
+    tier: backend
+    role: cache
+spec:
+  serviceName: buoy-barn-cache
+  replicas: 1
+  template:
+    name: buoy-barn-cache
+    labels:
+      service: redis
+      tier: backend
+      role: cache
+    spec:
+      containers:
+        - name: redis
+          image: 5.0.5-alpine
+          ports:
+            - containerPort: 6379

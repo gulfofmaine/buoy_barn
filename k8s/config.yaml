@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: buoy-barn-config
-data:
-  redis_cache: redis://buoy-barn-cache:6379/0

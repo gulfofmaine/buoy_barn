@@ -1,0 +1,18 @@
+namespace: buoy-barn
+resources:
+  - cache.yaml
+  - cache-service.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - web-service.yaml
+configMapGenerator:
+  - name: buoy-barn-config
+    env: config.env
+secretGenerator:
+  - name: buoy-barn-secrets
+    env: secret.env
+commonLabels:
+  app: buoy-barn
+  maintainer: akerney
+  funder: NERACOOS
+  project: Mariners_dashboard

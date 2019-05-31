@@ -1,21 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -f docker-compose.yaml
-    kompose.version: 1.17.0 ()
-  creationTimestamp: null
   labels:
     service: web
     app: buoy-barn
   name: web
 spec:
-  replicas: 1
-  strategy:
-    type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         service: web
         app: buoy-barn
@@ -34,42 +26,24 @@ spec:
             - --vacuum
             - --processes
             - "4"
+          envFrom:
+            - secretRef:
+                name: buoy-barn-secrets
+            - configMapRef:
+                name: buoy-barn-config
           env:
             - name: DJANGO_MANAGEPY_MIGRATE
               value: "on"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
               value: "on"
             - name: POSTGRES_HOST
-              value: buoy-barn-db
             - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: buoy-barn-db-auth
-                  key: POSTGRES_PASSWORD
             - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: buoy-barn-db-auth
-                  key: POSTGRES_USER
-            - name: REDIS_CACHE
-              valueFrom:
-                configMapKeyRef:
-                  name: buoy-barn-config
-                  key: redis_cache
             - name: SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: buoy-barn-shared
-                  key: SECRET_KEY
             - name: SENTRY_DSN
-              valueFrom:
-                secretKeyRef:
-                  name: buoy-barn-shared
-                  key: SENTRY_DSN
-          image: web
+          image: grmi/buoy-barn
           name: web
           ports:
             - containerPort: 8080
+              name: http
           resources: {}
-      restartPolicy: Always
-status: {}

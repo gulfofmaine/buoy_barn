@@ -121,11 +121,12 @@ WSGI_APPLICATION = "buoy_barn.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": os.environ["POSTGRES_USER"],
-        "USER": os.environ["POSTGRES_USER"],
-        "HOST": os.environ["POSTGRES_HOST"],
-        "PASSWORD": os.environ["POSTGRES_PASSWORD"],
+        "NAME": os.environ.get("POSTGRES_NAME"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "HOST": os.environ.get("POSTGRES_HOST"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
         "PORT": int(os.environ.get("POSTGRES_PORT", 5432)),
+        "OPTIONS": {"sslmode": "prefer"},
     }
 }
 

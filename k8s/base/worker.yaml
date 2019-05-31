@@ -2,21 +2,28 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    service: web
-    tier: frontend
-    role: api
-  name: web
+    service: celery
+    tier: backend
+    role: worker
+  name: worker
 spec:
   template:
     metadata:
       labels:
-        service: web
-        tier: frontend
-        role: api
+        service: celery
+        tier: backend
+        role: worker
     spec:
       containers:
         - name: web
           image: gmri/neracoos-buoy-barn
+          args:
+            - celery
+            - -A
+            - buoy_barn
+            - worker
+            - -l
+            - info
           envFrom:
             - secretRef:
                 name: buoy-barn-secrets
@@ -27,9 +34,6 @@ spec:
               value: "on"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
               value: "on"
-          ports:
-            - containerPort: 8080
-              name: http
           volumeMounts:
             - name: django-static
               mountPath: /static

@@ -4,6 +4,8 @@ FROM python:3.7.0@sha256:10608fb357a18383f792efbf7472ec6d2e166dad62efc0d7c409ef2
 ENV PYTHONUNBUFFERED 1
 # Don't write bytecode
 ENV PYTHONDONTWRITEBYTECODE 1
+# Show deprication warnings https://docs.djangoproject.com/en/2.2/howto/upgrade-version/#resolving-deprecation-warnings
+ENV PYTHONWARNINGS always
 
 # geodjango spatial requirements
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -19,9 +21,14 @@ WORKDIR /app
 
 # Install requirements
 COPY ./requirements.txt /app/
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt \
+    && groupadd uwsgi && useradd -g uwsgi uwsgi
 
 # Copy app to working directory
 COPY ./ /app/
 
+RUN chown -R uwsgi:uwsgi /app
+
 ENTRYPOINT ["/app/utils/entrypoint.sh"]
+
+CMD ["uwsgi", "--http", ":8080", "--wsgi-file", "buoy_barn/wsgi.py", "--master", "--processes", "4", "--threads", "2", "--uid", "uwsgi", "--gid", "uwsgi"]

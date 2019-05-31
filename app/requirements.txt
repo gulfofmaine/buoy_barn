@@ -15,11 +15,11 @@ chardet==3.0.4            # via requests
 click==7.0                # via pip-tools
 coverage==4.5.3
 decorator==4.4.0          # via ipython, traitlets
-django-cors-headers==2.5.3
+django-cors-headers==2.5.2
 django-debug-toolbar==1.11
 django-memoize==2.2.0
 django-redis==4.10.0
-django==2.2.1
+django==2.2
 djangorestframework-gis==0.14
 djangorestframework==3.9.2
 dodgy==0.1.9              # via prospector
@@ -49,7 +49,7 @@ pip_tools==3.5.0
 pipdeptree==0.13.2
 prompt-toolkit==2.0.9     # via ipython
 prospector[with_mypy,with_vulture]==1.1.6.2
-psycopg2-binary==2.7.7
+psycopg2-binary==2.8.2
 ptyprocess==0.6.0         # via pexpect
 pycodestyle==2.4.0        # via prospector
 pydocstyle==3.0.0         # via prospector

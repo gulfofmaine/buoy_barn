@@ -19,7 +19,7 @@ cache:
 
 web:
   build: ./app
-  command: bash -c "./utils/wait-for-it.sh db:5432 &&  python manage.py runserver 0:8080"
+  command: python manage.py runserver 0:8080
   # # command: "uwsgi --http :8080 --wsgi-file buoy_barn/wsgi.py  --master --processes 4 --threads 2"
   # command: "uwsgi --module=buoy_barn.wsgi:application --master --pidfile=/tmp/project-master.pid --http :8080 --uid=1000 --gid=2000 --max-requests=5000 --vacuum --processes 4"
   # # command: "gunicorn --bind 0.0.0.0:8080 buoy_barn.wsgi:application"

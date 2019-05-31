@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     binutils=2.28-5 \
     libproj-dev=4.9.3-1 \
     gdal-bin=2.1.2+dfsg-5 \
-    postgresql-client=9.6+181+deb9u2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

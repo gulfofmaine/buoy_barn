@@ -9,4 +9,5 @@ spec:
       targetPort: 8080
   selector:
     service: web
-    app: buoy-barn
+    tier: frontend
+    role: api

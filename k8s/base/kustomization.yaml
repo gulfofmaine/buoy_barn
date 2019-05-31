@@ -1,5 +1,6 @@
 namespace: buoy-barn
 resources:
+  - docker-hub-secret.yaml
   - cache.yaml
   - cache-service.yaml
   - deployment.yaml

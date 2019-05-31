@@ -10,7 +10,8 @@ metadata:
     nginx.ingress.kubernetes.io/cors-allow-origin: "localhost mariners.neracoos.org"
 spec:
   rules:
-    - http:
+    - host: buoybarn.neracoos.org
+      http:
         paths:
           - path: /
             backend:

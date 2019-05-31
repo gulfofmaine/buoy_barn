@@ -2,7 +2,7 @@ apiVersion: skaffold/v1beta2
 kind: Config
 build:
   artifacts:
-    - image: grmi/neracoos-buoy-barn
+    - image: gmri/neracoos-buoy-barn
       context: app
 deploy:
   kustomize:

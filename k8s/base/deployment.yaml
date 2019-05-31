@@ -3,14 +3,16 @@ kind: Deployment
 metadata:
   labels:
     service: web
-    app: buoy-barn
+    tier: frontend
+    role: api
   name: web
 spec:
   template:
     metadata:
       labels:
         service: web
-        app: buoy-barn
+        tier: frontend
+        role: api
     spec:
       containers:
         - args:
@@ -36,14 +38,11 @@ spec:
               value: "on"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
               value: "on"
-            - name: POSTGRES_HOST
-            - name: POSTGRES_PASSWORD
-            - name: POSTGRES_USER
-            - name: SECRET_KEY
-            - name: SENTRY_DSN
-          image: grmi/buoy-barn
+          image: gmri/neracoos-buoy-barn
           name: web
           ports:
             - containerPort: 8080
               name: http
           resources: {}
+      imagePullSecrets:
+        - name: docker-hub-secret

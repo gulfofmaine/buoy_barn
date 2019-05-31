@@ -119,3 +119,4 @@ docker-data/media
 docker-data/django-static
 secrets.yaml
 dump.sql
+docker-hub-secret.yaml

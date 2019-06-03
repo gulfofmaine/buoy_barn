@@ -10,7 +10,7 @@ erddapy==0.4.0
 xarray==0.12.0
 netCDF4==1.5.0
 
-sentry-sdk==0.7.9
+sentry-sdk==0.9.0
 django-cors-headers==2.5.2
 
 # tasks

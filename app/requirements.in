@@ -7,7 +7,7 @@ django-memoize==2.2.0
 django-redis==4.10.0
 
 erddapy==0.4.0
-xarray==0.12.0
+xarray==0.12.1
 netCDF4==1.5.0
 
 sentry-sdk==0.7.9

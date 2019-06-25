@@ -34,5 +34,5 @@ vcrpy==2.0.1
 freezegun==0.3.11
 
 # dependency management
-pip_tools==3.5.0
+pip_tools==3.8.0
 pipdeptree==0.13.2

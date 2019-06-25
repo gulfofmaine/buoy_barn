@@ -18,7 +18,7 @@ blocks:
         commands:
           - checkout
           - mkdir docker-data
-          - mv /docker-data/secret.env docker-data/secret.env
+          - mv ~/secret.env docker-data/secret.env
           - pip install --user codacy-coverage
           - docker-compose up -d --build
           - sleep 5

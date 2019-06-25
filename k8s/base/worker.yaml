@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    service: celery
+    tier: backend
+    role: worker
+  name: worker
+spec:
+  template:
+    metadata:
+      labels:
+        service: celery
+        tier: backend
+        role: worker
+    spec:
+      containers:
+        - name: web
+          image: gmri/neracoos-buoy-barn
+          args:
+            - celery
+            - -A
+            - buoy_barn
+            - worker
+            - -l
+            - info
+          envFrom:
+            - secretRef:
+                name: buoy-barn-secrets
+            - configMapRef:
+                name: buoy-barn-config
+          env:
+            - name: DJANGO_MANAGEPY_MIGRATE
+              value: "on"
+            - name: DJANGO_MANAGEPY_COLLECTSTATIC
+              value: "on"
+          volumeMounts:
+            - name: django-static
+              mountPath: /static
+      imagePullSecrets:
+        - name: docker-hub-secret
+      volumes:
+        - name: django-static
+          emptyDir: {}

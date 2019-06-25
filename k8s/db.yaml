@@ -1,8 +1,0 @@
-apiVersion: kubedb.com/v1alpha1
-kind: Postgres
-metadata:
-  name: buoy-barn-db
-spec:
-  version: "postgis-10.2"
-  storageType: "Ephemeral"
-  terminationPolicy: "Delete"

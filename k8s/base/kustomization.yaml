@@ -1,0 +1,27 @@
+namespace: buoy-barn
+resources:
+  - docker-hub-secret.yaml
+  - cache.yaml
+  - cache-service.yaml
+  - deployment.yaml
+  - ingress.yaml
+  - web-service.yaml
+  - worker.yaml
+configMapGenerator:
+  - name: buoy-barn-config
+    env: config.env
+secretGenerator:
+  - name: buoy-barn-secrets
+    env: secret.env
+commonLabels:
+  app: buoy-barn
+  maintainer: akerney
+  funder: NERACOOS
+  project: Mariners_dashboard
+patchesJson6902:
+  - target:
+      name: buoy-barn-ingress
+      group: extensions
+      version: v1beta1
+      kind: Ingress
+    path: ingress_patch.yaml

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: buoy-barn-cache
+spec:
+  selector:
+    service: redis
+    tier: backend
+    role: cache
+  ports:
+    - port: 6379
+      targetPort: 6379
+      protocol: TCP

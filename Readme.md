@@ -215,25 +215,7 @@ You can also run `make requirement-tree` to see the whole requirements tree and 
 As we are moving towards using Kubernetes, you can launch Buoy Barn in a Kubernetes cluster.
 See the `/k8s/` directory to see the configs.
 
-To start create the secrets needed for the cluster in `/k8s/secrets.yaml`.
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: buoy-barn-shared
-type: Opaque
-data:
-  SENTRY_DSN: base64 encoded DSN
-  SECRET_KEY: base64 encoded key
-```
-
-The cluster also needs a [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) controller, and the [KubeDB](https://kubedb.com) operator.
-
-We are also using a custom Postgresql version for KubeDB with the PostGIS extensions from [abkfenris/kubedb-postgis].
-You'll need to clone or download that repo, then use `kubectl apply -f 10.2/postgis\:10.2-v2.yaml` to add the custom PostgresVersion.
-
 Once those are set up, you can run `skaffold dev` to launch a easily interactive version of the cluster.
 Use `ctrl-c` to shutdown the cluster, and [Skaffold](https://skaffold.dev) will tear down what it set up.
 
-> Note: If you remove a spec from the `skaffold.yaml` while the cluster is up, Skaffold will not remove those resources from the cluster.
+To deploy, use `skaffold run -t VERSION_NUMBER --tail` when connected to the NERACOOS Kubernetes cluster.

@@ -32,6 +32,9 @@ def add_timeseries(
 
     info = pd.read_csv(e.get_info_url(dataset, response="csv"))
     info_vars = info[info["Row Type"] == "variable"]
+
+    print(f"Opened dataset from ERDDAP and found variables: {''.join(info_vars)}")
+
     variables = [
         var
         for var in info_vars["Variable Name"]

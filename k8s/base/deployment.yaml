@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    service: web
+    tier: frontend
+    role: api
+  name: web
+spec:
+  template:
+    metadata:
+      labels:
+        service: web
+        tier: frontend
+        role: api
+    spec:
+      containers:
+        - name: web
+          image: gmri/neracoos-buoy-barn
+          envFrom:
+            - secretRef:
+                name: buoy-barn-secrets
+            - configMapRef:
+                name: buoy-barn-config
+          env:
+            - name: DJANGO_MANAGEPY_MIGRATE
+              value: "on"
+            - name: DJANGO_MANAGEPY_COLLECTSTATIC
+              value: "on"
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: django-static
+              mountPath: /static
+      imagePullSecrets:
+        - name: docker-hub-secret
+      volumes:
+        - name: django-static
+          emptyDir: {}

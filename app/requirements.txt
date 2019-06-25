@@ -41,7 +41,7 @@ mypy==0.670               # via prospector
 netcdf4==1.5.0
 numpy==1.16.2             # via cftime, netcdf4, pandas, xarray
 pandas==0.24.2            # via erddapy, xarray
-parso==0.3.4              # via jedi
+parso==0.5.0              # via jedi
 pep8-naming==0.4.1        # via prospector
 pexpect==4.6.0            # via ipython
 pickleshare==0.7.5        # via ipython

@@ -49,7 +49,7 @@ pip_tools==3.8.0
 pipdeptree==0.13.2
 prompt-toolkit==2.0.9     # via ipython
 prospector[with_mypy,with_vulture]==1.1.6.2
-psycopg2-binary==2.8.2
+psycopg2-binary==2.8.3
 ptyprocess==0.6.0         # via pexpect
 pycodestyle==2.4.0        # via prospector
 pydocstyle==3.0.0         # via prospector

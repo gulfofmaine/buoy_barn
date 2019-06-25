@@ -45,7 +45,7 @@ parso==0.3.4              # via jedi
 pep8-naming==0.4.1        # via prospector
 pexpect==4.6.0            # via ipython
 pickleshare==0.7.5        # via ipython
-pip_tools==3.5.0
+pip_tools==3.8.0
 pipdeptree==0.13.2
 prompt-toolkit==2.0.9     # via ipython
 prospector[with_mypy,with_vulture]==1.1.6.2

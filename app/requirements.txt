@@ -62,7 +62,7 @@ pylint-plugin-utils==0.5  # via prospector, pylint-celery, pylint-django, pylint
 pylint==2.1.1             # via prospector, pylint-celery, pylint-django, pylint-flask, pylint-plugin-utils
 python-dateutil==2.8.0    # via freezegun, pandas
 pytz==2018.9              # via celery, django, pandas
-pyyaml==5.1
+pyyaml==5.1.1
 redis==3.2.1              # via celery, django-redis
 requests==2.21.0          # via erddapy
 requirements-detector==0.6  # via prospector

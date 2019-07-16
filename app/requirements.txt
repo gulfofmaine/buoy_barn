@@ -21,7 +21,7 @@ django-memoize==2.2.0
 django-redis==4.10.0
 django==2.2.2
 djangorestframework-gis==0.14
-djangorestframework==3.9.4
+djangorestframework==3.10.0
 dodgy==0.1.9              # via prospector
 erddapy==0.4.0
 freezegun==0.3.11

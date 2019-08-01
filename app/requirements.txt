@@ -13,7 +13,7 @@ certifi==2019.3.9         # via requests, sentry-sdk
 cftime==1.0.3.4           # via netcdf4
 chardet==3.0.4            # via requests
 click==7.0                # via pip-tools
-coverage==4.5.3
+coverage==4.5.4
 decorator==4.4.0          # via ipython, traitlets
 django-cors-headers==2.5.2
 django-debug-toolbar==1.11

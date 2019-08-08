@@ -31,7 +31,7 @@ coverage==4.5.4
 PyYAML==5.1.2
 geojson==2.4.1
 vcrpy==2.0.1
-freezegun==0.3.11
+freezegun==0.3.12
 
 # dependency management
 pip_tools==3.8.0

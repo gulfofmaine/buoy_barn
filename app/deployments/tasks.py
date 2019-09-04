@@ -2,6 +2,7 @@ import logging
 
 from celery import shared_task
 from requests import HTTPError
+from pandas import Timedelta
 
 from deployments.models import ErddapDataset, ErddapServer
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
@@ -37,7 +38,13 @@ def update_values_for_timeseries(timeseries):
                 logger.warning(message)
             else:
                 try:
-                    series.value = row[series.variable]
+                    value = row[series.variable]
+
+                    if isinstance(value, Timedelta):
+                        logger.info("Converting from Timedelta to seconds")
+                        value = value.seconds
+
+                    series.value = value
                     series.value_time = row["time"].to_pydatetime()
                     series.save()
                 except TypeError as error:

@@ -8,12 +8,12 @@ class DataMigrationTestCase(TestCase):
     def test_mooring_types(self):
         for name in ('Slack', 'Tethered'):
             mooring = MooringType.objects.get(name=name)
-            self.assertEquals(mooring.name, name)
+            self.assertEqual(mooring.name, name)
     
     def test_station_types(self):
         for name in ('buoy', 'Surface Mooring', 'ndbc'):
             station = StationType.objects.get(name=name)
-            self.assertEquals(station.name, name)
+            self.assertEqual(station.name, name)
     
     def test_data_types(self):
         data_types = [
@@ -86,10 +86,10 @@ class DataMigrationTestCase(TestCase):
 
         for standard_name, short_name, long_name, units in data_types:
             data_type = DataType.objects.get(standard_name=standard_name)
-            self.assertEquals(data_type.standard_name, standard_name)
-            self.assertEquals(data_type.short_name, short_name)
-            self.assertEquals(data_type.long_name, long_name)
-            self.assertEquals(data_type.units, units)
+            self.assertEqual(data_type.standard_name, standard_name)
+            self.assertEqual(data_type.short_name, short_name)
+            self.assertEqual(data_type.long_name, long_name)
+            self.assertEqual(data_type.units, units)
 
     def test_buffer_types(self):
         buffers = [
@@ -132,4 +132,4 @@ class DataMigrationTestCase(TestCase):
 
         for name in buffers:
             buffer = BufferType.objects.get(name=name)
-            self.assertEquals(buffer.name, name)
+            self.assertEqual(buffer.name, name)

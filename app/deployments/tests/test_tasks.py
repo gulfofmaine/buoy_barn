@@ -95,7 +95,7 @@ class TaskTestCase(TransactionTestCase):
     def test_refresh_server(self, update_values_for_timeseries):
         tasks.refresh_server(self.erddap.id)
 
-        self.assertEquals(
+        self.assertEqual(
             3,
             update_values_for_timeseries.call_count,
             "The server should have three distinct dataset/constraint groups of timeseries to be called with",
@@ -105,7 +105,7 @@ class TaskTestCase(TransactionTestCase):
     def test_refresh_dataset(self, update_values_for_timeseries):
         tasks.refresh_dataset(self.ds_M01_sbe37.id)
 
-        self.assertEquals(
+        self.assertEqual(
             2,
             update_values_for_timeseries.call_count,
             "The dataset should have two groups of timeseries that have different constraints",

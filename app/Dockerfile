@@ -1,4 +1,4 @@
-FROM python:3.7.4@sha256:e02ab696baa109219c2d09da5fc331255f3b61fe8b8f8edd6c98c6213b01163a
+FROM python:3.7.4@sha256:6eaf19442c358afc24834a6b17a3728a45c129de7703d8583392a138ecbdb092
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1
@@ -9,9 +9,9 @@ ENV PYTHONWARNINGS always
 
 # geodjango spatial requirements
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    binutils=2.28-5 \
-    libproj-dev=4.9.3-1 \
-    gdal-bin=2.1.2+dfsg-5 \
+    binutils=2.31.1-16 \
+    libproj-dev=5.2.0-1 \
+    gdal-bin=2.4.0+dfsg-1+b1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

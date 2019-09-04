@@ -14,16 +14,16 @@ df = pd.read_csv(Path(__file__).parents[0] / "test_griddap_attributes.csv")
 class ErddapUtilsTestCase(TestCase):
     def test_attribute_value(self):
         time = erddap.attribute_value(df, "time_coverage_end")
-        self.assertEquals(time, "2019-01-11T00:00:00Z")
+        self.assertEqual(time, "2019-01-11T00:00:00Z")
 
         precision = erddap.attribute_value(df, "geospatial_lat_resolution")
-        self.assertEquals(precision, 0.05)
+        self.assertEqual(precision, 0.05)
 
     @freeze_time("2019-01-09 00:00:00")
     def test_coverage_time(self):
         coverage_time = erddap.coverage_time_str(df)
 
-        self.assertEquals(
+        self.assertEqual(
             coverage_time,
             "[(2019-01-09T00:00:00Z):1:(2019-01-11T00:00:00Z)]",
             msg="Coverage time should be time_coverage_start or current day, whichever is later",
@@ -33,7 +33,7 @@ class ErddapUtilsTestCase(TestCase):
     def test_coverage_later_time(self):
         coverage_time = erddap.coverage_time_str(df)
 
-        self.assertEquals(
+        self.assertEqual(
             coverage_time,
             "[(2019-01-08T00:00:00Z):1:(2019-01-11T00:00:00Z)]",
             msg="Coverage should be time_coverage_start or current day, whichever is later",
@@ -42,7 +42,7 @@ class ErddapUtilsTestCase(TestCase):
     def test_coordinate_str(self):
         coord_str = erddap.coordinates_str(df, 43.650608, -70.250745)
 
-        self.assertEquals(coord_str, "[(43.65):1:(43.65)][(-70.25):1:(-70.25)]")
+        self.assertEqual(coord_str, "[(43.65):1:(43.65)][(-70.25):1:(-70.25)]")
 
     def test_parse_time(self):
         time_str = "2019-01-10T00:00:00Z"
@@ -50,4 +50,4 @@ class ErddapUtilsTestCase(TestCase):
 
         parsed = erddap.parse_time(time_str)
 
-        self.assertEquals(time, parsed)
+        self.assertEqual(time, parsed)

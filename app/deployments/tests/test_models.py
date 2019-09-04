@@ -24,13 +24,13 @@ class ProgramTestCase(TestCase):
     def test_program_attributes(self):
         neracoos = Program.objects.get(name="NERACOOS")
 
-        self.assertEquals(neracoos.name, "NERACOOS")
-        self.assertEquals(neracoos.website, "http://neracoos.org")
+        self.assertEqual(neracoos.name, "NERACOOS")
+        self.assertEqual(neracoos.website, "http://neracoos.org")
 
     def test_program_str(self):
         neracoos = Program.objects.get(name="NERACOOS")
 
-        self.assertEquals(str(neracoos), "NERACOOS")
+        self.assertEqual(str(neracoos), "NERACOOS")
 
     def test_program_json(self):
         neracoos = Program.objects.get(name="NERACOOS")
@@ -38,7 +38,7 @@ class ProgramTestCase(TestCase):
         self.assertIn("name", neracoos.json)
         self.assertIn("website", neracoos.json)
 
-        self.assertEquals(neracoos.json["name"], "NERACOOS")
+        self.assertEqual(neracoos.json["name"], "NERACOOS")
         self.assertIn("http://neracoos.org", neracoos.json["website"])
 
 
@@ -57,20 +57,20 @@ class PlatformTestCase(TestCase):
     def test_platform_str(self):
         n01 = Platform.objects.get(name="N01")
 
-        self.assertEquals(str(n01), "N01")
+        self.assertEqual(str(n01), "N01")
 
     def test_platform_attributes(self):
         n01 = Platform.objects.get(name="N01")
 
-        self.assertEquals(self.platform.name, n01.name)
+        self.assertEqual(self.platform.name, n01.name)
 
     def test_location(self):
         n01 = Platform.objects.get(name="N01")
 
         self.assertIsNotNone(n01.location)
-        self.assertEquals(n01.location.x, -65.9)
-        self.assertEquals(n01.location.y, 42.34)
-        self.assertEquals(n01.location.srid, 4326)
+        self.assertEqual(n01.location.x, -65.9)
+        self.assertEqual(n01.location.y, 42.34)
+        self.assertEqual(n01.location.srid, 4326)
 
     def test_platform_null_location(self):
         a01 = Platform.objects.get(name="A01")
@@ -104,7 +104,7 @@ class ProgramAttributionTestCase(TestCase):
         )
 
         self.assertIn("program", attribution.json)
-        self.assertEquals("NERACOOS", attribution.json["program"]["name"])
+        self.assertEqual("NERACOOS", attribution.json["program"]["name"])
 
         self.assertIn("attribution", attribution.json)
         self.assertIn("Managed", attribution.json["attribution"])
@@ -150,9 +150,9 @@ class DeploymentTestCase(TestCase):
         a01 = Platform.objects.get(name="A01")
 
         self.assertIsNotNone(a01.location)
-        self.assertEquals(a01.location.x, -70.56)
-        self.assertEquals(a01.location.y, 42.53)
-        self.assertEquals(a01.location.srid, 4326)
+        self.assertEqual(a01.location.x, -70.56)
+        self.assertEqual(a01.location.y, 42.53)
+        self.assertEqual(a01.location.srid, 4326)
 
     def test_deployment_str_with_no_end(self):
         deployment_str = str(Deployment.objects.get(deployment_name="A0140"))
@@ -200,23 +200,23 @@ class DataTypeTestCase(TestCase):
         temp = DataType.objects.get(standard_name="air_temperature")
 
         self.assertIn("standard_name", temp.json)
-        self.assertEquals("air_temperature", temp.json["standard_name"])
+        self.assertEqual("air_temperature", temp.json["standard_name"])
 
         self.assertIn("short_name", temp.json)
-        self.assertEquals("AT", temp.json["short_name"])
+        self.assertEqual("AT", temp.json["short_name"])
 
         self.assertIn("long_name", temp.json)
-        self.assertEquals("Air Temperature", temp.json["long_name"])
+        self.assertEqual("Air Temperature", temp.json["long_name"])
 
         self.assertIn("units", temp.json)
-        self.assertEquals("celsius", temp.json["units"])
+        self.assertEqual("celsius", temp.json["units"])
 
 
 class BufferTypeTestCase(TestCase):
     def test_buffer_str(self):
         buffer = BufferType.objects.get(name="doppler")
 
-        self.assertEquals(str(buffer), "doppler")
+        self.assertEqual(str(buffer), "doppler")
 
 
 class ErddapServerTestCase(TestCase):
@@ -237,10 +237,10 @@ class ErddapServerTestCase(TestCase):
         )
 
     def test_server_str_with_name(self):
-        self.assertEquals(str(self.server_with_name), "NERACOOS")
+        self.assertEqual(str(self.server_with_name), "NERACOOS")
 
     def test_server_str_without_name(self):
-        self.assertEquals(
+        self.assertEqual(
             str(self.server_without_name), "http://www.neracoos.org/erddap"
         )
 

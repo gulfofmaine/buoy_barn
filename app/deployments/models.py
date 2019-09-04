@@ -195,8 +195,9 @@ class ErddapServer(models.Model):
             try:
                 requests.get(hc_url + "/start", timeout=5)
             except requests.RequestException as error:
-                logger.info(
-                    f"Unable to send healthcheck start for {self.name} due to: {error}"
+                logger.error(
+                    f"Unable to send healthcheck start for {self.name} due to: {error}",
+                    exc_info=True,
                 )
 
     def healthcheck_complete(self):
@@ -207,8 +208,9 @@ class ErddapServer(models.Model):
             try:
                 requests.get(hc_url, timeout=5)
             except requests.RequestException as error:
-                logger.info(
-                    f"Unable to send healthcheck completion for {self.name} due to error: {error}"
+                logger.error(
+                    f"Unable to send healthcheck completion for {self.name} due to error: {error}",
+                    exc_info=True,
                 )
 
 
@@ -240,8 +242,9 @@ class ErddapDataset(models.Model):
             try:
                 requests.get(hc_url + "/start", timeout=5)
             except requests.RequestException as error:
-                logger.info(
-                    f"Unable to send healthcheck start for {self.name} due to: {error}"
+                logger.error(
+                    f"Unable to send healthcheck start for {self.name} due to: {error}",
+                    exc_info=True,
                 )
 
     def healthcheck_complete(self):
@@ -252,8 +255,9 @@ class ErddapDataset(models.Model):
             try:
                 requests.get(hc_url, timeout=5)
             except requests.RequestException as error:
-                logger.info(
-                    f"Unable to send healthcheck completion for {self.name} due to error: {error}"
+                logger.error(
+                    f"Unable to send healthcheck completion for {self.name} due to error: {error}",
+                    exc_info=True,
                 )
 
     def group_timeseries_by_constraint(self):

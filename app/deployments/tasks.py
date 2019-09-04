@@ -2,7 +2,6 @@ import logging
 
 from celery import shared_task
 from requests import HTTPError
-from sentry_sdk import capture_exception, capture_message
 
 from deployments.models import ErddapDataset, ErddapServer
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
@@ -23,7 +22,6 @@ def update_values_for_timeseries(timeseries):
         )
 
     except HTTPError as error:
-        capture_exception(error)
         logger.warning(
             f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}"
         )
@@ -37,14 +35,15 @@ def update_values_for_timeseries(timeseries):
             except IndexError:
                 message = f"Unable to find position in dataframe for {series.platform.name} - {series.variable}"
                 logger.warning(message)
-                capture_message(message)
             else:
                 try:
                     series.value = row[series.variable]
                     series.value_time = row["time"].to_pydatetime()
                     series.save()
                 except TypeError as error:
-                    logger.warning(f"Could not save {series.variable} from {row}")
+                    logger.error(
+                        f"Could not save {series.variable} from {row}", exc_info=True
+                    )
 
 
 @shared_task
@@ -59,8 +58,7 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False):
 
     groups = dataset.group_timeseries_by_constraint()
 
-    for constraints in groups:
-        timeseries = groups[constraints]
+    for constraints, timeseries in groups.items():
         update_values_for_timeseries(timeseries)
 
     if healthcheck:

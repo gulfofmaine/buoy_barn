@@ -1,11 +1,14 @@
 """Viewset for displaying forecasts, and fetching point forecast data is lat,lon are specified"""
+import logging
 from rest_framework import viewsets
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
-from sentry_sdk import capture_message
 
 from forecasts.forecasts import forecast_list
 from forecasts.serializers import ForecastSerializer
+
+
+logger = logging.getLogger(__name__)
 
 
 class ForecastViewSet(viewsets.ViewSet):
@@ -22,7 +25,7 @@ class ForecastViewSet(viewsets.ViewSet):
         try:
             forecast = filtered[0]
         except IndexError:
-            capture_message(f"Unknown forecast slug: {pk}")
+            logger.warning(f"Unknown forecast slug: {pk}")
             raise NotFound(detail=f"Unknown forecast slug: {pk}")
         seralizer = ForecastSerializer(forecast)
         data = seralizer.data

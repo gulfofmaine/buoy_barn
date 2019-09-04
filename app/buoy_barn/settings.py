@@ -14,6 +14,7 @@ import os
 import logging
 
 import sentry_sdk
+from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 
 logger = logging.getLogger(__name__)
@@ -27,7 +28,7 @@ except KeyError:
 try:
     sentry_sdk.init(
         dsn=os.environ["SENTRY_DSN"],
-        integrations=[DjangoIntegration()],
+        integrations=[CeleryIntegration(), DjangoIntegration()],
         environment="dev" if DEBUG else "prod",
     )
     logger.info("Sentry initialized")

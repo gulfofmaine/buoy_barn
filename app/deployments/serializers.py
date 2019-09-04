@@ -1,11 +1,14 @@
+import logging
+
 from rest_framework import serializers
 from rest_framework_gis.serializers import (
     GeoFeatureModelSerializer,
     GeometrySerializerMethodField,
 )
-from sentry_sdk import capture_message
 
 from .models import Platform, ErddapDataset, ErddapServer, Program
+
+logger = logging.getLogger(__name__)
 
 
 class PlatformSerializer(GeoFeatureModelSerializer):
@@ -21,8 +24,9 @@ class PlatformSerializer(GeoFeatureModelSerializer):
         try:
             return obj.location
         except AttributeError:
-            capture_message(
-                f"Platform ({obj.name}) does not have a valid location attribute"
+            logger.error(
+                f"Platform ({obj.name}) does not have a valid location attribute",
+                exc_info=True,
             )
             return None
 

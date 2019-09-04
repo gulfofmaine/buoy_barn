@@ -8,6 +8,6 @@ router = routers.DefaultRouter()
 router.register("platforms", PlatformViewset)
 router.register("datasets", DatasetViewSet)
 router.register("servers", ServerViewSet)
-router.register("forecasts", ForecastViewSet, base_name="forecast")
+router.register("forecasts", ForecastViewSet, basename="forecast")
 
 urlpatterns = router.urls

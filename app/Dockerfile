@@ -9,9 +9,9 @@ ENV PYTHONWARNINGS always
 
 # geodjango spatial requirements
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    binutils=2.28-5 \
-    libproj-dev=4.9.3-1 \
-    gdal-bin=2.1.2+dfsg-5 \
+    binutils=2.31.1-16 \
+    libproj-dev=5.2.0-1 \
+    gdal-bin=2.4.0+dfsg-1+b1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

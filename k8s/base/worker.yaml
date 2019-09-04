@@ -15,7 +15,7 @@ spec:
         role: worker
     spec:
       containers:
-        - name: web
+        - name: worker
           image: gmri/neracoos-buoy-barn
           args:
             - celery

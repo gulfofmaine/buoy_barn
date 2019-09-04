@@ -8,6 +8,10 @@ Changes:
 
 Fixes:
 
+## 0.1.2 - 9/4/19
+
+Fixes:
+
 - Issue when values returned from ERDDAP as Timedelta rather than a float.
 
 ## 0.1.1 - 9/4/19

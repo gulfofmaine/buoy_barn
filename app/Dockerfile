@@ -1,4 +1,4 @@
-FROM python:3.7.4@sha256:6eaf19442c358afc24834a6b17a3728a45c129de7703d8583392a138ecbdb092
+FROM python:3.8.0@sha256:dcae8a0759da45d4ec674d743cea068d8eb1d2a07db406bef7a17df3761694a8
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1

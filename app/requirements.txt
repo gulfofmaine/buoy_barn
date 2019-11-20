@@ -81,5 +81,5 @@ vulture==0.24             # via prospector
 wcwidth==0.1.7            # via prompt-toolkit
 whitenoise==4.1.3
 wrapt==1.11.1             # via astroid, vcrpy
-xarray==0.12.3
+xarray==0.14.1
 yarl==1.3.0               # via vcrpy

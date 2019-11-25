@@ -66,7 +66,7 @@ pyyaml==5.1.2
 redis==3.2.1              # via celery, django-redis
 requests==2.21.0          # via erddapy
 requirements-detector==0.6  # via prospector
-sentry-sdk==0.13.2
+sentry-sdk==0.13.3
 setoptconf==0.2.0         # via prospector
 six==1.12.0               # via astroid, freezegun, pip-tools, prompt-toolkit, pydocstyle, python-dateutil, traitlets, vcrpy
 snowballstemmer==1.2.1    # via pydocstyle

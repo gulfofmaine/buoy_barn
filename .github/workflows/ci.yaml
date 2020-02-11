@@ -29,6 +29,9 @@ jobs:
       - name: Test
         run: docker-compose run web coverage run --source='.' manage.py test -v 2
 
+      - name: Coverage report
+        run: docker-compose run web coverage report
+
       - name: Convert coverage report
         run: docker-compose run web coverage xml
 

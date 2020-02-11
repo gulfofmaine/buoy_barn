@@ -30,7 +30,7 @@ jobs:
         run: docker-compose run web coverage run --source='.' manage.py test -v 2
 
       - name: Convert coverage report
-        run: docker-compose exec web coverage xml
+        run: docker-compose run web coverage xml
 
       - name: Install Codacy coverage reporter
         run: pip install --user codacy-coverage

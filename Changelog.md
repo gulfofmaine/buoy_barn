@@ -6,6 +6,8 @@ Additions:
 
 Changes:
 
+- Test using Github Actions.
+
 Fixes:
 
 ## 0.1.2 - 9/4/19

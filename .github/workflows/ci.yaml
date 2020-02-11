@@ -27,7 +27,7 @@ jobs:
         run: docker-compose run web python manage.py db_ready
 
       - name: Test
-        run: docker-compose exec web coverage run --source='.' manage.py test -v 2
+        run: docker-compose run web coverage run --source='.' manage.py test -v 2
 
       - name: Convert coverage report
         run: docker-compose exec web coverage xml

@@ -6,9 +6,33 @@ Additions:
 
 Changes:
 
+Fixes
+
+## 0.1.3 - 2/12/20
+
+Changes:
+
 - Test using Github Actions.
 - Replace Pip-tools with Poetry for dependency management.
-- Usepy.test to manage testing
+- Use py.test to manage testing
+- Update dependencies
+  - Django from 2.2.5 to 3.0
+  - Psycopg2-binary from 2.8.3 to 2.8.4
+  - Django CORS headers from 3.1.0 to 3.2
+  - Django Rest Framework from 3.10.3 to 3.11
+  - Django Rest Framework GIS from 0.14 to 0.15
+  - Django Memoize from 2.2.0 to 2.2.1
+  - Django Redis from 4.10 to 4.11
+  - Erddapy from 0.5.0 to 0.5.3
+  - Xarray from 0.12.3 to 0.15.0
+  - netCDF4 from 1.5.2 to 1.5.3
+  - Sentry SDK from 0.11.2 to 0.14.1
+  - Celery from 4.3.0 to 4.4
+  - Whitenoise from 4.1.3 to 5.0
+  - IPython from 7.8.0 to 7.12
+  - Django Debug Toolbar from 2.0 to 2.2
+  - Prospector from 1.1.7 to 1.2
+  - VCR from 2.1 to 4
 
 Fixes:
 

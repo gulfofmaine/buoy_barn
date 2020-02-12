@@ -203,13 +203,6 @@ This takes care of things most of the time, but sometimes the database will look
 If this does occur (look for `psycopg` in the errors), just open and save `app/manage.py` to get the server to try to reload.
 It works to hit save in most other `.py` files under the `app/` directory as well.
 
-### Dependency Management
-
-To add a dependency, copy it (and the version) into `requirements.in`.
-Then run `make requirements-compile` to run pip-tools to regenerate the `requirements.txt` file to pin the whole dependency tree.
-
-You can also run `make requirement-tree` to see the whole requirements tree and if there are any conflicts.
-
 ## Kubernetes
 
 As we are moving towards using Kubernetes, you can launch Buoy Barn in a Kubernetes cluster.

@@ -7,6 +7,8 @@ Additions:
 Changes:
 
 - Test using Github Actions.
+- Replace Pip-tools with Poetry for dependency management.
+- Usepy.test to manage testing
 
 Fixes:
 

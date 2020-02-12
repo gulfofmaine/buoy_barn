@@ -1,10 +1,13 @@
 from django.test import TestCase
 
+import pytest
+
 from deployments.models import Platform, ErddapServer
 from deployments.utils.erddap_loader import add_timeseries
 from .vcr import my_vcr
 
 
+@pytest.mark.django_db
 class ErddapLoaderTestCase(TestCase):
     fixtures = ["platforms", "erddapservers"]
 

@@ -27,10 +27,7 @@ jobs:
         run: docker-compose run web python manage.py db_ready
 
       - name: Test
-        run: docker-compose run web coverage run --source='.' manage.py test -v 2
-
-      - name: Coverage report
-        run: docker-compose run web coverage report
+        run: docker-compose run web pytest --cov=. --cov-config=tox.ini
 
       - name: Convert coverage report
         run: docker-compose run web coverage xml

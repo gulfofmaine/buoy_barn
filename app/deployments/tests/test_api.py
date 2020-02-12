@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 import geojson
 from rest_framework.test import APITestCase
+import pytest
 
 from deployments.models import (
     Platform,
@@ -14,6 +15,7 @@ from deployments.models import (
 from .vcr import my_vcr
 
 
+@pytest.mark.django_db
 class BuoyBarnPlatformAPITestCase(APITestCase):
     fixtures = ["platforms", "erddapservers"]
 

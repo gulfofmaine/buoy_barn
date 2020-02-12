@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Issue where constraints are not set blocks whole server from updating
+
 ## 0.1.2 - 9/4/19
 
 Fixes:

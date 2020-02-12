@@ -27,13 +27,7 @@ jobs:
         run: docker-compose run web python manage.py db_ready
 
       - name: Test
-        run: docker-compose run web pytest --cov=. --cov-config=tox.ini
-
-      - name: Show files
-        run: docker-compose run web ls -la
-
-      - name: Convert coverage report
-        run: docker-compose run web coverage xml
+        run: docker-compose run web pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml
 
       - name: Install Codacy coverage reporter
         run: pip install --user codacy-coverage

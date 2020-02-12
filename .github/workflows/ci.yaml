@@ -1,0 +1,38 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: ubuntu-18.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup Docker Data
+        run: |
+          mkdir docker-data
+          cat <<< "${{ secrets.DOCKER_DATA_SECRET }}" > docker-data/secret.env
+
+      - name: Build Buoy Barn
+        run: docker-compose build web
+
+      - name: Bring up server
+        run: docker-compose up -d
+
+      - name: Wait for database to be ready
+        run: docker-compose run web python manage.py db_ready
+
+      - name: Test
+        run: docker-compose run web pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml
+
+      - name: Install Codacy coverage reporter
+        run: pip install --user codacy-coverage
+
+      - name: Send coverage to Codacy
+        run: ~/.local/bin/python-codacy-coverage -r app/coverage.xml
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}

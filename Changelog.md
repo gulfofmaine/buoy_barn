@@ -6,6 +6,10 @@ Additions:
 
 Changes:
 
+- Test using Github Actions.
+- Replace Pip-tools with Poetry for dependency management.
+- Usepy.test to manage testing
+
 Fixes:
 
 - Issue where constraints are not set blocks whole server from updating

@@ -52,10 +52,10 @@ def add_timeseries(
 
     # extract times
     start_time = convert_time(
-        info[info["Attribute Name"] == "time_coverage_start"]["Value"].get_values()[0]
+        info[info["Attribute Name"] == "time_coverage_start"]["Value"].to_numpy()[0]
     )
     end_time = convert_time(
-        info[info["Attribute Name"] == "time_coverage_end"]["Value"].get_values()[0]
+        info[info["Attribute Name"] == "time_coverage_end"]["Value"].to_numpy()[0]
     )
     yesterday = datetime.utcnow() - timedelta(hours=24)
     if end_time > yesterday:

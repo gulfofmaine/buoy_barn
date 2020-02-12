@@ -1,5 +1,5 @@
 build:
-	docker-compose build --parallel
+	docker-compose build
 
 up: down build
 	# docker-compose up -d --build
@@ -44,19 +44,13 @@ shell:
 	docker-compose exec web python manage.py shell
 
 test:
-	docker-compose exec web python manage.py test -v 2
+	docker-compose exec web pytest --cov=. --cov-config=tox.ini
 
 coverage:
 	docker-compose exec web coverage run --source='.' manage.py test
 	docker-compose exec web coverage report
 	docker-compose exec web coverage html
 	open app/htmlcov/index.html
-
-requirements-compile:
-	docker-compose exec web pip-compile requirements.in
-
-requirements-tree:
-	docker-compose exec web pipdeptree
 
 fixtures:
 	docker-compose exec web python manage.py dumpdata --natural-primary --natural-foreign --format yaml deployments.Program -o deployments/fixtures/programs.yaml

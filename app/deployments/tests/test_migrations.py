@@ -1,8 +1,10 @@
 from django.test import TestCase
+import pytest
 
 from deployments.models import MooringType, StationType, DataType, BufferType
 
 
+@pytest.mark.django_db
 class DataMigrationTestCase(TestCase):
     """ Test that all data that should have been setup in a migration is accessible """
     def test_mooring_types(self):

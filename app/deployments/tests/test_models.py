@@ -1,4 +1,6 @@
+from django.core.management import call_command
 from django.test import TestCase
+import pytest
 
 from deployments.models import (
     Deployment,
@@ -15,6 +17,7 @@ from deployments.models import (
 )
 
 
+@pytest.mark.django_db
 class ProgramTestCase(TestCase):
     def setUp(self):
         self.program = Program.objects.create(
@@ -42,6 +45,7 @@ class ProgramTestCase(TestCase):
         self.assertIn("http://neracoos.org", neracoos.json["website"])
 
 
+@pytest.mark.django_db
 class PlatformTestCase(TestCase):
     def setUp(self):
         self.platform = Platform.objects.create(
@@ -78,6 +82,7 @@ class PlatformTestCase(TestCase):
         self.assertIsNone(a01.location)
 
 
+@pytest.mark.django_db
 class ProgramAttributionTestCase(TestCase):
     fixtures = ["programs", "platforms"]
 
@@ -110,6 +115,7 @@ class ProgramAttributionTestCase(TestCase):
         self.assertIn("Managed", attribution.json["attribution"])
 
 
+@pytest.mark.django_db
 class DeploymentTestCase(TestCase):
     fixtures = ["platforms"]
 
@@ -172,6 +178,7 @@ class DeploymentTestCase(TestCase):
         self.assertIn("80 days", deployment_str)
 
 
+@pytest.mark.django_db
 class MooringTypeTestCase(TestCase):
     def setUp(self):
         self.mooring = MooringType.objects.get(name="Slack")
@@ -180,6 +187,7 @@ class MooringTypeTestCase(TestCase):
         self.assertEqual(str(self.mooring), "Slack")
 
 
+@pytest.mark.django_db
 class StationTypeTestCase(TestCase):
     def setUp(self):
         self.station = StationType.objects.get(name="Surface Mooring")
@@ -188,6 +196,7 @@ class StationTypeTestCase(TestCase):
         self.assertEqual(str(self.station), "Surface Mooring")
 
 
+@pytest.mark.django_db
 class DataTypeTestCase(TestCase):
     def test_data_str(self):
         temp = DataType.objects.get(standard_name="air_temperature")
@@ -212,6 +221,7 @@ class DataTypeTestCase(TestCase):
         self.assertEqual("celsius", temp.json["units"])
 
 
+@pytest.mark.django_db
 class BufferTypeTestCase(TestCase):
     def test_buffer_str(self):
         buffer = BufferType.objects.get(name="doppler")
@@ -219,6 +229,7 @@ class BufferTypeTestCase(TestCase):
         self.assertEqual(str(buffer), "doppler")
 
 
+@pytest.mark.django_db
 class ErddapServerTestCase(TestCase):
     fixtures = ["programs"]
 
@@ -250,6 +261,7 @@ class ErddapServerTestCase(TestCase):
         self.assertIsInstance(self.server_with_name.connection(), ERDDAP)
 
 
+@pytest.mark.django_db
 class TimeSeriesTestCase(TestCase):
     fixtures = ["platforms", "erddapservers"]
 

@@ -1,4 +1,5 @@
 from unittest.mock import patch
+import pytest
 
 from django.test import TransactionTestCase
 
@@ -14,6 +15,7 @@ from deployments.models import (
 from .vcr import my_vcr
 
 
+@pytest.mark.django_db
 class TaskTestCase(TransactionTestCase):
     fixtures = ["platforms", "erddapservers", "datatypes"]
 

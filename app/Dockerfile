@@ -6,6 +6,8 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 # Show deprication warnings https://docs.djangoproject.com/en/2.2/howto/upgrade-version/#resolving-deprecation-warnings
 ENV PYTHONWARNINGS always
+# Do not use virtualenv with Poetry
+ENV POETRY_VIRTUALENVS_CREATE false
 
 # geodjango spatial requirements
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -15,14 +17,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip install poetry==1.0.3 \
+    && groupadd uwsgi && useradd -g uwsgi uwsgi
+
 # Working directory
 RUN mkdir /app
 WORKDIR /app
 
 # Install requirements
-COPY ./requirements.txt /app/
-RUN pip install -r requirements.txt \
-    && groupadd uwsgi && useradd -g uwsgi uwsgi
+COPY ./pyproject.toml /app/
+RUN poetry install --no-interaction
 
 # Copy app to working directory
 COPY ./ /app/

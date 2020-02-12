@@ -44,7 +44,7 @@ shell:
 	docker-compose exec web python manage.py shell
 
 test:
-	docker-compose exec web python pytest --cov=. --cov-config=tox.ini
+	docker-compose exec web pytest --cov=. --cov-config=tox.ini
 
 coverage:
 	docker-compose exec web coverage run --source='.' manage.py test

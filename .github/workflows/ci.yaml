@@ -29,6 +29,9 @@ jobs:
       - name: Test
         run: docker-compose run web pytest --cov=. --cov-config=tox.ini
 
+      - name: Show files
+        run: docker-compose run web ls -la
+
       - name: Convert coverage report
         run: docker-compose run web coverage xml
 

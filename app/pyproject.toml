@@ -30,7 +30,7 @@ pandas = "^1.0"
 [tool.poetry.dev-dependencies]
 ipython = "^7.13"
 pyyaml = "^5.3.1"
-pytest = "^5.3"
+pytest = "^5.4"
 pytest-django = "^3.9"
 pytest-cov = "^2.8"
 prospector = {version = "^1.2", extras = ["with_mypy", "with_vulture"]}

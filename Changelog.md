@@ -8,6 +8,9 @@ Changes:
 
 Fixes
 
+- Adds timeout when a task does not return a response.
+- Catches when a 500 page is returned instead of an NetCDF file.
+
 ## 0.1.3 - 2/12/20
 
 Changes:

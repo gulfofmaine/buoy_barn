@@ -6,9 +6,28 @@ Additions:
 
 Changes:
 
-- Update Bedford wave height period (previously the Wave Watch 3 model was using the wrong wave period from the model).
+Fixes:
 
-Fixes
+## 0.1.4 - 4/7/2020
+
+Changes:
+
+- Update Bedford wave height period (previously the Wave Watch 3 model was using the wrong wave period from the model).
+- Update dependencies
+  - Python from 3.8.1 to 3.8.2
+  - Freezegun from 0.3.12
+  - Celery from 4.4.0 to 4.4.2
+  - Django from 3.0.3 to 3.0.5
+  - IPython from 7.12.0 to 7.13.0
+  - Pandas from 1.0.1 to 1.0.3
+  - Psycopg2-binary from 2.8.4 to 2.8.5
+  - Pytest from 5.3.5 to 5.4.1
+  - Pytest django from 3.8.0 to 3.9.0
+  - PyYAML from 5.3 to 5.3.1
+  - Sentry SDK from 0.14.1 to 0.14.3
+  - Xarray from 0.15.0 to 0.15.1
+
+Fixes:
 
 - Adds timeout when a task does not return a response.
 - Catches when a 500 page is returned instead of an NetCDF file.

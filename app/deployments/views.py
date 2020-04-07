@@ -32,7 +32,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
     A viewset for viewing and triggering refreshed of datasets
     """
 
-    queryset = ErddapDataset.objects
+    queryset = ErddapDataset.objects.select_related("server")
     serializer_class = ErddapDatasetSerializer
 
     def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument

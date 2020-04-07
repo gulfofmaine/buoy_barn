@@ -1,7 +1,7 @@
 import logging
 
 from celery import shared_task
-from requests import HTTPError
+from requests import HTTPError, Timeout
 from pandas import Timedelta
 
 from deployments.models import ErddapDataset, ErddapServer
@@ -24,7 +24,12 @@ def update_values_for_timeseries(timeseries):
 
     except HTTPError as error:
         logger.warning(
-            f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}"
+            f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}", extra={"timeseries": timeseries, "constraints": timeseries[0].constraints}
+        )
+    
+    except Timeout as error:
+        logger.warning(
+            f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}", extra={"timeseries": timeseries, "constraints": timeseries[0].constraints}
         )
 
     else:

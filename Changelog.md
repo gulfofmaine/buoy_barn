@@ -6,10 +6,13 @@ Additions:
 
 Changes:
 
+- Update Bedford wave height period (previously the Wave Watch 3 model was using the wrong wave period from the model).
+
 Fixes
 
 - Adds timeout when a task does not return a response.
 - Catches when a 500 page is returned instead of an NetCDF file.
+- Catch JSON decode errors when trying to load forecasts.
 
 ## 0.1.3 - 2/12/20
 

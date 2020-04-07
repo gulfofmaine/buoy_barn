@@ -28,12 +28,12 @@ class BedfordWavePeriod(BaseBedfordForecast):
     """Bedford wave period forecast"""
 
     slug = "bedford_ww3_wave_period"
-    name = "Bedford Institute Wave Model - Height"
-    description = "Wave Height from the Bedford Institute Wave Model"
+    name = "Bedford Institute Wave Model - Period"
+    description = "Wave Period from the Bedford Institute Wave Model"
     forecast_type = ForecastTypes.WAVE_PERIOD
     units = "seconds"
 
-    field = "fp"
+    field = "t01"
 
 
 class BedfordWaveDirection(BaseBedfordForecast):

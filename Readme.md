@@ -120,6 +120,10 @@ CELERY_BROKER_URL=rediss://cache:6379/1
 
 An additional environment variable is currently configured in `docker-compose.yaml` as it is unlikely to need to be changed.
 
+There are additionally two environment variables for changing the timeout when
+querying ERDDAP servers.
+`RETRIEVE_FORECAST_TIMEOUT_SECONDS` and `RETRIEVE_DATAFRAME_TIMEOUT_SECONDS`.
+
 ### Starting Docker
 
 Then you can use `make up` to start the database and Django server.

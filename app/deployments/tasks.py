@@ -24,16 +24,24 @@ def update_values_for_timeseries(timeseries):
 
     except HTTPError as error:
         logger.warning(
-            f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}", extra={"timeseries": timeseries, "constraints": timeseries[0].constraints}
+            f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
+            extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
+            exc_info=True
         )
     
     except Timeout as error:
         logger.warning(
-            f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}", extra={"timeseries": timeseries, "constraints": timeseries[0].constraints}
+            f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}", 
+            extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
+            exc_info=True
         )
     
     except OSError as error:
-        logger.error(f"Error loading dataset {timeseries[0].dataset.name} with constraints {timeseries[0].constraints}: {error}", extra={"timeseries": timeseries, "constraints": timeseries[0].constraints})
+        logger.error(
+            f"Error loading dataset {timeseries[0].dataset.name} with constraints {timeseries[0].constraints}: {error}", 
+            extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
+            exc_info=True
+        )
 
     else:
         for series in timeseries:
@@ -94,7 +102,7 @@ def refresh_server(server_id: int, healthcheck: bool = False):
     server = ErddapServer.objects.get(pk=server_id)
 
     if healthcheck:
-        dataset.healthcheck_start()
+        server.healthcheck_start()
 
     for ds in server.erddapdataset_set.all():
         refresh_dataset(ds.id)

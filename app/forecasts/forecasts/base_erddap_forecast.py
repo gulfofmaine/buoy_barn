@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 from typing import List, Tuple
 
 from erddapy import ERDDAP
@@ -57,6 +58,16 @@ class BaseERDDAPForecast(BaseForecast):
             for row in rows
         ]
 
+    def json(self):
+        """ Returns a dict with standard information about the forecast """
+        return {
+            **super(BaseERDDAPForecast, self).json(),
+            "server": self.server,
+            "dataset": self.dataset,
+            "to_360": self.to_360,
+            "field": self.field,
+        }
+
     def offset_value(self, value: float) -> float:  # pylint: disable=no-self-use
         """ Allows you to override a value to return something more helpful (say Celsius rather than Kelvin) """
         return value
@@ -78,7 +89,10 @@ class BaseERDDAPForecast(BaseForecast):
         Returns: 
             Table object from ERDDAP dataset for a given latitude and longitude
          """
-        response = requests.get(self.dataset_url(lat, lon))
+        response = requests.get(
+            self.dataset_url(lat, lon), 
+            timeout=float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60))
+        )
         return response.json()["table"]
 
     def dataset_info_df(self) -> pd.DataFrame:

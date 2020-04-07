@@ -50,11 +50,11 @@ class ForecastViewSet(viewsets.ViewSet):
             except JSONDecodeError as error:
                 logger.error(
                     f"Error retrieving dataset due to a JSON decode error: {error}",
-                    exc_info=True, 
+                    exc_info=True,
                 )
-                raise APIException(detail=f"Error retrieving dataset for forecast slug: {pk}")
-
-
+                raise APIException(
+                    detail=f"Error retrieving dataset for forecast slug: {pk}"
+                )
 
             data["time_series"] = [
                 {"time": reading[0], "reading": reading[1]} for reading in time_series

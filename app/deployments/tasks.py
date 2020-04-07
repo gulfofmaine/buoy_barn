@@ -26,21 +26,21 @@ def update_values_for_timeseries(timeseries):
         logger.warning(
             f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
             extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
-            exc_info=True
+            exc_info=True,
         )
-    
+
     except Timeout as error:
         logger.warning(
-            f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}", 
+            f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
             extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
-            exc_info=True
+            exc_info=True,
         )
-    
+
     except OSError as error:
         logger.error(
-            f"Error loading dataset {timeseries[0].dataset.name} with constraints {timeseries[0].constraints}: {error}", 
+            f"Error loading dataset {timeseries[0].dataset.name} with constraints {timeseries[0].constraints}: {error}",
             extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
-            exc_info=True
+            exc_info=True,
         )
 
     else:

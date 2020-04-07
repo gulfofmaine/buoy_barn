@@ -90,8 +90,8 @@ class BaseERDDAPForecast(BaseForecast):
             Table object from ERDDAP dataset for a given latitude and longitude
          """
         response = requests.get(
-            self.dataset_url(lat, lon), 
-            timeout=float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60))
+            self.dataset_url(lat, lon),
+            timeout=float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60)),
         )
         return response.json()["table"]
 

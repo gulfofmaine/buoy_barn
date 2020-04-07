@@ -8,6 +8,13 @@ Changes:
 
 Fixes:
 
+## 0.1.5 - 4/7/2020
+
+Changes:
+
+- Add Redis integration to Sentry.
+- Update Kubernetes configs from various beta versions to apps/v1.
+
 ## 0.1.4 - 4/7/2020
 
 Changes:

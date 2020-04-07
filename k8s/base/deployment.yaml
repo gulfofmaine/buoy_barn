@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -7,6 +7,11 @@ metadata:
     role: api
   name: web
 spec:
+  selector:
+    matchLabels:
+      service: web
+      tier: frontend
+      role: api
   template:
     metadata:
       labels:

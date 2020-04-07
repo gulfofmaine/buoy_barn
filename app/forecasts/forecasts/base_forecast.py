@@ -45,3 +45,17 @@ class BaseForecast:
             List of tuples of forecasted times and values
         """
         raise NotImplementedError
+
+    def json(self):
+        """ Returns a dict with standard information about the forecast """
+        return {
+            "slug": self.slug,
+            "forecast_type": self.forecast_type,
+            "name": self.name,
+            "description": self.description,
+            "source_url": self.source_url,
+            "units": self.units
+        }
+
+    def __repr__(self):
+        return f"<Forecast: {self.json()}>"

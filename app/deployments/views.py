@@ -32,7 +32,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
     A viewset for viewing and triggering refreshed of datasets
     """
 
-    queryset = ErddapDataset.objects
+    queryset = ErddapDataset.objects.select_related("server")
     serializer_class = ErddapDatasetSerializer
 
     def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument
@@ -50,7 +50,6 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
         server, dataset = pk.split("-", maxsplit=1)
         dataset = get_object_or_404(self.queryset, name=dataset, server__name=server)
 
-        dataset.healthcheck_start()
         refresh_dataset.delay(dataset.id, healthcheck=True)
 
         serializer = self.serializer_class(dataset, context={"request": request})
@@ -71,7 +70,6 @@ class ServerViewSet(viewsets.ReadOnlyModelViewSet):
 
         server = get_object_or_404(self.queryset, pk=pk)
 
-        server.healthcheck_start()
         refresh_server.delay(server.id, healthcheck=True)
 
         serializer = self.serializer_class(server, context={"request": request})

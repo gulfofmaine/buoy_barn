@@ -1,7 +1,7 @@
 import logging
 
 from celery import shared_task
-from requests import HTTPError
+from requests import HTTPError, Timeout
 from pandas import Timedelta
 
 from deployments.models import ErddapDataset, ErddapServer
@@ -24,7 +24,23 @@ def update_values_for_timeseries(timeseries):
 
     except HTTPError as error:
         logger.warning(
-            f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}"
+            f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
+            extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
+            exc_info=True,
+        )
+
+    except Timeout as error:
+        logger.warning(
+            f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
+            extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
+            exc_info=True,
+        )
+
+    except OSError as error:
+        logger.error(
+            f"Error loading dataset {timeseries[0].dataset.name} with constraints {timeseries[0].constraints}: {error}",
+            extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
+            exc_info=True,
         )
 
     else:
@@ -63,6 +79,9 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False):
     """
     dataset = ErddapDataset.objects.get(pk=dataset_id)
 
+    if healthcheck:
+        dataset.healthcheck_start()
+
     groups = dataset.group_timeseries_by_constraint()
 
     for constraints, timeseries in groups.items():
@@ -81,6 +100,9 @@ def refresh_server(server_id: int, healthcheck: bool = False):
         healthcheck (int): Should Healthchecks.io be singled after all timeseries are updated
     """
     server = ErddapServer.objects.get(pk=server_id)
+
+    if healthcheck:
+        server.healthcheck_start()
 
     for ds in server.erddapdataset_set.all():
         refresh_dataset(ds.id)

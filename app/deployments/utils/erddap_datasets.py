@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from logging import getLogger
+import os
 from typing import List
 
 from erddapy import ERDDAP
@@ -49,6 +50,8 @@ def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFra
         list(set(series.variable for series in timeseries)),
         constraints=constraints,
     )
+
+    e.requests_kwargs["timeout"] = float(os.environ.get("RETRIEVE_DATAFRAME_TIMEOUT_SECONDS", 60))
 
     ds = e.to_xarray()
     return ds.to_dataframe()

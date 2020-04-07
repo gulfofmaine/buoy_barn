@@ -65,6 +65,7 @@ class ErddapServerSerializer(serializers.HyperlinkedModelSerializer):
 
 class ErddapDatasetSerializer(serializers.ModelSerializer):
     slug = serializers.ReadOnlyField()
+    server = ErddapServerSerializer()
 
     class Meta:
         model = ErddapDataset

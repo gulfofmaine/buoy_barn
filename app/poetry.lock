@@ -234,7 +234,7 @@ description = "An implementation of memoization technique for Django."
 name = "django-memoize"
 optional = false
 python-versions = "*"
-version = "2.2.1"
+version = "2.3.0"
 
 [package.dependencies]
 django = "*"
@@ -1123,7 +1123,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "3ff7d134a8ba9aa2dd917ab1824eb73ed951a1af9aaac1d7d962ce16f60d531f"
+content-hash = "c9cd70e4dab24284235fc107cad4e033822a5726b227f6af0576a2b49b24ecbc"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1254,7 +1254,7 @@ django-debug-toolbar = [
     {file = "django_debug_toolbar-2.2-py3-none-any.whl", hash = "sha256:ff94725e7aae74b133d0599b9bf89bd4eb8f5d2c964106e61d11750228c8774c"},
 ]
 django-memoize = [
-    {file = "django-memoize-2.2.1.tar.gz", hash = "sha256:7428e19cb17009ea51120420101a239d83bdf4064e5c72ca8c3dfa9656033f24"},
+    {file = "django-memoize-2.3.0.tar.gz", hash = "sha256:85decffbef7d38ffc569dc96527f598e6677bbc01ce29adf722b051da7efd4be"},
 ]
 django-redis = [
     {file = "django-redis-4.11.0.tar.gz", hash = "sha256:a5b1e3ffd3198735e6c529d9bdf38ca3fcb3155515249b98dc4d966b8ddf9d2b"},

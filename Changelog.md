@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- 403 Blacklist error was being caught as a warning.
+
 ## 0.1.5 - 4/7/2020
 
 Changes:

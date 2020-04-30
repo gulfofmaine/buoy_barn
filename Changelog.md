@@ -8,7 +8,13 @@ Changes:
 
 Fixes:
 
+## 0.1.6 - 4/30/2020
+
+Fixes:
+
 - 403 Blacklist error was being caught as a warning.
+- Update dependencies
+  - Django Memoize from 2.2.1 to 2.3.1
 
 ## 0.1.5 - 4/7/2020
 

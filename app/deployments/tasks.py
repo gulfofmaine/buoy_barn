@@ -53,7 +53,7 @@ def update_values_for_timeseries(timeseries):
         )
 
     except OSError as error:
-        logger.error(
+        logger.info(
             f"Error loading dataset {timeseries[0].dataset.name} with constraints {timeseries[0].constraints}: {error}",
             extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
             exc_info=True,

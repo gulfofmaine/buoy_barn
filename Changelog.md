@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Decreased `OSError` in refresh task to `logger.info` as it appears to largely be caused when the UConn ERDDAP is returning 0 rows and we try to read a webpage as a NetCDF.
+
 ## 0.1.6 - 4/30/2020
 
 Fixes:

@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Quiet 500 errors also as infos.
+
 ## 0.1.7 - 4/30/2020
 
 Fixes:

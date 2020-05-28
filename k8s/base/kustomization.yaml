@@ -9,10 +9,12 @@ resources:
   - worker.yaml
 configMapGenerator:
   - name: buoy-barn-config
-    env: config.env
+    envs: 
+    - config.env
 secretGenerator:
   - name: buoy-barn-secrets
-    env: secret.env
+    envs: 
+    - secret.env
 commonLabels:
   app: buoy-barn
   maintainer: akerney

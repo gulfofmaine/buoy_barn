@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,12 +14,21 @@ from .serializers import (
 from .tasks import refresh_dataset, refresh_server
 
 
+@method_decorator(cache_page(60), name="list")
 class PlatformViewset(viewsets.ReadOnlyModelViewSet):
     """
     A viewset for viewing Platforms
     """
 
-    queryset = Platform.objects.filter(active=True).prefetch_related("timeseries_set")
+    queryset = Platform.objects.filter(active=True).prefetch_related(
+        "timeseries_set",
+        "timeseries_set__data_type",
+        "timeseries_set__dataset",
+        "programattribution_set",
+        "programattribution_set__program",
+        "alerts",
+        "programs",
+    )
     serializer_class = PlatformSerializer
 
     def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument

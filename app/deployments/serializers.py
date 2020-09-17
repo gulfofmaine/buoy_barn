@@ -33,10 +33,7 @@ class PlatformSerializer(GeoFeatureModelSerializer):
     attribution = serializers.SerializerMethodField()
 
     def get_attribution(self, obj):
-        return [
-            attr.json
-            for attr in obj.programattribution_set.all().select_related("program")
-        ]
+        return [attr.json for attr in obj.programattribution_set.all()]
 
     alerts = serializers.SerializerMethodField()
 

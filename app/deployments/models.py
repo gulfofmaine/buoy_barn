@@ -4,7 +4,6 @@ from enum import Enum
 import logging
 
 from django.contrib.gis.db import models
-from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
 from memoize import memoize
 import requests
@@ -248,7 +247,7 @@ class TimeSeries(models.Model):
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
     data_type = models.ForeignKey(DataType, on_delete=models.CASCADE)
     variable = models.CharField(max_length=256)
-    constraints = JSONField(
+    constraints = models.JSONField(
         "Extra ERDDAP constraints",
         help_text="Extra constratints needed when querying ERDDAP (for example: when datasets have multiple platforms)",
         null=True,

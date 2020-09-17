@@ -138,18 +138,21 @@ def add_timeseries(
                     logger.warning(f"Unable to load or create datatype for {var}")
 
             finally:
-                if data_type:
-                    time_series = TimeSeries(
-                        platform=platform,
-                        variable=var,
-                        data_type=data_type,
-                        start_time=start_time,
-                        end_time=end_time,
-                        constraints=constraints,
-                        dataset=erddap_dataset,
-                    )
-                    if buffer:
-                        time_series.buffer_type = buffer
+                try:
+                    if data_type:
+                        time_series = TimeSeries(
+                            platform=platform,
+                            variable=var,
+                            data_type=data_type,
+                            start_time=start_time,
+                            end_time=end_time,
+                            constraints=constraints,
+                            dataset=erddap_dataset,
+                        )
+                        if buffer:
+                            time_series.buffer_type = buffer
 
-                    time_series.save()
+                        time_series.save()
+                except UnboundLocalError:
+                    logger.warning(f"No datatype for {var}")
         data_type = None

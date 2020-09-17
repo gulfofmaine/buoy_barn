@@ -3,7 +3,6 @@ from django.test import TestCase
 import pytest
 
 from deployments.models import (
-    Deployment,
     Program,
     Platform,
     ProgramAttribution,
@@ -113,69 +112,6 @@ class ProgramAttributionTestCase(TestCase):
 
         self.assertIn("attribution", attribution.json)
         self.assertIn("Managed", attribution.json["attribution"])
-
-
-@pytest.mark.django_db
-class DeploymentTestCase(TestCase):
-    fixtures = ["platforms"]
-
-    def setUp(self):
-        self.platform = Platform.objects.get(name="A01")
-        self.station = StationType.objects.get(name="Surface Mooring")
-
-        self.shared_deployment_kwargs = {
-            "platform": self.platform,
-            "geom": "SRID=4326;POINT(-70.56 42.53)",
-            "water_depth": 65,
-            "magnetic_variation": -14.8,
-            "station_type": self.station,
-        }
-
-        self.deployment = Deployment.objects.create(
-            deployment_name="A0140",
-            start_time="2018-09-28 07:00:00-04",
-            mooring_site_id="A0140",
-            **self.shared_deployment_kwargs
-        )
-
-        self.old_deployment = Deployment.objects.create(
-            deployment_name="A0139",
-            start_time="2018-07-10 16:00:00-04",
-            end_time="2018-09-27 17:00:00-04",
-            mooring_site_id="A0139",
-            **self.shared_deployment_kwargs
-        )
-
-    def test_platform_can_get_current_deployment(self):
-        deployment = self.platform.current_deployment
-
-        self.assertIsNotNone(deployment)
-        self.assertIsNone(deployment.end_time)
-
-    def test_platform_deployment_location(self):
-        a01 = Platform.objects.get(name="A01")
-
-        self.assertIsNotNone(a01.location)
-        self.assertEqual(a01.location.x, -70.56)
-        self.assertEqual(a01.location.y, 42.53)
-        self.assertEqual(a01.location.srid, 4326)
-
-    def test_deployment_str_with_no_end(self):
-        deployment_str = str(Deployment.objects.get(deployment_name="A0140"))
-
-        self.assertIn("A01:", deployment_str)
-        self.assertIn("A0140", deployment_str)
-        self.assertIn("launched", deployment_str)
-        self.assertIn("2018-09-28", deployment_str)
-
-    def test_deployment_str_with_end(self):
-        deployment_str = str(Deployment.objects.get(deployment_name="A0139"))
-
-        self.assertIn("A01:", deployment_str)
-        self.assertIn("A0139", deployment_str)
-        self.assertIn("2018-07-10", deployment_str)
-        self.assertIn("2018-09-27", deployment_str)
-        self.assertIn("80 days", deployment_str)
 
 
 @pytest.mark.django_db

@@ -7,6 +7,7 @@ Additions:
 Changes:
 
 - Add caching to the platforms API view.
+- Update TimeSeries.constraints to use Django JSONField rather than Postgres.
 - Update Dependencies
   - ERDDAPy to 0.7.0
 

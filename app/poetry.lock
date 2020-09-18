@@ -288,14 +288,11 @@ description = "Python interface for ERDDAP"
 name = "erddapy"
 optional = false
 python-versions = ">=3.6"
-version = "0.5.3"
+version = "0.7.0"
 
 [package.dependencies]
 pandas = ">=0.20.3"
 requests = "*"
-
-[package.extras]
-testing = ["pytest"]
 
 [[package]]
 category = "main"
@@ -1140,7 +1137,8 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "7cc88fd2ad6d5661d412ee66f88d018b15fe7be21f601b0e3385cca410decbc8"
+content-hash = "5fbcf72979288c5c9da96c852d5de669e7e5a4dea5764bd5fb3836757f42f830"
+lock-version = "1.0"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1282,6 +1280,7 @@ djangorestframework = [
     {file = "djangorestframework-3.11.0.tar.gz", hash = "sha256:e782087823c47a26826ee5b6fa0c542968219263fb3976ec3c31edab23a4001f"},
 ]
 djangorestframework-gis = [
+    {file = "djangorestframework-gis-0.15.tar.gz", hash = "sha256:f388c159ab42ee2549c88de20655dc6020d01f0220b74c250a98735a26835f72"},
     {file = "djangorestframework_gis-0.15-py2.py3-none-any.whl", hash = "sha256:63c253528a107bc77cd71506cd639a0489b05b763fa7c3190cfd4622bf094594"},
 ]
 dodgy = [
@@ -1289,8 +1288,8 @@ dodgy = [
     {file = "dodgy-0.2.1.tar.gz", hash = "sha256:28323cbfc9352139fdd3d316fa17f325cc0e9ac74438cbba51d70f9b48f86c3a"},
 ]
 erddapy = [
-    {file = "erddapy-0.5.3-py3-none-any.whl", hash = "sha256:264ba9109c031cc141bf5a80c16e2704b3e3d9a51a33493365bf12d86ea6079c"},
-    {file = "erddapy-0.5.3.tar.gz", hash = "sha256:187d2be5b670a034f0c11da0a63b6eed77cc6a4914b2db57c470f13b522976a7"},
+    {file = "erddapy-0.7.0-py3-none-any.whl", hash = "sha256:796d02abdbc359b01080911aae5de141365c251e3a72bc3c852c2b9dd6e96a76"},
+    {file = "erddapy-0.7.0.tar.gz", hash = "sha256:87289c428637f433161cae6385d89201938939c4119cdd11cc248fd9b53b9261"},
 ]
 freezegun = [
     {file = "freezegun-0.3.15-py2.py3-none-any.whl", hash = "sha256:82c757a05b7c7ca3e176bfebd7d6779fd9139c7cb4ef969c38a28d74deef89b2"},

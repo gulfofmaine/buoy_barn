@@ -6,7 +6,12 @@ Additions:
 
 Changes:
 
+- Add caching to the platforms API view.
+- Update TimeSeries.constraints to use Django JSONField rather than Postgres.
+
 Fixes:
+
+- `.prefetch_related()` for platforms API view to reduce the number of queries by 100 fold, and equally speeding up access.
 
 ## 0.1.8 - 4/30/2020
 

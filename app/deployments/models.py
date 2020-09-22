@@ -4,7 +4,6 @@ from enum import Enum
 import logging
 
 from django.contrib.gis.db import models
-from django.contrib.postgres.fields import JSONField
 from erddapy import ERDDAP
 from memoize import memoize
 import requests
@@ -50,13 +49,7 @@ class Platform(models.Model):
         return self.name
 
     @property
-    def current_deployment(self):
-        return self.deployment_set.filter(end_time=None).order_by("-start_time").first()
-
-    @property
     def location(self):
-        if self.current_deployment:
-            return self.current_deployment.geom
         if self.geom:
             return self.geom
         return None
@@ -64,26 +57,29 @@ class Platform(models.Model):
     @memoize(timeout=5 * 60)
     def latest_erddap_values(self):
         readings = []
-        for series in self.timeseries_set.filter(end_time=None):
-            readings.append(
-                {
-                    "value": series.value,
-                    "time": series.value_time,
-                    "depth": series.depth,
-                    "data_type": series.data_type.json,
-                    "server": series.dataset.server.base_url,
-                    "variable": series.variable,
-                    "constraints": series.constraints,
-                    "dataset": series.dataset.name,
-                    "start_time": series.start_time,
-                }
-            )
+        for series in self.timeseries_set.all():  # .filter(end_time=None):
+            if not series.end_time:
+                readings.append(
+                    {
+                        "value": series.value,
+                        "time": series.value_time,
+                        "depth": series.depth,
+                        "data_type": series.data_type.json,
+                        "server": series.dataset.server.base_url,
+                        "variable": series.variable,
+                        "constraints": series.constraints,
+                        "dataset": series.dataset.name,
+                        "start_time": series.start_time,
+                    }
+                )
         return readings
 
     def current_alerts(self):
-        return self.alerts.filter(end_time__gt=date.today()) | self.alerts.filter(
-            end_time=None
-        )
+        alerts = []
+        for alert in self.alerts.all():
+            if not alert.end_time or date.today() < alert.end_time:
+                alerts.append(alert)
+        return alerts
 
 
 class ProgramAttribution(models.Model):
@@ -111,31 +107,6 @@ class StationType(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Deployment(models.Model):
-    deployment_name = models.CharField("Deployment platform name", max_length=50)
-
-    platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
-
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField(null=True, blank=True)
-
-    geom = models.PointField("Location")
-    magnetic_variation = models.FloatField()
-    water_depth = models.FloatField()
-
-    mooring_type = models.ForeignKey(
-        MooringType, on_delete=models.CASCADE, null=True, blank=True
-    )
-    mooring_site_id = models.TextField()
-
-    station_type = models.ForeignKey(StationType, on_delete=models.CASCADE)
-
-    def __str__(self):
-        if self.end_time:
-            return f"{self.platform.name}: {self.deployment_name} - ({self.start_time.date()} - {self.end_time.date()} - {self.start_time - self.end_time})"
-        return f"{self.platform.name}: {self.deployment_name} - (launched: {self.start_time.date()})"
 
 
 class DataType(models.Model):
@@ -276,7 +247,7 @@ class TimeSeries(models.Model):
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
     data_type = models.ForeignKey(DataType, on_delete=models.CASCADE)
     variable = models.CharField(max_length=256)
-    constraints = JSONField(
+    constraints = models.JSONField(
         "Extra ERDDAP constraints",
         help_text="Extra constratints needed when querying ERDDAP (for example: when datasets have multiple platforms)",
         null=True,

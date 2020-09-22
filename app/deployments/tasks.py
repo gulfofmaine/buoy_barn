@@ -23,35 +23,57 @@ def update_values_for_timeseries(timeseries):
         )
 
     except HTTPError as error:
-        if error.response.status_code == 403:
-            logger.error(
-                f"403 error loading dataset {timeseries[0].dataset.name}. " 
-                + "NOAA Coastwatch most likely blacklisted us. "
-                + "Try running the request manually from the worker pod to replicate the error and access the returned text."
-                + error,
-                extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
-                exc_info=True,
-            )
+        if error.response:
+            if error.response.status_code == 403:
+                logger.error(
+                    f"403 error loading dataset {timeseries[0].dataset.name}. "
+                    + "NOAA Coastwatch most likely blacklisted us. "
+                    + "Try running the request manually from the worker pod to replicate the error and access the returned text."
+                    + error,
+                    extra={
+                        "timeseries": timeseries,
+                        "constraints": timeseries[0].constraints,
+                    },
+                    exc_info=True,
+                )
 
-        elif error.response.status_code == 404:
-            logger.warning(
-                f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
-                extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
-                exc_info=True,
-            )
+            elif error.response.status_code == 404:
+                logger.warning(
+                    f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
+                    extra={
+                        "timeseries": timeseries,
+                        "constraints": timeseries[0].constraints,
+                    },
+                    exc_info=True,
+                )
 
-        elif error.response.status_code == 500:
-            logger.info(
-                f"500 error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error} "
-                + "Most likely because there are no rows in the dataset",
-                extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
-                exc_info=True,
-            )
+            elif error.response.status_code == 500:
+                logger.info(
+                    f"500 error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error} "
+                    + "Most likely because there are no rows in the dataset",
+                    extra={
+                        "timeseries": timeseries,
+                        "constraints": timeseries[0].constraints,
+                    },
+                    exc_info=True,
+                )
 
+            else:
+                logger.error(
+                    f"{error.response.status_code} error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
+                    extra={
+                        "timeseries": timeseries,
+                        "constraints": timeseries[0].constraints,
+                    },
+                    exc_info=True,
+                )
         else:
             logger.error(
-                f"{error.response.status_code} error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
-                extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
+                f"Error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
+                extra={
+                    "timeseries": timeseries,
+                    "constraints": timeseries[0].constraints,
+                },
                 exc_info=True,
             )
 

@@ -12,7 +12,7 @@ class ErddapLoaderTestCase(TestCase):
     fixtures = ["platforms", "erddapservers"]
 
     def setUp(self):
-        self.platform = Platform.objects.get(name="N01")
+        self.platform = Platform.objects.get(name="M01")
         self.erddap_url = "http://www.neracoos.org/erddap"
         self.erddap_server = ErddapServer.objects.get(base_url=self.erddap_url)
 
@@ -21,7 +21,7 @@ class ErddapLoaderTestCase(TestCase):
         self.assertEqual(0, self.platform.timeseries_set.count())
 
         constraints = {"depth=": 0.0}
-        dataset = "N01_accelerometer_all"
+        dataset = "M01_accelerometer_all"
 
         add_timeseries(self.platform, self.erddap_url, dataset, constraints)
 

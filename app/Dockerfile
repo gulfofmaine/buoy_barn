@@ -25,7 +25,7 @@ RUN mkdir /app
 WORKDIR /app
 
 # Install requirements
-COPY ./pyproject.toml /app/
+COPY ./pyproject.toml ./poetry.lock /app/
 RUN poetry install --no-interaction
 
 # Copy app to working directory

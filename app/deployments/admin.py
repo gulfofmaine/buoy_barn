@@ -4,7 +4,6 @@ from .models import (
     Alert,
     Program,
     Platform,
-    Deployment,
     MooringType,
     StationType,
     DataType,
@@ -31,10 +30,6 @@ class AlertInline(admin.TabularInline):
     extra = 0
 
 
-class DeploymentAdmin(admin.GeoModelAdmin):
-    save_as = True
-
-
 class PlatformAdmin(admin.GeoModelAdmin):
     ordering = ["name"]
     inlines = [AlertInline, TimeSeriesInline, ProgramAttributionInline]
@@ -42,7 +37,6 @@ class PlatformAdmin(admin.GeoModelAdmin):
 
 admin.site.register(Program)
 admin.site.register(Platform, PlatformAdmin)
-admin.site.register(Deployment, DeploymentAdmin)
 admin.site.register(MooringType)
 admin.site.register(StationType)
 admin.site.register(DataType)

@@ -60,7 +60,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
-    "debug_toolbar",
     "rest_framework",
     "rest_framework_gis",
     "corsheaders",
@@ -169,3 +168,12 @@ STATIC_ROOT = "/static/"
 
 # Celery TASK management
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
+
+if DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + ["debug_toolbar"]
+    MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
+
+    def show_toolbar(request):
+        return True
+
+    DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": show_toolbar}

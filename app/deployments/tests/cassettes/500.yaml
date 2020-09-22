@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: HEAD
+    uri: http://www.neracoos.org/erddap/tabledap/N01_accelerometer_all.nc?time,current_speed&time%3E=1600700158.511094
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Length:
+      - '20'
+      Content-Type:
+      - text/html;charset=utf-8
+      Date:
+      - Tue, 22 Sep 2020 14:55:58 GMT
+      Last-Modified:
+      - Tue, 22 Sep 2020 14:55:58 GMT
+      Server:
+      - Apache-Coyote/1.1
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,User-Agent
+      erddap-server:
+      - '1.82'
+      xdods-server:
+      - dods/3.7
+    status:
+      code: 500
+      message: Internal Server Error
+version: 1

@@ -24,6 +24,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
         "timeseries_set",
         "timeseries_set__data_type",
         "timeseries_set__dataset",
+        "timeseries_set__dataset__server",
         "programattribution_set",
         "programattribution_set__program",
         "alerts",

@@ -10,7 +10,6 @@ from deployments.models import (
     ErddapServer,
     DataType,
     TimeSeries,
-    BufferType,
 )
 from .vcr import my_vcr
 
@@ -122,3 +121,32 @@ class TaskTestCase(TransactionTestCase):
 
         self.assertIsNotNone(self.ts1.value)
         self.assertIsNotNone(self.ts2.value)
+
+
+@pytest.mark.django_db
+class TaskErrorTestCase(TransactionTestCase):
+    fixtures = ["platforms", "erddapservers", "datatypes"]
+
+    def setUp(self):
+        self.platform = Platform.objects.get(name="M01")
+        self.erddap = ErddapServer.objects.get(
+            base_url="http://www.neracoos.org/erddap"
+        )
+
+        self.ds = ErddapDataset.objects.create(
+            name="N01_accelerometer_all", server=self.erddap
+        )
+        self.ts = TimeSeries.objects.create(
+            platform=self.platform,
+            data_type=DataType.objects.get(standard_name="sea_water_velocity"),
+            variable="current_speed",
+            constraints={},
+            start_time="2004-06-03 21:00:00+00",
+            dataset=self.ds,
+        )
+
+    @my_vcr.use_cassette("500.yaml")
+    def test_500_response_doesnt_explode(self):
+        dataset = ErddapDataset.objects.get(name="N01_accelerometer_all")
+
+        tasks.refresh_dataset(dataset.id)

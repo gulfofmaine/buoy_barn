@@ -28,7 +28,7 @@ xarray = "^0.16.0"
 pandas = "<1.0.0"
 
 [tool.poetry.dev-dependencies]
-ipython = "^7.16"
+ipython = "^7.18"
 pyyaml = "^5.3.1"
 pytest = "^6.0"
 pytest-django = "^3.9"

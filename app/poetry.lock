@@ -1107,12 +1107,12 @@ description = "N-D labeled arrays and datasets in Python"
 name = "xarray"
 optional = false
 python-versions = ">=3.6"
-version = "0.16.0"
+version = "0.16.1"
 
 [package.dependencies]
 numpy = ">=1.15"
 pandas = ">=0.25"
-setuptools = ">=41.2"
+setuptools = ">=38.4"
 
 [[package]]
 category = "main"
@@ -1141,7 +1141,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "4c4b43b66c821ef366eb49e9474f7e93bb9cb70196a6afce7a5d9f9d55b5a4bf"
+content-hash = "31f1f123f02682516fb608e4716c5a2c51c3d0b0cc6e0bc9dda116583c3a4520"
 lock-version = "1.0"
 python-versions = "^3.7"
 
@@ -1710,8 +1710,8 @@ wrapt = [
     {file = "wrapt-1.11.2.tar.gz", hash = "sha256:565a021fd19419476b9362b05eeaa094178de64f8361e44468f9e9d7843901e1"},
 ]
 xarray = [
-    {file = "xarray-0.16.0-py3-none-any.whl", hash = "sha256:e38452dbbb9f7b1938ae23b81ca7d66d1109818040048ec42e59c0c738cbe8f3"},
-    {file = "xarray-0.16.0.tar.gz", hash = "sha256:665de4253fcf951e7a6954313b77164d7efca2bd820f0a518b7c25ea46ee43cb"},
+    {file = "xarray-0.16.1-py3-none-any.whl", hash = "sha256:72aa610a8d9ece583c3e94ad6a879aae2a33b632fea445b6685a14f288cbd9c6"},
+    {file = "xarray-0.16.1.tar.gz", hash = "sha256:5e1af056ff834bf62ca57da917159328fab21b1f8c25284f92083016bb2d92a5"},
 ]
 yarl = [
     {file = "yarl-1.4.2-cp35-cp35m-macosx_10_13_x86_64.whl", hash = "sha256:3ce3d4f7c6b69c4e4f0704b32eca8123b9c58ae91af740481aa57d7857b5e41b"},

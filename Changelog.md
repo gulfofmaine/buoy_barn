@@ -8,6 +8,7 @@ Changes:
 
 - Add caching to the platforms API view.
 - Update TimeSeries.constraints to use Django JSONField rather than Postgres.
+- Order DataTypes
 
 Fixes:
 

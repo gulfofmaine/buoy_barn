@@ -129,6 +129,9 @@ class DataType(models.Model):
             "units": self.units,
         }
 
+    class Meta:
+        ordering = ["standard_name"]
+
 
 class BufferType(models.Model):
     name = models.CharField("Buffer type", max_length=64)

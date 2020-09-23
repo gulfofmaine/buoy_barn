@@ -6,13 +6,44 @@ Additions:
 
 Changes:
 
+Fixes:
+
+## 0.1.9 - 9/23/2020
+
+Changes:
+
 - Add caching to the platforms API view.
 - Update TimeSeries.constraints to use Django JSONField rather than Postgres.
 - Order DataTypes
+- Remove unused Deployment model.
+- Update Dependencies
+  - Python from 3.8.2 to 3.8.5
+  - Django from 3.0 to 3.1
+  - Django CORS Headers from 3.2 to 3.5
+  - Django Redis from 4.11 to 4.12
+  - Django Rest Framework GIS from 0.15 to 0.16
+  - FreezeGun from 0.3.15 to 1.0.0
+  - NetCDF4 from 1.5.3 to 1.5.4
+  - Psycopg2 Binary from 2.8.5 to 2.8.6
+  - Sentry SDK from 0.14.3 to 0.17.7
+  - UWSGI from 2.0.18 to 2.0.19
+  - VCRpy from 4.0 to 4.1
+  - Whitenoise from 5.0 to 5.2
+  - Xarray from 0.15.1 to 0.16.1
+  - IPython from 7.13 to 7.18
+  - py.test from 5.4 to 6.0
+  - py.test Django from 3.9 to 3.10
+  - py.test cov from 2.8 to 2.10
+  - Prospector from 1.2 to 1.3
 
 Fixes:
 
 - `.prefetch_related()` for platforms API view to reduce the number of queries by 100 fold, and equally speeding up access.
+- Better error handling of ERDDAP response status codes when there is an error.
+
+Testing:
+
+- Test HTTP 500 errors in tasks.
 
 ## 0.1.8 - 4/30/2020
 

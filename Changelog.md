@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Prevent debug toolbar from being loaded during tests.
+
 ## 0.1.9 - 9/23/2020
 
 Changes:

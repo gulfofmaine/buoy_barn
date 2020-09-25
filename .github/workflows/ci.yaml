@@ -27,7 +27,7 @@ jobs:
         run: docker-compose run web python manage.py db_ready
 
       - name: Test
-        run: docker-compose run web pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml
+        run: docker-compose run -e DJANGO_ENV=test web pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml
 
       - name: Install Codacy coverage reporter
         run: pip install --user codacy-coverage

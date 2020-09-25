@@ -21,20 +21,21 @@ from sentry_sdk.integrations.redis import RedisIntegration
 logger = logging.getLogger(__name__)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-try:
-    DEBUG = bool(os.environ["DJANGO_DEBUG"] != "False")
-except KeyError:
-    DEBUG = False
 
-try:
-    sentry_sdk.init(
-        dsn=os.environ["SENTRY_DSN"],
-        integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
-        environment="dev" if DEBUG else "prod",
-    )
-    logger.info("Sentry initialized")
-except KeyError:
-    logger.warning("SENTRY_DSN missing. Sentry is not initalized")
+DEBUG = os.environ.get("DJANGO_ENV", "").lower() == "dev"
+
+if os.environ.get("DJANGO_ENV", "").lower() != "test":
+    try:
+        sentry_sdk.init(
+            dsn=os.environ["SENTRY_DSN"],
+            integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
+            environment="dev" if DEBUG else "prod",
+        )
+        logger.info("Sentry initialized")
+    except KeyError:
+        logger.warning("SENTRY_DSN missing. Sentry is not initalized")
+else:
+    logger.info("Sentry disabled when DJANGO_ENV=test")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

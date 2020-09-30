@@ -6,8 +6,20 @@ Additions:
 
 Changes:
 
+Fixes:
+
+## 0.1.10 - 9/30/2020
+
+Changes:
+
 - Add oxygen_concentration_in_sea_water data type.
 - Bedford wave forecast should be significant wave height.
+- Update dependencies
+  - Python from 3.8.5 to 3.8.6
+  - Django Debug Toolbar from 2.2 to 3.1
+  - Django Rest Framework from 3.11 to 3.12
+  - Sentry SDK from 0.17.7 to 0.18.0
+  - py.test from 6.0 to 6.1
 
 Fixes:
 

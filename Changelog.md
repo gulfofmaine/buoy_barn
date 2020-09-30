@@ -7,6 +7,7 @@ Additions:
 Changes:
 
 - Add oxygen_concentration_in_sea_water data type.
+- Bedford wave forecast should be significant wave height.
 
 Fixes:
 

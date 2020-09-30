@@ -5,6 +5,7 @@ from typing import List, Tuple
 
 class ForecastTypes(Enum):
     WAVE_HEIGHT = "Wave Height"
+    SIGNIFICANT_WAVE_HEIGHT = "Significant Wave Height"
     WAVE_PERIOD = "Wave Period"
     WAVE_DIRECTION = "Wave Direction"
     AIR_TEMPERATURE = "Air Temperature"
@@ -54,7 +55,7 @@ class BaseForecast:
             "name": self.name,
             "description": self.description,
             "source_url": self.source_url,
-            "units": self.units
+            "units": self.units,
         }
 
     def __repr__(self):

@@ -18,7 +18,7 @@ class BedfordWaveHeight(BaseBedfordForecast):
     slug = "bedford_ww3_wave_height"
     name = "Bedford Institute Wave Model - Height"
     description = "Wave Height from the Bedford Institute Wave Model"
-    forecast_type = ForecastTypes.WAVE_HEIGHT
+    forecast_type = ForecastTypes.SIGNIFICANT_WAVE_HEIGHT
     units = "meters"
 
     field = "hs"

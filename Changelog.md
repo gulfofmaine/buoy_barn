@@ -6,6 +6,8 @@ Additions:
 
 Changes:
 
+- Add oxygen_concentration_in_sea_water data type.
+
 Fixes:
 
 - Prevent debug toolbar from being loaded during tests.

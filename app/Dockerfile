@@ -1,4 +1,4 @@
-FROM python:3.8.6@sha256:f6c7e4926b34f95502fa09aff641931db5f26a98a8f1699a44b79dc4f2aaace9
+FROM python:3.8.6-slim@sha256:0944c626f71b2f44ed45c13761f3cb97d75566261ade2b2d34f6ce2987dacbcb
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1
@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     binutils=2.31.1-16 \
     libproj-dev=5.2.0-1 \
     gdal-bin=2.4.0+dfsg-1+b1 \
+    build-essential=12.6 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

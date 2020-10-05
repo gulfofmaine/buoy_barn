@@ -8,7 +8,20 @@ Changes:
 
 Fixes:
 
-- Catch and handle various 500 errors smarter.
+## 0.1.11 - 10/5/2020
+
+Changes:
+
+- Include release version with Sentry init
+- Add CodeQL analysis
+- Use Pandas and CSV rather than NetCDF > Pandas and NetCDF to retrieve data from ERDDAP servers.
+- Update dependencies
+  - Erddapy from 0.5.3 to 0.7.2
+  - Pandas from 0.25.3 to 1.1.3
+
+Fixes:
+
+- Catch and handle various 500 errors during time series update task smarter.
   - If `nRows = 0` quietly pass.
   - If the dataset has an end time set, set an end time on the time series to stop fetching it.
   - Return early from errors to make it easier to read.

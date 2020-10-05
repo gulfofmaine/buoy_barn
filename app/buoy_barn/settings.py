@@ -17,6 +17,7 @@ import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
+import toml
 
 logger = logging.getLogger(__name__)
 
@@ -26,10 +27,13 @@ DEBUG = os.environ.get("DJANGO_ENV", "").lower() == "dev"
 
 if os.environ.get("DJANGO_ENV", "").lower() != "test":
     try:
+        pyproject = toml.load("pyproject.toml")
+        version = pyproject["tool"]["poetry"]["version"]
         sentry_sdk.init(
             dsn=os.environ["SENTRY_DSN"],
             integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
             environment="dev" if DEBUG else "prod",
+            release=version,
         )
         logger.info("Sentry initialized")
     except KeyError:

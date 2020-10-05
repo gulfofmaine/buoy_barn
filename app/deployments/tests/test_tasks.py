@@ -173,4 +173,29 @@ class TaskErrorTestCase(TransactionTestCase):
 
         tasks.update_values_for_timeseries([ts])
 
+        ts.refresh_from_db()
+
         assert ts.end_time is not None
+
+    @my_vcr.use_cassette("500_no_rows.yaml")
+    def test_500_no_rows(self):
+        a01 = Platform.objects.get(name="A01")
+        dataset = ErddapDataset.objects.create(name="A01_sbe37_all", server=self.erddap)
+        ts = TimeSeries.objects.create(
+            platform=a01,
+            data_type=DataType.objects.get(standard_name="sea_water_salinity"),
+            variable="salinity",
+            constraints={"depth=": 1.0, "salinity_qc=": 0},
+            start_time="2001-07-10T04:00:01Z",
+            dataset=dataset,
+        )
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+
+        tasks.update_values_for_timeseries([ts])
+
+        ts.refresh_from_db()
+
+        assert ts.value is None

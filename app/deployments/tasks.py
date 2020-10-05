@@ -123,6 +123,17 @@ def refresh_server(server_id: int, healthcheck: bool = False):
         server.healthcheck_complete()
 
 
+def handle_500_no_rows_error(timeseries_group, compare_text: str) -> bool:
+    """ Did the request not return any rows? Returns true if handled """
+    if "nRows = 0" in compare_text:
+        logger.info(
+            f"{timeseries_group[0].dataset.name} with constraints {timeseries_group[0].constraints} did not return any results"
+        )
+        return True
+
+    return False
+
+
 def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
     """ Did the request fall outside the range of times for the dataset
     
@@ -221,10 +232,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
 
             response_500 = requests.get(url)
 
-            if "nRows = 0" in response_500.text:
-                logger.info(
-                    f"500 error loading {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints} because there are no matching rows"
-                )
+            if handle_500_no_rows_error(timeseries_group, response_500.text):
                 return True
 
             if handle_500_time_range_error(timeseries_group, response_500.text):
@@ -252,6 +260,9 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
         return True
 
     except AttributeError:
+        if handle_500_no_rows_error(timeseries_group, str(error)):
+            return True
+
         if handle_500_time_range_error(timeseries_group, str(error)):
             return True
 

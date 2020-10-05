@@ -6,6 +6,8 @@ Additions:
 
 Changes:
 
+- Use `-slim` Docker image as a base to make for a lighter image (1.44 too .91 GB).
+
 Fixes:
 
 ## 0.1.11 - 10/5/2020

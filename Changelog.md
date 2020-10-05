@@ -8,6 +8,11 @@ Changes:
 
 Fixes:
 
+- Catch and handle various 500 errors smarter.
+  - If `nRows = 0` quietly pass.
+  - If the dataset has an end time set, set an end time on the time series to stop fetching it.
+  - Return early from errors to make it easier to read.
+
 ## 0.1.10 - 9/30/2020
 
 Changes:

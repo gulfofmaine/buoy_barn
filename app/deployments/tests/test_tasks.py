@@ -1,4 +1,5 @@
 from unittest.mock import patch
+
 import pytest
 
 from django.test import TransactionTestCase
@@ -150,3 +151,26 @@ class TaskErrorTestCase(TransactionTestCase):
         dataset = ErddapDataset.objects.get(name="N01_accelerometer_all")
 
         tasks.refresh_dataset(dataset.id)
+
+    @my_vcr.use_cassette("500_end_time.yaml")
+    def test_500_end_time(self):
+        j03 = Platform.objects.get(name="J03")
+        dataset = ErddapDataset.objects.create(
+            name="J03_aanderaa_all", server=self.erddap
+        )
+        ts = TimeSeries.objects.create(
+            platform=j03,
+            data_type=DataType.objects.get(standard_name="sea_water_salinity"),
+            variable="salinity",
+            constraints={},
+            start_time="2018-07-17 17:00:00+00",
+            dataset=dataset,
+        )
+
+        ts.refresh_from_db()
+
+        assert ts.end_time is None
+
+        tasks.update_values_for_timeseries([ts])
+
+        assert ts.end_time is not None

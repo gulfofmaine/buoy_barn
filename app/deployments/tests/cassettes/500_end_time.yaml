@@ -10,67 +10,21 @@ interactions:
       - keep-alive
       User-Agent:
       - python-requests/2.22.0
-    method: HEAD
-    uri: http://www.neracoos.org/erddap/tabledap/J03_aanderaa_all.nc?time,salinity&time%3E=1601825638.084272
-  response:
-    body:
-      string: ''
-    headers:
-      Access-Control-Allow-Origin:
-      - '*'
-      Connection:
-      - close
-      Content-Encoding:
-      - gzip
-      Content-Language:
-      - en
-      Content-Length:
-      - '20'
-      Content-Type:
-      - text/html;charset=utf-8
-      Date:
-      - Mon, 05 Oct 2020 15:33:58 GMT
-      Last-Modified:
-      - Mon, 05 Oct 2020 15:33:58 GMT
-      Server:
-      - Apache-Coyote/1.1
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept-Encoding,User-Agent
-      erddap-server:
-      - '1.82'
-      xdods-server:
-      - dods/3.7
-    status:
-      code: 500
-      message: Internal Server Error
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - python-requests/2.22.0
     method: GET
-    uri: http://www.neracoos.org/erddap/tabledap/J03_aanderaa_all.nc?time,salinity&time%3E=1601825638.084272
+    uri: http://www.neracoos.org/erddap/tabledap/J03_aanderaa_all.ncCF?time,salinity&time%3E=1601827911.841124
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA82UXWvbMBSG/8pZBvuAOv5I0mSOK8jWQu9amG/am6HYx7GYLHnScda09L/vxG7W
-        su5igxUGxphX8qPzHr1S9ur04lN+dXkGNTVaZA9vlKXISJFGsWplUSPktikkhYtxNJ7OIYAz56wD
-        h611lIXD1MzTTiPQrsWTEeENhYX3I3Eew11lDQWVbJTepbmsbSOPVk5JfeSl8YFHp6plYbV16fda
-        ES7Xsvi6cbYzZTDIr2fJ7HR+vOxBXt1imiTtzfIezpMXocfHA33yMvRpT/94cXr1N/y1ZvRz/rAs
-        4/5hrfdw+We0R8ID8mmpTxz3u7WCu34YUhgm3K/GRjb4TB5rZVitUW1qSiHmn+FZrXAoFtbWlciC
-        sYYbkYV9EAVk4ZDktS13nOpYnOf5JXwmSZ2HWRRxjq9s5+Bbh24HrbNlV2DJFGgkFbUyG0647zT5
-        Mbwj1eCbDS1PkiiJgjgKomkez9LJJJ0trkF5sB15VSLYCohPzFZyq9Ya33qQBXVSf3HSbDCFJIoX
-        QTQP4nkez9Mo4ucayO71D0E0CZJFHk/TpNffs4VYZKXaQqGl9yejfWNGIgtZElnL3sT+vGXhWhyM
-        HQ5l+zDeoPdyM0zJOvH/O+7EY/El+sKplpQ1BwM5L8XZ26IDNAXngdCxB2lA7T+N1ID97US1JPaI
-        W2S9BEVQOdtA1elKab33SrXa94u74Wn8c+Ha/dLsevLba5D3ZsJ/DOkK+6vzBwVf8MdQBQAA
+        H4sIAAAAAAAAA82UX2vbMBTFv8pdBvsDdWw5SdM5jiBbC3lrYH5pX4ZiX8disuRJ11nTku8+xW7W
+        suxhgxUGxpgj+ad7ro6Uvrq8/pTdrK6golrx9PGNouApSVLIF43IK4TM1Lmg8GIYDcdTCODKWmPB
+        YmMspWE/NXW0Uwi0a3A+ILyjMHduwJcMHkqjKShFLdUuyURlanG2sFKoMye0CxxaWc5yo4xNvleS
+        cLYW+deNNa0ugl5+PYknl9PzWQdy8h6TOG7uZntYxi9CZ+c9ffQy9HFH/3h9efM3/LXy6FN+v6zH
+        /cNa97D6M9oT4RH5vNRnjrvdWsBDNwwJ9BP2i6EWNZ7IQyW1VyuUm4oSYP5nOKkVjsXC2tgCvaCN
+        9o1Iwy6IHNKwT/LaFDufasaXWbaCzySodTCJIp/jG9Na+Nai3UFjTdHmWHgK1ILySuqNT7hrFbkh
+        vCNZ45sNzeZxFEcBi4JonLHzhLFkwm5BOjAtOVkgmBLIn5it8K1aK3zrQOTUCvXFCr3BBOKIXQTR
+        NGDTjE2TKPLPLZA56B+CaBTEFxkbJ3Gnv/cWGE8LuYVcCefmg0NjBjwNvcTTxnvjh/OWhmt+NHY8
+        lM3jeI3OiU0/JW35/++45U/FF+hyKxuSRh8NZH4pn70tWkCd+zwQWu9BaJCHTy0UYHc7USXIe8Qt
+        er0ASVBaU0PZqlIqdfBKlTz0y3fD0fDnwpX9pdnV6LfXoN+bkf+jT1fYXZ0/ACWn45FQBQAA
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -85,9 +39,9 @@ interactions:
       Content-Type:
       - text/html;charset=utf-8
       Date:
-      - Mon, 05 Oct 2020 15:33:59 GMT
+      - Mon, 05 Oct 2020 16:11:51 GMT
       Last-Modified:
-      - Mon, 05 Oct 2020 15:33:59 GMT
+      - Mon, 05 Oct 2020 16:11:51 GMT
       Server:
       - Apache-Coyote/1.1
       Vary:

@@ -30,122 +30,7 @@ def update_values_for_timeseries(timeseries):
         )
 
     except HTTPError as error:
-        try:
-            if error.response.status_code == 403:
-                logger.error(
-                    f"403 error loading dataset {timeseries[0].dataset.name}. "
-                    + "NOAA Coastwatch most likely blacklisted us. "
-                    + "Try running the request manually from the worker pod to replicate the error and access the returned text."
-                    + error,
-                    extra={
-                        "timeseries": timeseries,
-                        "constraints": timeseries[0].constraints,
-                    },
-                    exc_info=True,
-                )
-                return
-
-            elif error.response.status_code == 404:
-                logger.warning(
-                    f"No rows found for {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
-                    extra={
-                        "timeseries": timeseries,
-                        "constraints": timeseries[0].constraints,
-                    },
-                    exc_info=True,
-                )
-                return
-
-            elif error.response.status_code == 500:
-                url = error.request.url
-
-                response_500 = requests.get(url)
-
-                if "nRows = 0" in response_500.text:
-                    logger.info(
-                        f"500 error loading {timeseries[0].dataset.name} with constraint {timeseries[0].constraints} because there are no matching rows"
-                    )
-                    return
-
-                if "is outside of the variable" in response_500.text:
-                    try:
-                        times_str = response_500.text.rpartition("actual_range:")[
-                            -1
-                        ].rpartition(")")[0]
-                    except (AttributeError, IndexError):
-                        logger.warning(
-                            f"Unable to access attribute of out of data dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}",
-                            extra={
-                                "timeseries": timeseries,
-                                "constraints": timeseries[0].constraints,
-                                "response_text": response_500.text,
-                            },
-                            exc_info=True,
-                        )
-                        return
-
-                    times = []
-                    for potential_time in times_str.split(" "):
-                        try:
-                            time = parse_time_string(potential_time)
-                            times.append(time[0])
-                        except DateParseError:
-                            pass
-                    times.sort(reverse=True)
-
-                    try:
-                        end_time = times[0]
-                    except IndexError:
-                        logger.warning(f"Unable to parse datetimes in error")
-                        return
-
-                    offset = timezone(timedelta(hours=0))
-                    week_ago = datetime.now(offset) - timedelta(days=7)
-
-                    if end_time < week_ago:
-                        # set end time for timeseries
-                        for ts in timeseries:
-                            ts.end_time = end_time
-                            ts.save()
-
-                            logger.warning(
-                                f"Set end time for {ts} to {end_time} based on responses from {url}",
-                                extra={"timeseries": ts, "constraints": ts.constraints},
-                                exc_info=True,
-                            )
-
-                    return
-
-                logger.info(
-                    f"500 error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error} ",
-                    extra={
-                        "timeseries": timeseries,
-                        "constraints": timeseries[0].constraints,
-                        "response_text": response_500.text,
-                    },
-                    exc_info=True,
-                )
-                return
-
-            logger.error(
-                f"{error.response.status_code} error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
-                extra={
-                    "timeseries": timeseries,
-                    "constraints": timeseries[0].constraints,
-                },
-                exc_info=True,
-            )
-            return
-
-        except AttributeError:
-            logger.error(
-                f"Error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
-                extra={
-                    "timeseries": timeseries,
-                    "constraints": timeseries[0].constraints,
-                },
-                exc_info=True,
-            )
+        if handle_http_errors(timeseries, error):
             return
 
     except Timeout as error:
@@ -157,6 +42,8 @@ def update_values_for_timeseries(timeseries):
         return
 
     except OSError as error:
+        breakpoint()
+
         logger.info(
             f"Error loading dataset {timeseries[0].dataset.name} with constraints {timeseries[0].constraints}: {error}",
             extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
@@ -175,17 +62,23 @@ def update_values_for_timeseries(timeseries):
             return
 
         try:
-            value = row[series.variable]
+            variable_name = [
+                key for key in row.keys() if key.split(" ")[0] == series.variable
+            ]
+            value = row[variable_name]
 
             if isinstance(value, Timedelta):
                 logger.info("Converting from Timedelta to seconds")
                 value = value.seconds
 
             series.value = value
-            series.value_time = row["time"].to_pydatetime()
+            time = row["time (UTC)"]
+            series.value_time = parse_time_string(time)[0]
             series.save()
         except TypeError as error:
-            logger.error(f"Could not save {series.variable} from {row}", exc_info=True)
+            logger.error(
+                f"Could not save {series.variable} from {row}: {error}", exc_info=True
+            )
 
 
 @shared_task
@@ -228,3 +121,146 @@ def refresh_server(server_id: int, healthcheck: bool = False):
 
     if healthcheck:
         server.healthcheck_complete()
+
+
+def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
+    """ Did the request fall outside the range of times for the dataset
+    
+    returns True if handled """
+    if "is outside of the variable" in compare_text:
+        try:
+            times_str = compare_text.rpartition("actual_range:")[-1].rpartition(")")[0]
+        except (AttributeError, IndexError) as e:
+            logger.warning(
+                f"Unable to access and attribute or index of {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {e}",
+                extra={
+                    "timeseries": timeseries_group,
+                    "constraints": timeseries_group[0].constraints,
+                    "response_text": compare_text,
+                },
+                exc_info=True,
+            )
+            return False
+
+        times = []
+        for potential_time in times_str.split(" "):
+            try:
+                time = parse_time_string(potential_time)
+                times.append(time[0])
+            except DateParseError:
+                pass
+        times.sort(reverse=True)
+
+        try:
+            end_time = times[0]
+        except IndexError:
+            logger.warning(
+                f"Unable to parse datetimes in error processing dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}",
+                extra={
+                    "timeseries": timeseries_group,
+                    "constraints": timeseries_group[0].constraints,
+                    "response_text": compare_text,
+                },
+                exc_info=True,
+            )
+            return False
+
+        offset = timezone(timedelta(hours=0))
+        week_ago = datetime.now(offset) - timedelta(days=7)
+
+        if end_time < week_ago:
+            for ts in timeseries_group:
+                ts.end_time = end_time
+                ts.save()
+
+                logger.warning(
+                    f"Set end time for {ts} to {end_time} based on responses",
+                    extra={
+                        "timeseries": ts,
+                        "constraints": ts.constraints,
+                        "response_text": compare_text,
+                    },
+                    exc_info=True,
+                )
+
+        return True
+
+    return False
+
+
+def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
+    """ Handle various types of HTTPErrors. Returns True if handled """
+    try:
+        if error.response.status_code == 403:
+            logger.error(
+                f"403 error loading dataset {timeseries_group[0].dataset.name}. "
+                + "NOAA Coastwatch most likely blacklisted us. "
+                + "Try running the request manually from the worker pod to replicate the error and access the returned text."
+                + error,
+                extra={
+                    "timeseries": timeseries_group,
+                    "constraints": timeseries_group[0].constraints,
+                },
+                exc_info=True,
+            )
+            return True
+
+        if error.response.status_code == 404:
+            logger.warning(
+                f"No rows found for {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error}",
+                extra={
+                    "timeseries": timeseries_group,
+                    "constraints": timeseries_group[0].constraints,
+                },
+                exc_info=True,
+            )
+            return True
+
+        if error.response.status_code == 500:
+            url = error.request.url
+
+            response_500 = requests.get(url)
+
+            if "nRows = 0" in response_500.text:
+                logger.info(
+                    f"500 error loading {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints} because there are no matching rows"
+                )
+                return True
+
+            if handle_500_time_range_error(timeseries_group, response_500.text):
+                return True
+
+            logger.info(
+                f"500 error loading dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error} ",
+                extra={
+                    "timeseries": timeseries_group,
+                    "constraints": timeseries_group[0].constraints,
+                    "response_text": response_500.text,
+                },
+                exc_info=True,
+            )
+            return True
+
+        logger.error(
+            f"{error.response.status_code} error loading dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error}",
+            extra={
+                "timeseries": timeseries_group,
+                "constraints": timeseries_group[0].constraints,
+            },
+            exc_info=True,
+        )
+        return True
+
+    except AttributeError:
+        if handle_500_time_range_error(timeseries_group, str(error)):
+            return True
+
+        logger.error(
+            f"Error loading dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error}",
+            extra={
+                "timeseries": timeseries_group,
+                "constraints": timeseries_group[0].constraints,
+            },
+            exc_info=True,
+        )
+        return True

@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: GET
-    uri: http://www.neracoos.org/erddap/tabledap/N01_accelerometer_all.ncCF?time,current_speed&time%3E=1601827914.601247
+    uri: http://www.neracoos.org/erddap/tabledap/N01_accelerometer_all.csvp?time,current_speed&time%3E=1601840423.574325
   response:
     body:
       string: !!binary |
@@ -38,9 +38,9 @@ interactions:
       Content-Type:
       - text/html;charset=utf-8
       Date:
-      - Mon, 05 Oct 2020 16:11:54 GMT
+      - Mon, 05 Oct 2020 19:40:23 GMT
       Last-Modified:
-      - Mon, 05 Oct 2020 16:11:54 GMT
+      - Mon, 05 Oct 2020 19:40:23 GMT
       Server:
       - Apache-Coyote/1.1
       Vary:

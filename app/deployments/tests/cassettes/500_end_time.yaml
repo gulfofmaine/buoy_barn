@@ -11,20 +11,20 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: GET
-    uri: http://www.neracoos.org/erddap/tabledap/J03_aanderaa_all.ncCF?time,salinity&time%3E=1601827911.841124
+    uri: http://www.neracoos.org/erddap/tabledap/J03_aanderaa_all.csvp?time,salinity&time%3E=1601840420.78518
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA82UX2vbMBTFv8pdBvsDdWw5SdM5jiBbC3lrYH5pX4ZiX8disuRJ11nTku8+xW7W
-        suxhgxUGxpgj+ad7ro6Uvrq8/pTdrK6golrx9PGNouApSVLIF43IK4TM1Lmg8GIYDcdTCODKWmPB
-        YmMspWE/NXW0Uwi0a3A+ILyjMHduwJcMHkqjKShFLdUuyURlanG2sFKoMye0CxxaWc5yo4xNvleS
-        cLYW+deNNa0ugl5+PYknl9PzWQdy8h6TOG7uZntYxi9CZ+c9ffQy9HFH/3h9efM3/LXy6FN+v6zH
-        /cNa97D6M9oT4RH5vNRnjrvdWsBDNwwJ9BP2i6EWNZ7IQyW1VyuUm4oSYP5nOKkVjsXC2tgCvaCN
-        9o1Iwy6IHNKwT/LaFDufasaXWbaCzySodTCJIp/jG9Na+Nai3UFjTdHmWHgK1ILySuqNT7hrFbkh
-        vCNZ45sNzeZxFEcBi4JonLHzhLFkwm5BOjAtOVkgmBLIn5it8K1aK3zrQOTUCvXFCr3BBOKIXQTR
-        NGDTjE2TKPLPLZA56B+CaBTEFxkbJ3Gnv/cWGE8LuYVcCefmg0NjBjwNvcTTxnvjh/OWhmt+NHY8
-        lM3jeI3OiU0/JW35/++45U/FF+hyKxuSRh8NZH4pn70tWkCd+zwQWu9BaJCHTy0UYHc7USXIe8Qt
-        er0ASVBaU0PZqlIqdfBKlTz0y3fD0fDnwpX9pdnV6LfXoN+bkf+jT1fYXZ0/ACWn45FQBQAA
+        H4sIAAAAAAAAA82UX2vbMBTFv8pdBvsDdSw7adM6riBbC31rYX5pX4ZiX8disuVJ11mz0u++a7tZ
+        y7qHDVYYGGOO5J/uuTpS+urs8mN2fXUOFdVGpg9vVIVMSZNBuWpVXiFkts4VhcdTMZ0vIIBz56wD
+        h611lIbj1NTTziDQrsXTCeEthbn3E3kRwV1pGwpKVWuzSzJV2VodrJxW5sCrxgcenS6XuTXWJd8q
+        Tbhcq/zLxtmuKYJRfn0YH54tjpYDyOvvmMRxe7u8h4v4RejR0UifvQx9PtA/XJ5d/w1/bRj9nD8u
+        y7h/WOs9XP0Z7ZHwgHxa6hPHw26t4G4YhgTGCferaaNqfCZPjW5YrVBvKkog4p/hWa2wLxbW1hXI
+        QmMbbkQaDkGUkIZjkte22HGqI3mRZVfwiRR1Hg6F4Bxf287B1w7dDlpniy7HgilQK8or3Ww44b4z
+        5KfwjnSNbza0PI1FLIJIBGKeRSfJXCSxuAHtwXbkdYFgSyA+MVvFrVobfOtB5dQp89mpZoMJxCI6
+        DsQiiBZZtEiE4OcGyPb6SSBmQXycRXOG9vp7thDJtNBbyI3y/nTSN2Yi05AlmbbsTfbnLQ3Xcm9s
+        fyjbh/EavVebcUrayf/fcScfiy/Q5063pG2zN5DxUpy9LTrAJuc8EDr2oBrQ/WejDOBwO1GliD3i
+        FlkvQBOUztZQdqbUxvReqdJ9v7gbnqY/F67cL82uZr+9BnlvZvzHmK5wuDp/AL1iAJhQBQAA
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -39,9 +39,9 @@ interactions:
       Content-Type:
       - text/html;charset=utf-8
       Date:
-      - Mon, 05 Oct 2020 16:11:51 GMT
+      - Mon, 05 Oct 2020 19:40:20 GMT
       Last-Modified:
-      - Mon, 05 Oct 2020 16:11:51 GMT
+      - Mon, 05 Oct 2020 19:40:20 GMT
       Server:
       - Apache-Coyote/1.1
       Vary:

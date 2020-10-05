@@ -287,14 +287,11 @@ description = "Python interface for ERDDAP"
 name = "erddapy"
 optional = false
 python-versions = ">=3.6"
-version = "0.5.3"
+version = "0.7.2"
 
 [package.dependencies]
 pandas = ">=0.20.3"
 requests = "*"
-
-[package.extras]
-testing = ["pytest"]
 
 [[package]]
 category = "main"
@@ -1132,7 +1129,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "cec0646e04ba6ce9a450b9132f4297418df30f600953c74876c3afa3003ea2b5"
+content-hash = "7408d93661322769087188f6babdc755e276be811853e77c42232663a76a63ab"
 lock-version = "1.0"
 python-versions = "^3.7"
 
@@ -1283,8 +1280,8 @@ dodgy = [
     {file = "dodgy-0.2.1.tar.gz", hash = "sha256:28323cbfc9352139fdd3d316fa17f325cc0e9ac74438cbba51d70f9b48f86c3a"},
 ]
 erddapy = [
-    {file = "erddapy-0.5.3-py3-none-any.whl", hash = "sha256:264ba9109c031cc141bf5a80c16e2704b3e3d9a51a33493365bf12d86ea6079c"},
-    {file = "erddapy-0.5.3.tar.gz", hash = "sha256:187d2be5b670a034f0c11da0a63b6eed77cc6a4914b2db57c470f13b522976a7"},
+    {file = "erddapy-0.7.2-py3-none-any.whl", hash = "sha256:73cb00c027cb7f7a4b992192faab97b7d4bbdf3868e7de08f036f83178c1f0dc"},
+    {file = "erddapy-0.7.2.tar.gz", hash = "sha256:fcec0b32f92b9403060b5bae742c172851bdbae9e5d7c1c3044402491c69aa8b"},
 ]
 freezegun = [
     {file = "freezegun-1.0.0-py2.py3-none-any.whl", hash = "sha256:02b35de52f4699a78f6ac4518e4cd3390dddc43b0aeb978335a8f270a2d9668b"},

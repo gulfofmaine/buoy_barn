@@ -5,3 +5,4 @@ engines:
 
 exclude_paths:
   - "app/deployments/migrations/**.py"
+  - "app/**/test*.py"

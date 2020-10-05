@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 import logging
 
 from celery import shared_task
@@ -72,12 +72,13 @@ def update_values_for_timeseries(timeseries):
                         times_str = response_500.text.rpartition("actual_range:")[
                             -1
                         ].rpartition(")")[0]
-                    except AttributeError as e:
+                    except (AttributeError, IndexError):
                         logger.warning(
                             f"Unable to access attribute of out of data dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}",
                             extra={
                                 "timeseries": timeseries,
                                 "constraints": timeseries[0].constraints,
+                                "response_text": response_500.text,
                             },
                             exc_info=True,
                         )
@@ -120,7 +121,7 @@ def update_values_for_timeseries(timeseries):
                     extra={
                         "timeseries": timeseries,
                         "constraints": timeseries[0].constraints,
-                        "error_body": response_500.text,
+                        "response_text": response_500.text,
                     },
                     exc_info=True,
                 )

@@ -12,8 +12,9 @@ logger = getLogger(__name__)
 
 def filter_dataframe(df: DataFrame, column: str) -> DataFrame:
     """ Remove invalid times and for the specified column"""
-    df = df[df["time"].notna()]
-    return df[df[column].notna()]
+    df = df[df["time (UTC)"].notna()]
+    column_name = [col for col in df.columns if col.split(" ")[0] == column][0]
+    return df[df[column_name].notna()]
 
 
 def setup_variables(
@@ -51,7 +52,8 @@ def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFra
         constraints=constraints,
     )
 
-    e.requests_kwargs["timeout"] = float(os.environ.get("RETRIEVE_DATAFRAME_TIMEOUT_SECONDS", 60))
+    e.requests_kwargs["timeout"] = float(
+        os.environ.get("RETRIEVE_DATAFRAME_TIMEOUT_SECONDS", 60)
+    )
 
-    ds = e.to_xarray()
-    return ds.to_dataframe()
+    return e.to_pandas(parse_dates=True)

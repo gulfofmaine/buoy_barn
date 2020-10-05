@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: http://www.neracoos.org/erddap/tabledap/A01_sbe37_all.csvp?time,salinity&depth=1.0&salinity_qc=0&time%3E=1601840956.083678
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7WUTW/bMAyG/wqXXTagsfPRtEOiCMiWArk12HzJUbHpWJgseRKd1ivy38fYyVos
+        O2zDejEMinreVxQp8WZ5/ynZrO+goNJIcfqiyqQgTQblolJpgZC4MlUUf4gG0fUt9OHOe+fBY+U8
+        ibhLFYEag0BNhfMe4SPFaQg9uRrCU+4s9XNVatNME1W4Ul0tvFbmKigb+gG9zmepM85PHwpNONuq
+        9OvOu9pm/S78djKaLG9vZi0o6O84HY2qx9kBVqNXoQ9vOvr4dejXLf3j/XLzN/ytYfQlv5Nl3H/0
+        eoD1n9GeCSfkS6svTtze1gKe2mWYQpdwWERWlXgRjoy2HC1Q7wqawpA3w4VXOJuFrfMZcsA6y4UQ
+        cduIEkTcdfLWZQ139VCukmQNX0hRHWAyGHAfb1zt4VuNvoHKu6xOMWMKlIrSQtsdd3ioDYUI3tnP
+        7iHAHAbvGTuUItN7SI0KYd47mu1JEXNIior15HEGRLyVZ7HzoFSn9RJDULsuRdTy31zU8hmYYUi9
+        rkg7e4YmPLZ8R3v0gDbluhF65ioL+vhrlQFsp5gKRayLe+R4Bpog966EvDa5NuaoT4U+noEdBop+
+        Chf+lwIU498+F1yvMe/obiFun5gfFLIV4HgEAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Length:
+      - '485'
+      Content-Type:
+      - text/html;charset=utf-8
+      Date:
+      - Mon, 05 Oct 2020 19:49:16 GMT
+      Last-Modified:
+      - Mon, 05 Oct 2020 19:49:16 GMT
+      Server:
+      - Apache-Coyote/1.1
+      Vary:
+      - Accept-Encoding,User-Agent
+      erddap-server:
+      - '1.82'
+      xdods-server:
+      - dods/3.7
+    status:
+      code: 500
+      message: Internal Server Error
+version: 1

@@ -10,139 +10,34 @@ interactions:
       - keep-alive
       User-Agent:
       - python-requests/2.22.0
-    method: HEAD
-    uri: http://www.neracoos.org/erddap/tabledap/M01_sbe37_all.nc?time,temperature,salinity&depth=100.0&time%3E=1600700156.630081
-  response:
-    body:
-      string: ''
-    headers:
-      Access-Control-Allow-Origin:
-      - '*'
-      Connection:
-      - Keep-Alive
-      Content-Disposition:
-      - attachment;filename=M01_sbe37_all_e4b7_f488_ba25.nc
-      Content-Encoding:
-      - gzip
-      Content-Length:
-      - '3664'
-      Content-Type:
-      - application/x-netcdf
-      Date:
-      - Tue, 22 Sep 2020 14:55:56 GMT
-      Keep-Alive:
-      - timeout=5, max=100
-      Last-Modified:
-      - Tue, 22 Sep 2020 14:55:56 GMT
-      Server:
-      - Apache-Coyote/1.1
-      Vary:
-      - User-Agent
-      erddap-server:
-      - '1.82'
-      xdods-server:
-      - dods/3.7
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - python-requests/2.22.0
     method: GET
-    uri: http://www.neracoos.org/erddap/tabledap/M01_sbe37_all.nc?time,temperature,salinity&depth=100.0&time%3E=1600700156.630081
+    uri: http://www.neracoos.org/erddap/tabledap/M01_sbe37_all.csvp?time,temperature,salinity&depth=100.0&time%3E=1601840353.895249
   response:
     body:
       string: !!binary |
-        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
-        70RxcNcD/wMUyVQUSCIAAA==
+        H4sIAAAAAAAAAGWSsW7CQAyGd56CEaQQ2b6zfe7aV0iXbqjKEAkqRMLQty+9A8UuUqbk0+8vv71M
+        53G7+xje990yni/j9bjcrvc3X+Npnm7zvpuPp+l7Wn62u8t8228ICA4IB8gDwRv8PZ+d9cW6lPps
+        JjkguCJWKpJZRQJDjuHKcMISmfRkEHpMFSI1c8N4AOcj1YcBWCkwXghrjmiJMc6nKZtmC0RaCaI6
+        yBBKQPKKpJrCcs+JLuxiqq9kpKyBEScj7Z8SYBTWleHGZCrAgSkv3WRkCYi97MpYMOgg+D20nWOh
+        oIPoGHgWSEEHXcfadAhA4yzXstHD51896Guu6xRATWEV6Gpu98WgmKOPvFTIihZzXM32OC8Rizm+
+        Zq1MyhzvC13P2k6D8P598wtQUBqZiwMAAA==
     headers:
       Access-Control-Allow-Origin:
       - '*'
       Connection:
       - Keep-Alive
       Content-Disposition:
-      - attachment;filename=M01_sbe37_all_e4b7_f488_ba25.nc
+      - attachment;filename=M01_sbe37_all_6ae0_757f_3ad6.csv
       Content-Encoding:
       - gzip
       Content-Type:
-      - application/x-netcdf
+      - text/csv;charset=ISO-8859-1
       Date:
-      - Tue, 22 Sep 2020 14:55:56 GMT
+      - Mon, 05 Oct 2020 19:39:14 GMT
       Keep-Alive:
       - timeout=5, max=100
       Last-Modified:
-      - Tue, 22 Sep 2020 14:55:56 GMT
+      - Mon, 05 Oct 2020 19:39:14 GMT
       Server:
       - Apache-Coyote/1.1
       Transfer-Encoding:

@@ -10,54 +10,8 @@ interactions:
       - keep-alive
       User-Agent:
       - python-requests/2.22.0
-    method: HEAD
-    uri: http://www.neracoos.org/erddap/tabledap/N01_accelerometer_all.nc?time,current_speed&time%3E=1601823966.449431
-  response:
-    body:
-      string: ''
-    headers:
-      Access-Control-Allow-Origin:
-      - '*'
-      Connection:
-      - close
-      Content-Encoding:
-      - gzip
-      Content-Language:
-      - en
-      Content-Length:
-      - '20'
-      Content-Type:
-      - text/html;charset=utf-8
-      Date:
-      - Mon, 05 Oct 2020 15:06:06 GMT
-      Last-Modified:
-      - Mon, 05 Oct 2020 15:06:06 GMT
-      Server:
-      - Apache-Coyote/1.1
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept-Encoding,User-Agent
-      erddap-server:
-      - '1.82'
-      xdods-server:
-      - dods/3.7
-    status:
-      code: 500
-      message: Internal Server Error
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - python-requests/2.22.0
     method: GET
-    uri: http://www.neracoos.org/erddap/tabledap/N01_accelerometer_all.nc?time,current_speed&time%3E=1601823966.449431
+    uri: http://www.neracoos.org/erddap/tabledap/N01_accelerometer_all.csvp?time,current_speed&time%3E=1601840423.574325
   response:
     body:
       string: !!binary |
@@ -84,9 +38,9 @@ interactions:
       Content-Type:
       - text/html;charset=utf-8
       Date:
-      - Mon, 05 Oct 2020 15:06:07 GMT
+      - Mon, 05 Oct 2020 19:40:23 GMT
       Last-Modified:
-      - Mon, 05 Oct 2020 15:06:07 GMT
+      - Mon, 05 Oct 2020 19:40:23 GMT
       Server:
       - Apache-Coyote/1.1
       Vary:

@@ -1,8 +1,15 @@
+from datetime import datetime, timedelta, timezone
 import logging
 
 from celery import shared_task
+import requests
 from requests import HTTPError, Timeout
 from pandas import Timedelta
+
+try:
+    from pandas.core.indexes.period import parse_time_string, DateParseError
+except ImportError:
+    from pandas._libs.tslibs.parsing import parse_time_string, DateParseError
 
 from deployments.models import ErddapDataset, ErddapServer
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
@@ -23,7 +30,7 @@ def update_values_for_timeseries(timeseries):
         )
 
     except HTTPError as error:
-        if error.response:
+        try:
             if error.response.status_code == 403:
                 logger.error(
                     f"403 error loading dataset {timeseries[0].dataset.name}. "
@@ -36,6 +43,7 @@ def update_values_for_timeseries(timeseries):
                     },
                     exc_info=True,
                 )
+                return
 
             elif error.response.status_code == 404:
                 logger.warning(
@@ -46,28 +54,90 @@ def update_values_for_timeseries(timeseries):
                     },
                     exc_info=True,
                 )
+                return
 
             elif error.response.status_code == 500:
-                logger.info(
-                    f"500 error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error} "
-                    + "Most likely because there are no rows in the dataset",
-                    extra={
-                        "timeseries": timeseries,
-                        "constraints": timeseries[0].constraints,
-                    },
-                    exc_info=True,
-                )
+                url = error.request.url
 
-            else:
-                logger.error(
-                    f"{error.response.status_code} error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
+                response_500 = requests.get(url)
+
+                if "nRows = 0" in response_500.text:
+                    logger.info(
+                        f"500 error loading {timeseries[0].dataset.name} with constraint {timeseries[0].constraints} because there are no matching rows"
+                    )
+                    return
+
+                if "is outside of the variable" in response_500.text:
+                    try:
+                        times_str = response_500.text.rpartition("actual_range:")[
+                            -1
+                        ].rpartition(")")[0]
+                    except (AttributeError, IndexError):
+                        logger.warning(
+                            f"Unable to access attribute of out of data dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}",
+                            extra={
+                                "timeseries": timeseries,
+                                "constraints": timeseries[0].constraints,
+                                "response_text": response_500.text,
+                            },
+                            exc_info=True,
+                        )
+                        return
+
+                    times = []
+                    for potential_time in times_str.split(" "):
+                        try:
+                            time = parse_time_string(potential_time)
+                            times.append(time[0])
+                        except DateParseError:
+                            pass
+                    times.sort(reverse=True)
+
+                    try:
+                        end_time = times[0]
+                    except IndexError:
+                        logger.warning(f"Unable to parse datetimes in error")
+                        return
+
+                    offset = timezone(timedelta(hours=0))
+                    week_ago = datetime.now(offset) - timedelta(days=7)
+
+                    if end_time < week_ago:
+                        # set end time for timeseries
+                        for ts in timeseries:
+                            ts.end_time = end_time
+                            ts.save()
+
+                            logger.warning(
+                                f"Set end time for {ts} to {end_time} based on responses from {url}",
+                                extra={"timeseries": ts, "constraints": ts.constraints},
+                                exc_info=True,
+                            )
+
+                    return
+
+                logger.info(
+                    f"500 error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error} ",
                     extra={
                         "timeseries": timeseries,
                         "constraints": timeseries[0].constraints,
+                        "response_text": response_500.text,
                     },
                     exc_info=True,
                 )
-        else:
+                return
+
+            logger.error(
+                f"{error.response.status_code} error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
+                extra={
+                    "timeseries": timeseries,
+                    "constraints": timeseries[0].constraints,
+                },
+                exc_info=True,
+            )
+            return
+
+        except AttributeError:
             logger.error(
                 f"Error loading dataset {timeseries[0].dataset.name} with constraint {timeseries[0].constraints}: {error}",
                 extra={
@@ -76,6 +146,7 @@ def update_values_for_timeseries(timeseries):
                 },
                 exc_info=True,
             )
+            return
 
     except Timeout as error:
         logger.warning(
@@ -83,6 +154,7 @@ def update_values_for_timeseries(timeseries):
             extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
             exc_info=True,
         )
+        return
 
     except OSError as error:
         logger.info(
@@ -90,31 +162,30 @@ def update_values_for_timeseries(timeseries):
             extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
             exc_info=True,
         )
+        return
 
-    else:
-        for series in timeseries:
-            filtered_df = filter_dataframe(df, series.variable)
+    for series in timeseries:
+        filtered_df = filter_dataframe(df, series.variable)
 
-            try:
-                row = filtered_df.iloc[-1]
-            except IndexError:
-                message = f"Unable to find position in dataframe for {series.platform.name} - {series.variable}"
-                logger.warning(message)
-            else:
-                try:
-                    value = row[series.variable]
+        try:
+            row = filtered_df.iloc[-1]
+        except IndexError:
+            message = f"Unable to find position in dataframe for {series.platform.name} - {series.variable}"
+            logger.warning(message)
+            return
 
-                    if isinstance(value, Timedelta):
-                        logger.info("Converting from Timedelta to seconds")
-                        value = value.seconds
+        try:
+            value = row[series.variable]
 
-                    series.value = value
-                    series.value_time = row["time"].to_pydatetime()
-                    series.save()
-                except TypeError as error:
-                    logger.error(
-                        f"Could not save {series.variable} from {row}", exc_info=True
-                    )
+            if isinstance(value, Timedelta):
+                logger.info("Converting from Timedelta to seconds")
+                value = value.seconds
+
+            series.value = value
+            series.value_time = row["time"].to_pydatetime()
+            series.save()
+        except TypeError as error:
+            logger.error(f"Could not save {series.variable} from {row}", exc_info=True)
 
 
 @shared_task

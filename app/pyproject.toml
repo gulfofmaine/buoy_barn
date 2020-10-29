@@ -7,7 +7,7 @@ authors = ["Alex Kerney <akerney@gmri.org>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-celery = "^4.4"
+celery = "^5.0"
 django = "^3.1"
 django-cors-headers = "^3.5"
 django-debug-toolbar = "^3.1"

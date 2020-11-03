@@ -216,6 +216,25 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
     return False
 
 
+def handle_500_unrecognized_constraint(timeseries_group, compare_text: str) -> bool:
+    """ Handle when one of the constraints is invalid
+
+    returns True if handled
+    """
+    if "Unrecognized constraint variable=" in compare_text:
+        logger.warning(
+            f"Invalid constraint variable for dataset {timeseries_group[0].dataset.name} with constraints {timeseries_group[0].constraints}",
+            extra={
+                "timeseries": timeseries_group,
+                "constraints": timeseries_group[0].constraints,
+                "response_text": compare_text,
+            },
+        )
+        return True
+
+    return False
+
+
 def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
     """ Handle various types of HTTPErrors. Returns True if handled """
     try:
@@ -260,6 +279,9 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
             ):
                 return True
 
+            if handle_500_unrecognized_constraint(timeseries_group, response_500.text):
+                return True
+
             logger.info(
                 f"500 error loading dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error} ",
                 extra={
@@ -289,6 +311,9 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
             return True
 
         if handle_500_variable_actual_range_error(timeseries_group, str(error)):
+            return True
+
+        if handle_500_unrecognized_constraint(timeseries_group, str(error)):
             return True
 
         logger.error(

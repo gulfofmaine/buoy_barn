@@ -224,3 +224,31 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
+
+    @my_vcr.use_cassette("500_unrecognized_constraint.yaml")
+    def test_500_unrecognized_contraint(self):
+        e01 = Platform.objects.get(name="E01")
+        dataset = ErddapDataset.objects.create(
+            name="E01_aanderaa_all", server=self.erddap
+        )
+        ts = TimeSeries.objects.create(
+            platform=e01,
+            data_type=DataType.objects.get(
+                standard_name="direction_of_sea_water_velocity"
+            ),
+            variable="current_direction",
+            constraints={"direction_of_sea_water_velocity_qc=": 0},
+            start_time="2001-07-09T12:00:00",
+            dataset=dataset,
+        )
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+
+        tasks.update_values_for_timeseries([ts])
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+

@@ -339,7 +339,7 @@ python-versions = "*"
 
 [[package]]
 name = "ipython"
-version = "7.18.1"
+version = "7.19.0"
 description = "IPython: Productive Interactive Computing"
 category = "dev"
 optional = false
@@ -1103,7 +1103,7 @@ testing = ["jaraco.itertools"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "96c991bb913d9ecb233c37c7e7850cd931170d50944a9f409d836dc89765df29"
+content-hash = "5172cb755a3de1df260aa270f3f517dbb09d4b5cd4d69a1976653092bcf5701d"
 
 [metadata.files]
 amqp = [
@@ -1276,8 +1276,8 @@ iniconfig = [
     {file = "iniconfig-1.0.1.tar.gz", hash = "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"},
 ]
 ipython = [
-    {file = "ipython-7.18.1-py3-none-any.whl", hash = "sha256:2e22c1f74477b5106a6fb301c342ab8c64bb75d702e350f05a649e8cb40a0fb8"},
-    {file = "ipython-7.18.1.tar.gz", hash = "sha256:a331e78086001931de9424940699691ad49dfb457cea31f5471eae7b78222d5e"},
+    {file = "ipython-7.19.0-py3-none-any.whl", hash = "sha256:c987e8178ced651532b3b1ff9965925bfd445c279239697052561a9ab806d28f"},
+    {file = "ipython-7.19.0.tar.gz", hash = "sha256:cbb2ef3d5961d44e6a963b9817d4ea4e1fa2eb589c371a470fed14d8d40cbd6a"},
 ]
 ipython-genutils = [
     {file = "ipython_genutils-0.2.0-py2.py3-none-any.whl", hash = "sha256:72dd37233799e619666c9f639a9da83c34013a73e8bbc79a7a6348d93c61fab8"},

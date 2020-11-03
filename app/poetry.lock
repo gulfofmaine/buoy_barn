@@ -594,7 +594,7 @@ wcwidth = "*"
 
 [[package]]
 name = "prospector"
-version = "1.3.0"
+version = "1.3.1"
 description = "Prospector: python static analysis tool"
 category = "dev"
 optional = false
@@ -609,9 +609,9 @@ pep8-naming = ">=0.3.3,<=0.10.0"
 pycodestyle = ">=2.6.0,<2.7.0"
 pydocstyle = ">=2.0.0"
 pyflakes = ">=2.2.0,<2.3.0"
-pylint = "2.5.2"
+pylint = "2.5.3"
 pylint-celery = "0.3"
-pylint-django = "2.0.15"
+pylint-django = "<2.2.0"
 pylint-flask = "0.6"
 pylint-plugin-utils = ">=0.2.6"
 pyyaml = "*"
@@ -688,7 +688,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "pylint"
-version = "2.5.2"
+version = "2.5.3"
 description = "python code static checker"
 category = "dev"
 optional = false
@@ -1459,7 +1459,7 @@ prompt-toolkit = [
     {file = "prompt_toolkit-3.0.3.tar.gz", hash = "sha256:a402e9bf468b63314e37460b68ba68243d55b2f8c4d0192f85a019af3945050e"},
 ]
 prospector = [
-    {file = "prospector-1.3.0.tar.gz", hash = "sha256:43e5e187c027336b0e4c4aa6a82d66d3b923b5ec5b51968126132e32f9d14a2f"},
+    {file = "prospector-1.3.1.tar.gz", hash = "sha256:700d7918d93d73035a2a58fb18c6be0b609a0481fc6e0908843fa856b89e52c6"},
 ]
 psycopg2-binary = [
     {file = "psycopg2-binary-2.8.6.tar.gz", hash = "sha256:11b9c0ebce097180129e422379b824ae21c8f2a6596b159c7659e2e5a00e1aa0"},
@@ -1521,8 +1521,8 @@ pygments = [
     {file = "Pygments-2.5.2.tar.gz", hash = "sha256:98c8aa5a9f778fcd1026a17361ddaf7330d1b7c62ae97c3bb0ae73e0b9b6b0fe"},
 ]
 pylint = [
-    {file = "pylint-2.5.2-py3-none-any.whl", hash = "sha256:dd506acce0427e9e08fb87274bcaa953d38b50a58207170dbf5b36cf3e16957b"},
-    {file = "pylint-2.5.2.tar.gz", hash = "sha256:b95e31850f3af163c2283ed40432f053acbc8fc6eba6a069cb518d9dbf71848c"},
+    {file = "pylint-2.5.3-py3-none-any.whl", hash = "sha256:d0ece7d223fe422088b0e8f13fa0a1e8eb745ebffcb8ed53d3e95394b6101a1c"},
+    {file = "pylint-2.5.3.tar.gz", hash = "sha256:7dd78437f2d8d019717dbf287772d0b2dbdfd13fc016aa7faa08d67bccc46adc"},
 ]
 pylint-celery = [
     {file = "pylint-celery-0.3.tar.gz", hash = "sha256:41e32094e7408d15c044178ea828dd524beedbdbe6f83f712c5e35bde1de4beb"},

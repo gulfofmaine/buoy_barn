@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.22.0
+    method: GET
+    uri: http://www.neracoos.org/erddap/tabledap/A01_waves_mstrain_all.csvp?time,maximum_wave_height_3&maximum_wave_height_3_qc=0&time%3E=1604331173.10337
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7WU22rbQBCGX2XqQGkhtnyoUyrLgkAK7UWhNLrplRmtRtbS1a6yO3LshkDeoW/Y
+        J+lISonpARpobgQ7M/vNP4dV8qxwig8NQcW1SZPuCwbtdj0iO5IzYZEmrNlQ+i7LPsIlI7cBltMp
+        fL/7Bu8tk7do4JL8jjy89d75JBouJIEPhqDDr0dMe45UCKO0msFN6SyPS6y1OcQZVq7G03Ov0ZwG
+        tGEcyOtypZxxPr6uNNMqR/Vl611ri/FgPlnOlxevz1Y9KOivFM/nzX51C9X8Seizs4G+eBr6q56e
+        u+LwGH5uBP07f0gruP+o9Raaf6M9EO6Rx1KPKh6mhXBz7BfDxGJNv1onRlsxVqS3FcczufpXobnz
+        BfnYOistSKJ+BdMkGha5a7As9ewxuyzRSeVBGQxhPeqEjCBKk0ZoaSarnUR5+hP1iRrnOYmae/8H
+        CgG3Q8hn13q4askfoPGuaBUVYB3UyKrSdgueQms4TOBFjXtdt/XmGne0GWreLDZXaj0FHcC1HHRB
+        4ErgimCHMoHc0POTxZtVAFTcotl4ecIUwxzYwfzlg6ALCsrrhrWzvahMCGEol6ySdkoLRBdaaC3t
+        G1IsJ+VsobsrkhBZ1NOObOfQDKV3NZStKbUxXRWdJE9SZuBJn/YPrasW6XmDSiIzVyuUfolF5PTD
+        ifof0Q9E3dMSmAQAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - close
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Length:
+      - '526'
+      Content-Type:
+      - text/html;charset=utf-8
+      Date:
+      - Tue, 03 Nov 2020 15:32:53 GMT
+      Last-Modified:
+      - Tue, 03 Nov 2020 15:32:53 GMT
+      Vary:
+      - Accept-Encoding,User-Agent
+      erddap-server:
+      - '1.82'
+      xdods-server:
+      - dods/3.7
+    status:
+      code: 500
+      message: Internal Server Error
+version: 1

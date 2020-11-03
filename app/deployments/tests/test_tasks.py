@@ -199,3 +199,28 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
+
+    @my_vcr.use_cassette("500_no_rows_actual_range.yaml")
+    def test_500_actual_range(self):
+        a01 = Platform.objects.get(name="A01")
+        dataset = ErddapDataset.objects.create(
+            name="A01_waves_mstrain_all", server=self.erddap
+        )
+        ts = TimeSeries.objects.create(
+            platform=a01,
+            data_type=DataType.objects.get(standard_name="max_wave_height"),
+            variable="maximum_wave_height_3",
+            constraints={"maximum_wave_height_3_qc=": 0},
+            start_time="2019-05-29T19:06:07",
+            dataset=dataset,
+        )
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+
+        tasks.update_values_for_timeseries([ts])
+
+        ts.refresh_from_db()
+
+        assert ts.value is None

@@ -141,7 +141,7 @@ def handle_500_variable_actual_range_error(timeseries_group, compare_text: str) 
     """
     if (
         "Your query produced no matching results" in compare_text
-        and "is outside of the variable's actual_range" in compare_text
+        and "is outside of the variable&#39;s actual_range" in compare_text
     ):
         logger.info(
             f"{timeseries_group[0].dataset.name} with constraints {timeseries_group[0].constraints} had a constraint outside of normal range"

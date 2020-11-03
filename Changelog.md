@@ -6,7 +6,18 @@ Additions:
 
 Changes:
 
+Fixes:
+
+## 0.1.12 - 11/3/2020
+
+Changes:
+
 - Use `-slim` Docker image as a base to make for a lighter image (1.44 too .91 GB).
+- Update dependencies
+  - Sentry SDK from 0.18.0 to 0.19.2
+  - IPython from 7.18 to 7.19
+  - Pytest Django from 3.10 to 4.1
+  - Django from 3.1.2 to 3.1.3
 
 Fixes:
 

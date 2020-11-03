@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Add test and tweak comparison for actual range error.
+
 ## 0.1.12 - 11/3/2020
 
 Changes:

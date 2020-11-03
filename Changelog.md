@@ -8,6 +8,10 @@ Changes:
 
 Fixes:
 
+## 0.1.14 - 11/3/2020
+
+Fixes:
+
 - Add test and comparison for invalid constraints.
 
 ## 0.1.13 - 11/3/2020

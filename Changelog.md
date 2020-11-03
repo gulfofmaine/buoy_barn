@@ -10,6 +10,8 @@ Changes:
 
 Fixes:
 
+- Handle date parsing errors and when a constraint is outside of the actual range.
+
 ## 0.1.11 - 10/5/2020
 
 Changes:

@@ -277,7 +277,7 @@ python-versions = "*"
 
 [[package]]
 name = "erddapy"
-version = "0.7.2"
+version = "0.8.0"
 description = "Python interface for ERDDAP"
 category = "main"
 optional = false
@@ -1103,7 +1103,7 @@ testing = ["jaraco.itertools"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "5172cb755a3de1df260aa270f3f517dbb09d4b5cd4d69a1976653092bcf5701d"
+content-hash = "0b74a21b6ba40c2a3bc29159e294b5507261ee8d1dac1ccbd8d747d1123f7fcc"
 
 [metadata.files]
 amqp = [
@@ -1252,8 +1252,8 @@ dodgy = [
     {file = "dodgy-0.2.1.tar.gz", hash = "sha256:28323cbfc9352139fdd3d316fa17f325cc0e9ac74438cbba51d70f9b48f86c3a"},
 ]
 erddapy = [
-    {file = "erddapy-0.7.2-py3-none-any.whl", hash = "sha256:73cb00c027cb7f7a4b992192faab97b7d4bbdf3868e7de08f036f83178c1f0dc"},
-    {file = "erddapy-0.7.2.tar.gz", hash = "sha256:fcec0b32f92b9403060b5bae742c172851bdbae9e5d7c1c3044402491c69aa8b"},
+    {file = "erddapy-0.8.0-py3-none-any.whl", hash = "sha256:a90ca96d20e808c61ede9ebe04cb517500aead056854c8f973175208c299657b"},
+    {file = "erddapy-0.8.0.tar.gz", hash = "sha256:7ec984db39f986d864efd14c19892234d5909b25a79ebb63af00894ccdf1306c"},
 ]
 freezegun = [
     {file = "freezegun-1.0.0-py2.py3-none-any.whl", hash = "sha256:02b35de52f4699a78f6ac4518e4cd3390dddc43b0aeb978335a8f270a2d9668b"},
@@ -1495,6 +1495,8 @@ psycopg2-binary = [
     {file = "psycopg2_binary-2.8.6-cp39-cp39-macosx_10_9_x86_64.macosx_10_9_intel.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:89705f45ce07b2dfa806ee84439ec67c5d9a0ef20154e0e475e2b2ed392a5b83"},
     {file = "psycopg2_binary-2.8.6-cp39-cp39-manylinux1_i686.whl", hash = "sha256:42ec1035841b389e8cc3692277a0bd81cdfe0b65d575a2c8862cec7a80e62e52"},
     {file = "psycopg2_binary-2.8.6-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:7312e931b90fe14f925729cde58022f5d034241918a5c4f9797cac62f6b3a9dd"},
+    {file = "psycopg2_binary-2.8.6-cp39-cp39-win32.whl", hash = "sha256:6422f2ff0919fd720195f64ffd8f924c1395d30f9a495f31e2392c2efafb5056"},
+    {file = "psycopg2_binary-2.8.6-cp39-cp39-win_amd64.whl", hash = "sha256:15978a1fbd225583dd8cdaf37e67ccc278b5abecb4caf6b2d6b8e2b948e953f6"},
 ]
 ptyprocess = [
     {file = "ptyprocess-0.6.0-py2.py3-none-any.whl", hash = "sha256:d7cc528d76e76342423ca640335bd3633420dc1366f258cb31d05e865ef5ca1f"},

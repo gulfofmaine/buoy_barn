@@ -277,7 +277,7 @@ python-versions = "*"
 
 [[package]]
 name = "erddapy"
-version = "0.7.2"
+version = "0.9.0"
 description = "Python interface for ERDDAP"
 category = "main"
 optional = false
@@ -1103,7 +1103,7 @@ testing = ["jaraco.itertools"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "5172cb755a3de1df260aa270f3f517dbb09d4b5cd4d69a1976653092bcf5701d"
+content-hash = "a9530fdb36153226ea87057e25c88ff65004bd9d090ca56344afc22185578f9e"
 
 [metadata.files]
 amqp = [
@@ -1251,8 +1251,8 @@ dodgy = [
     {file = "dodgy-0.2.1.tar.gz", hash = "sha256:28323cbfc9352139fdd3d316fa17f325cc0e9ac74438cbba51d70f9b48f86c3a"},
 ]
 erddapy = [
-    {file = "erddapy-0.7.2-py3-none-any.whl", hash = "sha256:73cb00c027cb7f7a4b992192faab97b7d4bbdf3868e7de08f036f83178c1f0dc"},
-    {file = "erddapy-0.7.2.tar.gz", hash = "sha256:fcec0b32f92b9403060b5bae742c172851bdbae9e5d7c1c3044402491c69aa8b"},
+    {file = "erddapy-0.9.0-py3-none-any.whl", hash = "sha256:cea9efa824d4d4d85e762bbe11792502ca0a57a72cdc81bad79fba65ae0a267b"},
+    {file = "erddapy-0.9.0.tar.gz", hash = "sha256:eed1e18e97df1ace805a41924d48bf55dac34c67a7516a103359c802664cc0a6"},
 ]
 freezegun = [
     {file = "freezegun-1.0.0-py2.py3-none-any.whl", hash = "sha256:02b35de52f4699a78f6ac4518e4cd3390dddc43b0aeb978335a8f270a2d9668b"},
@@ -1376,6 +1376,9 @@ netcdf4 = [
     {file = "netCDF4-1.5.4-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:395f9d7dbdfc13111e5a6a99ced9c64f2ffdff39a21d9d100374e31170ea4875"},
     {file = "netCDF4-1.5.4-cp38-cp38-win32.whl", hash = "sha256:368c1820b6a059887af5b5902717788b45df9db3318a4f3c9f683acb9af7bf43"},
     {file = "netCDF4-1.5.4-cp38-cp38-win_amd64.whl", hash = "sha256:26f073e09ce353c6b8f2baa4d20d41ae80bda19391110067968f0d2dfe0cba69"},
+    {file = "netCDF4-1.5.4-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:723da9b34e61394ec5ce8da597f3aef60d5e48c79250790b40f0cbaf3e18153d"},
+    {file = "netCDF4-1.5.4-cp39-cp39-manylinux1_i686.whl", hash = "sha256:77ffcfda358a06e1831d6e4b1992adcdbf7b6f320f168a116a4efab19371eba5"},
+    {file = "netCDF4-1.5.4-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:d8bc4140a9085ed26b012a916965120b1869b94c975d6b43349a1065281f3f5c"},
     {file = "netCDF4-1.5.4-cp39-cp39-win32.whl", hash = "sha256:a3920a4a74ace672b12864cb505a4229dc86ce93ba299df0e933ed43f011d7a4"},
     {file = "netCDF4-1.5.4-cp39-cp39-win_amd64.whl", hash = "sha256:223b84f8d2a148e889b1933944109bdecbefc097200ab42e8a66c967b1398e1b"},
     {file = "netCDF4-1.5.4.tar.gz", hash = "sha256:941de6f3623b6474ecb4d043be5990690f7af4cf0d593b31be912627fe5aad03"},

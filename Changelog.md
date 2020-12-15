@@ -8,6 +8,19 @@ Changes:
 
 Fixes:
 
+## 0.1.15 - 12/15/2020
+
+Changes:
+
+- Added admin command to clear end times set on TimeSeries by Platform. This makes it easier to clear out automatically set end times.
+- Update dependencies:
+  - Django CORS Headers from 3.1 to 3.5
+  - Django Debug Toolbar from 3.1 to 3.2
+  - ERDDAPY from 0.7.2 to 0.9.0
+  - NetCDF 4 from 1.5.4 to 1.5.5
+  - Sentry SDK from 0.19.2 to 0.19.5
+  - xarray from 0.16.1 to 0.16.2
+
 ## 0.1.14 - 11/3/2020
 
 Fixes:

@@ -289,7 +289,7 @@ requests = "*"
 
 [[package]]
 name = "freezegun"
-version = "1.0.0"
+version = "1.1.0"
 description = "Let your Python tests travel through time"
 category = "main"
 optional = false
@@ -1110,7 +1110,7 @@ testing = ["jaraco.itertools"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "d61db56bcb600b7496d00f0fad435337a8c2f3a1785f18bc16f47fa8d005bef4"
+content-hash = "d9a8203751a655bb7d40e85d33c378d471e1fb7bdd83d3d802ac839b4a1e4062"
 
 [metadata.files]
 amqp = [
@@ -1281,8 +1281,8 @@ erddapy = [
     {file = "erddapy-0.9.0.tar.gz", hash = "sha256:eed1e18e97df1ace805a41924d48bf55dac34c67a7516a103359c802664cc0a6"},
 ]
 freezegun = [
-    {file = "freezegun-1.0.0-py2.py3-none-any.whl", hash = "sha256:02b35de52f4699a78f6ac4518e4cd3390dddc43b0aeb978335a8f270a2d9668b"},
-    {file = "freezegun-1.0.0.tar.gz", hash = "sha256:1cf08e441f913ff5e59b19cc065a8faa9dd1ddc442eaf0375294f344581a0643"},
+    {file = "freezegun-1.1.0-py2.py3-none-any.whl", hash = "sha256:2ae695f7eb96c62529f03a038461afe3c692db3465e215355e1bb4b0ab408712"},
+    {file = "freezegun-1.1.0.tar.gz", hash = "sha256:177f9dd59861d871e27a484c3332f35a6e3f5d14626f2bf91be37891f18927f3"},
 ]
 geojson = [
     {file = "geojson-2.5.0-py2.py3-none-any.whl", hash = "sha256:ccbd13368dd728f4e4f13ffe6aaf725b6e802c692ba0dde628be475040c534ba"},

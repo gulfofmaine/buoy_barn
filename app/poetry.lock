@@ -258,7 +258,7 @@ django = ">=2.2"
 
 [[package]]
 name = "djangorestframework-gis"
-version = "0.16"
+version = "0.17"
 description = "Geographic add-ons for Django Rest Framework"
 category = "main"
 optional = false
@@ -1110,7 +1110,7 @@ testing = ["jaraco.itertools"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "ade54d410fcd70549c0b0753a57d548cb170218bcdf20bf5e5ade27fba54c712"
+content-hash = "80dabd8ef3ac9c51e4839e00095da6a7b6389c83cceb71408dcabc3318ab10a4"
 
 [metadata.files]
 amqp = [
@@ -1269,8 +1269,8 @@ djangorestframework = [
     {file = "djangorestframework-3.12.2.tar.gz", hash = "sha256:0898182b4737a7b584a2c73735d89816343369f259fea932d90dc78e35d8ac33"},
 ]
 djangorestframework-gis = [
-    {file = "djangorestframework-gis-0.16.tar.gz", hash = "sha256:19a873740bcdac5c963779a1755d0d4acf96c4f5b63915d452f4b866d50f77d7"},
-    {file = "djangorestframework_gis-0.16-py2.py3-none-any.whl", hash = "sha256:1a19c9e103b3c34ed5db182cdfbc541905c5560fc4a80f86c8b976c79bdf1e6d"},
+    {file = "djangorestframework-gis-0.17.tar.gz", hash = "sha256:d3b6aa6beef32f75811f815bda3bc7e9ea5d2f0306f9741cad5f3820d3973be7"},
+    {file = "djangorestframework_gis-0.17-py2.py3-none-any.whl", hash = "sha256:5be17e27cf2be33ac6119e6d2206d3d81183c62d03aaa9b814ce95a82256614f"},
 ]
 dodgy = [
     {file = "dodgy-0.2.1-py3-none-any.whl", hash = "sha256:51f54c0fd886fa3854387f354b19f429d38c04f984f38bc572558b703c0542a6"},

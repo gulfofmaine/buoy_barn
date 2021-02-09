@@ -1,4 +1,5 @@
 """Viewset for displaying forecasts, and fetching point forecast data is lat,lon are specified"""
+from datetime import timezone
 from json import JSONDecodeError
 import logging
 
@@ -57,7 +58,8 @@ class ForecastViewSet(viewsets.ViewSet):
                 )
 
             data["time_series"] = [
-                {"time": reading[0], "reading": reading[1]} for reading in time_series
+                {"time": time.replace(tzinfo=timezone.utc), "reading": reading}
+                for time, reading in time_series
             ]
 
         else:

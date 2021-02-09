@@ -44,10 +44,10 @@ shell:
 	docker-compose exec web python manage.py shell
 
 test:
-	docker-compose exec -e DJANGO_ENV=test  web pytest --cov=. --cov-config=tox.ini
+	docker-compose run -e DJANGO_ENV=test web pytest --cov=. --cov-config=tox.ini
 
 test-debug:
-	docker-compose exec -e DJANGO_ENV=test web pytest --cov=. --cov-config=tox.ini -v --pdb --log-cli-level=INFO
+	docker-compose run -e DJANGO_ENV=test web pytest --cov=. --cov-config=tox.ini -v --pdb --log-cli-level=INFO
 
 coverage:
 	docker-compose exec web coverage run --source='.' manage.py test

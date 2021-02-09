@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Not everything forecast was returning a date in it's time series.
+
 ## 0.1.16 - 02/09/2020
 
 Changes:

@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Include `Z` on the end of forecast dates to specify the timezone so that browsers don't guess.
+
 ## 0.1.15 - 12/15/2020
 
 Changes:

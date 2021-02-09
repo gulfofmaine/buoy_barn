@@ -8,6 +8,22 @@ Changes:
 
 Fixes:
 
+## 0.1.16 - 02/09/2020
+
+Changes:
+
+- Update dependencies:
+  - Python from 3.8.6 to 3.9.1
+  - Celery from 4.4 to 5.0
+  - Django CORS Headers from 3.6 to 3.7
+  - Django Rest Framework GIS from 0.16 to 0.17
+  - Freezegun from 1.0.0 to 1.1.0
+  - IPython from 7.19 to 7.20
+  - PyYaml from 5.3.1 tp 5.4
+  - Py.test coverage from 2.10 to 2.11
+
+Fixes:
+
 - Include `Z` on the end of forecast dates to specify the timezone so that browsers don't guess.
 
 ## 0.1.15 - 12/15/2020

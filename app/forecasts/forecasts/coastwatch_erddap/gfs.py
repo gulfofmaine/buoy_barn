@@ -3,6 +3,7 @@ from datetime import datetime
 from math import degrees, hypot, sin
 from typing import List, Tuple
 
+from forecasts.utils import erddap as erddap_utils
 from forecasts.forecasts.base_forecast import ForecastTypes
 from forecasts.forecasts.coastwatch_erddap.base_coastwatch import (
     BaseCoastWatchRDDAPForecast,
@@ -90,7 +91,11 @@ class BaseGFSWindForecast(BaseGFSForecast):
         rows = json["rows"]
 
         return [
-            WindReading(row[time_index], row[east_index], row[north_index])
+            WindReading(
+                erddap_utils.parse_time(row[time_index]),
+                row[east_index],
+                row[north_index],
+            )
             for row in rows
         ]
 

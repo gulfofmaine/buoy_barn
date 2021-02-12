@@ -45,6 +45,9 @@ def setup_variables(
 
 
 def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFrame:
+    """ Returns a dataframe from ERDDAP for a given dataset
+
+    Attempts to sort the dataframe by time """
     e = setup_variables(
         server.connection(),
         dataset,
@@ -56,4 +59,11 @@ def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFra
         os.environ.get("RETRIEVE_DATAFRAME_TIMEOUT_SECONDS", 60)
     )
 
-    return e.to_pandas(parse_dates=True)
+    df = e.to_pandas(parse_dates=True)
+
+    try:
+        df = df.sort_values("time (UTC)")
+    except KeyError:
+        logger.warning(f"Unable to sort dataframe by `time (UTC)` for {dataset}")
+
+    return df

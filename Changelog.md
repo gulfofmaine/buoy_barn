@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Sort dataframes from ERDDAP by time before use. IOOS Sensor ERDDAP has a tendency to return data from latest to earliest, rather than from earliest to latest like all other ERDDAPs that I've tested against. [#287](https://github.com/gulfofmaine/buoy_barn/issues/287)
+
 ## 0.1.17 - 02/09/2020
 
 Fixes:

@@ -8,6 +8,11 @@ from forecasts.forecasts.coastwatch_erddap.gfs import (
     GFSWindSpeed,
     GFSWindDirection,
 )
+from forecasts.forecasts.umass.necofs import (
+    NecofsWaveHeight,
+    NecofsWavePeriod,
+    NecofsWaveDirection,
+)
 
 # from forecasts.forecasts.coastwatch_erddap.wave_watch import GlobalWaveWatchHeight
 
@@ -19,4 +24,7 @@ forecast_list = [
     GFSWindSpeed(),
     GFSWindDirection(),
     # GlobalWaveWatchHeight(),
+    NecofsWaveHeight(),
+    NecofsWavePeriod(),
+    NecofsWaveDirection(),
 ]

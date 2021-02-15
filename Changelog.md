@@ -4,6 +4,8 @@
 
 Additions:
 
+- Multiple forecasts! First addition of a new forecast with NECOFS
+
 Changes:
 
 Fixes:

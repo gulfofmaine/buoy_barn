@@ -931,7 +931,7 @@ astroid = ">=1.4"
 
 [[package]]
 name = "sentry-sdk"
-version = "0.19.5"
+version = "0.20.1"
 description = "Python client for Sentry (https://sentry.io)"
 category = "main"
 optional = false
@@ -1160,7 +1160,7 @@ testing = ["jaraco.itertools"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "e96db3e82f5157e11d67c904b7526c80922225c5a50f21e85b5ddd21c29d3aea"
+content-hash = "795efe372f10cdc4369f7ffef8a6938b97fe709b95b91cfe4bf7d575068aaabe"
 
 [metadata.files]
 amqp = [
@@ -1709,8 +1709,7 @@ requirements-detector = [
     {file = "requirements-detector-0.6.tar.gz", hash = "sha256:9fbc4b24e8b7c3663aff32e3eba34596848c6b91bd425079b386973bd8d08931"},
 ]
 sentry-sdk = [
-    {file = "sentry-sdk-0.19.5.tar.gz", hash = "sha256:737a094e49a529dd0fdcaafa9e97cf7c3d5eb964bd229821d640bc77f3502b3f"},
-    {file = "sentry_sdk-0.19.5-py2.py3-none-any.whl", hash = "sha256:0a711ec952441c2ec89b8f5d226c33bc697914f46e876b44a4edd3e7864cf4d0"},
+    {file = "sentry-sdk-0.20.1.tar.gz", hash = "sha256:3693cb47ba8d90c004ac002425770b32aaf0c83a846ec48e2d1364e7db1d072d"},
 ]
 setoptconf = [
     {file = "setoptconf-0.2.0.tar.gz", hash = "sha256:5b0b5d8e0077713f5d5152d4f63be6f048d9a1bb66be15d089a11c898c3cf49c"},

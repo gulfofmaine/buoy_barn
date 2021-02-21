@@ -1,50 +1,51 @@
-# version: "3.7"
+version: "3.7"
 
-# services:
-db:
-  image: mdillon/postgis:10-alpine@sha256:41516e866f9ec84a7c348084e02b577961cc5bca7c827d91b4566f0f729f370c
-  restart: always
-  env_file:
-    - ./docker-data/secret.env
-  environment:
-    PGDATA: /var/lib/postgresql/data/PGDATA
-  volumes:
-    - ./docker-data/postgres:/var/lib/postgresql/data
-  ports:
-    - "5432:5432"
+services:
+  db: 
+    image: mdillon/postgis:10-alpine@sha256:41516e866f9ec84a7c348084e02b577961cc5bca7c827d91b4566f0f729f370c
+    restart: always
+    env_file:
+      - ./docker-data/secret.env
+    environment:
+      PGDATA: /var/lib/postgresql/data/PGDATA
+    volumes:
+      - ./docker-data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
-cache:
-  image: redis:5.0.3-alpine@sha256:f8c22abc77f3f9cc1c2516062e4a2a71375859d7922da3faf9e4160e6ba4c3c2
-  restart: always
+  cache:
+    image: redis:5.0.3-alpine@sha256:f8c22abc77f3f9cc1c2516062e4a2a71375859d7922da3faf9e4160e6ba4c3c2
+    restart: always
 
-web:
-  build: ./app
-  image: gmri/neracoos-buoy-barn
-  command: python manage.py runserver 0:8080
-  # # command: "uwsgi --http :8080 --wsgi-file buoy_barn/wsgi.py  --master --processes 4 --threads 2"
-  # command: "uwsgi --module=buoy_barn.wsgi:application --master --pidfile=/tmp/project-master.pid --http :8080 --uid=1000 --gid=2000 --max-requests=5000 --vacuum --processes 4"
-  # # command: "gunicorn --bind 0.0.0.0:8080 buoy_barn.wsgi:application"
-  restart: always
-  volumes:
-    - ./app:/app
-    - ./.prospector.yaml:/app/.prospector.yaml
-    - ./docker-data/django-static:/static
-  ports:
-    - "8080:8080"
-  environment:
-    DJANGO_MANAGEPY_COLLECTSTATIC: "on"
-  env_file:
-    - ./docker-data/secret.env
-  links:
-    - db
-    - cache
+  web:
+    build: ./app
+    image: gmri/neracoos-buoy-barn
+    command: python manage.py runserver 0:8080
+    # # command: "uwsgi --http :8080 --wsgi-file buoy_barn/wsgi.py  --master --processes 4 --threads 2"
+    # command: "uwsgi --module=buoy_barn.wsgi:application --master --pidfile=/tmp/project-master.pid --http :8080 --uid=1000 --gid=2000 --max-requests=5000 --vacuum --processes 4"
+    # # command: "gunicorn --bind 0.0.0.0:8080 buoy_barn.wsgi:application"
+    restart: always
+    volumes:
+      - ./app:/app
+      - ./.prospector.yaml:/app/.prospector.yaml
+      - ./docker-data/django-static:/static
+    ports:
+      - "8080:8080"
+    environment:
+      DJANGO_MANAGEPY_COLLECTSTATIC: "on"
+    env_file:
+      - ./docker-data/secret.env
+    links:
+      - db
+      - cache
 
-celery-worker:
-  build: ./app
-  command: celery -A buoy_barn worker -l info
-  restart: always
-  env_file:
-    - ./docker-data/secret.env
-  links:
-    - db
-    - cache
+  celery-worker:
+    build: ./app
+    image: gmri/neracoos-buoy-barn
+    command: celery -A buoy_barn worker -l info
+    restart: always
+    env_file:
+      - ./docker-data/secret.env
+    links:
+      - db
+      - cache

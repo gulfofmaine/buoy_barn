@@ -10,6 +10,8 @@ Changes:
 
 Fixes:
 
+- Use Buildx for Github Actions.
+
 ## 0.1.18 - 02/12/2021
 
 Fixes:

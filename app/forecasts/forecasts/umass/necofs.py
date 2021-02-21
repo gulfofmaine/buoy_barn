@@ -10,6 +10,9 @@ import xarray as xr
 from forecasts.forecasts.base_forecast import BaseForecast, ForecastTypes
 
 
+NECOFS_CATALOG_URL = (
+    "http://www.smast.umassd.edu:8080/thredds/forecasts.html?dataset=necofs_gom3_wave"
+)
 NECOFS_THREDDS_URL = "http://www.smast.umassd.edu:8080/thredds/dodsC/FVCOM/NECOFS/Forecasts/NECOFS_WAVE_FORECAST.nc"
 TIMEOUT_DAY_SECONDS = 24 * 60 * 60
 
@@ -30,7 +33,7 @@ def necofs_node(lat: float, lon: float) -> int:
 class BaseNecofsForecast(BaseForecast):
     """ Common base for NECOFS wave firecasts """
 
-    source_url = NECOFS_THREDDS_URL
+    source_url = NECOFS_CATALOG_URL
     field: str = NotImplemented
 
     def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
@@ -41,7 +44,7 @@ class BaseNecofsForecast(BaseForecast):
         dataarray = ds[self.field].isel(node=node)
 
         return [
-            (pd.Timestamp(row.time.values), self.offset_value(row.data))
+            (pd.Timestamp(row.time.values, tz="UTC"), self.offset_value(row.data))
             for row in dataarray
         ]
 
@@ -78,7 +81,7 @@ class NecofsWaveDirection(BaseNecofsForecast):
     """ NECOFS wave direction forecast """
 
     slug = "necofs_wave_direction"
-    name = "Northeast Coastal Ocean Forecast System - Wave Direction"
+    name = "Northeast Coastal Ocean Forecast System - Wave From Direction"
     description = "Wave Direction from the Northeast Coastal Ocean Forecast System"
     forecast_type = ForecastTypes.WAVE_DIRECTION
     units = "degree"

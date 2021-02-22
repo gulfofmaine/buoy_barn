@@ -4,6 +4,8 @@
 
 Additions:
 
+- Use Prefect to check for outdated time series.
+
 Changes:
 
 Fixes:

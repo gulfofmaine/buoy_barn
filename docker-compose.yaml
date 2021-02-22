@@ -33,6 +33,7 @@ services:
       - "8080:8080"
     environment:
       DJANGO_MANAGEPY_COLLECTSTATIC: "on"
+      PREFECT_PROJECT_NAME: buoy-barn-dev
     env_file:
       - ./docker-data/secret.env
     links:

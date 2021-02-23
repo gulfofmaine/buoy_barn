@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Dict, Iterable, List, Tuple, Union
+from typing import Iterable, List, Tuple, Union
 
 import django
 import prefect
@@ -11,8 +11,10 @@ from requests import HTTPError
 # Needs to be called before any models can be imported
 django.setup()
 
-from deployments.models import TimeSeries
-from deployments.utils.erddap_datasets import retrieve_dataframe
+from deployments.models import TimeSeries  # pylint: disable=wrong-import-position
+from deployments.utils.erddap_datasets import (  # pylint: disable=wrong-import-position
+    retrieve_dataframe,
+)
 
 
 TimeSeriesGroup = Tuple[
@@ -54,7 +56,7 @@ def check_timeseries_for_updates(ts_group: TimeSeriesGroup) -> TimeseriesUpdated
     timeseries = TimeSeries.objects.filter(id__in=timeseries_ids)
 
     try:
-        df = retrieve_dataframe(
+        retrieve_dataframe(
             timeseries[0].dataset.server,
             timeseries[0].dataset.name,
             timeseries[0].constraints,
@@ -141,4 +143,3 @@ with Flow("reset_timeseries_end_times") as flow:
 flow.storage = Local(
     path="deployments.flows.reset_timeseries_end_times", stored_as_script=True
 )
-

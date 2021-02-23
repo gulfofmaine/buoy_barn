@@ -8,6 +8,7 @@ import os
 from typing import Any
 
 from django.core.management.base import BaseCommand, CommandError, CommandParser
+from prefect.agent.local.agent import LocalAgent
 from prefect.schedules import Schedule
 from prefect.schedules.clocks import CronClock
 
@@ -71,8 +72,6 @@ class Command(BaseCommand):
     def agent(self):
         """ Run a local Prefect agent """
         self.stdout.write("Running local Prefect Agent")
-
-        from prefect.agent.local.agent import LocalAgent
 
         agent = LocalAgent(show_flow_logs=True)
 

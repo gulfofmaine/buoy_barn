@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: prefect-agent
+    tier: backend
+    role: worker
+  name: prefect-agent
+spec:
+  selector:
+    matchLabels:
+      service: prefect-agent
+      tier: backend
+      role: worker
+  template:
+    metadata:
+      labels:
+        service: prefect-agent
+        tier: backend
+        role: worker
+    spec:
+      containers:
+        - name: prefect-agent
+          image: gmri/neracoos-buoy-barn
+          args:
+            - python
+            - manage.py
+            - prefect
+            - --register 
+            - --agent
+          envFrom:
+            - secretRef:
+                name: buoy-barn-secrets
+            - configMapRef:
+                name: buoy-barn-config
+          env:
+            - name: DJANGO_MANAGEPY_MIGRATE
+              value: "on"
+            - name: DJANGO_MANAGEPY_COLLECTSTATIC
+              value: "on"
+          volumeMounts:
+            - name: django-static
+              mountPath: /static
+      imagePullSecrets:
+        - name: docker-hub-secret
+      volumes:
+        - name: django-static
+          emptyDir: {}

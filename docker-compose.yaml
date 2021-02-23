@@ -33,6 +33,7 @@ services:
       - "8080:8080"
     environment:
       DJANGO_MANAGEPY_COLLECTSTATIC: "on"
+      PREFECT_PROJECT_NAME: buoy-barn-dev
     env_file:
       - ./docker-data/secret.env
     links:
@@ -44,6 +45,22 @@ services:
     image: gmri/neracoos-buoy-barn
     command: celery -A buoy_barn worker -l info
     restart: always
+    env_file:
+      - ./docker-data/secret.env
+    links:
+      - db
+      - cache
+  
+  prefect-agent:
+    build: ./app
+    image: gmri/neracoos-buoy-barn
+    command: python manage.py prefect --register --agent
+    volumes:
+      - ./app:/app
+      - ./.prospector.yaml:/app/.prospector.yaml
+      - ./docker-data/django-static:/static
+    environment:
+      PREFECT_PROJECT_NAME: buoy-barn-dev
     env_file:
       - ./docker-data/secret.env
     links:

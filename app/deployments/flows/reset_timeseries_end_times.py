@@ -68,11 +68,11 @@ def check_timeseries_for_updates(ts_group: TimeSeriesGroup) -> TimeseriesUpdated
     else:
         logger.info(f"Dataset {dataset} with constraint {constraint} has been updated")
 
-        # for ts in timeseries:
-        #     ts.end_time = None
-        #     ts.save()
+        for ts in timeseries:
+            ts.end_time = None
+            ts.save()
 
-        # logger.info(f"`end_time` reset on {len(timeseries)} TimeSeries")
+        logger.info(f"`end_time` reset on {len(timeseries)} TimeSeries")
 
         return tuple(timeseries_ids), True
 
@@ -105,8 +105,6 @@ TimeSeries with `end_time` were checked to see if they have been updated.
     if not_updated:
         markdown += "## TimeSeries that have not been restarted \n"
         markdown += platforms_timeseries_markdown(not_updated)
-
-    markdown += "\n\n # WARNING: Not actually resetting end times yet, just testing!!!"
 
     logger.info(markdown)
     create_markdown(markdown)

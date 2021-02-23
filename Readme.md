@@ -116,8 +116,8 @@ DJANGO_DEBUG=True
 DJANGO_MANAGEPY_MIGRATE=off
 SENTRY_DSN=some_long_string_from_sentry
 CELERY_BROKER_URL=rediss://cache:6379/1
-PREFECT__CLOUD__AUTH_TOKEN=some_token_value_needed_to_register_flows
-PREFECT__CLOUD__AGENT__AUTH_TOKEN=some_token_value_for_the_agent_to_run
+PREFECT__CLOUD__AUTH_TOKEN=tenant_token
+PREFECT__CLOUD__AGENT__AUTH_TOKEN=runner_token
 PREFECT_PROJECT_NAME=project_that_the_prefect_flows_should_be_registered_to
 ```
 

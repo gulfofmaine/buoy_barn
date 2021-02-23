@@ -50,3 +50,19 @@ services:
     links:
       - db
       - cache
+  
+  prefect-agent:
+    build: ./app
+    image: gmri/neracoos-buoy-barn
+    command: python manage.py prefect --register --agent
+    volumes:
+      - ./app:/app
+      - ./.prospector.yaml:/app/.prospector.yaml
+      - ./docker-data/django-static:/static
+    environment:
+      PREFECT_PROJECT_NAME: buoy-barn-dev
+    env_file:
+      - ./docker-data/secret.env
+    links:
+      - db
+      - cache

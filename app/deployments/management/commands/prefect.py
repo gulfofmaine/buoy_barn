@@ -1,3 +1,9 @@
+"""
+Custom Django management command to work with Prefect.
+
+Via various flags, you can run a specific flow on demand,
+register flows with the server, or run a local agent.
+"""
 import os
 from typing import Any
 
@@ -16,7 +22,7 @@ daily = Schedule(clocks=[CronClock("5 4 * * *")])
 
 
 class Command(BaseCommand):
-    help = "Run Prefect flow registration and/or agent"
+    help = "Run Prefect flow registration, agent, or a single flow"
 
     def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument(

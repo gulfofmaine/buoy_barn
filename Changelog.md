@@ -4,13 +4,30 @@
 
 Additions:
 
-- Use Prefect to check for outdated time series.
-
 Changes:
 
 Fixes:
 
+## 0.2.0 - 02/23/2021
+
+Additions:
+
+- Use Prefect to check for outdated time series.
+
+Changes:
+
+- Update dependencies:
+  - Actions/checkout from v1 to v2.3.4
+  - Python from 3.9.1 to 3.9.2
+  - NetCDF4 from 1.5.5 to 1.5.6
+  - Sentry SDK from 0.19.5 to 0.20.3
+  - Pandas to 1.2.2 (from <2.0.0)
+- Use Dependabot to update Github Actions
+
+Fixes:
+
 - Use Buildx for Github Actions.
+- Increase timeout on Github Actions build.
 
 ## 0.1.18 - 02/12/2021
 

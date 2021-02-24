@@ -4,15 +4,19 @@
 
 Additions:
 
-- Multiple forecasts! First addition of a new forecast with NECOFS
-
 Changes:
 
 Fixes:
 
+## 0.3.0 - 02/24/2021
+
+Additions:
+
+- Multiple forecasts! First addition of a new forecast with NECOFS
+
 ## 0.2.1 - 02/24/2021
 
-Fixes
+Fixes:
 
 - Shift daily cron Prefect tick later
 

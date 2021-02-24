@@ -40,7 +40,7 @@ class BedfordWaveDirection(BaseBedfordForecast):
     """Bedford wave direction forecast"""
 
     slug = "bedford_ww3_wave_direction"
-    name = "Bedford Institute Wave Model - Direction"
+    name = "Bedford Institute Wave Model - Wave From Direction"
     description = "Wave Direction from the Bedford Institute Wave Model"
     forecast_type = ForecastTypes.WAVE_DIRECTION
     units = "degrees"

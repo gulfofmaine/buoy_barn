@@ -19,7 +19,7 @@ from deployments.flows.reset_timeseries_end_times import (
 
 flows = {"reset_timeseries_end_times": reset_timeseries_end_times}
 
-daily = Schedule(clocks=[CronClock("5 4 * * *")])
+daily = Schedule(clocks=[CronClock("5 6 * * *")])
 
 
 class Command(BaseCommand):

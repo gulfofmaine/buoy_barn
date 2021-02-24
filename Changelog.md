@@ -8,6 +8,12 @@ Changes:
 
 Fixes:
 
+## 0.2.1 - 02/24/2021
+
+Fixes
+
+- Shift daily cron Prefect tick later
+
 ## 0.2.0 - 02/23/2021
 
 Additions:

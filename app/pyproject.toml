@@ -29,7 +29,7 @@ pandas = "^1.2.2"
 prefect = "^0.14.10"
 
 [tool.poetry.dev-dependencies]
-ipython = "^7.20"
+ipython = "^7.21"
 pyyaml = "^5.4"
 pytest = "^6.2"
 pytest-django = "^4.1"

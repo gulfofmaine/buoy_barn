@@ -26,7 +26,7 @@ vcrpy = "^4.1"
 whitenoise = "^5.2"
 xarray = "^0.16.2"
 pandas = "^1.2.2"
-prefect = "^0.14.10"
+prefect = "^0.14.11"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.21"

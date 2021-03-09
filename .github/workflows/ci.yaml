@@ -3,19 +3,14 @@ name: CI
 on: [push]
 
 jobs:
-  test:
-    name: Build and test
+  build:
+    name: Build
     runs-on: ubuntu-18.04
     timeout-minutes: 15
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.4
-
-      - name: Setup Docker Data
-        run: |
-          mkdir docker-data
-          cat <<< "${{ secrets.DOCKER_DATA_SECRET }}" > docker-data/secret.env
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -27,6 +22,14 @@ jobs:
           key: buoy-barn-buildx-${{ github.sha }}
           restore-keys: |
             buoy-barn-buildx-
+      
+      - name: Cache Docker image
+        uses: actions/cache@v2.1.4
+        with:
+          path: /tmp/myimage.tar
+          key: mariners-dashboard-image-${{ github.sha }}
+          restore-keys: |
+            mariners-dashboard-image-
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -43,7 +46,40 @@ jobs:
           tags: gmri/neracoos-buoy-barn:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
-          outputs: type=docker
+          outputs: type=docker,dest=/tmp/myimage.tar
+      
+      - name: Move Docker Cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-20.04
+    timeout-minutes: 15
+    needs: build
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2.3.4
+
+      - name: Cache Docker image
+        uses: actions/cache@v2.1.4
+        with:
+          path: /tmp/myimage.tar
+          key: mariners-dashboard-image-${{ github.sha }}
+          restore-keys: |
+            mariners-dashboard-image-
+
+      - name: Load Docker image
+        run: |
+          docker load --input /tmp/myimage.tar
+          docker image ls -a
+
+      - name: Setup Docker Data
+        run: |
+          mkdir docker-data
+          cat <<< "${{ secrets.DOCKER_DATA_SECRET }}" > docker-data/secret.env
 
       - name: Bring up server
         run: docker-compose up -d
@@ -62,7 +98,64 @@ jobs:
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
-      - name: Move Docker Cache
+  deploy:
+    name: Build and Push tagged image to Docker Hub, and update Argo config
+    runs-on: ubuntu-20.04
+    needs: test
+    environment: 
+      name: Buoy Barn via Argo CD
+      url: https://buoy-barn.neracoos.org/admin/
+    if: |
+      github.repository == 'gulfofmaine/buoy-barn'
+      && contains(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2.3.4
+      
+      - name: Cache Docker image
+        uses: actions/cache@v2.1.4
+        with:
+          path: /tmp/myimage.tar
+          key: mariners-dashboard-image-${{ github.sha }}
+          restore-keys: |
+            mariners-dashboard-image-
+
+      - name: Load Docker image
         run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          docker load --input /tmp/myimage.tar
+          docker image ls -a
+      
+      - name: "Login to Docker Hub"
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Get tag name
+        uses: olegtarasov/get-tag@v2.1
+        id: tagName
+    
+      - name: Tag Docker image
+        run: docker tag gmri/neracoos-buoy-barn gmri/neracoos-buoy-barn:${{ steps.tagName.outputs.tag }}
+
+      - name: Push Docker image
+        run: docker push gmri/neracoos-buoy-barn:${{ steps.tagName.outputs.tag }}
+
+      - name: Make GitOps directory
+        run: mkdir gitops
+
+      - name: Clone GitOps config repo
+        run: git clone "https://$GITOPS_TOKEN@github.com/gulfofmaine/neracoos-do-cd.git"
+        working-directory: ./gitops
+        env:
+          GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
+        
+      - name: Update GitOps config repo
+        working-directory: ./gitops/neracoos-do-cd
+        run: |
+          sed -i 's/?ref=.\+/?ref=${{ steps.tagName.outputs.tag }}/' apps/buoy-barn/kustomization.yaml
+          sed -i 's/newTag: .\+/newTag: ${{ steps.tagName.outputs.tag }}/' apps/buoy-barn/kustomization.yaml
+          git config --global user.email 'neracoos-buoy-barn-ci@gmri.org'
+          git config --global user.name 'NERACOOS Buoy Barn CI'
+          git diff --exit-code && echo 'Already Deployed' || (git commit -am 'Upgrade Buoy Barn to ${{ steps.tagName.outputs.tag }}' && git push)

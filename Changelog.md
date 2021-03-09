@@ -8,6 +8,18 @@ Changes:
 
 Fixes:
 
+## 0.3.1 - 03/08/2021
+
+Changes:
+
+- Simplified Kubernetes configuration and made it compatible with Argo CD. [#317](https://github.com/gulfofmaine/buoy_barn/pull/317)
+- Updated Dockerfile to use buildkit caching. [#317](https://github.com/gulfofmaine/buoy_barn/pull/317)
+- Updated Github Actions workflow to push images to Docker Hub and configs to Argo CD repo. [#317](https://github.com/gulfofmaine/buoy_barn/pull/317)
+- Update Dependencies:
+  - Poetry from 1.0.3 too 1.1.5
+  - Prefect from 0.14.10 to 0.14.11
+  - IPython from 7.20 to 7.21
+
 ## 0.3.0 - 02/24/2021
 
 Additions:

@@ -38,8 +38,6 @@ spec:
           volumeMounts:
             - name: django-static
               mountPath: /static
-      imagePullSecrets:
-        - name: docker-hub-secret
       volumes:
         - name: django-static
           emptyDir: {}

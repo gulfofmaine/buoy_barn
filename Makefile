@@ -1,8 +1,7 @@
 build:
-	docker-compose build
+	docker buildx bake
 
 up: down build
-	# docker-compose up -d --build
 	docker-compose up -d
 	docker-compose logs -f
 
@@ -22,7 +21,8 @@ migrate:
 	docker-compose exec web python manage.py migrate
 
 prune:
-	docker volume rm $(shell docker volum ls -qf dangling=true)
+	docker volume rm $(shell docker volume ls -qf dangling=true)
+	docker buildx prune -f
 	docker system prune -a
 
 load:

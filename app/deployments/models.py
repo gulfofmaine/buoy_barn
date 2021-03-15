@@ -57,7 +57,7 @@ class Platform(models.Model):
     @memoize(timeout=5 * 60)
     def latest_erddap_values(self):
         readings = []
-        for series in self.timeseries_set.all():  # .filter(end_time=None):
+        for series in self.timeseries_set.filter(active=True):  # .filter(end_time=None):
             if not series.end_time:
                 readings.append(
                     {
@@ -237,7 +237,7 @@ class ErddapDataset(models.Model):
     def group_timeseries_by_constraint(self):
         groups = defaultdict(list)
 
-        for ts in self.timeseries_set.filter(end_time=None):
+        for ts in self.timeseries_set.filter(end_time=None, active=True):
             try:
                 groups[tuple(ts.constraints.items())].append(ts)
             except AttributeError as e:
@@ -277,6 +277,9 @@ class TimeSeries(models.Model):
     )
     value_time = models.DateTimeField(
         null=True, blank=True, help_text="Time of the most recent value"
+    )
+    active = models.BooleanField(
+        default=True, help_text="Should this dataset be currently updated?"
     )
 
     def __str__(self):

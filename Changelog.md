@@ -6,9 +6,14 @@ Additions:
 
 Changes:
 
+Fixes:
+
+## 0.3.2 - 03/15/2021
+
+Changes:
+
 - Add active toggle for timeseries that determines if they should be updated.
 
-Fixes:
 
 ## 0.3.1 - 03/08/2021
 

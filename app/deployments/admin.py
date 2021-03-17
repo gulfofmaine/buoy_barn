@@ -2,6 +2,8 @@ from datetime import timedelta
 
 from django.contrib.gis import admin
 from django.utils import timezone
+from django.utils.html import format_html_join
+from django.utils.safestring import mark_safe
 
 from .models import (
     Alert,
@@ -18,9 +20,19 @@ from .models import (
 )
 
 
-class TimeSeriesInline(admin.TabularInline):
+class TimeSeriesInline(admin.StackedInline):
     model = TimeSeries
     extra = 0
+
+    autocomplete_fields = ["dataset", "data_type", "buffer_type"]
+    readonly_fields = ["test_timeseries"]
+
+    def test_timeseries(self, instance):
+        dataset_url = instance.dataset_url("htmlTable")
+        
+        return mark_safe(f'<a href="{dataset_url}">Test ERDDAP Timeseries</a>')
+    
+    test_timeseries.short_description = "Test if a timeseries is formatted correctly to connect to ERDDAP"
 
 
 class ProgramAttributionInline(admin.TabularInline):
@@ -38,6 +50,18 @@ class PlatformAdmin(admin.GeoModelAdmin):
     inlines = [AlertInline, TimeSeriesInline, ProgramAttributionInline]
 
     actions = ["remove_end_time", "disable_timeseries", "enable_timeseries"]
+    search_fields = [
+        "name",
+        "mooring_site_desc",
+        "alerts__message",
+        "timeseries__variable",
+        "timeseries__dataset__name",
+        "timeseries__dataset__server__name",
+        "timeseries__data_type__standard_name",
+        "timeseries__data_type__short_name",
+        "timeseries__data_type__long_name",
+        "timeseries__data_type__units",
+    ]
 
     def remove_end_time(self, request, queryset):
         platforms = []
@@ -153,6 +177,7 @@ class ErddapServerAdmin(admin.ModelAdmin):
 
 class ErddapDatasetAdmin(admin.ModelAdmin):
     ordering = ["name"]
+    search_fields = ["name", "server__name", "server__base_url"]
 
     actions = ["disable_timeseries", "enable_timeseries"]
 
@@ -196,11 +221,18 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
 
 
 
+class DataTypeAdmin(admin.ModelAdmin):
+    search_fields = ["short_name", "standard_name", "long_name", "units"]
+
+class BufferTypeAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+
+
 admin.site.register(Program)
 admin.site.register(Platform, PlatformAdmin)
 admin.site.register(MooringType)
 admin.site.register(StationType)
-admin.site.register(DataType)
-admin.site.register(BufferType)
+admin.site.register(DataType, DataTypeAdmin)
+admin.site.register(BufferType, BufferTypeAdmin)
 admin.site.register(ErddapServer, ErddapServerAdmin)
 admin.site.register(ErddapDataset, ErddapDatasetAdmin)

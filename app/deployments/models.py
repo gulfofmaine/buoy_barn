@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime, timedelta
 from enum import Enum
 import logging
 
@@ -200,6 +200,15 @@ class ErddapDataset(models.Model):
         null=True,
         blank=True,
     )
+    refresh_attempted = models.DateTimeField(
+        blank=True,
+        null=True,
+        help_text="Last time that Buoy Barn attempted to refresh this dataset"
+    )
+    greater_than_hourly = models.BooleanField(
+        default=False,
+        help_text="Select if this dataset should only be refreshed at intervals of longer than 1/hour between refreshes (say once per day). Ask Alex to setup refreshing at a different rate."
+    )
 
     def __str__(self):
         return f"{self.server.name} - {self.name}"
@@ -284,6 +293,27 @@ class TimeSeries(models.Model):
 
     def __str__(self):
         return f"{self.platform.name} - {self.data_type.standard_name} - {self.depth}"
+
+    def dataset_url(self, file_type: str, time_after: datetime = None) -> str:
+        server = self.dataset.server.connection()
+        server.dataset_id = self.dataset.name
+        server.response = file_type
+        server.protocol = "tabledap"
+        
+        if not self.constraints:
+            constraints = {}
+        else:
+            constraints = self.constraints.copy()
+
+        if not time_after:
+            time_after = datetime.utcnow() - timedelta(hours=24)
+
+        constraints["time>="] = time_after
+        
+        server.variables = ["time", self.variable]
+        server.constraints = constraints
+
+        return server.get_download_url()
 
 
 class Alert(models.Model):

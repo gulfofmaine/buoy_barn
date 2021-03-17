@@ -97,10 +97,11 @@ def log_timeseries_status(ts_status: Iterable[TimeseriesUpdated]):
 # Checked for restarted TimeSeries
     
 TimeSeries with `end_time` were checked to see if they have been updated.
+
     """
 
     if updated:
-        markdown += "\n## Restarted TimeSeries \n"
+        markdown += "## Restarted TimeSeries \n"
         markdown += platforms_timeseries_markdown(updated)
         markdown += "\n"
 

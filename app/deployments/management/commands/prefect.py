@@ -15,9 +15,12 @@ from prefect.schedules.clocks import CronClock
 from deployments.flows.reset_timeseries_end_times import (
     flow as reset_timeseries_end_times,
 )
+from deployments.flows import default_dataset_refresh
 
-
-flows = {"reset_timeseries_end_times": reset_timeseries_end_times}
+flows = {
+    "reset_timeseries_end_times": reset_timeseries_end_times, 
+    default_dataset_refresh.flow_name: default_dataset_refresh.flow
+}
 
 daily = Schedule(clocks=[CronClock("5 6 * * *")])
 
@@ -66,8 +69,14 @@ class Command(BaseCommand):
                 "`PREFECT_PROJECT_NAME` needs to be in the environment to register flows"
             )
 
-        reset_timeseries_end_times.schedule = daily
-        reset_timeseries_end_times.register(project_name=project_name)
+        if os.environ.get("DJANGO_ENV", "").lower() == "dev" or os.environ.get("DJANGO_ENV", "").lower() != "test":
+            self.stdout.write("In test or debug environment, not registering flow schedules")
+        else:
+            reset_timeseries_end_times.schedule = daily
+            default_dataset_refresh.flow.schedule = default_dataset_refresh.schedule
+        
+        for flow in flows.values():
+            flow.register(project_name=project_name)
 
     def agent(self):
         """ Run a local Prefect agent """

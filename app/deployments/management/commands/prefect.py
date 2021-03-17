@@ -69,7 +69,7 @@ class Command(BaseCommand):
                 "`PREFECT_PROJECT_NAME` needs to be in the environment to register flows"
             )
 
-        if os.environ.get("DJANGO_ENV", "").lower() == "dev" or os.environ.get("DJANGO_ENV", "").lower() != "test":
+        if os.environ.get("DJANGO_ENV", "").lower() == "dev" or os.environ.get("DJANGO_ENV", "").lower() == "test":
             self.stdout.write("In test or debug environment, not registering flow schedules")
         else:
             reset_timeseries_end_times.schedule = daily

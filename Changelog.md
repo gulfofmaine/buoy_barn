@@ -8,6 +8,12 @@ Changes:
 
 Fixes:
 
+## 0.3.4 - 03/17/2021
+
+Fixes:
+
+- Flow scheduling check almost always would not schedule flows.
+
 ## 0.3.3 - 03/17/2021
 
 Changes:

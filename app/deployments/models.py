@@ -200,6 +200,15 @@ class ErddapDataset(models.Model):
         null=True,
         blank=True,
     )
+    refresh_attempted = models.DateTimeField(
+        blank=True,
+        null=True,
+        help_text="Last time that Buoy Barn attempted to refresh this dataset"
+    )
+    greater_than_hourly = models.BooleanField(
+        default=False,
+        help_text="Select if this dataset should only be refreshed at intervals of longer than 1/hour between refreshes (say once per day). Ask Alex to setup refreshing at a different rate."
+    )
 
     def __str__(self):
         return f"{self.server.name} - {self.name}"

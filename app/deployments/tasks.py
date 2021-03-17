@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 import logging
 
 from celery import shared_task
+from django.utils import timezone
 import requests
 from requests import HTTPError, Timeout
 from pandas import Timedelta
@@ -90,6 +91,8 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False):
         healthcheck (bool): Should Healthchecks.io be signaled when the dataset has completed updating?
     """
     dataset = ErddapDataset.objects.get(pk=dataset_id)
+    dataset.refresh_attempted = timezone.now()
+    dataset.save()
 
     if healthcheck:
         dataset.healthcheck_start()
@@ -193,8 +196,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
             )
             return False
 
-        offset = timezone(timedelta(hours=0))
-        week_ago = datetime.now(offset) - timedelta(days=7)
+        week_ago = timezone.now() - timedelta(days=7)
 
         if end_time < week_ago:
             for ts in timeseries_group:

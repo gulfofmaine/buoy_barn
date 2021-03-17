@@ -6,7 +6,13 @@ Additions:
 
 Changes:
 
+- Add ability to test timeseries setup on the admin.
+- Add default hourly dataset refresh.
+- Speed up platform admin.
+
 Fixes:
+
+- Only schedule flows in production.
 
 ## 0.3.2 - 03/15/2021
 

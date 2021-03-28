@@ -29,10 +29,12 @@ class TimeSeriesInline(admin.StackedInline):
 
     def test_timeseries(self, instance):
         dataset_url = instance.dataset_url("htmlTable")
-        
-        return mark_safe(f'<a href="{dataset_url}">Test ERDDAP Timeseries</a>')
-    
-    test_timeseries.short_description = "Test if a timeseries is formatted correctly to connect to ERDDAP"
+
+        return mark_safe(f"<a href='{dataset_url}'>Test ERDDAP Timeseries</a>")
+
+    test_timeseries.short_description = (
+        "Test if a timeseries is formatted correctly to connect to ERDDAP"
+    )
 
 
 class ProgramAttributionInline(admin.TabularInline):
@@ -92,22 +94,21 @@ class PlatformAdmin(admin.GeoModelAdmin):
         platforms = []
         timeseries = []
 
-
         for platform in queryset.iterator():
             platforms.append(platform)
             for ts in platform.timeseries_set.all():
                 ts.active = False
                 timeseries.append(ts)
-        
-        TimeSeries.objects.bulk_update(timeseries, ['active'])
+
+        TimeSeries.objects.bulk_update(timeseries, ["active"])
 
         self.message_user(
             request,
-            f"Disabled {len(timeseries)} timeseries from {len(platforms)} platforms"
+            f"Disabled {len(timeseries)} timeseries from {len(platforms)} platforms",
         )
-    
+
     disable_timeseries.short_description = "Disable updating of timeseries"
-    
+
     def enable_timeseries(self, request, queryset):
         platforms = []
         timeseries = []
@@ -117,14 +118,14 @@ class PlatformAdmin(admin.GeoModelAdmin):
             for ts in platform.timeseries_set.all():
                 ts.active = True
                 timeseries.append(ts)
-        
-        TimeSeries.objects.bulk_update(timeseries, ['active'])
+
+        TimeSeries.objects.bulk_update(timeseries, ["active"])
 
         self.message_user(
             request,
-            f"Enable {len(timeseries)} timeseries from {len(platforms)} platforms"
+            f"Enable {len(timeseries)} timeseries from {len(platforms)} platforms",
         )
-    
+
     enable_timeseries.short_description = "Enable updating of timeseries"
 
 
@@ -144,15 +145,15 @@ class ErddapServerAdmin(admin.ModelAdmin):
                     ts.active = False
                     timeseries.append(ts)
 
-        TimeSeries.objects.bulk_update(timeseries, ['active'])
+        TimeSeries.objects.bulk_update(timeseries, ["active"])
 
         self.message_user(
             request,
-            f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets"
+            f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets",
         )
-    
+
     disable_timeseries.short_description = "Disable updating of timeseries"
-    
+
     def enable_timeseries(self, request, queryset):
         datasets = []
         timeseries = []
@@ -164,15 +165,14 @@ class ErddapServerAdmin(admin.ModelAdmin):
                     ts.active = True
                     timeseries.append(ts)
 
-        TimeSeries.objects.bulk_update(timeseries, ['active'])
+        TimeSeries.objects.bulk_update(timeseries, ["active"])
 
         self.message_user(
             request,
-            f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets"
+            f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets",
         )
-    
-    enable_timeseries.short_description = "Enable updating of timeseries"
 
+    enable_timeseries.short_description = "Enable updating of timeseries"
 
 
 class ErddapDatasetAdmin(admin.ModelAdmin):
@@ -191,15 +191,15 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
                 ts.active = False
                 timeseries.append(ts)
 
-        TimeSeries.objects.bulk_update(timeseries, ['active'])
+        TimeSeries.objects.bulk_update(timeseries, ["active"])
 
         self.message_user(
             request,
-            f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets"
+            f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets",
         )
-    
+
     disable_timeseries.short_description = "Disable updating of timeseries"
-    
+
     def enable_timeseries(self, request, queryset):
         datasets = []
         timeseries = []
@@ -210,19 +210,19 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
                 ts.active = True
                 timeseries.append(ts)
 
-        TimeSeries.objects.bulk_update(timeseries, ['active'])
+        TimeSeries.objects.bulk_update(timeseries, ["active"])
 
         self.message_user(
             request,
-            f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets"
+            f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets",
         )
-    
-    enable_timeseries.short_description = "Enable updating of timeseries"
 
+    enable_timeseries.short_description = "Enable updating of timeseries"
 
 
 class DataTypeAdmin(admin.ModelAdmin):
     search_fields = ["short_name", "standard_name", "long_name", "units"]
+
 
 class BufferTypeAdmin(admin.ModelAdmin):
     search_fields = ["name"]

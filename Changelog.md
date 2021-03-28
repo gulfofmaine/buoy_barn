@@ -9,6 +9,7 @@ Changes:
 Fixes:
 
 - Reduce need to access secrets during testing to reduce problems with PRs from forks. See [1](https://github.community/t/dependabot-prs-and-workflow-secrets/163269/23) [2](https://github.community/t/dependabot-doesnt-see-github-actions-secrets/167104/25)
+- Fix ordering of quotes in ERDDAP dataset test links so that they don't cancel out station ids or other string quoted constraints.
 
 ## 0.3.4 - 03/17/2021
 

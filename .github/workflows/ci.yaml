@@ -76,27 +76,16 @@ jobs:
           docker load --input /tmp/myimage.tar
           docker image ls -a
 
-      - name: Setup Docker Data
-        run: |
-          mkdir docker-data
-          cat <<< "${{ secrets.DOCKER_DATA_SECRET }}" > docker-data/secret.env
-
-      - name: Bring up server
-        run: docker-compose up -d
-
-      - name: Wait for database to be ready
-        run: docker-compose run web python manage.py db_ready
-
       - name: Test
-        run: docker-compose run -e DJANGO_ENV=test web pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml
+        run: make test
 
-      - name: Install Codacy coverage reporter
-        run: pip install --user codacy-coverage
-
-      - name: Send coverage to Codacy
-        run: ~/.local/bin/python-codacy-coverage -r app/coverage.xml
+      - name: Send coverage to Codacy (skip coverage if no project token secret)
+        run: |
+          pip install --user codacy-coverage
+          ~/.local/bin/python-codacy-coverage -r app/coverage.xml
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        if: env.CODACY_PROJECT_TOKEN != null
 
   deploy:
     name: Build and Push tagged image to Docker Hub, and update Argo config

@@ -57,7 +57,9 @@ class Platform(models.Model):
     @memoize(timeout=5 * 60)
     def latest_erddap_values(self):
         readings = []
-        for series in self.timeseries_set.filter(active=True):  # .filter(end_time=None):
+        for series in self.timeseries_set.filter(active=True).select_related(
+            "data_type", "dataset", "dataset__server"
+        ):  # .filter(end_time=None):
             if not series.end_time:
                 readings.append(
                     {
@@ -203,11 +205,11 @@ class ErddapDataset(models.Model):
     refresh_attempted = models.DateTimeField(
         blank=True,
         null=True,
-        help_text="Last time that Buoy Barn attempted to refresh this dataset"
+        help_text="Last time that Buoy Barn attempted to refresh this dataset",
     )
     greater_than_hourly = models.BooleanField(
         default=False,
-        help_text="Select if this dataset should only be refreshed at intervals of longer than 1/hour between refreshes (say once per day). Ask Alex to setup refreshing at a different rate."
+        help_text="Select if this dataset should only be refreshed at intervals of longer than 1/hour between refreshes (say once per day). Ask Alex to setup refreshing at a different rate.",
     )
 
     def __str__(self):
@@ -299,7 +301,7 @@ class TimeSeries(models.Model):
         server.dataset_id = self.dataset.name
         server.response = file_type
         server.protocol = "tabledap"
-        
+
         if not self.constraints:
             constraints = {}
         else:
@@ -309,7 +311,7 @@ class TimeSeries(models.Model):
             time_after = datetime.utcnow() - timedelta(hours=24)
 
         constraints["time>="] = time_after
-        
+
         server.variables = ["time", self.variable]
         server.constraints = constraints
 

@@ -6,6 +6,8 @@ Additions:
 
 Changes:
 
+- Enable [Sentry Performance Monitoring](https://docs.sentry.io/product/performance/) for a subset of transactions.
+
 Fixes:
 
 - Reduce need to access secrets during testing to reduce problems with PRs from forks. See [1](https://github.community/t/dependabot-prs-and-workflow-secrets/163269/23) [2](https://github.community/t/dependabot-doesnt-see-github-actions-secrets/167104/25)

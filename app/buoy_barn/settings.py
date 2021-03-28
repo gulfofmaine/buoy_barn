@@ -34,6 +34,7 @@ if os.environ.get("DJANGO_ENV", "").lower() != "test":
             integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
             environment="dev" if DEBUG else "prod",
             release=version,
+            traces_sample_rate=float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", 0)),
         )
         logger.info("Sentry initialized")
     except KeyError:

@@ -127,6 +127,8 @@ There are additionally two environment variables for changing the timeout when
 querying ERDDAP servers.
 `RETRIEVE_FORECAST_TIMEOUT_SECONDS` and `RETRIEVE_DATAFRAME_TIMEOUT_SECONDS`.
 
+`SENTRY_TRACES_SAMPLE_RATE` can be used to set what percentage of requests are [performance traced and sent to Sentry](https://docs.sentry.io/platforms/python/guides/django/performance/). Defaults to 0 if not set.
+
 ### Starting Docker
 
 Then you can use `make up` to start the database and Django server.

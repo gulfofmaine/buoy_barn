@@ -34,6 +34,7 @@ services:
     environment:
       DJANGO_MANAGEPY_COLLECTSTATIC: "on"
       PREFECT_PROJECT_NAME: buoy-barn-dev
+      SENTRY_TRACES_SAMPLE_RATE: 0
     env_file:
       - ./docker-data/secret.env
     links:

@@ -44,7 +44,7 @@ shell:
 	docker-compose exec web python manage.py shell
 
 test:
-	docker-compose -f docker-compose.test.yaml run -e DJANGO_ENV=test web pytest --cov=. --cov-config=tox.ini
+	docker-compose -f docker-compose.test.yaml run -e DJANGO_ENV=test web pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml
 
 test-debug:
 	docker-compose run -e DJANGO_ENV=test web pytest --cov=. --cov-config=tox.ini -v --pdb --log-cli-level=INFO

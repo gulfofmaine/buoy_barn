@@ -7,6 +7,7 @@ Additions:
 Changes:
 
 - Enable [Sentry Performance Monitoring](https://docs.sentry.io/product/performance/) for a subset of transactions.
+- Enhance Sentry Releases using Github Action.
 
 Fixes:
 

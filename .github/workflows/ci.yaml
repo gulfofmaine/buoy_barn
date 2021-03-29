@@ -148,3 +148,13 @@ jobs:
           git config --global user.email 'neracoos-buoy-barn-ci@gmri.org'
           git config --global user.name 'NERACOOS Buoy Barn CI'
           git diff --exit-code && echo 'Already Deployed' || (git commit -am 'Upgrade Buoy Barn to ${{ steps.tagName.outputs.tag }}' && git push)
+      
+      - name: Create Sentry Release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: prod
+          version: ${{ steps.tagName.outputs.tag }}

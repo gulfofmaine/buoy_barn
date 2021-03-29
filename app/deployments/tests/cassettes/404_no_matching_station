@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: GET
+    uri: https://coastwatch.pfeg.noaa.gov/erddap/tabledap/nosCoopsMW.csvp?time,WD&stationID=%228447387%20%22&time%3E=1616947604.385069
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAEyJrQ6DQBAG/T3FFxQ1pAIFQVJZVVN5udsACdy2+yOapu9egmKSEZMZRVjwDdhJ
+        nGlor21/1EaqcaKhurPhxl5yhye74O0kH7yEsyfKKIwtWpqXMkFIfTVtUD9mEkLcPX+1aAsXbS5V
+        H37hDwAA//8DAJri9TJ9AAAA
+    headers:
+      Connection:
+      - close
+      Content-Description:
+      - dods-error
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 29 Mar 2021 16:06:45 GMT
+      Last-Modified:
+      - Mon, 29 Mar 2021 16:06:45 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-Frame-Options:
+      - SAMEORIGIN
+      erddap-server:
+      - '2.11'
+      vary:
+      - accept-encoding
+      xdods-server:
+      - dods/3.7
+    status:
+      code: 404
+      message: ''
+version: 1

@@ -17,6 +17,7 @@ from .vcr import my_vcr
 
 @pytest.mark.django_db
 class TaskTestCase(TransactionTestCase):
+    # Django DB Fixtures
     fixtures = ["platforms", "erddapservers", "datatypes"]
 
     def setUp(self):
@@ -126,7 +127,13 @@ class TaskTestCase(TransactionTestCase):
 
 @pytest.mark.django_db
 class TaskErrorTestCase(TransactionTestCase):
+    # Django DB Fixtures
     fixtures = ["platforms", "erddapservers", "datatypes"]
+
+    # Py.test fixtures
+    @pytest.fixture(autouse=True)
+    def __inject_fixtures(self, caplog):
+        self.caplog = caplog
 
     def setUp(self):
         self.platform = Platform.objects.get(name="M01")
@@ -147,10 +154,12 @@ class TaskErrorTestCase(TransactionTestCase):
         )
 
     @my_vcr.use_cassette("500.yaml")
-    def test_500_response_doesnt_explode(self):
+    def test_500_unrecognized_variable(self):
         dataset = ErddapDataset.objects.get(name="N01_accelerometer_all")
 
         tasks.refresh_dataset(dataset.id)
+
+        assert "Unrecognized variable for dataset" in self.caplog.text
 
     @my_vcr.use_cassette("500_end_time.yaml")
     def test_500_end_time(self):
@@ -176,6 +185,7 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.end_time is not None
+        assert "Set end time for" in self.caplog.text
 
     @my_vcr.use_cassette("500_no_rows.yaml")
     def test_500_no_rows(self):
@@ -199,6 +209,8 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
+
+        # assert "did not return any results" in self.caplog.text
 
     @my_vcr.use_cassette("500_no_rows_actual_range.yaml")
     def test_500_actual_range(self):
@@ -224,6 +236,9 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
+        assert (
+            "Unable to parse datetimes in error processing dataset" in self.caplog.text
+        )
 
     @my_vcr.use_cassette("500_unrecognized_constraint.yaml")
     def test_500_unrecognized_contraint(self):
@@ -251,4 +266,121 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
+        assert "Invalid constraint variable for dataset" in self.caplog.text
 
+    @my_vcr.use_cassette("404_no_matching_dataset")
+    def test_404_no_matching_dataset(self):
+        wlis = Platform.objects.get(name="WLIS")
+        dataset = ErddapDataset.objects.create(
+            name="UCONN_WLIS_MET", server=self.erddap
+        )
+        ts = TimeSeries.objects.create(
+            platform=wlis,
+            data_type=DataType.objects.get(standard_name="wind_from_direction"),
+            variable="wind_direction",
+            constraints={},
+            start_time="2019-12-30T12:00:00",
+            dataset=dataset,
+        )
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+
+        tasks.update_values_for_timeseries([ts])
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+        assert "is currently unknown by the server" in self.caplog.text
+
+    @my_vcr.use_cassette("400_unrecognized_variable")
+    def test_400_unrecognized_variable(self):
+        # platform = Platform.objects.create(name="44076")
+        server = ErddapServer.objects.create(
+            name="OOI",
+            base_url="http://erddap.dataexplorer.oceanobservatories.org/erddap",
+        )
+        dataset = ErddapDataset.objects.create(
+            name="ooi-cp03issm-sbd11-06-metbka000", server=server
+        )
+        ts = TimeSeries.objects.create(
+            platform=self.platform,
+            data_type=DataType.objects.get(
+                standard_name="sea_surface_swell_wave_period"
+            ),
+            variable="sea_surface_wave_significant_period",
+            constraints={},
+            start_time="2019-01-01T00:00:00",
+            dataset=dataset,
+        )
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+
+        tasks.update_values_for_timeseries([ts])
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+        assert "Unrecognized variable for dataset" in self.caplog.text
+
+    @my_vcr.use_cassette("404_no_matching_station")
+    def test_404_no_matching_station(self):
+        # platform = Platform.objects.get(name="BLTM3")
+        server = ErddapServer.objects.create(
+            name="Coastwatch", base_url="https://coastwatch.pfeg.noaa.gov/erddap"
+        )
+        dataset = ErddapDataset.objects.create(name="nosCoopsMW", server=server)
+        ts = TimeSeries.objects.create(
+            platform=self.platform,
+            data_type=DataType.objects.get(standard_name="wind_from_direction"),
+            variable="WD",
+            constraints={"stationID=": "8447387 "},
+            start_time="2019-01-01T00:00:00",
+            dataset=dataset,
+        )
+        ts.refresh_from_db()
+
+        assert ts.value is None
+
+        tasks.update_values_for_timeseries([ts])
+
+        ts.refresh_from_db()
+
+        assert ts.value is None
+        assert (
+            "does not have a requested station. Please check the constraints"
+            in self.caplog.text
+        )
+
+    # @my_vcr.use_cassette("404_no_data_matches_time")
+    # def test_404_no_data_matches_time(self):
+    #     # platform = Platform.objects.create(name="44077")
+    #     server = ErddapServer.objects.create(
+    #         name="OOI",
+    #         base_url="http://erddap.dataexplorer.oceanobservatories.org/erddap",
+    #     )
+    #     dataset = ErddapDataset.objects.create(
+    #         name="ooi-cp04ossm-sbd11-06-metbka000", server=server
+    #     )
+    #     ts = TimeSeries.objects.create(
+    #         platform=self.platform,
+    #         data_type=DataType.objects.get(standard_name="air_temperature"),
+    #         variable="air_temperature",
+    #         constraints={},
+    #         start_time="2016-09-16T00:00:00",
+    #         dataset=dataset,
+    #     )
+
+    #     ts.refresh_from_db()
+
+    #     assert ts.value is None
+
+    #     tasks.update_values_for_timeseries([ts])
+
+    #     ts.refresh_from_db()
+
+    #     assert ts.value is None
+    #     assert "Unrecognized variable for dataset" in self.caplog.text

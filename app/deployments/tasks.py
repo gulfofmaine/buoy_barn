@@ -164,11 +164,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
         except (AttributeError, IndexError) as e:
             logger.warning(
                 f"Unable to access and attribute or index of {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {e}",
-                extra={
-                    "timeseries": timeseries_group,
-                    "constraints": timeseries_group[0].constraints,
-                    "response_text": compare_text,
-                },
+                extra=error_extra(timeseries_group, compare_text),
                 exc_info=True,
             )
             return False
@@ -187,11 +183,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
         except IndexError:
             logger.warning(
                 f"Unable to parse datetimes in error processing dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}",
-                extra={
-                    "timeseries": timeseries_group,
-                    "constraints": timeseries_group[0].constraints,
-                    "response_text": compare_text,
-                },
+                extra=error_extra(timeseries_group, compare_text),
                 exc_info=True,
             )
             return False
@@ -205,17 +197,26 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
 
                 logger.warning(
                     f"Set end time for {ts} to {end_time} based on responses",
-                    extra={
-                        "timeseries": ts,
-                        "constraints": ts.constraints,
-                        "response_text": compare_text,
-                    },
+                    extra=error_extra(timeseries_group, compare_text),
                     exc_info=True,
                 )
 
         return True
 
     return False
+
+
+def error_extra(timeseries_group, compare_text: str = None):
+    """ Return dictionary of extra values for timeseries group errors """
+    extra = {
+        "timeseries": timeseries_group,
+        "constraints": timeseries_group[0].constraints,
+    }
+
+    if compare_text:
+        extra["response_text"] = compare_text
+
+    return extra
 
 
 def handle_500_unrecognized_constraint(timeseries_group, compare_text: str) -> bool:
@@ -226,11 +227,87 @@ def handle_500_unrecognized_constraint(timeseries_group, compare_text: str) -> b
     if "Unrecognized constraint variable=" in compare_text:
         logger.warning(
             f"Invalid constraint variable for dataset {timeseries_group[0].dataset.name} with constraints {timeseries_group[0].constraints}",
-            extra={
-                "timeseries": timeseries_group,
-                "constraints": timeseries_group[0].constraints,
-                "response_text": compare_text,
-            },
+            extra=error_extra(timeseries_group, compare_text),
+        )
+        return True
+
+    return False
+
+
+def handle_500_errors(timeseries_group, compare_text: str) -> bool:
+    """ Handle various types of known 500 errors """
+    if handle_500_no_rows_error(timeseries_group, compare_text):
+        return True
+
+    if handle_500_time_range_error(timeseries_group, compare_text):
+        return True
+
+    if handle_500_variable_actual_range_error(timeseries_group, compare_text):
+        return True
+
+    if handle_500_unrecognized_constraint(timeseries_group, compare_text):
+        return True
+
+    return False
+
+
+def handle_400_errors(timeseries_group, compare_text: str) -> bool:
+    """ Handle various types of known 400 errors """
+    if handle_400_unrecognized_variable(timeseries_group, compare_text):
+        return True
+
+    if handle_404_errors(timeseries_group, compare_text):
+        return True
+
+    return False
+
+
+def handle_400_unrecognized_variable(timeseries_group, compare_text: str) -> bool:
+    """ When there is an unrecognized variable requested """
+    if "Unrecognized variable=" in compare_text:
+        logger.warning(
+            f"Unrecognized variable for dataset {timeseries_group[0].dataset.name}",
+            extra=error_extra(timeseries_group, compare_text),
+        )
+        return True
+    return False
+
+
+def handle_404_errors(timeseries_group, compare_text: str) -> bool:
+    """ Handle known types of 404 errors """
+    if handle_404_no_matching_dataset_id(timeseries_group, compare_text):
+        return True
+
+    if handle_404_no_matching_station(timeseries_group, compare_text):
+        return True
+
+    return False
+
+
+def handle_404_no_matching_station(timeseries_group, compare_text: str) -> bool:
+    """ Handle when the station constraint does not exist in dataset """
+    if (
+        "Your query produced no matching results" in compare_text
+        and "There are no matching stations" in compare_text
+    ):
+        logger.warning(
+            f"{timeseries_group[0].dataset.name} does not have a requested station. Please check the constraints",
+            extra=error_extra(timeseries_group, compare_text),
+        )
+        return True
+
+    return False
+
+
+def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> bool:
+    """ Handle when the Dataset does not exist on the ERDDAP server """
+    if (
+        "Resource not found" in compare_text
+        and "Currently unknown datasetID" in compare_text
+    ):
+        logger.warning(
+            f"{timeseries_group[0].dataset.name} is currently unknown by the server. Please investigate if the dataset has moved",
+            extra=error_extra(timeseries_group, compare_text),
         )
         return True
 
@@ -239,6 +316,7 @@ def handle_500_unrecognized_constraint(timeseries_group, compare_text: str) -> b
 
 def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
     """ Handle various types of HTTPErrors. Returns True if handled """
+
     try:
         if error.response.status_code == 403:
             logger.error(
@@ -246,10 +324,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
                 + "NOAA Coastwatch most likely blacklisted us. "
                 + "Try running the request manually from the worker pod to replicate the error and access the returned text."
                 + error,
-                extra={
-                    "timeseries": timeseries_group,
-                    "constraints": timeseries_group[0].constraints,
-                },
+                extra=error_extra(timeseries_group),
                 exc_info=True,
             )
             return True
@@ -257,10 +332,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
         if error.response.status_code == 404:
             logger.warning(
                 f"No rows found for {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error}",
-                extra={
-                    "timeseries": timeseries_group,
-                    "constraints": timeseries_group[0].constraints,
-                },
+                extra=error_extra(timeseries_group),
                 exc_info=True,
             )
             return True
@@ -270,60 +342,35 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
 
             response_500 = requests.get(url)
 
-            if handle_500_no_rows_error(timeseries_group, response_500.text):
-                return True
-
-            if handle_500_time_range_error(timeseries_group, response_500.text):
-                return True
-
-            if handle_500_variable_actual_range_error(
-                timeseries_group, response_500.text
-            ):
-                return True
-
-            if handle_500_unrecognized_constraint(timeseries_group, response_500.text):
+            if handle_500_errors(timeseries_group, response_500.text):
                 return True
 
             logger.info(
                 f"500 error loading dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error} ",
-                extra={
-                    "timeseries": timeseries_group,
-                    "constraints": timeseries_group[0].constraints,
-                    "response_text": response_500.text,
-                },
+                extra=error_extra(timeseries_group, response_500.text),
                 exc_info=True,
             )
             return True
 
         logger.error(
             f"{error.response.status_code} error loading dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error}",
-            extra={
-                "timeseries": timeseries_group,
-                "constraints": timeseries_group[0].constraints,
-            },
+            extra=error_extra(timeseries_group),
             exc_info=True,
         )
         return True
 
     except AttributeError:
-        if handle_500_no_rows_error(timeseries_group, str(error)):
-            return True
+        pass
 
-        if handle_500_time_range_error(timeseries_group, str(error)):
-            return True
-
-        if handle_500_variable_actual_range_error(timeseries_group, str(error)):
-            return True
-
-        if handle_500_unrecognized_constraint(timeseries_group, str(error)):
-            return True
-
-        logger.error(
-            f"Error loading dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error}",
-            extra={
-                "timeseries": timeseries_group,
-                "constraints": timeseries_group[0].constraints,
-            },
-            exc_info=True,
-        )
+    if handle_400_errors(timeseries_group, str(error)):
         return True
+
+    if handle_500_errors(timeseries_group, str(error)):
+        return True
+
+    logger.error(
+        f"Error loading dataset {timeseries_group[0].dataset.name} with constraint {timeseries_group[0].constraints}: {error}",
+        extra=error_extra(timeseries_group),
+        exc_info=True,
+    )
+    return True

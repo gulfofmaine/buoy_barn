@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.25.1
+    method: GET
+    uri: http://erddap.dataexplorer.oceanobservatories.org/erddap/tabledap/ooi-cp03issm-sbd11-06-metbka000.csvp?time,sea_surface_wave_significant_period&time%3E=1616947107.55686
+  response:
+    body:
+      string: "Error {\n    code=400;\n    message=\"Bad Request: Query error: Unrecognized
+        variable=\\\"sea_surface_wave_significant_period\\\".\";\n}\n"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Description:
+      - dods-error
+      Content-Encoding:
+      - identity
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Date:
+      - Mon, 29 Mar 2021 15:58:28 GMT
+      Last-Modified:
+      - Mon, 29 Mar 2021 15:58:28 GMT
+      Server:
+      - nginx/1.18.0
+      Set-Cookie:
+      - cid=CgIIBGBh+SMtkH09AwUmAg==; expires=Wed, 29-Mar-23 15:58:28 GMT; path=/
+      Transfer-Encoding:
+      - chunked
+      erddap-server:
+      - 2.02_axiom-r1
+      xdods-server:
+      - dods/3.7
+    status:
+      code: 400
+      message: ''
+version: 1

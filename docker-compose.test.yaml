@@ -1,15 +1,15 @@
 version: "3.7"
 
 services:
-  db: 
+  db-test: 
     image: mdillon/postgis:10-alpine@sha256:41516e866f9ec84a7c348084e02b577961cc5bca7c827d91b4566f0f729f370c
     env_file:
       - ./docker-data/test.env
 
-  cache:
+  cache-test:
     image: redis:5.0.3-alpine@sha256:f8c22abc77f3f9cc1c2516062e4a2a71375859d7922da3faf9e4160e6ba4c3c2
 
-  web:
+  web-test:
     build: ./app
     image: gmri/neracoos-buoy-barn
     volumes:
@@ -17,5 +17,5 @@ services:
     env_file:
       - ./docker-data/test.env
     links:
-      - db
-      - cache
+      - db-test
+      - cache-test

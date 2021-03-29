@@ -6,8 +6,20 @@ Additions:
 
 Changes:
 
+Fixes:
+
+## 0.3.5 - 03/29/2021
+
+Changes:
+
 - Enable [Sentry Performance Monitoring](https://docs.sentry.io/product/performance/) for a subset of transactions.
 - Enhance Sentry Releases using Github Action.
+- Update Dependencies:
+  - Sentry SDK from 0.20.3 to 1.0.0
+  - Xarray from 0.16.2 to 0.17.0
+  - Pandas from 1.2.2 to 1.2.3
+  - Prefect from 0.14.11 to 0.14.14
+  - IPython from 7.21 to 7.22
 
 Fixes:
 

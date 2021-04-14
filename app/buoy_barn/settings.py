@@ -33,7 +33,7 @@ if os.environ.get("DJANGO_ENV", "").lower() != "test":
             dsn=os.environ["SENTRY_DSN"],
             integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
             environment="dev" if DEBUG else "prod",
-            release=version,
+            release=f"v{version}",
             traces_sample_rate=float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", 0)),
         )
         logger.info("Sentry initialized")

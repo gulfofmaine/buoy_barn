@@ -13,6 +13,15 @@ Fixes:
 Changes:
 
 - Add non-standard datatypes for UNH buoys. [#351](https://github.com/gulfofmaine/buoy_barn/pull/351)
+- Update Dependencies:
+  - Actions
+    - Cache from 2.1.4 to 2.1.5
+  - Python from 3.9.2 to 3.9.4
+  - Django from 3.1 to 3.2
+  - erddapy from 0.9.0 to 1.0.0
+  - Pandas from 1.2.3 to 1.2.4
+  - Prefect from 0.14.14 to 0.14.15
+  - Pytest Django from 4.1 to 4.2
 
 Fixes:
 

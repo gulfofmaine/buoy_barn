@@ -136,6 +136,7 @@ DATABASES = {
         "OPTIONS": {"sslmode": "prefer"},
     }
 }
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 
 # Password validation

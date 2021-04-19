@@ -113,7 +113,7 @@ class StationType(models.Model):
 
 class DataType(models.Model):
     standard_name = models.CharField(max_length=128)
-    short_name = models.CharField(max_length=16, null=True, blank=True)
+    short_name = models.CharField(max_length=64, null=True, blank=True)
     long_name = models.CharField(max_length=128)
     units = models.CharField(max_length=64)
 

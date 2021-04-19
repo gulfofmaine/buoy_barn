@@ -6,7 +6,11 @@ Additions:
 
 Changes:
 
+- Add non-standard datatypes for UNH buoys.
+
 Fixes:
+
+- Add `DEFAULT_AUTO_FIELD` setting to point to little integer autofield as Django will be migrating to BigAutoField.
 
 ## 0.3.5 - 03/29/2021
 

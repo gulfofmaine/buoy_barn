@@ -6,11 +6,17 @@ Additions:
 
 Changes:
 
-- Add non-standard datatypes for UNH buoys.
+Fixes:
+
+## 0.3.6 - 04/19/2021
+
+Changes:
+
+- Add non-standard datatypes for UNH buoys. [#351](https://github.com/gulfofmaine/buoy_barn/pull/351)
 
 Fixes:
 
-- Add `DEFAULT_AUTO_FIELD` setting to point to little integer autofield as Django will be migrating to BigAutoField.
+- Add `DEFAULT_AUTO_FIELD` setting to point to little integer autofield as Django will be migrating to BigAutoField. [#351](https://github.com/gulfofmaine/buoy_barn/pull/351)
 
 ## 0.3.5 - 03/29/2021
 

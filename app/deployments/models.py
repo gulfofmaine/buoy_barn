@@ -3,6 +3,7 @@ from datetime import date, datetime, timedelta
 from enum import Enum
 import logging
 
+from django.urls import reverse
 from django.contrib.gis.db import models
 from erddapy import ERDDAP
 from memoize import memoize
@@ -72,6 +73,12 @@ class Platform(models.Model):
                         "constraints": series.constraints,
                         "dataset": series.dataset.name,
                         "start_time": series.start_time,
+                        "cors_proxy_url": reverse(
+                            "server-proxy",
+                            kwargs={"server_id": series.dataset.server.id},
+                        )
+                        if series.dataset.server.proxy_cors
+                        else None,
                     }
                 )
         return readings
@@ -153,6 +160,11 @@ class ErddapServer(models.Model):
         "URL to send healthchecks to at beginning and end of processing",
         null=True,
         blank=True,
+    )
+    proxy_cors = models.BooleanField(
+        "Proxy CORS requests",
+        default=True,
+        help_text="Use Buoy Barn to proxy requests to remote ERDDAP server, if the remote server does not support CORS",
     )
 
     def __str__(self):

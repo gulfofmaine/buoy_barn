@@ -129,6 +129,8 @@ querying ERDDAP servers.
 
 `SENTRY_TRACES_SAMPLE_RATE` can be used to set what percentage of requests are [performance traced and sent to Sentry](https://docs.sentry.io/platforms/python/guides/django/performance/). Defaults to 0 if not set.
 
+`PROXY_CACHE_SECONDS` can be set to override the default caching time for CORS proxy requests to ERDDAP servers.
+
 ### Starting Docker
 
 Then you can use `make up` to start the database and Django server.

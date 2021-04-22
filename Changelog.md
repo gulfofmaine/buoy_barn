@@ -4,6 +4,11 @@
 
 Additions:
 
+- Smart CORS proxying through Buoy Barn.
+  - Previously when CORS requests needed to be proxied for Mariners Dashboard, Buoy Barn will mark those servers as needing a proxy and host an endpoint to proxy through.
+  - Adds a `cors_proxy_url` key to readings for servers that need a proxy. The value is the base URL for the server (aka, `buoybarn.neracoos.org/api/servers/1/proxy/` forwards to `neracoos.org/erddap/`).
+  - Proxied data is cached by default for 60 seconds, but that can be overridden with `PROXY_CACHE_SECONDS`.
+
 Changes:
 
 Fixes:

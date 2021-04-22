@@ -13,6 +13,8 @@ Changes:
 
 Fixes:
 
+- Match Sentry release to Github release version.
+
 ## 0.3.6 - 04/19/2021
 
 Changes:

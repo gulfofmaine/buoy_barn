@@ -119,6 +119,9 @@ CACHES = {
     }
 }
 
+# How many seconds should CORS proxied data from ERDDAP servers be cached
+PROXY_CACHE_SECONDS = int(os.environ.get("PROXY_CACHE_SECONDS", 60))
+
 WSGI_APPLICATION = "buoy_barn.wsgi.application"
 
 
@@ -136,6 +139,7 @@ DATABASES = {
         "OPTIONS": {"sslmode": "prefer"},
     }
 }
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 
 # Password validation

@@ -4,11 +4,35 @@
 
 Additions:
 
+- Smart CORS proxying through Buoy Barn.
+  - Previously when CORS requests needed to be proxied for Mariners Dashboard, Buoy Barn will mark those servers as needing a proxy and host an endpoint to proxy through.
+  - Adds a `cors_proxy_url` key to readings for servers that need a proxy. The value is the base URL for the server (aka, `buoybarn.neracoos.org/api/servers/1/proxy/` forwards to `neracoos.org/erddap/`).
+  - Proxied data is cached by default for 60 seconds, but that can be overridden with `PROXY_CACHE_SECONDS`.
+
 Changes:
 
 Fixes:
 
 - Match Sentry release to Github release version.
+
+## 0.3.6 - 04/19/2021
+
+Changes:
+
+- Add non-standard datatypes for UNH buoys. [#351](https://github.com/gulfofmaine/buoy_barn/pull/351)
+- Update Dependencies:
+  - Actions
+    - Cache from 2.1.4 to 2.1.5
+  - Python from 3.9.2 to 3.9.4
+  - Django from 3.1 to 3.2
+  - erddapy from 0.9.0 to 1.0.0
+  - Pandas from 1.2.3 to 1.2.4
+  - Prefect from 0.14.14 to 0.14.15
+  - Pytest Django from 4.1 to 4.2
+
+Fixes:
+
+- Add `DEFAULT_AUTO_FIELD` setting to point to little integer autofield as Django will be migrating to BigAutoField. [#351](https://github.com/gulfofmaine/buoy_barn/pull/351)
 
 ## 0.3.5 - 03/29/2021
 

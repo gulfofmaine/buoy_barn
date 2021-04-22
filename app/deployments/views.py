@@ -1,6 +1,11 @@
+from urllib.parse import urljoin
+
+from django.conf import settings
+from django.http import HttpRequest, HttpResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+import requests
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -82,3 +87,20 @@ class ServerViewSet(viewsets.ReadOnlyModelViewSet):
 
         serializer = self.serializer_class(server, context={"request": request})
         return Response(serializer.data)
+
+
+@cache_page(settings.PROXY_CACHE_SECONDS)
+def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
+    server = ErddapServer.objects.get(id=server_id)
+    path = request.get_full_path().split("proxy/")[1]
+
+    request_url = urljoin(server.base_url + "/", path)
+
+    response = requests.get(request_url, stream=True)
+
+    return StreamingHttpResponse(
+        response.raw,
+        content_type=response.headers.get("content-type"),
+        status=response.status_code,
+        reason=response.reason,
+    )

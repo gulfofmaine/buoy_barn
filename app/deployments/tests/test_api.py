@@ -182,6 +182,7 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
                 "constraints",
                 "dataset",
                 "start_time",
+                "cors_proxy_url",
             ):
                 self.assertIn(
                     key, reading, msg=f"{key} not found in reading: {reading}"

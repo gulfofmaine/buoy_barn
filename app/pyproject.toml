@@ -25,7 +25,7 @@ uwsgi = "^2.0.19"
 vcrpy = "^4.1"
 whitenoise = "^5.2"
 xarray = "^0.18.2"
-pandas = "^1.2.4"
+pandas = "^1.2.5"
 prefect = "^0.14.22"
 
 [tool.poetry.dev-dependencies]

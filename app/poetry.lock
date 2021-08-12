@@ -801,7 +801,7 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "prefect"
-version = "0.15.2"
+version = "0.15.3"
 description = "The Prefect Core automation and scheduling engine."
 category = "main"
 optional = false
@@ -1516,7 +1516,7 @@ heapdict = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "415548bcc335ae4efdc876a6c47ad5a8d5c77c9c9eb36df1181689cf395a49e7"
+content-hash = "d18de3bfe283c7d8965d153b15e4d1723a5612501483f546d731cb6ac66e0bc4"
 
 [metadata.files]
 amqp = [
@@ -2053,8 +2053,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 prefect = [
-    {file = "prefect-0.15.2-py3-none-any.whl", hash = "sha256:1c56adaa8f0e7b980d90d26859eeeda003bc90ea477c5c42fc15cbc6b15e7ee1"},
-    {file = "prefect-0.15.2.tar.gz", hash = "sha256:c1abede3c65064ec73d3e248a47635b6e19f215df57c76fa1491dc5cf1fa4d67"},
+    {file = "prefect-0.15.3-py3-none-any.whl", hash = "sha256:a00789c291cb291ffef6a37c323dd013600170b565d591b846caa48ed655c949"},
+    {file = "prefect-0.15.3.tar.gz", hash = "sha256:dcce47f9f9b061412f96f7a2703bf408527147bdd02095b69108c2696fed92e5"},
 ]
 prompt-toolkit = [
     {file = "prompt_toolkit-3.0.16-py3-none-any.whl", hash = "sha256:62c811e46bd09130fb11ab759012a4ae385ce4fb2073442d1898867a824183bd"},

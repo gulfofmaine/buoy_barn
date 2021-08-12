@@ -4,12 +4,41 @@
 
 Additions:
 
+Changes:
+
+Fixes:
+
+## 0.4.0 - 08/12/2021
+
+Additions:
+
 - Smart CORS proxying through Buoy Barn.
   - Previously when CORS requests needed to be proxied for Mariners Dashboard, Buoy Barn will mark those servers as needing a proxy and host an endpoint to proxy through.
   - Adds a `cors_proxy_url` key to readings for servers that need a proxy. The value is the base URL for the server (aka, `buoybarn.neracoos.org/api/servers/1/proxy/` forwards to `neracoos.org/erddap/`).
   - Proxied data is cached by default for 60 seconds, but that can be overridden with `PROXY_CACHE_SECONDS`.
 
 Changes:
+
+- Update Dependencies:
+  - Actions
+    - Setup Docker Buildx from 1 to 1.5.1
+    - Cache from 2.1.5 to 2.1.6
+    - Docker login from 1 to 1.10.0
+    - Docker build push from 2 to 2.6.1
+    - Sentry release from 1 to 1.1.6
+  - Python from 3.9.4 to 3.9.6
+  - Celery from 5.0 to 5.1
+  - Django Redis from 4.12 to 5.0
+  - NetCDF4 from 1.5.6 to 1.5.7
+  - Psycopg2 Binary from 2.8.6 to 2.9.1
+  - Sentry SDK from 1.0.0 to 1.3.1
+  - Whitenoise from 5.2 to 5.3
+  - Xarray from 0.17.0 to 0.19.0
+  - Pandas from 1.2.4 to 1.3.1
+  - Prefect from 0.14.15 to 0.15.3
+  - IPython from 7.22 to 7.26
+  - Py.test Django from 4.2 to 4.4
+  - Py.test Coverage from 2.11 to 2.12
 
 Fixes:
 

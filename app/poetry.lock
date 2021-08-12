@@ -404,7 +404,7 @@ python-versions = "*"
 
 [[package]]
 name = "erddapy"
-version = "1.0.0"
+version = "1.1.0"
 description = "Python interface for ERDDAP"
 category = "main"
 optional = false
@@ -1516,7 +1516,7 @@ heapdict = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "2bf4aaa5d406812881551ccda8d192aaa55007dbf7449768939b2a9b739dd357"
+content-hash = "5d3d9b591e90ef37a393fdd6d10d79697db5b60fe68142cfdba53a701974d27d"
 
 [metadata.files]
 amqp = [
@@ -1730,8 +1730,8 @@ dodgy = [
     {file = "dodgy-0.2.1.tar.gz", hash = "sha256:28323cbfc9352139fdd3d316fa17f325cc0e9ac74438cbba51d70f9b48f86c3a"},
 ]
 erddapy = [
-    {file = "erddapy-1.0.0-py3-none-any.whl", hash = "sha256:4d2e08b62bed9e76c0ec1ea7f9761f4ead1fff8bc02c33bada46074fcb86b3e3"},
-    {file = "erddapy-1.0.0.tar.gz", hash = "sha256:9afd6ca05ed5ab456bc79ca9be1a4d2f53fa44b1d138c2c9f9203221f6ba27d3"},
+    {file = "erddapy-1.1.0-py3-none-any.whl", hash = "sha256:1a727d2af4e174b84a061d3f473c0281fa2c5474237d01ab9145a6a132a5c86d"},
+    {file = "erddapy-1.1.0.tar.gz", hash = "sha256:c12d3919f6f53e6049f0cf67f48b94748aa017f48fd3c50279c9ef12d911aa11"},
 ]
 flake8 = [
     {file = "flake8-3.8.4-py2.py3-none-any.whl", hash = "sha256:749dbbd6bfd0cf1318af27bf97a14e28e5ff548ef8e5b1566ccfb25a11e7c839"},

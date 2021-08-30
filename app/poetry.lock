@@ -483,7 +483,7 @@ python-versions = "*"
 
 [[package]]
 name = "ipython"
-version = "7.26.0"
+version = "7.27.0"
 description = "IPython: Productive Interactive Computing"
 category = "dev"
 optional = false
@@ -1516,7 +1516,7 @@ heapdict = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f1e1d2c84297018bd3abbc17a1286b730a4e4b0e08a94771ce7839b2c1d9967f"
+content-hash = "cfff923a5670b17159da3b1a07ba3ac6cfb853c98d080da77180fdd9eca3f0ef"
 
 [metadata.files]
 amqp = [
@@ -1762,8 +1762,8 @@ iniconfig = [
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
 ]
 ipython = [
-    {file = "ipython-7.26.0-py3-none-any.whl", hash = "sha256:892743b65c21ed72b806a3a602cca408520b3200b89d1924f4b3d2cdb3692362"},
-    {file = "ipython-7.26.0.tar.gz", hash = "sha256:0cff04bb042800129348701f7bd68a430a844e8fb193979c08f6c99f28bb735e"},
+    {file = "ipython-7.27.0-py3-none-any.whl", hash = "sha256:75b5e060a3417cf64f138e0bb78e58512742c57dc29db5a5058a2b1f0c10df02"},
+    {file = "ipython-7.27.0.tar.gz", hash = "sha256:58b55ebfdfa260dad10d509702dc2857cb25ad82609506b070cf2d7b7df5af13"},
 ]
 ipython-genutils = [
     {file = "ipython_genutils-0.2.0-py2.py3-none-any.whl", hash = "sha256:72dd37233799e619666c9f639a9da83c34013a73e8bbc79a7a6348d93c61fab8"},

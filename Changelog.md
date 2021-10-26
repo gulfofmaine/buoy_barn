@@ -8,6 +8,9 @@ Changes:
 
 Fixes:
 
+- Adds a timeout to proxied requests. Closes #457
+  - Timeout can be set with the environment variable `PROXY_TIMEOUT_SECONDS` and defaults to 30 seconds.
+
 ## 0.4.0 - 08/12/2021
 
 Additions:

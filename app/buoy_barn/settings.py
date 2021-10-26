@@ -122,6 +122,9 @@ CACHES = {
 # How many seconds should CORS proxied data from ERDDAP servers be cached
 PROXY_CACHE_SECONDS = int(os.environ.get("PROXY_CACHE_SECONDS", 60))
 
+# How many seconds should requests to a proxy
+PROXY_TIMEOUT_SECONDS = int(os.environ.get("PROXY_TIMEOUT_SECONDS", 30))
+
 WSGI_APPLICATION = "buoy_barn.wsgi.application"
 
 

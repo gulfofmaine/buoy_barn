@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/var/cache/apt \
     build-essential=12.6
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install poetry==1.1.5 \
+    pip install poetry==1.1.11 \
     && groupadd uwsgi && useradd -g uwsgi uwsgi
 
 # Working directory

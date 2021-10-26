@@ -30,7 +30,7 @@ prefect = "^0.15.6"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.28"
-pyyaml = "^5.4"
+pyyaml = "^6.0"
 pytest = "^6.2"
 pytest-django = "^4.4"
 pytest-cov = "^3.0"

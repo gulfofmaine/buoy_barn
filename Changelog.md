@@ -6,6 +6,26 @@ Additions:
 
 Changes:
 
+Changes:
+
+Fixes:
+
+## 0.4.1 - 10/26/2021
+
+- Update Dependencies:
+  - Actions
+    - Checkout from 2.3.4 to 2.3.5
+    - Setup Docker Buildx from 1.5.1 to 1.6.0
+    - Docker build push from 2.6.1 to 2.7.0
+  - Poetry from 1.1.5 to 1.1.11
+  - Django CORS headers from 3.7 to 3.8
+  - Sentry SDK from 1.3.1 to 1.4.3
+  - Pandas from 1.3.1 to 1.3.3
+  - Prefect from 0.15.3 to 0.15.6
+  - IPython from 7.26 to 7.28
+  - PYYaml from 5.4 to 6.0
+  - py.test coverage from 2.12 to 3.0
+
 Fixes:
 
 - Adds a timeout to proxied requests. Closes #457

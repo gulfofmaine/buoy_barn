@@ -247,23 +247,27 @@ python-dateutil = "*"
 
 [[package]]
 name = "dask"
-version = "2021.2.0"
+version = "2021.10.0"
 description = "Parallel PyData with Task Scheduling"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
+cloudpickle = ">=1.1.1"
+fsspec = ">=0.6.0"
+packaging = ">=20.0"
+partd = ">=0.3.10"
 pyyaml = "*"
+toolz = ">=0.8.2"
 
 [package.extras]
-array = ["numpy (>=1.15.1)", "toolz (>=0.8.2)"]
-bag = ["cloudpickle (>=0.2.2)", "fsspec (>=0.6.0)", "toolz (>=0.8.2)", "partd (>=0.3.10)"]
-complete = ["bokeh (>=1.0.0,!=2.0.0)", "cloudpickle (>=0.2.2)", "distributed (>=2.0)", "fsspec (>=0.6.0)", "numpy (>=1.15.1)", "pandas (>=0.25.0)", "partd (>=0.3.10)", "toolz (>=0.8.2)"]
-dataframe = ["numpy (>=1.15.1)", "pandas (>=0.25.0)", "toolz (>=0.8.2)", "partd (>=0.3.10)", "fsspec (>=0.6.0)"]
-delayed = ["cloudpickle (>=0.2.2)", "toolz (>=0.8.2)"]
-diagnostics = ["bokeh (>=1.0.0,!=2.0.0)"]
-distributed = ["distributed (>=2.0)"]
+array = ["numpy (>=1.18)"]
+complete = ["bokeh (>=1.0.0,!=2.0.0)", "distributed (==2021.10.0)", "jinja2", "numpy (>=1.18)", "pandas (>=1.0)"]
+dataframe = ["numpy (>=1.18)", "pandas (>=1.0)"]
+diagnostics = ["bokeh (>=1.0.0,!=2.0.0)", "jinja2"]
+distributed = ["distributed (==2021.10.0)"]
+test = ["pytest", "pytest-rerunfailures", "pytest-xdist", "pre-commit"]
 
 [[package]]
 name = "decorator"
@@ -453,6 +457,36 @@ python-versions = ">=3.5"
 python-dateutil = ">=2.7"
 
 [[package]]
+name = "fsspec"
+version = "2021.10.1"
+description = "File-system specification"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+abfs = ["adlfs"]
+adl = ["adlfs"]
+arrow = ["pyarrow (>=1)"]
+dask = ["dask", "distributed"]
+dropbox = ["dropboxdrivefs", "requests", "dropbox"]
+entrypoints = ["importlib-metadata"]
+fuse = ["fusepy"]
+gcs = ["gcsfs"]
+git = ["pygit2"]
+github = ["requests"]
+gs = ["gcsfs"]
+gui = ["panel"]
+hdfs = ["pyarrow (>=1)"]
+http = ["requests", "aiohttp"]
+libarchive = ["libarchive-c"]
+oci = ["ocifs"]
+s3 = ["s3fs"]
+sftp = ["paramiko"]
+smb = ["smbprotocol"]
+ssh = ["paramiko"]
+
+[[package]]
 name = "geojson"
 version = "2.5.0"
 description = "Python bindings and utilities for GeoJSON"
@@ -590,6 +624,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "locket"
+version = "0.2.1"
+description = "File-based locks for Python for Linux and Windows"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
 name = "marshmallow"
 version = "3.10.0"
 description = "A lightweight library for converting complex datatypes to and from native Python datatypes."
@@ -714,7 +756,7 @@ python-versions = ">=3.7"
 name = "packaging"
 version = "20.9"
 description = "Core utilities for Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -748,6 +790,21 @@ python-versions = ">=3.6"
 [package.extras]
 qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
 testing = ["docopt", "pytest (<6.0.0)"]
+
+[[package]]
+name = "partd"
+version = "1.2.0"
+description = "Appendable key-value storage"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+locket = "*"
+toolz = "*"
+
+[package.extras]
+complete = ["numpy (>=1.9.0)", "pandas (>=0.19.0)", "pyzmq", "blosc"]
 
 [[package]]
 name = "pendulum"
@@ -1061,7 +1118,7 @@ pylint = ">=1.7"
 name = "pyparsing"
 version = "2.4.7"
 description = "Python parsing module"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -1675,8 +1732,8 @@ croniter = [
     {file = "croniter-0.3.37.tar.gz", hash = "sha256:12ced475dfc107bf7c6c1440af031f34be14cd97bbbfaf0f62221a9c11e86404"},
 ]
 dask = [
-    {file = "dask-2021.2.0-py3-none-any.whl", hash = "sha256:9f5dd9371ba0a3f1ad6525264781d626bdfffa52d072402b93c53e39af90ae39"},
-    {file = "dask-2021.2.0.tar.gz", hash = "sha256:e7054b8d685205e95c789900ae87d6174550180cbe38a3cb1142e10c73004c22"},
+    {file = "dask-2021.10.0-py3-none-any.whl", hash = "sha256:b678d802ea8126c0168a1b429182b7dc01ade8ad84cfd62b804c52c4c29b6fc3"},
+    {file = "dask-2021.10.0.tar.gz", hash = "sha256:a98b2e44acaad369bb21f79fc92f756532acfe62c3aeba3982006b7339d0d2e3"},
 ]
 decorator = [
     {file = "decorator-4.4.2-py2.py3-none-any.whl", hash = "sha256:41fa54c2a0cc4ba648be4fd43cff00aedf5b9465c9bf18d64325bc225f08f760"},
@@ -1737,6 +1794,10 @@ freezegun = [
     {file = "freezegun-1.1.0-py2.py3-none-any.whl", hash = "sha256:2ae695f7eb96c62529f03a038461afe3c692db3465e215355e1bb4b0ab408712"},
     {file = "freezegun-1.1.0.tar.gz", hash = "sha256:177f9dd59861d871e27a484c3332f35a6e3f5d14626f2bf91be37891f18927f3"},
 ]
+fsspec = [
+    {file = "fsspec-2021.10.1-py3-none-any.whl", hash = "sha256:7164a488f3f5bf6a0fb39674978b756dda84e011a5db411a79791b7c38a36ff7"},
+    {file = "fsspec-2021.10.1.tar.gz", hash = "sha256:c245626e3cb8de5cd91485840b215a385fa6f2b0f6ab87978305e99e2d842753"},
+]
 geojson = [
     {file = "geojson-2.5.0-py2.py3-none-any.whl", hash = "sha256:ccbd13368dd728f4e4f13ffe6aaf725b6e802c692ba0dde628be475040c534ba"},
     {file = "geojson-2.5.0.tar.gz", hash = "sha256:6e4bb7ace4226a45d9c8c8b1348b3fc43540658359f93c3f7e03efa9f15f658a"},
@@ -1795,6 +1856,10 @@ lazy-object-proxy = [
     {file = "lazy_object_proxy-1.4.3-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:a6ae12d08c0bf9909ce12385803a543bfe99b95fe01e752536a60af2b7797c62"},
     {file = "lazy_object_proxy-1.4.3-cp38-cp38-win32.whl", hash = "sha256:5541cada25cd173702dbd99f8e22434105456314462326f06dba3e180f203dfd"},
     {file = "lazy_object_proxy-1.4.3-cp38-cp38-win_amd64.whl", hash = "sha256:59f79fef100b09564bc2df42ea2d8d21a64fdcda64979c0fa3db7bdaabaf6239"},
+]
+locket = [
+    {file = "locket-0.2.1-py2.py3-none-any.whl", hash = "sha256:12b6ada59d1f50710bca9704dbadd3f447dbf8dac6664575c1281cadab8e6449"},
+    {file = "locket-0.2.1.tar.gz", hash = "sha256:3e1faba403619fe201552f083f1ecbf23f550941bc51985ac6ed4d02d25056dd"},
 ]
 marshmallow = [
     {file = "marshmallow-3.10.0-py2.py3-none-any.whl", hash = "sha256:eca81d53aa4aafbc0e20566973d0d2e50ce8bf0ee15165bb799bec0df1e50177"},
@@ -2006,6 +2071,10 @@ pandas = [
 parso = [
     {file = "parso-0.8.1-py2.py3-none-any.whl", hash = "sha256:15b00182f472319383252c18d5913b69269590616c947747bc50bf4ac768f410"},
     {file = "parso-0.8.1.tar.gz", hash = "sha256:8519430ad07087d4c997fda3a7918f7cfa27cb58972a8c89c2a0295a1c940e9e"},
+]
+partd = [
+    {file = "partd-1.2.0-py3-none-any.whl", hash = "sha256:5c3a5d70da89485c27916328dc1e26232d0e270771bd4caef4a5124b6a457288"},
+    {file = "partd-1.2.0.tar.gz", hash = "sha256:aa67897b84d522dcbc86a98b942afab8c6aa2f7f677d904a616b74ef5ddbc3eb"},
 ]
 pendulum = [
     {file = "pendulum-2.1.2-cp27-cp27m-macosx_10_15_x86_64.whl", hash = "sha256:b6c352f4bd32dff1ea7066bd31ad0f71f8d8100b9ff709fb343f3b86cee43efe"},

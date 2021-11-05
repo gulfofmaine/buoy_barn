@@ -1570,15 +1570,15 @@ python-versions = "*"
 
 [[package]]
 name = "xarray"
-version = "0.19.0"
+version = "0.20.0"
 description = "N-D labeled arrays and datasets in Python"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
-numpy = ">=1.17"
-pandas = ">=1.0"
+numpy = ">=1.18"
+pandas = ">=1.1"
 
 [package.extras]
 accel = ["scipy", "bottleneck", "numbagg"]
@@ -1614,7 +1614,7 @@ heapdict = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "eb792bead9241a715ac8b8531263f1da7f322d48bbef4c5019108ca270ba6057"
+content-hash = "0c55ca676a515600718098b84ab0d0b6320d658e4c84c4f47b16352809eb345e"
 
 [metadata.files]
 amqp = [
@@ -2540,8 +2540,8 @@ wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},
 ]
 xarray = [
-    {file = "xarray-0.19.0-py3-none-any.whl", hash = "sha256:da0f0d7719b5ee95143a34804e3afb82cb8abbe5c10f9750a9dbed156ad30f00"},
-    {file = "xarray-0.19.0.tar.gz", hash = "sha256:3a365ce09127fc841ba88baa63f37ca61376ffe389a6c5e66d52f2c88c23a62b"},
+    {file = "xarray-0.20.0-py3-none-any.whl", hash = "sha256:5acebe419c8ce0e88aa10f229fd56623d78bb1bfdef20689ce9ccb5072965cca"},
+    {file = "xarray-0.20.0.tar.gz", hash = "sha256:8ea93274868f78c46332fc3b75f4628f6d99e59a0315e294a99397ad1eb777a5"},
 ]
 yarl = [
     {file = "yarl-1.6.3-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:0355a701b3998dcd832d0dc47cc5dedf3874f966ac7f870e0f3a6788d802d434"},

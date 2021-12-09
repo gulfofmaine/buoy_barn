@@ -962,7 +962,7 @@ wcwidth = "*"
 
 [[package]]
 name = "prospector"
-version = "1.5.3"
+version = "1.5.3.1"
 description = ""
 category = "dev"
 optional = false
@@ -976,7 +976,7 @@ pep8-naming = ">=0.3.3,<=0.10.0"
 pycodestyle = ">=2.6.0,<2.9.0"
 pydocstyle = ">=2.0.0"
 pyflakes = ">=2.2.0,<2.4.0"
-pylint = ">=2.8.3,<2.12.0"
+pylint = ">=2.8.3"
 pylint-celery = "0.3"
 pylint-django = ">=2.4.4,<3.0.0"
 pylint-flask = "0.6"
@@ -2172,8 +2172,8 @@ prompt-toolkit = [
     {file = "prompt_toolkit-3.0.16.tar.gz", hash = "sha256:0fa02fa80363844a4ab4b8d6891f62dd0645ba672723130423ca4037b80c1974"},
 ]
 prospector = [
-    {file = "prospector-1.5.3-py3-none-any.whl", hash = "sha256:8e7fd739d6e907b2875b44291d2c7c7481eca8d187576963dc785e6c053b48d4"},
-    {file = "prospector-1.5.3.tar.gz", hash = "sha256:4908034ad9b705942a481b301d9b77664af07b722c53de38c97c8647561f266c"},
+    {file = "prospector-1.5.3.1-py3-none-any.whl", hash = "sha256:812b01eb5bbad85f16d0b0efceb41385d35b3d4a928fa86f4085bf44f6077df4"},
+    {file = "prospector-1.5.3.1.tar.gz", hash = "sha256:c8d8d00e6806f7ece9829026ef8b7d3cbd901d473913f9bc5a389df4e8f435c6"},
 ]
 psutil = [
     {file = "psutil-5.8.0-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:0066a82f7b1b37d334e68697faba68e5ad5e858279fd6351c8ca6024e8d6ba64"},

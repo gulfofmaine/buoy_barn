@@ -1,5 +1,5 @@
 #syntax=docker/dockerfile:1.2
-FROM python:3.9.6-slim@sha256:182f0eff727af9fccf88294dbfffb23ad408369c412e1267ddd5aa63ef8b5bf8
+FROM python:3.10.2-slim@sha256:ca2a31f21938f24bab02344bf846a90cc2bff5bd0e5a53b24b5dfcb4519ea8a3
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1

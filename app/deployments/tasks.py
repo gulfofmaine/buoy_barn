@@ -43,8 +43,6 @@ def update_values_for_timeseries(timeseries):
         return
 
     except OSError as error:
-        breakpoint()
-
         logger.info(
             f"Error loading dataset {timeseries[0].dataset.name} with constraints {timeseries[0].constraints}: {error}",
             extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
@@ -211,6 +209,8 @@ def error_extra(timeseries_group, compare_text: str = None):
     extra = {
         "timeseries": timeseries_group,
         "constraints": timeseries_group[0].constraints,
+        "server": timeseries_group[0].dataset.server,
+        "dataset_id": timeseries_group[0].dataset.name,
     }
 
     if compare_text:

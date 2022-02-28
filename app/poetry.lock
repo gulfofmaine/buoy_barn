@@ -395,7 +395,7 @@ pytz = "*"
 
 [[package]]
 name = "djangorestframework-gis"
-version = "0.17"
+version = "0.18"
 description = "Geographic add-ons for Django Rest Framework"
 category = "main"
 optional = false
@@ -1675,7 +1675,7 @@ heapdict = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "e4bd95c3f57293735a05944b9b11288a12a086f5c18e7d4f8f58fe02c5107ed0"
+content-hash = "0d663a5d0ceac21c35d3337fe9cabec5bd281a56a1d94610606e731655123bd1"
 
 [metadata.files]
 amqp = [
@@ -1870,8 +1870,8 @@ djangorestframework = [
     {file = "djangorestframework-3.13.1.tar.gz", hash = "sha256:0c33407ce23acc68eca2a6e46424b008c9c02eceb8cf18581921d0092bc1f2ee"},
 ]
 djangorestframework-gis = [
-    {file = "djangorestframework-gis-0.17.tar.gz", hash = "sha256:d3b6aa6beef32f75811f815bda3bc7e9ea5d2f0306f9741cad5f3820d3973be7"},
-    {file = "djangorestframework_gis-0.17-py2.py3-none-any.whl", hash = "sha256:5be17e27cf2be33ac6119e6d2206d3d81183c62d03aaa9b814ce95a82256614f"},
+    {file = "djangorestframework-gis-0.18.tar.gz", hash = "sha256:6ddd201a208e68f8f11ac71d2df2c030b1280818a4b54681be00e73057fcafb1"},
+    {file = "djangorestframework_gis-0.18-py2.py3-none-any.whl", hash = "sha256:7df5d5a32c3492d55837e2a695ef8f9a5c83dc163d90a0764eaa187091a9a633"},
 ]
 docker = [
     {file = "docker-4.2.2-py2.py3-none-any.whl", hash = "sha256:03a46400c4080cb6f7aa997f881ddd84fef855499ece219d75fbdb53289c17ab"},

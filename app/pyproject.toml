@@ -31,7 +31,7 @@ prefect = "^0.15.9"
 [tool.poetry.dev-dependencies]
 ipython = "^8.1"
 pyyaml = "^6.0"
-pytest = "^6.2"
+pytest = "^7.0"
 pytest-django = "^4.5"
 pytest-cov = "^3.0"
 prospector = {version = "^1.7", extras = ["with_mypy", "with_vulture"]}

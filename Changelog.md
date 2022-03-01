@@ -6,9 +6,44 @@ Additions:
 
 Changes:
 
+Fixes:
+
+## 0.4.2 - 02/28/2022
+
 Changes:
 
+- Move to using the newer `docker compose` compose, rather than the old `docker-compose`.
+- Use API key for Prefect Cloud
+- Add server and dataset ID info to timeseries refresh errors.
+- Update Dependencies
+  - Actions
+    - Checkout from 2.3.5 to 2.4.0
+    - Cache from 2.1.6 to 2.1.7
+    - Docker login from 1.10.0 to 1.14.0
+    - Docker build push from 2.7.0 to 2.9.0
+  - Celery from 5.1 to 5.2
+  - Django from 3.2 to 4.0
+  - Django CORS headers from 3.8 to 3.11
+  - Django Redis from 5.0 to 5.2
+  - Django Rest Framework from 3.12 to 3.13
+  - Django Rest Framework GIS from 0.17 to 0.18
+  - ERDDAPy from 1.1.0 to 1.2.0
+  - NetCDF4 from 1.5.7 to 1.5.8
+  - Psycopg2 binary from 2.9.1 to 2.9.3
+  - Sentry SDK from 1.4.3 to 1.5.6
+  - Uwsgi from 2.0.19 to 2.0.20
+  - Whitenoise from 5.3 to 6.0
+  - Xarray from 0.19.0 to 0.21.1
+  - Pandas from 1.3.3 to 1.4.1
+  - Prefect from 0.15.6 to 1.0.0
+  - IPython from 7.28 to 8.1
+  - Py.test from 6.2 to 7.0
+  - Py.test Django from 4.4 to 4.5
+  - Prospector from 1.3 to 1.7
+
 Fixes:
+
+- Remove rogue breakpoint
 
 ## 0.4.1 - 10/26/2021
 

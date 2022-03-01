@@ -28,14 +28,13 @@ DEBUG = os.environ.get("DJANGO_ENV", "").lower() == "dev"
 
 def before_send(event, hint):
     """Don't report "OSError: write error" to Sentry.
-    
+
     via: https://stumbles.id.au/how-to-fix-uwsgi-oserror-write-error.html
     """
     exc_type, exc_value, _ = hint.get("exc_info", [None, None, None])
     if exc_type == OSError and str(exc_value) == "write error":
         return None
-    else:
-        return event
+    return event
 
 
 if os.environ.get("DJANGO_ENV", "").lower() != "test":

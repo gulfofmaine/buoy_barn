@@ -57,7 +57,7 @@ class ForecastViewSet(viewsets.ViewSet):
                     detail=f"Error retrieving dataset for forecast slug: {pk}"
                 )
             except ConnectionError as error:
-                if "Connection timed out" in error:
+                if "Connection timed out" in str(error):
                     logger.info(f"Upstream forecast timed out: {error}")
                     raise APIException(
                         detail=f"Upstream forecast source timed out for forecast: {pk}"

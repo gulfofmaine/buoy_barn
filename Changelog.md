@@ -9,6 +9,7 @@ Changes:
 Fixes:
 
 - Filter out OSErrors from uWSGI.
+- Catch upstream forecast timeouts and handle their errors nicer.
 
 ## 0.4.2 - 02/28/2022
 

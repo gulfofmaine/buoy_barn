@@ -56,6 +56,19 @@ class ForecastViewSet(viewsets.ViewSet):
                 raise APIException(
                     detail=f"Error retrieving dataset for forecast slug: {pk}"
                 )
+            except ConnectionError as error:
+                if "Connection timed out" in error:
+                    logger.info(f"Upstream forecast timed out: {error}")
+                    raise APIException(
+                        detail=f"Upstream forecast source timed out for forecast: {pk}"
+                    )
+
+                logger.error(
+                    f"ConnectionError (probably a timeout): {error}", exc_info=True
+                )
+                raise APIException(
+                    detail=f"Error retrieving dataset for forecast slug: {pk}"
+                )
 
             data["time_series"] = [
                 {"time": time.replace(tzinfo=timezone.utc), "reading": reading}

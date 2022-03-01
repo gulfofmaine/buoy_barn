@@ -25,6 +25,19 @@ logger = logging.getLogger(__name__)
 
 DEBUG = os.environ.get("DJANGO_ENV", "").lower() == "dev"
 
+
+def before_send(event, hint):
+    """Don't report "OSError: write error" to Sentry.
+    
+    via: https://stumbles.id.au/how-to-fix-uwsgi-oserror-write-error.html
+    """
+    exc_type, exc_value, _ = hint.get("exc_info", [None, None, None])
+    if exc_type == OSError and str(exc_value) == "write error":
+        return None
+    else:
+        return event
+
+
 if os.environ.get("DJANGO_ENV", "").lower() != "test":
     try:
         pyproject = toml.load("pyproject.toml")
@@ -35,6 +48,7 @@ if os.environ.get("DJANGO_ENV", "").lower() != "test":
             environment="dev" if DEBUG else "prod",
             release=f"v{version}",
             traces_sample_rate=float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", 0)),
+            before_send=before_send,
         )
         logger.info("Sentry initialized")
     except KeyError:

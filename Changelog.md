@@ -8,8 +8,17 @@ Changes:
 
 Fixes:
 
-- Filter out OSErrors from uWSGI.
-- Catch upstream forecast timeouts and handle their errors nicer.
+## 0.4.3 - 03/01/2022
+
+Changes:
+
+- Update Dependencies
+  - Django from 4.0.2 to 4.0.3
+
+Fixes:
+
+- Filter out OSErrors from uWSGI. [#529](https://github.com/gulfofmaine/buoy_barn/pull/529)
+- Catch upstream forecast timeouts and handle their errors nicer. [#531](https://github.com/gulfofmaine/buoy_barn/pull/531)
 
 ## 0.4.2 - 02/28/2022
 

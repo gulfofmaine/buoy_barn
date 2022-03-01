@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Filter out OSErrors from uWSGI.
+
 ## 0.4.2 - 02/28/2022
 
 Changes:

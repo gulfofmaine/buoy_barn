@@ -1016,7 +1016,7 @@ wcwidth = "*"
 
 [[package]]
 name = "prospector"
-version = "1.7.6"
+version = "1.7.7"
 description = ""
 category = "dev"
 optional = false
@@ -2278,8 +2278,8 @@ prompt-toolkit = [
     {file = "prompt_toolkit-3.0.16.tar.gz", hash = "sha256:0fa02fa80363844a4ab4b8d6891f62dd0645ba672723130423ca4037b80c1974"},
 ]
 prospector = [
-    {file = "prospector-1.7.6-py3-none-any.whl", hash = "sha256:67cafe18af2fd9ca0ac459a94fdaa19935fdff9feb21f57c86d4d3fa1271b5b5"},
-    {file = "prospector-1.7.6.tar.gz", hash = "sha256:59140177b1d14a83435e06437370e988a90331f2c6c8321ba613ba33d7bf4654"},
+    {file = "prospector-1.7.7-py3-none-any.whl", hash = "sha256:2dec5dac06f136880a3710996c0886dcc99e739007bbc05afc32884973f5c058"},
+    {file = "prospector-1.7.7.tar.gz", hash = "sha256:c04b3d593e7c525cf9a742fed62afbe02e2874f0e42f2f56a49378fd94037360"},
 ]
 psutil = [
     {file = "psutil-5.8.0-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:0066a82f7b1b37d334e68697faba68e5ad5e858279fd6351c8ca6024e8d6ba64"},

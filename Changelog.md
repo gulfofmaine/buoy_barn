@@ -6,6 +6,8 @@ Additions:
 
 Changes:
 
+- Update Kubernetes ingress manifest to v1.
+
 Fixes:
 
 ## 0.4.3 - 03/01/2022

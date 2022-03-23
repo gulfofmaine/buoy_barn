@@ -6,9 +6,25 @@ Additions:
 
 Changes:
 
-- Update Kubernetes ingress manifest to v1.
-
 Fixes:
+
+## 0.4.4 - 03/23/2022
+
+Changes:
+
+- Update Kubernetes ingress manifest to v1.
+- Dependency Updates:
+  - Github Actions
+    - Checkout from 2.4.0 to 3
+    - Cache from 2.1.7 to 3
+    - Docker login from 1.14.0 to 1.14.1
+    - Docker build push from 2.9.0 to 2.10.0
+  - Erddapy from 1.2.0 to 1.2.1
+  - Freezegun from 1.1.0 to 1.2.1
+  - Sentry SDK from 1.5.6 to 1.5.8
+  - xarray from 0.21.1 to 2022.3.0
+  - Prefect from 1.0.0 to 1.1.0
+  - Py.test from 7.0 to 7.1
 
 ## 0.4.3 - 03/01/2022
 

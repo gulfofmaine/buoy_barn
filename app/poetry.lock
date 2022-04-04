@@ -95,7 +95,7 @@ python-versions = "*"
 
 [[package]]
 name = "celery"
-version = "5.2.3"
+version = "5.2.5"
 description = "Distributed Task Queue."
 category = "main"
 optional = false
@@ -1780,8 +1780,8 @@ billiard = [
     {file = "billiard-3.6.4.0.tar.gz", hash = "sha256:299de5a8da28a783d51b197d496bef4f1595dd023a93a4f59dde1886ae905547"},
 ]
 celery = [
-    {file = "celery-5.2.3-py3-none-any.whl", hash = "sha256:8aacd02fc23a02760686d63dde1eb0daa9f594e735e73ea8fb15c2ff15cb608c"},
-    {file = "celery-5.2.3.tar.gz", hash = "sha256:e2cd41667ad97d4f6a2f4672d1c6a6ebada194c619253058b5f23704aaadaa82"},
+    {file = "celery-5.2.5-py3-none-any.whl", hash = "sha256:1f31c196e61dde344e322f9c0d33d1bb88c0dbaccbab5019fbb519a43d44706d"},
+    {file = "celery-5.2.5.tar.gz", hash = "sha256:19247ba189b72f82cf387fe5130f8d972f1c41255f87002f3198452849bf3a97"},
 ]
 certifi = [
     {file = "certifi-2020.12.5-py2.py3-none-any.whl", hash = "sha256:719a74fb9e33b9bd44cc7f3a8d94bc35e4049deebe19ba7d8e108280cfd59830"},

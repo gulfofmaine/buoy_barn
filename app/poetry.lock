@@ -948,11 +948,11 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "prefect"
-version = "1.1.0"
+version = "1.2.0"
 description = "The Prefect Core automation and scheduling engine."
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 click = ">=7.0"
@@ -980,11 +980,12 @@ urllib3 = ">=1.26.0"
 
 [package.extras]
 airtable = ["airtable-python-wrapper (>=0.11)"]
-all_extras = ["airtable-python-wrapper (>=0.11)", "boto3 (>=1.9)", "azure-core (>=1.10.0)", "azure-storage-blob (>=12.1.0)", "azureml-sdk (>=1.0.6)", "azure-cosmos (>=3.1.1)", "atlassian-python-api (>=2.0.1)", "dask-cloudprovider[aws] (>=0.2.0)", "black", "graphviz (>=0.8)", "jinja2 (>=2.0,<4.0)", "mypy (>=0.600,<0.813)", "Pygments (>=2.2,<3.0)", "pytest (>=6.0)", "testfixtures (>=6.10.3)", "pytest-env (>=0.6.0)", "pytest-xdist (>=2.0)", "flaky (>=3.0)", "responses (>=0.14.0)", "PyJWT (>=2.3.0)", "pydantic (>=1.9.0)", "dropbox (>=9.0,<10.0)", "firebolt-sdk (>=0.2.1)", "great-expectations (>=0.13.8)", "mistune (<2.0)", "google-cloud-bigquery (>=1.6.0)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)", "dulwich (>=0.19.7)", "PyGithub (>=1.51)", "python-gitlab (>=2.5.0)", "gspread (>=3.6.0)", "jira (>=2.0.0)", "papermill (>=2.2.0)", "nbconvert (>=6.0.7)", "confluent-kafka (>=1.7.0)", "dask-kubernetes (>=0.8.0)", "kubernetes (>=9.0.0a1.0)", "pandas (>=1.0.1)", "psycopg2-binary (>=2.8.2)", "prometheus-client (>=0.9.0)", "pymysql (>=0.9.3)", "pyodbc (>=4.0.30)", "pushbullet.py (>=0.11.0)", "redis (>=3.2.1)", "feedparser (>=5.0.1)", "snowflake-connector-python (>=1.8.2)", "spacy (>=2.0.0)", "jinja2 (>=2.0)", "hvac (>=0.10)", "graphviz (>=0.8.3)", "tweepy (>=3.5)", "pyarrow (>=5.0.0)", "pyexasol (>=0.16.1)", "soda-sql (>=2.0.0b25)", "soda-spark (>=0.2.1)", "sendgrid (>=6.7.0)", "py2neo (>=2021.2.3)"]
-all_orchestration_extras = ["boto3 (>=1.9)", "azure-storage-blob (>=12.1.0)", "atlassian-python-api (>=2.0.1)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)", "dulwich (>=0.19.7)", "PyGithub (>=1.51)", "python-gitlab (>=2.5.0)", "kubernetes (>=9.0.0a1.0)"]
+all_extras = ["airtable-python-wrapper (>=0.11)", "boto3 (>=1.9)", "azure-core (>=1.10.0)", "azure-storage-blob (>=12.1.0)", "azure-cosmos (>=3.1.1)", "azureml-sdk", "atlassian-python-api (>=2.0.1)", "dask-cloudprovider[aws] (>=0.2.0)", "black", "graphviz (>=0.8)", "jinja2 (>=2.0,<4.0)", "mypy (>=0.600,<0.813)", "Pygments (>=2.2,<3.0)", "pytest (>=6.0)", "testfixtures (>=6.10.3)", "pytest-env (>=0.6.0)", "pytest-xdist (>=2.0)", "flaky (>=3.0)", "responses (>=0.14.0)", "PyJWT (>=2.3.0)", "pydantic (>=1.9.0)", "dropbox (>=9.0,<10.0)", "firebolt-sdk (>=0.2.1)", "great-expectations (>=0.13.8)", "mistune (<2.0)", "google-cloud-bigquery (>=1.6.0)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)", "dulwich (>=0.19.7)", "PyGithub (>=1.51)", "python-gitlab (>=2.5.0)", "gspread (>=3.6.0)", "jira (>=2.0.0)", "papermill (>=2.2.0)", "nbconvert (>=6.0.7)", "ipykernel (>=6.9.2)", "confluent-kafka (>=1.7.0)", "dask-kubernetes (>=0.8.0)", "kubernetes (>=9.0.0a1.0)", "pandas (>=1.0.1)", "psycopg2-binary (>=2.8.2)", "prometheus-client (>=0.9.0)", "pymysql (>=0.9.3)", "pyodbc (>=4.0.30)", "pushbullet.py (>=0.11.0)", "redis (>=3.2.1)", "feedparser (>=5.0.1)", "snowflake-connector-python (>=1.8.2)", "spacy (>=2.0.0)", "jinja2 (>=2.0)", "hvac (>=0.10)", "graphviz (>=0.8.3)", "tweepy (>=3.5)", "pyarrow (>=5.0.0)", "pyexasol (>=0.16.1)", "soda-sql (>=2.0.0b25)", "soda-spark (>=0.2.1)", "sendgrid (>=6.7.0)", "py2neo (>=2021.2.3)", "transform (>=1.0.12)"]
+all_orchestration_extras = ["boto3 (>=1.9)", "azure-storage-blob (>=12.1.0)", "azure-identity (>=1.7.0)", "atlassian-python-api (>=2.0.1)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)", "dulwich (>=0.19.7)", "PyGithub (>=1.51)", "python-gitlab (>=2.5.0)", "kubernetes (>=9.0.0a1.0)"]
 aws = ["boto3 (>=1.9)"]
-azure = ["azure-core (>=1.10.0)", "azure-storage-blob (>=12.1.0)", "azureml-sdk (>=1.0.6)", "azure-cosmos (>=3.1.1)"]
-base_library_ci = ["boto3 (>=1.9)", "azure-storage-blob (>=12.1.0)", "atlassian-python-api (>=2.0.1)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)", "dulwich (>=0.19.7)", "PyGithub (>=1.51)", "python-gitlab (>=2.5.0)", "kubernetes (>=9.0.0a1.0)", "black", "graphviz (>=0.8)", "jinja2 (>=2.0,<4.0)", "mypy (>=0.600,<0.813)", "Pygments (>=2.2,<3.0)", "pytest (>=6.0)", "testfixtures (>=6.10.3)", "pytest-env (>=0.6.0)", "pytest-xdist (>=2.0)", "flaky (>=3.0)", "responses (>=0.14.0)", "PyJWT (>=2.3.0)", "pandas (>=1.0.1)", "jira (>=2.0.0)"]
+azure = ["azure-core (>=1.10.0)", "azure-storage-blob (>=12.1.0)", "azure-cosmos (>=3.1.1)"]
+azureml = ["azureml-sdk"]
+base_library_ci = ["boto3 (>=1.9)", "azure-storage-blob (>=12.1.0)", "azure-identity (>=1.7.0)", "atlassian-python-api (>=2.0.1)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)", "dulwich (>=0.19.7)", "PyGithub (>=1.51)", "python-gitlab (>=2.5.0)", "kubernetes (>=9.0.0a1.0)", "black", "graphviz (>=0.8)", "jinja2 (>=2.0,<4.0)", "mypy (>=0.600,<0.813)", "Pygments (>=2.2,<3.0)", "pytest (>=6.0)", "testfixtures (>=6.10.3)", "pytest-env (>=0.6.0)", "pytest-xdist (>=2.0)", "flaky (>=3.0)", "responses (>=0.14.0)", "PyJWT (>=2.3.0)", "pandas (>=1.0.1)", "jira (>=2.0.0)"]
 bitbucket = ["atlassian-python-api (>=2.0.1)"]
 cubejs = ["PyJWT (>=2.3.0)"]
 dask_cloudprovider = ["dask-cloudprovider[aws] (>=0.2.0)"]
@@ -1002,7 +1003,7 @@ gitlab = ["python-gitlab (>=2.5.0)"]
 google = ["google-cloud-bigquery (>=1.6.0)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)"]
 gsheets = ["gspread (>=3.6.0)"]
 jira = ["jira (>=2.0.0)"]
-jupyter = ["papermill (>=2.2.0)", "nbconvert (>=6.0.7)"]
+jupyter = ["papermill (>=2.2.0)", "nbconvert (>=6.0.7)", "ipykernel (>=6.9.2)"]
 kafka = ["confluent-kafka (>=1.7.0)"]
 kubernetes = ["dask-kubernetes (>=0.8.0)", "kubernetes (>=9.0.0a1.0)"]
 mysql = ["pymysql (>=0.9.3)"]
@@ -1019,9 +1020,10 @@ sodaspark = ["soda-spark (>=0.2.1)"]
 sodasql = ["soda-sql (>=2.0.0b25)"]
 spacy = ["spacy (>=2.0.0)"]
 sql_server = ["pyodbc (>=4.0.30)"]
-task_library_ci = ["airtable-python-wrapper (>=0.11)", "boto3 (>=1.9)", "azure-core (>=1.10.0)", "azure-storage-blob (>=12.1.0)", "azureml-sdk (>=1.0.6)", "azure-cosmos (>=3.1.1)", "atlassian-python-api (>=2.0.1)", "black", "graphviz (>=0.8)", "jinja2 (>=2.0,<4.0)", "mypy (>=0.600,<0.813)", "Pygments (>=2.2,<3.0)", "pytest (>=6.0)", "testfixtures (>=6.10.3)", "pytest-env (>=0.6.0)", "pytest-xdist (>=2.0)", "flaky (>=3.0)", "responses (>=0.14.0)", "PyJWT (>=2.3.0)", "pydantic (>=1.9.0)", "dropbox (>=9.0,<10.0)", "firebolt-sdk (>=0.2.1)", "great-expectations (>=0.13.8)", "mistune (<2.0)", "google-cloud-bigquery (>=1.6.0)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)", "dulwich (>=0.19.7)", "PyGithub (>=1.51)", "python-gitlab (>=2.5.0)", "gspread (>=3.6.0)", "jira (>=2.0.0)", "papermill (>=2.2.0)", "nbconvert (>=6.0.7)", "confluent-kafka (>=1.7.0)", "dask-kubernetes (>=0.8.0)", "kubernetes (>=9.0.0a1.0)", "pandas (>=1.0.1)", "psycopg2-binary (>=2.8.2)", "prometheus-client (>=0.9.0)", "pymysql (>=0.9.3)", "pushbullet.py (>=0.11.0)", "redis (>=3.2.1)", "feedparser (>=5.0.1)", "snowflake-connector-python (>=1.8.2)", "spacy (>=2.0.0)", "jinja2 (>=2.0)", "hvac (>=0.10)", "graphviz (>=0.8.3)", "tweepy (>=3.5)", "pyarrow (>=5.0.0)", "pyexasol (>=0.16.1)", "soda-sql (>=2.0.0b25)", "soda-spark (>=0.2.1)", "sendgrid (>=6.7.0)", "py2neo (>=2021.2.3)"]
+task_library_ci = ["airtable-python-wrapper (>=0.11)", "boto3 (>=1.9)", "azure-core (>=1.10.0)", "azure-storage-blob (>=12.1.0)", "azure-cosmos (>=3.1.1)", "azureml-sdk", "atlassian-python-api (>=2.0.1)", "black", "graphviz (>=0.8)", "jinja2 (>=2.0,<4.0)", "mypy (>=0.600,<0.813)", "Pygments (>=2.2,<3.0)", "pytest (>=6.0)", "testfixtures (>=6.10.3)", "pytest-env (>=0.6.0)", "pytest-xdist (>=2.0)", "flaky (>=3.0)", "responses (>=0.14.0)", "PyJWT (>=2.3.0)", "pydantic (>=1.9.0)", "dropbox (>=9.0,<10.0)", "firebolt-sdk (>=0.2.1)", "great-expectations (>=0.13.8)", "mistune (<2.0)", "google-cloud-bigquery (>=1.6.0)", "google-cloud-secret-manager (>=2.4.0)", "google-cloud-storage (>=1.13)", "google-cloud-aiplatform (>=1.4.0)", "google-auth (>=2.0)", "dulwich (>=0.19.7)", "PyGithub (>=1.51)", "python-gitlab (>=2.5.0)", "gspread (>=3.6.0)", "jira (>=2.0.0)", "papermill (>=2.2.0)", "nbconvert (>=6.0.7)", "ipykernel (>=6.9.2)", "confluent-kafka (>=1.7.0)", "dask-kubernetes (>=0.8.0)", "kubernetes (>=9.0.0a1.0)", "pandas (>=1.0.1)", "psycopg2-binary (>=2.8.2)", "prometheus-client (>=0.9.0)", "pymysql (>=0.9.3)", "pushbullet.py (>=0.11.0)", "redis (>=3.2.1)", "feedparser (>=5.0.1)", "snowflake-connector-python (>=1.8.2)", "spacy (>=2.0.0)", "jinja2 (>=2.0)", "hvac (>=0.10)", "graphviz (>=0.8.3)", "tweepy (>=3.5)", "pyarrow (>=5.0.0)", "pyexasol (>=0.16.1)", "soda-sql (>=2.0.0b25)", "soda-spark (>=0.2.1)", "sendgrid (>=6.7.0)", "py2neo (>=2021.2.3)", "transform (>=1.0.12)", "azure-identity (>=1.7.0)"]
 templates = ["jinja2 (>=2.0)"]
 test = ["pytest (>=6.0)", "testfixtures (>=6.10.3)", "pytest-env (>=0.6.0)", "pytest-xdist (>=2.0)", "flaky (>=3.0)", "responses (>=0.14.0)", "PyJWT (>=2.3.0)"]
+transform = ["transform (>=1.0.12)"]
 twitter = ["tweepy (>=3.5)"]
 vault = ["hvac (>=0.10)"]
 viz = ["graphviz (>=0.8.3)"]
@@ -1740,7 +1742,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a38aeb637c22c86041de7e4b1898b65fe7e9245e4ebd637ffdd49efd6cd192ca"
+content-hash = "30ebc3fe77e59b19bb9ea619c3a8e1be84fd8b4a4b5a4e02da9261436948bdf5"
 
 [metadata.files]
 amqp = [
@@ -2344,8 +2346,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 prefect = [
-    {file = "prefect-1.1.0-py3-none-any.whl", hash = "sha256:76bab5f4729b9d7bf34debd82831c5f690571ab51cc38ff750ea76513a58f78f"},
-    {file = "prefect-1.1.0.tar.gz", hash = "sha256:d500eb491da535d28a57d04902edf9d26790ef1f5272bf4fbeb63dcac3f695f9"},
+    {file = "prefect-1.2.0-py3-none-any.whl", hash = "sha256:27b5b6d3a425c7009ac6ab0a8b870864968ac3a0ca9f33c43d79bfc1505a3135"},
+    {file = "prefect-1.2.0.tar.gz", hash = "sha256:5a37d4e5228334b2535c4e0c0a26c565362489baf6f0d74bd6820032317e5e0c"},
 ]
 prompt-toolkit = [
     {file = "prompt_toolkit-3.0.16-py3-none-any.whl", hash = "sha256:62c811e46bd09130fb11ab759012a4ae385ce4fb2073442d1898867a824183bd"},

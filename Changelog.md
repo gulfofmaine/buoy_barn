@@ -8,6 +8,28 @@ Changes:
 
 Fixes:
 
+## 0.4.5 - 05/10/2022
+
+Changes:
+
+- Added URL to ERDDAP forecast request context
+- Added Sentry tag for forecast request context
+- Dependency Updates:
+  - Github Actions
+    - Setup Docker Buildx from 1.6.0 to 2.0.0
+    - Docker login from 1.14.1 to 2.0.0
+    - Docker build push from 2.10.0 to 3.0.0
+    - CodeQL from 1 to 2
+    - CodeQL autobuild from 1 to 2
+    - CodeQL analyze from 1 to 2
+  - Django CORS headers from 3.11 to 3.12
+  - Django Debug Toolbar from 3.2 to 3.4
+  - Django Rest Framework GIS from 0.18 to 1.0
+  - Sentry SDK from 1.5.8 to 1.5.11
+  - Pandas from 1.4.1 to 1.4.2
+  - Prefect from 1.1.0 to 1.2.1
+  - IPython from 8.1 to 8.3
+
 ## 0.4.4 - 03/23/2022
 
 Changes:

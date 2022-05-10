@@ -4,6 +4,7 @@ import os
 from typing import List, Tuple
 
 from erddapy import ERDDAP
+import sentry_sdk
 
 # from memoize import memoize
 import pandas as pd
@@ -89,7 +90,8 @@ class BaseERDDAPForecast(BaseForecast):
         
         Returns: 
             Table object from ERDDAP dataset for a given latitude and longitude
-         """
+        """
+        sentry_sdk.set_tag("forecast_dataset_id", self.dataset)
         url = self.dataset_url(lat, lon)
         timeout = float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60))
         response = requests.get(url, timeout=timeout)

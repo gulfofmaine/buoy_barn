@@ -1,4 +1,5 @@
 from datetime import datetime
+from json import JSONDecodeError
 import os
 from typing import List, Tuple
 
@@ -89,11 +90,15 @@ class BaseERDDAPForecast(BaseForecast):
         Returns: 
             Table object from ERDDAP dataset for a given latitude and longitude
          """
-        response = requests.get(
-            self.dataset_url(lat, lon),
-            timeout=float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60)),
-        )
-        return response.json()["table"]
+        url = self.dataset_url(lat, lon)
+        timeout = float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60))
+        response = requests.get(url, timeout=timeout)
+        try:
+            return response.json()["table"]
+        except JSONDecodeError as e:
+            raise JSONDecodeError(
+                f"Error decoding JSON from {url}: {e}", doc=e.doc, pos=e.pos
+            ) from e
 
     def dataset_info_df(self) -> pd.DataFrame:
         """ Retrieve the most recent metadata for a dataset to find valid time and coordinates

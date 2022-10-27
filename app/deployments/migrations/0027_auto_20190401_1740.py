@@ -6,22 +6,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('deployments', '0026_erddapdataset_healthchech_url'),
+        ("deployments", "0026_erddapdataset_healthchech_url"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='erddapdataset',
-            name='healthchech_url',
+            model_name="erddapdataset",
+            name="healthchech_url",
         ),
         migrations.AddField(
-            model_name='erddapdataset',
-            name='healthcheck_url',
-            field=models.URLField(blank=True, null=True, verbose_name='URL to send healthchecks to at beginning and end of processing'),
+            model_name="erddapdataset",
+            name="healthcheck_url",
+            field=models.URLField(
+                blank=True,
+                null=True,
+                verbose_name="URL to send healthchecks to at beginning and end of processing",
+            ),
         ),
         migrations.AddField(
-            model_name='erddapserver',
-            name='healthcheck_url',
-            field=models.URLField(blank=True, null=True, verbose_name='URL to send healthchecks to at beginning and end of processing'),
+            model_name="erddapserver",
+            name="healthcheck_url",
+            field=models.URLField(
+                blank=True,
+                null=True,
+                verbose_name="URL to send healthchecks to at beginning and end of processing",
+            ),
         ),
     ]

@@ -1,19 +1,18 @@
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
 
 import pandas as pd
 from erddapy import ERDDAP
 from requests.exceptions import HTTPError
 
 from ..models import (
+    BufferType,
+    DataType,
+    ErddapDataset,
+    ErddapServer,
     Platform,
     TimeSeries,
-    ErddapServer,
-    DataType,
-    BufferType,
-    ErddapDataset,
 )
-
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +23,10 @@ def convert_time(time: str) -> datetime:
 
 
 def add_timeseries(
-    platform: Platform, server: str, dataset: str, constraints
+    platform: Platform,
+    server: str,
+    dataset: str,
+    constraints,
 ):  # pylint: disable=too-many-locals
     """Add datatypes for a new dataset to a platform.
     See instructions in Readme.md"""
@@ -52,10 +54,10 @@ def add_timeseries(
 
     # extract times
     start_time = convert_time(
-        info[info["Attribute Name"] == "time_coverage_start"]["Value"].to_numpy()[0]
+        info[info["Attribute Name"] == "time_coverage_start"]["Value"].to_numpy()[0],
     )
     end_time = convert_time(
-        info[info["Attribute Name"] == "time_coverage_end"]["Value"].to_numpy()[0]
+        info[info["Attribute Name"] == "time_coverage_end"]["Value"].to_numpy()[0],
     )
     yesterday = datetime.utcnow() - timedelta(hours=24)
     if end_time > yesterday:
@@ -73,7 +75,8 @@ def add_timeseries(
         ds = e.to_xarray()
     except HTTPError:
         logger.error(
-            "Either the dataset was invalid, the server was down, or the dataset has not been updated in the last day"
+            "Either the dataset was invalid, the server was down, "
+            "or the dataset has not been updated in the last day",
         )
         return
 
@@ -88,7 +91,8 @@ def add_timeseries(
 
     erddap_server = ErddapServer.objects.get(base_url=server)
     erddap_dataset, _ = ErddapDataset.objects.get_or_create(
-        name=dataset, server=erddap_server
+        name=dataset,
+        server=erddap_server,
     )
 
     for var in ds.variables:
@@ -107,14 +111,14 @@ def add_timeseries(
             try:
                 try:
                     data_type = DataType.objects.get(
-                        standard_name=data_array.standard_name
+                        standard_name=data_array.standard_name,
                     )
                 except AttributeError:
                     try:
                         data_type = DataType.objects.get(long_name=data_array.long_name)
                     except AttributeError:
                         data_type = DataType.objects.filter(
-                            short_name=data_array.short_name
+                            short_name=data_array.short_name,
                         ).first()
 
             except DataType.DoesNotExist:

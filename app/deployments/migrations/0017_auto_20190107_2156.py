@@ -6,13 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('deployments', '0016_forecast_variable'),
+        ("deployments", "0016_forecast_variable"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='forecast',
-            name='forecast_type',
-            field=models.CharField(choices=[('waveHeight', 'Wave Height'), ('wavePeriod', 'Wave Period'), ('waveDirection', 'Wave Direction'), ('airTemperature', 'Air Temperature'), ('windSpeed', 'Wind Speed'), ('windDirection', 'Wind Direction')], max_length=32),
+            model_name="forecast",
+            name="forecast_type",
+            field=models.CharField(
+                choices=[
+                    ("waveHeight", "Wave Height"),
+                    ("wavePeriod", "Wave Period"),
+                    ("waveDirection", "Wave Direction"),
+                    ("airTemperature", "Air Temperature"),
+                    ("windSpeed", "Wind Speed"),
+                    ("windDirection", "Wind Direction"),
+                ],
+                max_length=32,
+            ),
         ),
     ]

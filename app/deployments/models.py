@@ -1,19 +1,19 @@
+import logging
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from enum import Enum
-import logging
 
-from django.urls import reverse
+import requests
 from django.contrib.gis.db import models
+from django.urls import reverse
 from erddapy import ERDDAP
 from memoize import memoize
-import requests
 
 logger = logging.getLogger(__name__)
 
 
 class ChoiceEnum(Enum):
-    """ Special Enum that can format it's options for a django choice field"""
+    """Special Enum that can format it's options for a django choice field"""
 
     @classmethod
     def choices(cls):
@@ -59,7 +59,9 @@ class Platform(models.Model):
     def latest_erddap_values(self):
         readings = []
         for series in self.timeseries_set.filter(active=True).select_related(
-            "data_type", "dataset", "dataset__server"
+            "data_type",
+            "dataset",
+            "dataset__server",
         ):  # .filter(end_time=None):
             if not series.end_time:
                 readings.append(
@@ -79,7 +81,7 @@ class Platform(models.Model):
                         )
                         if series.dataset.server.proxy_cors
                         else None,
-                    }
+                    },
                 )
         return readings
 
@@ -153,7 +155,10 @@ class ErddapServer(models.Model):
     name = models.SlugField("Server Name", max_length=64, null=True)
     base_url = models.CharField("ERDDAP API base URL", max_length=256)
     program = models.ForeignKey(
-        Program, on_delete=models.CASCADE, null=True, blank=True
+        Program,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
     contact = models.TextField("Contact information", null=True, blank=True)
     healthcheck_url = models.URLField(
@@ -164,7 +169,10 @@ class ErddapServer(models.Model):
     proxy_cors = models.BooleanField(
         "Proxy CORS requests",
         default=True,
-        help_text="Use Buoy Barn to proxy requests to remote ERDDAP server, if the remote server does not support CORS",
+        help_text=(
+            "Use Buoy Barn to proxy requests to remote ERDDAP server, "
+            "if the remote server does not support CORS"
+        ),
     )
 
     def __str__(self):
@@ -176,7 +184,7 @@ class ErddapServer(models.Model):
         return ERDDAP(self.base_url)
 
     def healthcheck_start(self):
-        """ Signal that a process has started with Healthchecks.io """
+        """Signal that a process has started with Healthchecks.io"""
         hc_url = self.healthcheck_url
 
         if hc_url:
@@ -189,7 +197,7 @@ class ErddapServer(models.Model):
                 )
 
     def healthcheck_complete(self):
-        """ Signal that a process has completed with Healthchecks.io """
+        """Signal that a process has completed with Healthchecks.io"""
         hc_url = self.healthcheck_url
 
         if hc_url:
@@ -221,7 +229,11 @@ class ErddapDataset(models.Model):
     )
     greater_than_hourly = models.BooleanField(
         default=False,
-        help_text="Select if this dataset should only be refreshed at intervals of longer than 1/hour between refreshes (say once per day). Ask Alex to setup refreshing at a different rate.",
+        help_text=(
+            "Select if this dataset should only be refreshed at intervals of "
+            "longer than 1/hour between refreshes (say once per day). "
+            "Ask Alex to setup refreshing at a different rate."
+        ),
     )
 
     def __str__(self):
@@ -232,7 +244,7 @@ class ErddapDataset(models.Model):
         return f"{self.server.name}-{self.name}"
 
     def healthcheck_start(self):
-        """ Signal that a process has started with Healthchecks.io """
+        """Signal that a process has started with Healthchecks.io"""
         hc_url = self.healthcheck_url
 
         if hc_url:
@@ -245,7 +257,7 @@ class ErddapDataset(models.Model):
                 )
 
     def healthcheck_complete(self):
-        """ Signal that a process has completed with Healthchecks.io """
+        """Signal that a process has completed with Healthchecks.io"""
         hc_url = self.healthcheck_url
 
         if hc_url:
@@ -275,7 +287,10 @@ class TimeSeries(models.Model):
     variable = models.CharField(max_length=256)
     constraints = models.JSONField(
         "Extra ERDDAP constraints",
-        help_text="Extra constratints needed when querying ERDDAP (for example: when datasets have multiple platforms)",
+        help_text=(
+            "Extra constratints needed when querying ERDDAP "
+            "(for example: when datasets have multiple platforms)"
+        ),
         null=True,
         blank=True,
     )
@@ -286,23 +301,32 @@ class TimeSeries(models.Model):
     end_time = models.DateTimeField(null=True, blank=True)
 
     buffer_type = models.ForeignKey(
-        BufferType, on_delete=models.CASCADE, null=True, blank=True
+        BufferType,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
 
     dataset = models.ForeignKey(ErddapDataset, on_delete=models.CASCADE)
 
     update_time = models.DateTimeField(
-        auto_now=True, help_text="When this value was last refreshed"
+        auto_now=True,
+        help_text="When this value was last refreshed",
     )
 
     value = models.FloatField(
-        null=True, blank=True, help_text="Most recent value from ERDDAP"
+        null=True,
+        blank=True,
+        help_text="Most recent value from ERDDAP",
     )
     value_time = models.DateTimeField(
-        null=True, blank=True, help_text="Time of the most recent value"
+        null=True,
+        blank=True,
+        help_text="Time of the most recent value",
     )
     active = models.BooleanField(
-        default=True, help_text="Should this dataset be currently updated?"
+        default=True,
+        help_text="Should this dataset be currently updated?",
     )
 
     def __str__(self):
@@ -332,7 +356,9 @@ class TimeSeries(models.Model):
 
 class Alert(models.Model):
     platform = models.ForeignKey(
-        Platform, on_delete=models.CASCADE, related_name="alerts"
+        Platform,
+        on_delete=models.CASCADE,
+        related_name="alerts",
     )
     start_time = models.DateField(default=date.today)
     end_time = models.DateField(blank=True, null=True)
@@ -344,11 +370,17 @@ class Alert(models.Model):
         DANGER = "danger"
 
     level = models.CharField(
-        "Alert level", choices=Level.choices(), default=Level.INFO, max_length=16
+        "Alert level",
+        choices=Level.choices(),
+        default=Level.INFO,
+        max_length=16,
     )
 
     def __str__(self):
-        return f"{self.platform.name} - {self.level} - {self.start_time}:{self.end_time} - {self.message}"
+        return (
+            f"{self.platform.name} - {self.level} "
+            f"- {self.start_time}:{self.end_time} - {self.message}"
+        )
 
     @property
     def json(self):

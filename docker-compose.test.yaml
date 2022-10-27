@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  db-test: 
+  db-test:
     image: mdillon/postgis:10-alpine@sha256:41516e866f9ec84a7c348084e02b577961cc5bca7c827d91b4566f0f729f370c
     env_file:
       - ./docker-data/test.env

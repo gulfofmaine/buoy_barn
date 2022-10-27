@@ -6,19 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('deployments', '0004_auto_20181207_1653'),
+        ("deployments", "0004_auto_20181207_1653"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='timeseries',
-            name='variable',
-            field=models.CharField(default='', max_length=256),
+            model_name="timeseries",
+            name="variable",
+            field=models.CharField(default="", max_length=256),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='erddapserver',
-            name='name',
-            field=models.CharField(max_length=64, null=True, verbose_name='Server Name'),
+            model_name="erddapserver",
+            name="name",
+            field=models.CharField(
+                max_length=64,
+                null=True,
+                verbose_name="Server Name",
+            ),
         ),
     ]

@@ -13,9 +13,12 @@ class Migration(migrations.Migration):
             name="constraints",
             field=models.JSONField(
                 blank=True,
-                help_text="Extra constratints needed when querying ERDDAP (for example: when datasets have multiple platforms)",
+                help_text=(
+                    "Extra constratints needed when querying ERDDAP "
+                    "(for example: when datasets have multiple platforms)"
+                ),
                 null=True,
                 verbose_name="Extra ERDDAP constraints",
             ),
-        )
+        ),
     ]

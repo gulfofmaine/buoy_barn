@@ -2,21 +2,20 @@ from datetime import timedelta
 
 from django.contrib.gis import admin
 from django.utils import timezone
-from django.utils.html import format_html_join
 from django.utils.safestring import mark_safe
 
 from .models import (
     Alert,
-    Program,
-    Platform,
-    MooringType,
-    StationType,
-    DataType,
     BufferType,
-    TimeSeries,
-    ProgramAttribution,
-    ErddapServer,
+    DataType,
     ErddapDataset,
+    ErddapServer,
+    MooringType,
+    Platform,
+    Program,
+    ProgramAttribution,
+    StationType,
+    TimeSeries,
 )
 
 
@@ -27,14 +26,13 @@ class TimeSeriesInline(admin.StackedInline):
     autocomplete_fields = ["dataset", "data_type", "buffer_type"]
     readonly_fields = ["test_timeseries"]
 
+    @admin.display(
+        description="Test if a timeseries is formatted correctly to connect to ERDDAP",
+    )
     def test_timeseries(self, instance):
         dataset_url = instance.dataset_url("htmlTable")
 
-        return mark_safe(f"<a href='{dataset_url}'>Test ERDDAP Timeseries</a>")
-
-    test_timeseries.short_description = (
-        "Test if a timeseries is formatted correctly to connect to ERDDAP"
-    )
+        return mark_safe(f"<a href='{dataset_url}'>Test ERDDAP Timeseries</a>")  # nosec
 
 
 class ProgramAttributionInline(admin.TabularInline):
@@ -47,6 +45,7 @@ class AlertInline(admin.TabularInline):
     extra = 0
 
 
+@admin.register(Platform)
 class PlatformAdmin(admin.GeoModelAdmin):
     ordering = ["name"]
     inlines = [AlertInline, TimeSeriesInline, ProgramAttributionInline]
@@ -65,6 +64,9 @@ class PlatformAdmin(admin.GeoModelAdmin):
         "timeseries__data_type__units",
     ]
 
+    @admin.action(
+        description="Remove end time for timeseries that have an end time in the last year",
+    )
     def remove_end_time(self, request, queryset):
         platforms = []
         timeseries = []
@@ -83,13 +85,13 @@ class PlatformAdmin(admin.GeoModelAdmin):
 
         self.message_user(
             request,
-            f"Removed end time for {len(timeseries)} timeseries with an end time since {year_ago} from {len(platforms)} platform",
+            (
+                f"Removed end time for {len(timeseries)} timeseries with an end time "
+                f"since {year_ago} from {len(platforms)} platform"
+            ),
         )
 
-    remove_end_time.short_description = (
-        "Remove end time for timeseries that have an end time in the last year"
-    )
-
+    @admin.action(description="Disable updating of timeseries")
     def disable_timeseries(self, request, queryset):
         platforms = []
         timeseries = []
@@ -107,8 +109,7 @@ class PlatformAdmin(admin.GeoModelAdmin):
             f"Disabled {len(timeseries)} timeseries from {len(platforms)} platforms",
         )
 
-    disable_timeseries.short_description = "Disable updating of timeseries"
-
+    @admin.action(description="Enable updating of timeseries")
     def enable_timeseries(self, request, queryset):
         platforms = []
         timeseries = []
@@ -126,14 +127,14 @@ class PlatformAdmin(admin.GeoModelAdmin):
             f"Enable {len(timeseries)} timeseries from {len(platforms)} platforms",
         )
 
-    enable_timeseries.short_description = "Enable updating of timeseries"
 
-
+@admin.register(ErddapServer)
 class ErddapServerAdmin(admin.ModelAdmin):
     ordering = ["name"]
 
     actions = ["disable_timeseries", "enable_timeseries"]
 
+    @admin.action(description="Disable updating of timeseries")
     def disable_timeseries(self, request, queryset):
         datasets = []
         timeseries = []
@@ -152,8 +153,7 @@ class ErddapServerAdmin(admin.ModelAdmin):
             f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets",
         )
 
-    disable_timeseries.short_description = "Disable updating of timeseries"
-
+    @admin.action(description="Enable updating of timeseries")
     def enable_timeseries(self, request, queryset):
         datasets = []
         timeseries = []
@@ -172,15 +172,15 @@ class ErddapServerAdmin(admin.ModelAdmin):
             f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets",
         )
 
-    enable_timeseries.short_description = "Enable updating of timeseries"
 
-
+@admin.register(ErddapDataset)
 class ErddapDatasetAdmin(admin.ModelAdmin):
     ordering = ["name"]
     search_fields = ["name", "server__name", "server__base_url"]
 
     actions = ["disable_timeseries", "enable_timeseries"]
 
+    @admin.action(description="Disable updating of timeseries")
     def disable_timeseries(self, request, queryset):
         datasets = []
         timeseries = []
@@ -198,8 +198,7 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
             f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets",
         )
 
-    disable_timeseries.short_description = "Disable updating of timeseries"
-
+    @admin.action(description="Enable updating of timeseries")
     def enable_timeseries(self, request, queryset):
         datasets = []
         timeseries = []
@@ -217,22 +216,17 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
             f"Disabled {len(timeseries)} timeseries from {len(datasets)} datasets",
         )
 
-    enable_timeseries.short_description = "Enable updating of timeseries"
 
-
+@admin.register(DataType)
 class DataTypeAdmin(admin.ModelAdmin):
     search_fields = ["short_name", "standard_name", "long_name", "units"]
 
 
+@admin.register(BufferType)
 class BufferTypeAdmin(admin.ModelAdmin):
     search_fields = ["name"]
 
 
 admin.site.register(Program)
-admin.site.register(Platform, PlatformAdmin)
 admin.site.register(MooringType)
 admin.site.register(StationType)
-admin.site.register(DataType, DataTypeAdmin)
-admin.site.register(BufferType, BufferTypeAdmin)
-admin.site.register(ErddapServer, ErddapServerAdmin)
-admin.site.register(ErddapDataset, ErddapDatasetAdmin)

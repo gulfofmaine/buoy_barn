@@ -61,7 +61,7 @@ def round_to(n, precision):
 
 def parse_time(dt: str) -> datetime:
     """Return a datetime object for an ERDDAP time
-    
+
     ERDDAP time is in the format of 2019-01-10T00:00:00Z
     and it is nicer to use native datetimes for comparisons
     """

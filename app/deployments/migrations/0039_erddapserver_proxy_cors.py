@@ -13,8 +13,11 @@ class Migration(migrations.Migration):
             name="proxy_cors",
             field=models.BooleanField(
                 default=True,
-                help_text="Use Buoy Barn to proxy requests to remote ERDDAP server, if the remote server does not support CORS",
+                help_text=(
+                    "Use Buoy Barn to proxy requests to remote ERDDAP server, "
+                    "if the remote server does not support CORS"
+                ),
                 verbose_name="Proxy CORS requests",
             ),
-        )
+        ),
     ]

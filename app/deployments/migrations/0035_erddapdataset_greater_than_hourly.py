@@ -6,13 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('deployments', '0034_erddapdataset_refresh_attempted'),
+        ("deployments", "0034_erddapdataset_refresh_attempted"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='erddapdataset',
-            name='greater_than_hourly',
-            field=models.BooleanField(default=False, help_text='Select if this dataset should only be refreshed at intervals of longer than 1/hour between refreshes (say once per day). Ask Alex to setup refreshing at a different rate.'),
+            model_name="erddapdataset",
+            name="greater_than_hourly",
+            field=models.BooleanField(
+                default=False,
+                help_text=(
+                    "Select if this dataset should only be refreshed at intervals of "
+                    "longer than 1/hour between refreshes (say once per day). "
+                    "Ask Alex to setup refreshing at a different rate."
+                ),
+            ),
         ),
     ]

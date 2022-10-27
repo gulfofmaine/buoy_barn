@@ -1,17 +1,17 @@
 from unittest.mock import patch
 
 import pytest
-
 from django.test import TransactionTestCase
 
 from deployments import tasks
 from deployments.models import (
-    Platform,
+    DataType,
     ErddapDataset,
     ErddapServer,
-    DataType,
+    Platform,
     TimeSeries,
 )
+
 from .vcr import my_vcr
 
 
@@ -23,17 +23,18 @@ class TaskTestCase(TransactionTestCase):
     def setUp(self):
         self.platform = Platform.objects.get(name="M01")
         self.erddap = ErddapServer.objects.get(
-            base_url="http://www.neracoos.org/erddap"
+            base_url="http://www.neracoos.org/erddap",
         )
 
         self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
         self.water_temp = DataType.objects.get(standard_name="sea_water_temperature")
         self.current_direction = DataType.objects.get(
-            standard_name="direction_of_sea_water_velocity"
+            standard_name="direction_of_sea_water_velocity",
         )
 
         self.ds_M01_sbe37 = ErddapDataset.objects.create(
-            name="M01_sbe37_all", server=self.erddap
+            name="M01_sbe37_all",
+            server=self.erddap,
         )
 
         # two time series from the same dataset and constraints
@@ -68,7 +69,8 @@ class TaskTestCase(TransactionTestCase):
         )
 
         self.ds_M01_aanderaa = ErddapDataset.objects.create(
-            name="M01_aanderaa_all", server=self.erddap
+            name="M01_aanderaa_all",
+            server=self.erddap,
         )
 
         # one with a different dataset
@@ -101,7 +103,10 @@ class TaskTestCase(TransactionTestCase):
         self.assertEqual(
             3,
             update_values_for_timeseries.call_count,
-            "The server should have three distinct dataset/constraint groups of timeseries to be called with",
+            (
+                "The server should have three distinct dataset/constraint "
+                "groups of timeseries to be called with"
+            ),
         )
 
     @patch("deployments.tasks.update_values_for_timeseries")
@@ -138,11 +143,12 @@ class TaskErrorTestCase(TransactionTestCase):
     def setUp(self):
         self.platform = Platform.objects.get(name="M01")
         self.erddap = ErddapServer.objects.get(
-            base_url="http://www.neracoos.org/erddap"
+            base_url="http://www.neracoos.org/erddap",
         )
 
         self.ds = ErddapDataset.objects.create(
-            name="N01_accelerometer_all", server=self.erddap
+            name="N01_accelerometer_all",
+            server=self.erddap,
         )
         self.ts = TimeSeries.objects.create(
             platform=self.platform,
@@ -165,7 +171,8 @@ class TaskErrorTestCase(TransactionTestCase):
     def test_500_end_time(self):
         j03 = Platform.objects.get(name="J03")
         dataset = ErddapDataset.objects.create(
-            name="J03_aanderaa_all", server=self.erddap
+            name="J03_aanderaa_all",
+            server=self.erddap,
         )
         ts = TimeSeries.objects.create(
             platform=j03,
@@ -216,7 +223,8 @@ class TaskErrorTestCase(TransactionTestCase):
     def test_500_actual_range(self):
         a01 = Platform.objects.get(name="A01")
         dataset = ErddapDataset.objects.create(
-            name="A01_waves_mstrain_all", server=self.erddap
+            name="A01_waves_mstrain_all",
+            server=self.erddap,
         )
         ts = TimeSeries.objects.create(
             platform=a01,
@@ -244,12 +252,13 @@ class TaskErrorTestCase(TransactionTestCase):
     def test_500_unrecognized_contraint(self):
         e01 = Platform.objects.get(name="E01")
         dataset = ErddapDataset.objects.create(
-            name="E01_aanderaa_all", server=self.erddap
+            name="E01_aanderaa_all",
+            server=self.erddap,
         )
         ts = TimeSeries.objects.create(
             platform=e01,
             data_type=DataType.objects.get(
-                standard_name="direction_of_sea_water_velocity"
+                standard_name="direction_of_sea_water_velocity",
             ),
             variable="current_direction",
             constraints={"direction_of_sea_water_velocity_qc=": 0},
@@ -272,7 +281,8 @@ class TaskErrorTestCase(TransactionTestCase):
     def test_404_no_matching_dataset(self):
         wlis = Platform.objects.get(name="WLIS")
         dataset = ErddapDataset.objects.create(
-            name="UCONN_WLIS_MET", server=self.erddap
+            name="UCONN_WLIS_MET",
+            server=self.erddap,
         )
         ts = TimeSeries.objects.create(
             platform=wlis,
@@ -302,12 +312,13 @@ class TaskErrorTestCase(TransactionTestCase):
             base_url="http://erddap.dataexplorer.oceanobservatories.org/erddap",
         )
         dataset = ErddapDataset.objects.create(
-            name="ooi-cp03issm-sbd11-06-metbka000", server=server
+            name="ooi-cp03issm-sbd11-06-metbka000",
+            server=server,
         )
         ts = TimeSeries.objects.create(
             platform=self.platform,
             data_type=DataType.objects.get(
-                standard_name="sea_surface_swell_wave_period"
+                standard_name="sea_surface_swell_wave_period",
             ),
             variable="sea_surface_wave_significant_period",
             constraints={},
@@ -330,7 +341,8 @@ class TaskErrorTestCase(TransactionTestCase):
     def test_404_no_matching_station(self):
         # platform = Platform.objects.get(name="BLTM3")
         server = ErddapServer.objects.create(
-            name="Coastwatch", base_url="https://coastwatch.pfeg.noaa.gov/erddap"
+            name="Coastwatch",
+            base_url="https://coastwatch.pfeg.noaa.gov/erddap",
         )
         dataset = ErddapDataset.objects.create(name="nosCoopsMW", server=server)
         ts = TimeSeries.objects.create(

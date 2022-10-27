@@ -1,11 +1,11 @@
 import time
 
 from django.core.management.base import BaseCommand, CommandError
-from django.db import connection, OperationalError
+from django.db import OperationalError, connection
 
 
 def check_db_connection() -> bool:
-    """ Returns True if the database is up """
+    """Returns True if the database is up"""
     try:
         connection.introspection.table_names()
         return True
@@ -18,7 +18,9 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "--timeout", help="Retry for given number of seconds", type=int
+            "--timeout",
+            help="Retry for given number of seconds",
+            type=int,
         )
 
     def handle(self, *args, **options):

@@ -1,21 +1,21 @@
 from urllib.parse import urljoin
 
+import requests
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-import requests
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 
-from .models import Platform, ErddapDataset, ErddapServer
+from .models import ErddapDataset, ErddapServer, Platform
 from .serializers import (
-    PlatformSerializer,
     ErddapDatasetSerializer,
     ErddapServerSerializer,
+    PlatformSerializer,
 )
 from .tasks import refresh_dataset, refresh_server
 
@@ -92,7 +92,10 @@ class ServerViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ProxyTimeout(APIException):
     status_code = 504
-    default_detail = f"Upstream ERDDAP server did not respond within {settings.PROXY_TIMEOUT_SECONDS} seconds, so the request timed out."
+    default_detail = (
+        f"Upstream ERDDAP server did not respond within {settings.PROXY_TIMEOUT_SECONDS}"
+        " seconds, so the request timed out."
+    )
     default_code = "erddap_timeout"
 
 
@@ -105,7 +108,9 @@ def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
 
     try:
         response = requests.get(
-            request_url, stream=True, timeout=settings.PROXY_TIMEOUT_SECONDS
+            request_url,
+            stream=True,
+            timeout=settings.PROXY_TIMEOUT_SECONDS,
         )
     except requests.Timeout as e:
         raise ProxyTimeout from e

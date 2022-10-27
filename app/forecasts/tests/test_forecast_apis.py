@@ -1,5 +1,3 @@
-import json
-
 from deployments.tests.vcr import my_vcr
 from forecasts.forecasts import forecast_list
 

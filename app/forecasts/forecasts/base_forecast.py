@@ -1,6 +1,5 @@
 from datetime import datetime
 from enum import Enum
-from typing import List, Tuple
 
 
 class ForecastTypes(Enum):
@@ -14,7 +13,7 @@ class ForecastTypes(Enum):
 
 
 class BaseForecast:
-    """ Base type for forecasts.
+    """Base type for forecasts.
     All forecasts must implement these attributes,
     and the point_forecast method with the same signatures
     as this is the interface that the API will interact with.
@@ -35,8 +34,9 @@ class BaseForecast:
     source_url: str = NotImplemented
     units: str = NotImplemented
 
-    def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
-        """ Method to override so that child forecasts can produce a forecast for a point of given latitude and longitude
+    def point_forecast(self, lat: float, lon: float) -> list[tuple[datetime, float]]:
+        """Method to override so that child forecasts can produce a forecast
+        for a point of given latitude and longitude
 
         Args:
             lat (float): Latitude in degrees North
@@ -48,7 +48,7 @@ class BaseForecast:
         raise NotImplementedError
 
     def json(self):
-        """ Returns a dict with standard information about the forecast """
+        """Returns a dict with standard information about the forecast"""
         return {
             "slug": self.slug,
             "forecast_type": self.forecast_type,

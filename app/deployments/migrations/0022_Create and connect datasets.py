@@ -12,7 +12,8 @@ def create_and_connect_datasets(apps, schema_editory):
 
     for ts in TimeSeries.objects.all():
         ds = ErddapDataset.objects.filter(
-            name=ts.erddap_dataset, server=ts.erddap_server
+            name=ts.erddap_dataset,
+            server=ts.erddap_server,
         ).first()
         if not ds:
             ds = ErddapDataset(name=ts.erddap_dataset, server=ts.erddap_server)

@@ -14,7 +14,7 @@ def create_exrx_data_types(apps, schema_editor):
             "Dissolved O2",
             "Oxygen Concentration In Sea Water",
             "mg/L",
-        )
+        ),
     ]
 
     DataType = apps.get_model("deployments", "DataType")

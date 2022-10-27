@@ -6,7 +6,7 @@ from rest_framework_gis.serializers import (
     GeometrySerializerMethodField,
 )
 
-from .models import Platform, ErddapDataset, ErddapServer, Program
+from .models import ErddapDataset, ErddapServer, Platform, Program
 
 logger = logging.getLogger(__name__)
 

@@ -1,18 +1,17 @@
-from django.core.management import call_command
-from django.test import TestCase
 import pytest
+from django.test import TestCase
 
 from deployments.models import (
-    Program,
+    BufferType,
+    DataType,
+    ErddapDataset,
+    ErddapServer,
+    MooringType,
     Platform,
+    Program,
     ProgramAttribution,
     StationType,
-    MooringType,
-    DataType,
-    BufferType,
-    ErddapServer,
     TimeSeries,
-    ErddapDataset,
 )
 
 
@@ -20,7 +19,8 @@ from deployments.models import (
 class ProgramTestCase(TestCase):
     def setUp(self):
         self.program = Program.objects.create(
-            name="NERACOOS", website="http://neracoos.org"
+            name="NERACOOS",
+            website="http://neracoos.org",
         )
 
     def test_program_attributes(self):
@@ -54,7 +54,8 @@ class PlatformTestCase(TestCase):
         )
 
         self.other_platform = Platform.objects.create(
-            name="A01", mooring_site_desc="MAssachusetts Bay"
+            name="A01",
+            mooring_site_desc="MAssachusetts Bay",
         )
 
     def test_platform_str(self):
@@ -104,7 +105,8 @@ class ProgramAttributionTestCase(TestCase):
 
     def test_attribution_json(self):
         attribution = ProgramAttribution.objects.get(
-            program=self.neracoos, platform=self.platform
+            program=self.neracoos,
+            platform=self.platform,
         )
 
         self.assertIn("program", attribution.json)
@@ -180,7 +182,7 @@ class ErddapServerTestCase(TestCase):
         )
 
         self.server_without_name = ErddapServer.objects.create(
-            base_url="http://www.neracoos.org/erddap"
+            base_url="http://www.neracoos.org/erddap",
         )
 
     def test_server_str_with_name(self):
@@ -188,7 +190,8 @@ class ErddapServerTestCase(TestCase):
 
     def test_server_str_without_name(self):
         self.assertEqual(
-            str(self.server_without_name), "http://www.neracoos.org/erddap"
+            str(self.server_without_name),
+            "http://www.neracoos.org/erddap",
         )
 
     def test_server_connection(self):
@@ -204,20 +207,21 @@ class TimeSeriesTestCase(TestCase):
     def setUp(self):
         self.platform = Platform.objects.get(name="N01")
         self.erddap = ErddapServer.objects.get(
-            base_url="http://www.neracoos.org/erddap"
+            base_url="http://www.neracoos.org/erddap",
         )
 
         # self.conductivity = DataType.objects.get(standard_name='sea_water_electrical_conductivity')
         self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
         self.water_temp = DataType.objects.get(standard_name="sea_water_temperature")
         self.current_direction = DataType.objects.get(
-            standard_name="direction_of_sea_water_velocity"
+            standard_name="direction_of_sea_water_velocity",
         )
 
         self.buffer_type = BufferType.objects.get(name="sbe37")
 
         self.ds_N01_sbe37 = ErddapDataset.objects.create(
-            name="N01_sbe37_all", server=self.erddap
+            name="N01_sbe37_all",
+            server=self.erddap,
         )
 
         # two time series from the same dataset and constraints
@@ -264,7 +268,8 @@ class TimeSeriesTestCase(TestCase):
         )
 
         self.ds_N01_aanderaa = ErddapDataset.objects.create(
-            name="N01_aanderaa_all", server=self.erddap
+            name="N01_aanderaa_all",
+            server=self.erddap,
         )
 
         # one with a different dataset
@@ -298,4 +303,3 @@ class TimeSeriesTestCase(TestCase):
     def test_timeseries_str(self):
         self.assertIn("N01", str(self.ts1))
         self.assertIn("1", str(self.ts1))
-

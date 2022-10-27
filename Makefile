@@ -6,7 +6,7 @@ up: down build
 	docker compose logs -f
 
 down:
-	docker compose down
+	docker compose -f docker-compose.test.yaml -f docker-compose.yaml down
 
 stop:
 	docker compose stop

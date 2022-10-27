@@ -1,5 +1,5 @@
 #syntax=docker/dockerfile:1.2
-FROM python:3.9.6-slim@sha256:182f0eff727af9fccf88294dbfffb23ad408369c412e1267ddd5aa63ef8b5bf8
+FROM python:3.10.8-slim@sha256:d29fc682d30b314f41d5bb9e19ffe0b8fa128b836146a0a5b19dd60e96d1c19b
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1
@@ -13,10 +13,10 @@ ENV POETRY_VIRTUALENVS_CREATE false
 # geodjango spatial requirements
 RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update && apt-get install -y --no-install-recommends \
-    binutils=2.31.1-16 \
-    libproj-dev=5.2.0-1 \
-    gdal-bin=2.4.0+dfsg-1+b1 \
-    build-essential=12.6
+    binutils=2.35.2-2 \
+    libproj-dev=7.2.1-1 \
+    gdal-bin=3.2.2+dfsg-2+deb11u2 \
+    build-essential=12.9
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install poetry==1.1.11 \

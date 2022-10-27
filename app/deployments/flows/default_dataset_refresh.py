@@ -1,13 +1,15 @@
 from datetime import timedelta
-from typing import Iterable
 
 from prefect import Flow
 from prefect.schedules import Schedule
 from prefect.schedules.clocks import CronClock
 from prefect.storage.local import Local
 
-from deployments.flows.refresh_tasks import refresh_dataset, not_recently_refreshed_datasets, refreshed_datasets_status
-
+from deployments.flows.refresh_tasks import (
+    not_recently_refreshed_datasets,
+    refresh_dataset,
+    refreshed_datasets_status,
+)
 
 # Task is scheduled to hour,
 # so we should check something slightly less than that
@@ -22,7 +24,8 @@ with Flow(flow_name) as flow:
 
 # flow should be stored as script so that `django.setup()` gets called appropriately
 flow.storage = Local(
-    path="deployments.flows.default_dataset_refresh", stored_as_script=True
+    path="deployments.flows.default_dataset_refresh",
+    stored_as_script=True,
 )
 
 schedule = Schedule(clocks=[CronClock("0 */1 * * *")])

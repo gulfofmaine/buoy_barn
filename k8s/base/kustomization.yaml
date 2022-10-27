@@ -9,5 +9,5 @@ resources:
   - prefect-agent.yaml
 configMapGenerator:
   - name: buoy-barn-config
-    envs: 
+    envs:
     - config.env

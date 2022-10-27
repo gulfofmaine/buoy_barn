@@ -1,17 +1,18 @@
 from unittest.mock import patch
 
 import geojson
-from rest_framework.test import APITestCase
 import pytest
+from rest_framework.test import APITestCase
 
 from deployments.models import (
+    BufferType,
+    DataType,
+    ErddapDataset,
+    ErddapServer,
     Platform,
     TimeSeries,
-    ErddapServer,
-    DataType,
-    BufferType,
-    ErddapDataset,
 )
+
 from .vcr import my_vcr
 
 
@@ -22,20 +23,21 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
     def setUp(self):
         self.platform = Platform.objects.get(name="N01")
         self.erddap = ErddapServer.objects.get(
-            base_url="http://www.neracoos.org/erddap"
+            base_url="http://www.neracoos.org/erddap",
         )
 
         # self.conductivity = DataType.objects.get(standard_name='sea_water_electrical_conductivity')
         self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
         self.water_temp = DataType.objects.get(standard_name="sea_water_temperature")
         self.current_direction = DataType.objects.get(
-            standard_name="direction_of_sea_water_velocity"
+            standard_name="direction_of_sea_water_velocity",
         )
 
         self.buffer_type = BufferType.objects.get(name="sbe37")
 
         self.ds_N01_sbe37 = ErddapDataset.objects.create(
-            name="N01_sbe37_all", server=self.erddap
+            name="N01_sbe37_all",
+            server=self.erddap,
         )
 
         # two time series from the same dataset and constraints
@@ -82,7 +84,8 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
         )
 
         self.ds_N01_aanderaa = ErddapDataset.objects.create(
-            name="N01_aanderaa_all", server=self.erddap
+            name="N01_aanderaa_all",
+            server=self.erddap,
         )
 
         # one with a different dataset
@@ -135,7 +138,9 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             "programs",
         ):
             self.assertIn(
-                key, geo["properties"], msg=f"{key} is not in feature properties"
+                key,
+                geo["properties"],
+                msg=f"{key} is not in feature properties",
             )
         self.assertNotIn("geom", geo["properties"])
 
@@ -164,7 +169,9 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             "programs",
         ):
             self.assertIn(
-                key, geo["properties"], msg=f"{key} is not in feature properties"
+                key,
+                geo["properties"],
+                msg=f"{key} is not in feature properties",
             )
         self.assertNotIn("geom", geo["properties"])
 
@@ -185,7 +192,9 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
                 "cors_proxy_url",
             ):
                 self.assertIn(
-                    key, reading, msg=f"{key} not found in reading: {reading}"
+                    key,
+                    reading,
+                    msg=f"{key} not found in reading: {reading}",
                 )
                 self.assertIsNotNone(reading[key], msg=f"reading[{key}]: is none")
 
@@ -197,10 +206,12 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
             self.assertEqual(reading["server"], "http://www.neracoos.org/erddap")
 
             self.assertIsNotNone(
-                reading["variable"], msg=f"{reading} is missing a variable"
+                reading["variable"],
+                msg=f"{reading} is missing a variable",
             )
             self.assertIsNotNone(
-                reading["dataset"], msg=f"{reading} is missing a dataset"
+                reading["dataset"],
+                msg=f"{reading} is missing a dataset",
             )
 
             for key in ("standard_name", "short_name", "long_name", "units"):
@@ -218,7 +229,10 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
         self.assertEqual(
             60,
             len(geo["features"]),
-            msg="Should be the same as the number of platforms in the fixture file. This may need to be changed after fixtures are regenerated.",
+            msg=(
+                "Should be the same as the number of platforms in the fixture file. "
+                "This may need to be changed after fixtures are regenerated."
+            ),
         )
 
     def test_server_list(self):
@@ -254,7 +268,8 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
 
     def test_dataset_detail(self):
         response = self.client.get(
-            "/api/datasets/NERACOOS-N01_sbe37_all/", format="json"
+            "/api/datasets/NERACOOS-N01_sbe37_all/",
+            format="json",
         )
 
         self.assertIn(b"N01_sbe37_all", response.content)
@@ -267,7 +282,8 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
     @patch("deployments.tasks.refresh_dataset.delay")
     def test_dataset_refresh(self, refresh_dataset):
         response = self.client.get(
-            "/api/datasets/NERACOOS-N01_sbe37_all/refresh/", format="json"
+            "/api/datasets/NERACOOS-N01_sbe37_all/refresh/",
+            format="json",
         )
         self.assertIn(b"N01_sbe37_all", response.content)
         self.assertIn(b"NERACOOS", response.content)

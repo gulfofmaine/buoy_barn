@@ -12,5 +12,5 @@ class Migration(migrations.Migration):
             model_name="datatype",
             name="short_name",
             field=models.CharField(blank=True, max_length=64, null=True),
-        )
+        ),
     ]

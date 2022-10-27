@@ -6,18 +6,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('deployments', '0027_auto_20190401_1740'),
+        ("deployments", "0027_auto_20190401_1740"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='timeseries',
-            name='value',
-            field=models.FloatField(blank=True, help_text='Most recent value from ERDDAP', null=True),
+            model_name="timeseries",
+            name="value",
+            field=models.FloatField(
+                blank=True,
+                help_text="Most recent value from ERDDAP",
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='timeseries',
-            name='value_time',
-            field=models.DateTimeField(blank=True, help_text='Time of the most recent value', null=True),
+            model_name="timeseries",
+            name="value_time",
+            field=models.DateTimeField(
+                blank=True,
+                help_text="Time of the most recent value",
+                null=True,
+            ),
         ),
     ]

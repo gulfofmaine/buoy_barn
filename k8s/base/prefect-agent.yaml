@@ -26,7 +26,7 @@ spec:
             - python
             - manage.py
             - prefect
-            - --register 
+            - --register
             - --agent
           envFrom:
             - secretRef:

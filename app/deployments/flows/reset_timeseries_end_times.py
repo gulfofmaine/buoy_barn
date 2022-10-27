@@ -1,5 +1,6 @@
 from collections import defaultdict
-from typing import Iterable, List, Tuple, Union
+from collections.abc import Iterable
+from typing import Union
 
 import django
 import prefect
@@ -11,20 +12,18 @@ from requests import HTTPError
 # Needs to be called before any models can be imported
 django.setup()
 
-from deployments.models import TimeSeries  # pylint: disable=wrong-import-position
-from deployments.utils.erddap_datasets import (  # pylint: disable=wrong-import-position
-    retrieve_dataframe,
-)
+from deployments.models import TimeSeries  # noqa: E402
+from deployments.utils.erddap_datasets import retrieve_dataframe  # noqa: E402
 
-
-TimeSeriesGroup = Tuple[
-    Tuple[str, Iterable[Tuple[str, Union[str, int, float]]]], Iterable[int]
+TimeSeriesGroup = tuple[
+    tuple[str, Iterable[tuple[str, Union[str, int, float]]]],
+    Iterable[int],
 ]
 
 
 @task
 def find_outdated_timeseries() -> Iterable[TimeSeriesGroup]:
-    """ Return timeseries with an end_time set """
+    """Return timeseries with an end_time set"""
 
     logger = prefect.context.get("logger")
     groups = defaultdict(list)
@@ -42,12 +41,12 @@ def find_outdated_timeseries() -> Iterable[TimeSeriesGroup]:
     return ts_groups
 
 
-TimeseriesUpdated = Tuple[Iterable[int], bool]
+TimeseriesUpdated = tuple[Iterable[int], bool]
 
 
 @task
 def check_timeseries_for_updates(ts_group: TimeSeriesGroup) -> TimeseriesUpdated:
-    """ Check to see if an outdated timeseries group is now updated """
+    """Check to see if an outdated timeseries group is now updated"""
 
     logger = prefect.context.get("logger")
 
@@ -64,7 +63,7 @@ def check_timeseries_for_updates(ts_group: TimeSeriesGroup) -> TimeseriesUpdated
         )
     except HTTPError:
         logger.info(
-            f"Dataset {dataset} with constraint {constraint} has not been updated"
+            f"Dataset {dataset} with constraint {constraint} has not been updated",
         )
         return tuple(timeseries_ids), False
     else:
@@ -81,11 +80,11 @@ def check_timeseries_for_updates(ts_group: TimeSeriesGroup) -> TimeseriesUpdated
 
 @task
 def log_timeseries_status(ts_status: Iterable[TimeseriesUpdated]):
-    """ Generate an artifact with the status of timeseries """
+    """Generate an artifact with the status of timeseries"""
     logger = prefect.context.get("logger")
 
-    updated: List[int] = []
-    not_updated: List[int] = []
+    updated: list[int] = []
+    not_updated: list[int] = []
 
     for timeseries_ids, was_updated in ts_status:
         if was_updated:
@@ -95,7 +94,7 @@ def log_timeseries_status(ts_status: Iterable[TimeseriesUpdated]):
 
     markdown = """
 # Checked for restarted TimeSeries
-    
+
 TimeSeries with `end_time` were checked to see if they have been updated.
 
     """
@@ -114,13 +113,13 @@ TimeSeries with `end_time` were checked to see if they have been updated.
 
 
 def platforms_timeseries_markdown(timeseries_ids: Iterable[int]) -> str:
-    """ Return a markdown formatted block with the platforms and timeseries """
+    """Return a markdown formatted block with the platforms and timeseries"""
 
     platforms = defaultdict(list)
 
     for ts in TimeSeries.objects.filter(id__in=timeseries_ids):
         platforms[ts.platform.name].append(
-            (ts.dataset.server.name, ts.dataset.name, ts.variable, ts.depth)
+            (ts.dataset.server.name, ts.dataset.name, ts.variable, ts.depth),
         )
 
     markdown = "\n"
@@ -142,5 +141,6 @@ with Flow("reset_timeseries_end_times") as flow:
 
 # flow should be stored as script so that `django.setup()` gets called appropriately
 flow.storage = Local(
-    path="deployments.flows.reset_timeseries_end_times", stored_as_script=True
+    path="deployments.flows.reset_timeseries_end_times",
+    stored_as_script=True,
 )

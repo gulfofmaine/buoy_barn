@@ -1,17 +1,17 @@
-from forecasts.forecasts.neracoos_erddap.bedford import (
-    BedfordWaveHeight,
-    BedfordWavePeriod,
-    BedfordWaveDirection,
-)
 from forecasts.forecasts.coastwatch_erddap.gfs import (
     GFSAirTemp,
-    GFSWindSpeed,
     GFSWindDirection,
+    GFSWindSpeed,
+)
+from forecasts.forecasts.neracoos_erddap.bedford import (
+    BedfordWaveDirection,
+    BedfordWaveHeight,
+    BedfordWavePeriod,
 )
 from forecasts.forecasts.umass.necofs import (
+    NecofsWaveDirection,
     NecofsWaveHeight,
     NecofsWavePeriod,
-    NecofsWaveDirection,
 )
 
 # from forecasts.forecasts.coastwatch_erddap.wave_watch import GlobalWaveWatchHeight

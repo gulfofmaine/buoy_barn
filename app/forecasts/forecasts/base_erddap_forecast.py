@@ -1,23 +1,21 @@
+import os
 from datetime import datetime
 from json import JSONDecodeError
-import os
-from typing import List, Tuple
-
-from erddapy import ERDDAP
-import sentry_sdk
 
 # from memoize import memoize
 import pandas as pd
 import requests
-
-# from requests import HTTPError
+import sentry_sdk
+from erddapy import ERDDAP
 
 from forecasts.forecasts.base_forecast import BaseForecast
 from forecasts.utils import erddap as erddap_utils
 
+# from requests import HTTPError
+
 
 class BaseERDDAPForecast(BaseForecast):
-    """ Extends BaseForecast with methods for accessing and retrieving forecasts from ERDDAP servers
+    """Extends BaseForecast with methods for accessing and retrieving forecasts from ERDDAP servers
 
     Attributes:
         server (str): ERDDAP server URL without trailing slash
@@ -31,16 +29,16 @@ class BaseERDDAPForecast(BaseForecast):
     to_360: bool = False
     field: str = NotImplemented
 
-    def point_forecast(self, lat: float, lon: float) -> List[Tuple[datetime, float]]:
-        """ Retrieve and return a formatted forecast for given latitude and longitude.
+    def point_forecast(self, lat: float, lon: float) -> list[tuple[datetime, float]]:
+        """Retrieve and return a formatted forecast for given latitude and longitude.
 
         Can be overridded for datasets that have multiple fields or other extra computation needed.
 
         Args:
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
-        
-        Returns: 
+
+        Returns:
             List of tuples of forecasted times and values
         """
         json = self.request_dataset(lat, lon)
@@ -61,9 +59,9 @@ class BaseERDDAPForecast(BaseForecast):
         ]
 
     def json(self):
-        """ Returns a dict with standard information about the forecast """
+        """Returns a dict with standard information about the forecast"""
         return {
-            **super(BaseERDDAPForecast, self).json(),
+            **super().json(),
             "server": self.server,
             "dataset": self.dataset,
             "to_360": self.to_360,
@@ -71,24 +69,25 @@ class BaseERDDAPForecast(BaseForecast):
         }
 
     def offset_value(self, value: float) -> float:  # pylint: disable=no-self-use
-        """ Allows you to override a value to return something more helpful (say Celsius rather than Kelvin) """
+        """Allows you to override a value to return something more helpful
+        (say Celsius rather than Kelvin)"""
         return value
 
     def connection(self) -> ERDDAP:
-        """ Return a connection to the ERDDAP server """
+        """Return a connection to the ERDDAP server"""
         conn = ERDDAP(self.server)
         conn.dataset_id = self.dataset
 
         return conn
 
     def request_dataset(self, lat: float, lon: float):
-        """ Return the dataset JSON table dict for a given latitude and longitude
-        
+        """Return the dataset JSON table dict for a given latitude and longitude
+
         Args:
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
-        
-        Returns: 
+
+        Returns:
             Table object from ERDDAP dataset for a given latitude and longitude
         """
         sentry_sdk.set_tag("forecast_dataset_id", self.dataset)
@@ -99,12 +98,14 @@ class BaseERDDAPForecast(BaseForecast):
             return response.json()["table"]
         except JSONDecodeError as e:
             raise JSONDecodeError(
-                f"Error decoding JSON from {url}: {e}", doc=e.doc, pos=e.pos
+                f"Error decoding JSON from {url}: {e}",
+                doc=e.doc,
+                pos=e.pos,
             ) from e
 
     def dataset_info_df(self) -> pd.DataFrame:
-        """ Retrieve the most recent metadata for a dataset to find valid time and coordinates
-        
+        """Retrieve the most recent metadata for a dataset to find valid time and coordinates
+
         Returns:
             Pandas DataFrame
         """
@@ -115,24 +116,24 @@ class BaseERDDAPForecast(BaseForecast):
         return pd.read_csv(info_csv_url)
 
     def dataset_url(self, lat: float, lon: float) -> str:
-        """ Return the full url of the dataset with query string for a given latitude and longitude.
+        """Return the full url of the dataset with query string for a given latitude and longitude.
 
         Args:
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
-        
+
         Returns:
             Dataset URL
         """
         return f"{self.server}/griddap/{self.dataset}.json?{self.dataset_query_string(lat, lon)}"
 
     def dataset_query_string(self, lat: float, lon: float) -> str:
-        """ Create the query string for a dataset
+        """Create the query string for a dataset
 
         Args:
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
-        
+
         Returns:
             Query string for dataset with variables, times, and coordinates
         """
@@ -144,17 +145,18 @@ class BaseERDDAPForecast(BaseForecast):
         )
 
     def coverage_time_str(
-        self, info_df=pd.DataFrame
+        self,
+        info_df=pd.DataFrame,
     ) -> str:  # pylint: disable=no-self-use
-        """ Formatted query string element for forecast coverage time range
-        
+        """Formatted query string element for forecast coverage time range
+
         Args:
             info_df (pd.DataFrame): Pandas DataFrame
         """
         return erddap_utils.coverage_time_str(info_df)
 
-    def request_variables(self) -> List[str]:
-        """ The variables that should be requested from the dataset.
+    def request_variables(self) -> list[str]:
+        """The variables that should be requested from the dataset.
         Can be overridden for more complicated datasets that require multiple fields
 
         Returns:
@@ -163,7 +165,7 @@ class BaseERDDAPForecast(BaseForecast):
         return [self.field]
 
     def coordinates_str(self, info_df: pd.DataFrame, lat: float, lon: float) -> str:
-        """ Create coordinates query string element
+        """Create coordinates query string element
 
         Arguments:
             info_df(pd.DataFrame): Dataset metadata DataFrame

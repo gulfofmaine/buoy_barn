@@ -6,17 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('deployments', '0032_generate_exrx_datatypes'),
+        ("deployments", "0032_generate_exrx_datatypes"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='datatype',
-            options={'ordering': ['standard_name']},
+            name="datatype",
+            options={"ordering": ["standard_name"]},
         ),
         migrations.AddField(
-            model_name='timeseries',
-            name='active',
-            field=models.BooleanField(default=True, help_text='Should this dataset be currently updated?'),
+            model_name="timeseries",
+            name="active",
+            field=models.BooleanField(
+                default=True,
+                help_text="Should this dataset be currently updated?",
+            ),
         ),
     ]

@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('deployments', '0002_auto_20181204_1613'),
+        ("deployments", "0002_auto_20181204_1613"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='program',
-            name='website',
+            model_name="program",
+            name="website",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='timeseries',
-            name='erddap_dataset',
+            model_name="timeseries",
+            name="erddap_dataset",
             field=models.CharField(blank=True, max_length=256, null=True),
         ),
     ]

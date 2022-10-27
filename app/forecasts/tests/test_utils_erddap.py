@@ -1,12 +1,11 @@
 from datetime import datetime
 from pathlib import Path
 
+import pandas as pd
 from django.test import TestCase
 from freezegun import freeze_time
-import pandas as pd
 
 from forecasts.utils import erddap
-
 
 df = pd.read_csv(Path(__file__).parents[0] / "test_griddap_attributes.csv")
 

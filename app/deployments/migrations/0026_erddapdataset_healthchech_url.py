@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('deployments', '0025_auto_20190328_1744'),
+        ("deployments", "0025_auto_20190328_1744"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='erddapdataset',
-            name='healthchech_url',
+            model_name="erddapdataset",
+            name="healthchech_url",
             field=models.URLField(blank=True, null=True),
         ),
     ]

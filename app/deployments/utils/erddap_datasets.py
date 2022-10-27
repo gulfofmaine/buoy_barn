@@ -1,17 +1,15 @@
+import os
 from datetime import datetime, timedelta
 from logging import getLogger
-import os
-from typing import List
 
 from erddapy import ERDDAP
 from pandas import DataFrame
-
 
 logger = getLogger(__name__)
 
 
 def filter_dataframe(df: DataFrame, column: str) -> DataFrame:
-    """ Remove invalid times and for the specified column"""
+    """Remove invalid times and for the specified column"""
     df = df[df["time (UTC)"].notna()]
     column_name = [col for col in df.columns if col.split(" ")[0] == column][0]
     return df[df[column_name].notna()]
@@ -20,7 +18,7 @@ def filter_dataframe(df: DataFrame, column: str) -> DataFrame:
 def setup_variables(
     server: ERDDAP,
     dataset: str,
-    variables: List[str],
+    variables: list[str],
     constraints=None,
     time: datetime = None,
 ) -> ERDDAP:
@@ -45,18 +43,18 @@ def setup_variables(
 
 
 def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFrame:
-    """ Returns a dataframe from ERDDAP for a given dataset
+    """Returns a dataframe from ERDDAP for a given dataset
 
-    Attempts to sort the dataframe by time """
+    Attempts to sort the dataframe by time"""
     e = setup_variables(
         server.connection(),
         dataset,
-        list(set(series.variable for series in timeseries)),
+        list({series.variable for series in timeseries}),
         constraints=constraints,
     )
 
     e.requests_kwargs["timeout"] = float(
-        os.environ.get("RETRIEVE_DATAFRAME_TIMEOUT_SECONDS", 60)
+        os.environ.get("RETRIEVE_DATAFRAME_TIMEOUT_SECONDS", 60),
     )
 
     df = e.to_pandas(parse_dates=True)

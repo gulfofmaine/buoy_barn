@@ -1,15 +1,14 @@
 """Viewset for displaying forecasts, and fetching point forecast data is lat,lon are specified"""
+import logging
 from datetime import timezone
 from json import JSONDecodeError
-import logging
 
 from rest_framework import viewsets
-from rest_framework.exceptions import NotFound, APIException
+from rest_framework.exceptions import APIException, NotFound
 from rest_framework.response import Response
 
 from forecasts.forecasts import forecast_list
 from forecasts.serializers import ForecastSerializer
-
 
 logger = logging.getLogger(__name__)
 
@@ -54,20 +53,21 @@ class ForecastViewSet(viewsets.ViewSet):
                     exc_info=True,
                 )
                 raise APIException(
-                    detail=f"Error retrieving dataset for forecast slug: {pk}"
+                    detail=f"Error retrieving dataset for forecast slug: {pk}",
                 )
             except ConnectionError as error:
                 if "Connection timed out" in str(error):
                     logger.info(f"Upstream forecast timed out: {error}")
                     raise APIException(
-                        detail=f"Upstream forecast source timed out for forecast: {pk}"
+                        detail=f"Upstream forecast source timed out for forecast: {pk}",
                     )
 
                 logger.error(
-                    f"ConnectionError (probably a timeout): {error}", exc_info=True
+                    f"ConnectionError (probably a timeout): {error}",
+                    exc_info=True,
                 )
                 raise APIException(
-                    detail=f"Error retrieving dataset for forecast slug: {pk}"
+                    detail=f"Error retrieving dataset for forecast slug: {pk}",
                 )
 
             data["time_series"] = [

@@ -10,7 +10,7 @@ def create_unh_data_types(apps, schema_editor):
             "Omega Calcite",
             "Omega Calcite - Derived from total alkalinity and pCO2",
             "Omega",
-        )
+        ),
     ]
 
     DataType = apps.get_model("deployments", "DataType")

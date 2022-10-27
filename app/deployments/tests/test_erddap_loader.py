@@ -1,9 +1,9 @@
+import pytest
 from django.test import TestCase
 
-import pytest
-
-from deployments.models import Platform, ErddapServer
+from deployments.models import ErddapServer, Platform
 from deployments.utils.erddap_loader import add_timeseries
+
 from .vcr import my_vcr
 
 
@@ -33,5 +33,6 @@ class ErddapLoaderTestCase(TestCase):
             self.assertEqual(ts.dataset.name, dataset)
             self.assertEqual(ts.dataset.server, self.erddap_server)
             self.assertIn(
-                ts.variable, ("significant_wave_height", "dominant_wave_period")
+                ts.variable,
+                ("significant_wave_height", "dominant_wave_period"),
             )

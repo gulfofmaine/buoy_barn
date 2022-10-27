@@ -133,4 +133,4 @@ repos:
     rev: 1.11.0
     hooks:
       - id: django-upgrade
-        args: [--target-version, "4.0"]
+        args: [--target-version, "4.1"]

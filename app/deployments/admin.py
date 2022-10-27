@@ -46,7 +46,7 @@ class AlertInline(admin.TabularInline):
 
 
 @admin.register(Platform)
-class PlatformAdmin(admin.GeoModelAdmin):
+class PlatformAdmin(admin.GISModelAdmin):
     ordering = ["name"]
     inlines = [AlertInline, TimeSeriesInline, ProgramAttributionInline]
 

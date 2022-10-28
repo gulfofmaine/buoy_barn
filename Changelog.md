@@ -8,6 +8,64 @@ Changes:
 
 Fixes:
 
+## 0.4.6 - 10/28/2022
+
+- Updated base branch from master to main
+- Added pre-commit
+  - Applied pre-commit changes to all files for activated hooks
+  - Added Github Action workflow
+  - Hooks
+    - Trailing whitespace
+    - Check AST
+    - Check YAML
+    - Check XML
+    - Debug statements
+    - End of file fixer
+    - Check docstring
+    - Large files
+    - Blackdoc
+    - Flake8
+    - isort
+    - Black
+    - PyUpgrade
+    - Add trailing comma
+    - Bandit
+    - Gitleaks
+    - Shellcheck
+    - Django Upgrade
+- Dependency Updates
+  - Github Actions
+    - Setup Docker Buildx from 2.0.0 to 2.2.1
+    - Docker login from 2.0.0 to 2.1.0
+    - Docker Build Push from 3.0.0 to 3.2.0
+    - Sentry release from 1.1.6 to 1.2.0
+  - Python from 3.9.6 to 3.10.8
+    - Django from 4.0 to 4.1
+    - Django CORS headers from 3.12 to 3.13
+    - Django Debug toolbar from 3.4 to 3.7
+    - Django REST Framework from 3.13 to 3.14
+    - NetCDF from 1.5.8 to 1.6.0
+    - Psycopg2-binary from 2.9.3 to 2.9.5
+    - Sentry SDK from 1.5.11 to 1.8.0
+    - VCRpy from 4.1 to 4.2
+    - Whitenoise from 6.0 to 6.2
+    - Pandas from 1.4.2 to 1.4.3
+    - Prefect from 1.2.1 to 1.2.3
+    - IPython from 8.3 to 8.4
+  - Apt
+    - Binutils from 2.31.1 to 2.35.2
+    - Libproj from 5.2.0 to 7.2.1
+    - Gdal Bin from 2.4.0 to 3.2.2
+    - Build essentials from 12.6 to 12.9
+  - Updated Postgis from 10 to 15
+    - This may require dumping and reloading the DB and updating the auth method.
+    See [#639](https://github.com/gulfofmaine/buoy_barn/pull/639)
+
+
+Fixes:
+
+- `make down` now also stops any leftover test environment containers
+
 ## 0.4.5 - 05/10/2022
 
 Changes:

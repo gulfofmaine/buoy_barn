@@ -38,6 +38,20 @@ spec:
           volumeMounts:
             - name: django-static
               mountPath: /static
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /ht/?format=json
+            # If it fails 3 times in 30 seconds it will get restarted
+            failureThreshold: 3
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              port: http
+              path: /ht/?format=json
+            # Give it 300 seconds to start up
+            failureThreshold: 30
+            periodSeconds: 10
       volumes:
         - name: django-static
           emptyDir: {}

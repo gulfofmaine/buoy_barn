@@ -6,9 +6,13 @@ Additions:
 
 Changes:
 
+  - Add [Django health check](https://github.com/revsys/django-health-check) and associated Kubernetes probes to keep the uWSGI socket queue from blocking the server. [#642](https://github.com/gulfofmaine/buoy_barn/issues/642) [#8](https://github.com/gulfofmaine/buoy_barn/issues/8) and [gulfofmaine/NERACOOS-operations](https://github.com/gulfofmaine/NERACOOS-operations/issues/86)
+
 Fixes:
 
 ## 0.4.6 - 10/28/2022
+
+Changes:
 
 - Updated base branch from master to main
 - Added pre-commit

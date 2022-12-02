@@ -135,7 +135,7 @@ jobs:
         run: mkdir gitops
 
       - name: Clone GitOps config repo
-        run: git clone "https://$GITOPS_TOKEN@github.com/gulfofmaine/neracoos-do-cd.git"
+        run: git clone "https://$GITOPS_TOKEN@github.com/gulfofmaine/neracoos-aws-cd.git"
         working-directory: ./gitops
         env:
           GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
@@ -143,8 +143,8 @@ jobs:
       - name: Update GitOps config repo
         working-directory: ./gitops/neracoos-do-cd
         run: |
-          sed -i 's/?ref=.\+/?ref=${{ steps.tagName.outputs.tag }}/' apps/buoy-barn/kustomization.yaml
-          sed -i 's/newTag: .\+/newTag: ${{ steps.tagName.outputs.tag }}/' apps/buoy-barn/kustomization.yaml
+          sed -i 's/?ref=.\+/?ref=${{ steps.tagName.outputs.tag }}/' overlays/buoy-barn/kustomization.yaml
+          sed -i 's/newTag: .\+/newTag: ${{ steps.tagName.outputs.tag }}/' overlays/buoy-barn/kustomization.yaml
           git config --global user.email 'neracoos-buoy-barn-ci@gmri.org'
           git config --global user.name 'NERACOOS Buoy Barn CI'
           git diff --exit-code && echo 'Already Deployed' || (git commit -am 'Upgrade Buoy Barn to ${{ steps.tagName.outputs.tag }}' && git push)

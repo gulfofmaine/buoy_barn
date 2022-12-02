@@ -1,11 +1,10 @@
 """ERDDAP dataset interaction utility functions"""
 from datetime import datetime
-from typing import Union
 
 from pandas import DataFrame
 
 
-def attribute_value(info_df: DataFrame, attribute: str) -> Union[float, str, int]:
+def attribute_value(info_df: DataFrame, attribute: str) -> float | str | int:
     """Return the value of a single dataset attribute"""
     row = info_df[info_df["Attribute Name"] == attribute].values[0]
     value = row[-1]

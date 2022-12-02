@@ -6,9 +6,23 @@ Additions:
 
 Changes:
 
-  - Add [Django health check](https://github.com/revsys/django-health-check) and associated Kubernetes probes to keep the uWSGI socket queue from blocking the server. [#642](https://github.com/gulfofmaine/buoy_barn/issues/642) [#8](https://github.com/gulfofmaine/buoy_barn/issues/8) and [gulfofmaine/NERACOOS-operations](https://github.com/gulfofmaine/NERACOOS-operations/issues/86)
+Fixes:
+
+## 0.4.7 - 12/02/2022
+
+Changes:
+
+- Add [Django health check](https://github.com/revsys/django-health-check) and associated Kubernetes probes to keep the uWSGI socket queue from blocking the server. [#642](https://github.com/gulfofmaine/buoy_barn/issues/642) [#8](https://github.com/gulfofmaine/buoy_barn/issues/8) and [gulfofmaine/NERACOOS-operations](https://github.com/gulfofmaine/NERACOOS-operations/issues/86)
+- Bumped PyUpgrade to 3.10 with typing upgrades
+- Dependency updates
+  - Github Actions
+    - Sentry release from 1.2.0 to 1.2.1
+  - Python
+    - Pytest-cov from 3.0 to 4.0
 
 Fixes:
+
+- Adjusted flake8 repo in pre-commit from Gitlab to Github
 
 ## 0.4.6 - 10/28/2022
 

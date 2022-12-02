@@ -87,7 +87,7 @@ INSTALLED_APPS = [
     "health_check",
     "health_check.db",
     "health_check.cache",
-    "health_check.contrib.celery_ping",
+    # "health_check.contrib.celery_ping",
     # User management
     "account.apps.AccountConfig",
     # Dataset and forecast management

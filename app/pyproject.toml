@@ -28,6 +28,7 @@ xarray = "^2022.3.0"
 pandas = "^1.4.3"
 prefect = "^1.2.3"
 Django = "^4.1"
+django-health-check = "^3.17.0"
 
 [tool.poetry.dev-dependencies]
 ipython = "^8.4"

@@ -302,7 +302,7 @@ def handle_400_errors(timeseries_group, compare_text: str) -> bool:
 
 def handle_429_too_many_requests(timeseries_group, compare_text: str) -> bool:
     """Too many requests too quickly to the server"""
-    if "Too Many Requests" in compare_text and "code=429":
+    if "Too Many Requests" in compare_text and "code=429" in compare_text:
         logger.warning(
             f"Too many requests to server {timeseries_group[0].dataset.server}",
             extra=error_extra(timeseries_group, compare_text),

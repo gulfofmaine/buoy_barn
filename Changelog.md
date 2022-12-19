@@ -8,6 +8,11 @@ Changes:
 
 Fixes:
 
+- Catching a few more error types. Works on [#27](https://github.com/gulfofmaine/buoy_barn/issues/27)
+  - 429 - too many requests
+  - 404 - no matching time
+  - 404 - no file found
+
 ## 0.4.7 - 12/02/2022
 
 Changes:

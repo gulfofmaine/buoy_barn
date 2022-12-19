@@ -6,6 +6,7 @@ from celery import shared_task
 from django.utils import timezone
 from pandas import Timedelta
 from requests import HTTPError, Timeout
+from sentry_sdk import push_scope
 
 try:
     from pandas.core.indexes.period import DateParseError, parse_time_string
@@ -20,73 +21,83 @@ logger = logging.getLogger(__name__)
 
 def update_values_for_timeseries(timeseries):
     """Update values and most recent times for a group of timeseries that have the same constraints"""
-    logger.info(f"Working on timeseries: {timeseries}")
-    try:
-        df = retrieve_dataframe(
-            timeseries[0].dataset.server,
-            timeseries[0].dataset.name,
-            timeseries[0].constraints,
-            timeseries,
-        )
+    with push_scope() as scope:
+        scope.set_tag("erddap-server", timeseries[0].dataset.server)
+        scope.set_tag("erddap-dataset", timeseries[0].dataset.name)
 
-    except HTTPError as error:
-        if handle_http_errors(timeseries, error):
-            return
-
-    except Timeout as error:
-        logger.warning(
-            (
-                f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
-                f"with constraint {timeseries[0].constraints}: {error}"
-            ),
-            extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
-            exc_info=True,
-        )
-        return
-
-    except OSError as error:
-        logger.info(
-            (
-                f"Error loading dataset {timeseries[0].dataset.name} with "
-                f"constraints {timeseries[0].constraints}: {error}"
-            ),
-            extra={"timeseries": timeseries, "constraints": timeseries[0].constraints},
-            exc_info=True,
-        )
-        return
-
-    for series in timeseries:
-        filtered_df = filter_dataframe(df, series.variable)
-
+        logger.info(f"Working on timeseries: {timeseries}")
         try:
-            row = filtered_df.iloc[-1]
-        except IndexError:
-            message = (
-                f"Unable to find position in dataframe for {series.platform.name} - "
-                f"{series.variable}"
+            df = retrieve_dataframe(
+                timeseries[0].dataset.server,
+                timeseries[0].dataset.name,
+                timeseries[0].constraints,
+                timeseries,
             )
-            logger.warning(message)
-            return
 
-        try:
-            variable_name = [
-                key for key in row.keys() if key.split(" ")[0] == series.variable
-            ]
-            value = row[variable_name]
+        except HTTPError as error:
+            if handle_http_errors(timeseries, error):
+                return
 
-            if isinstance(value, Timedelta):
-                logger.info("Converting from Timedelta to seconds")
-                value = value.seconds
-
-            series.value = value
-            time = row["time (UTC)"]
-            series.value_time = parse_time_string(time)[0]
-            series.save()
-        except TypeError as error:
-            logger.error(
-                f"Could not save {series.variable} from {row}: {error}",
+        except Timeout as error:
+            logger.warning(
+                (
+                    f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
+                    f"with constraint {timeseries[0].constraints}: {error}"
+                ),
+                extra={
+                    "timeseries": timeseries,
+                    "constraints": timeseries[0].constraints,
+                },
                 exc_info=True,
             )
+            return
+
+        except OSError as error:
+            logger.info(
+                (
+                    f"Error loading dataset {timeseries[0].dataset.name} with "
+                    f"constraints {timeseries[0].constraints}: {error}"
+                ),
+                extra={
+                    "timeseries": timeseries,
+                    "constraints": timeseries[0].constraints,
+                },
+                exc_info=True,
+            )
+            return
+
+        for series in timeseries:
+            filtered_df = filter_dataframe(df, series.variable)
+
+            try:
+                row = filtered_df.iloc[-1]
+            except IndexError:
+                message = (
+                    f"Unable to find position in dataframe for {series.platform.name} - "
+                    f"{series.variable}"
+                )
+                logger.warning(message)
+                return
+
+            try:
+                variable_name = [
+                    key for key in row.keys() if key.split(" ")[0] == series.variable
+                ]
+                value = row[variable_name]
+
+                if isinstance(value, Timedelta):
+                    logger.info("Converting from Timedelta to seconds")
+                    value = value.seconds
+
+                series.value = value
+                time = row["time (UTC)"]
+                series.value_time = parse_time_string(time)[0]
+                series.save()
+            except TypeError as error:
+                logger.error(
+                    f"Could not save {series.variable} from {row}: {error}",
+                    exc_info=True,
+                )
 
 
 @shared_task
@@ -283,6 +294,21 @@ def handle_400_errors(timeseries_group, compare_text: str) -> bool:
     if handle_404_errors(timeseries_group, compare_text):
         return True
 
+    if handle_429_too_many_requests(timeseries_group, compare_text):
+        return True
+
+    return False
+
+
+def handle_429_too_many_requests(timeseries_group, compare_text: str) -> bool:
+    """Too many requests too quickly to the server"""
+    if "Too Many Requests" in compare_text and "code=429":
+        logger.warning(
+            f"Too many requests to server {timeseries_group[0].dataset.server}",
+            extra=error_extra(timeseries_group, compare_text),
+        )
+        return True
+
     return False
 
 
@@ -303,6 +329,36 @@ def handle_404_errors(timeseries_group, compare_text: str) -> bool:
         return True
 
     if handle_404_no_matching_station(timeseries_group, compare_text):
+        return True
+
+    if handle_404_no_matching_time(timeseries_group, compare_text):
+        return True
+
+    if handle_404_dataset_file_not_found(timeseries_group, compare_text):
+        return True
+
+    return False
+
+
+def handle_404_dataset_file_not_found(timeseries_group, compare_text: str) -> bool:
+
+    if "java.io.FileNotFoundException" in compare_text and "code=404" in compare_text:
+        logger.warning(
+            f"{timeseries_group[0].dataset.name} does not exist on the server",
+            error=error_extra(timeseries_group, compare_text),
+        )
+        return True
+
+    return False
+
+
+def handle_404_no_matching_time(timeseries_group, compare_text: str) -> bool:
+    """Handle when the station does not have time for the current request"""
+    if "No data matches time" in compare_text and "code=404" in compare_text:
+        logger.warning(
+            f"{timeseries_group[0].dataset.name} does not currently have a valid time",
+            error=error_extra(timeseries_group, compare_text),
+        )
         return True
 
     return False

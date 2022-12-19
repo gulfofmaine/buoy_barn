@@ -8,6 +8,11 @@ Changes:
 
 Fixes:
 
+- Catching a few more error types. Works on [#449](https://github.com/gulfofmaine/buoy_barn/issues/449)
+  - [429 - too many requests](https://sentry.io/organizations/gulf-of-maine-research-institu/issues/2304592014/events/759b16dea027407fb936c7d510a2ebc8/?project=1373247&query=is%3Aunresolved&referrer=previous-event)
+  - [404 - no matching time](https://sentry.io/organizations/gulf-of-maine-research-institu/issues/2304592014/events/0a64140872054bf6851adffba1629b40/?project=1373247&query=is%3Aunresolved&referrer=next-event)
+  - [404 - no file found](https://sentry.io/organizations/gulf-of-maine-research-institu/issues/2304592014/events/1963c7c1e8d94e02be25a5f0991e155f/?project=1373247&query=is%3Aunresolved&referrer=next-event)
+
 ## 0.4.7 - 12/02/2022
 
 Changes:

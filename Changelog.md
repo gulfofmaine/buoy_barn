@@ -8,6 +8,17 @@ Changes:
 
 Fixes:
 
+- __Migration__ Enable per server timeouts and timing between requests. Replaces `RETRIEVE_DATAFRAME_TIMEOUT_SECONDS`.
+- Fix invalid logging kwarg.
+- Upgraded data retrieval logging to error to send to Sentry.
+- Raise parse error when `-` is not used to split server and dataset.
+
+## 0.4.8-2 - 12/19/2022
+
+Fixes
+
+- Gitops repo & CI working directory name mismatch
+
 ## 0.4.8 - 12/19/2022
 
 Changes:

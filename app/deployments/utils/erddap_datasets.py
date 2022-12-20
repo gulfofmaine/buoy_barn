@@ -1,9 +1,10 @@
-import os
 from datetime import datetime, timedelta
 from logging import getLogger
 
 from erddapy import ERDDAP
 from pandas import DataFrame
+
+from ..models import ErddapServer
 
 logger = getLogger(__name__)
 
@@ -42,7 +43,12 @@ def setup_variables(
     return server
 
 
-def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFrame:
+def retrieve_dataframe(
+    server: ErddapServer,
+    dataset: str,
+    constraints,
+    timeseries,
+) -> DataFrame:
     """Returns a dataframe from ERDDAP for a given dataset
 
     Attempts to sort the dataframe by time"""
@@ -53,9 +59,7 @@ def retrieve_dataframe(server, dataset: str, constraints, timeseries) -> DataFra
         constraints=constraints,
     )
 
-    e.requests_kwargs["timeout"] = float(
-        os.environ.get("RETRIEVE_DATAFRAME_TIMEOUT_SECONDS", 60),
-    )
+    e.requests_kwargs["timeout"] = server.request_timeout_seconds
 
     df = e.to_pandas(parse_dates=True)
 

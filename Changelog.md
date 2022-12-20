@@ -8,6 +8,10 @@ Changes:
 
 Fixes:
 
+## 0.4.9 - 12/20/2022
+
+Fixes:
+
 - __Migration__ Enable per server timeouts and timing between requests. Replaces `RETRIEVE_DATAFRAME_TIMEOUT_SECONDS`.
 - Fix invalid logging kwarg.
 - Upgraded data retrieval logging to error to send to Sentry.

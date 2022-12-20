@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Add error context and adjust levels.
+
 ## 0.4.9 - 12/20/2022
 
 Fixes:

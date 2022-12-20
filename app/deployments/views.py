@@ -61,6 +61,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
         dataset = get_object_or_404(self.queryset, name=dataset, server__name=server)
+        return dataset
 
     def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         dataset = self.dataset(**kwargs)

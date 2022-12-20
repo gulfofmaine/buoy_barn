@@ -54,7 +54,7 @@ def update_values_for_timeseries(timeseries):
             return
 
         except OSError as error:
-            logger.info(
+            logger.error(
                 (
                     f"Error loading dataset {timeseries[0].dataset.name} with "
                     f"constraints {timeseries[0].constraints}: {error}"
@@ -73,11 +73,15 @@ def update_values_for_timeseries(timeseries):
             try:
                 row = filtered_df.iloc[-1]
             except IndexError:
-                message = (
+                logger.error(
                     f"Unable to find position in dataframe for {series.platform.name} - "
-                    f"{series.variable}"
+                    f"{series.variable}",
+                    extra={
+                        "timeseries": timeseries,
+                        "constraints": timeseries[0].constraints,
+                    },
+                    exc_info=True,
                 )
-                logger.error(message)
                 return
 
             try:
@@ -97,6 +101,10 @@ def update_values_for_timeseries(timeseries):
             except TypeError as error:
                 logger.error(
                     f"Could not save {series.variable} from {row}: {error}",
+                    extra={
+                        "timeseries": timeseries,
+                        "constraints": timeseries[0].constraints,
+                    },
                     exc_info=True,
                 )
 
@@ -169,12 +177,14 @@ def handle_500_variable_actual_range_error(timeseries_group, compare_text: str) 
         "Your query produced no matching results" in compare_text
         and "is outside of the variable&#39;s actual_range" in compare_text
     ):
-        logger.info(
+        logger.error(
             (
                 f"{timeseries_group[0].dataset.name} "
                 f"with constraints {timeseries_group[0].constraints} had a "
                 "constraint outside of normal range"
             ),
+            extra=error_extra(timeseries_group, compare_text),
+            exc_info=True,
         )
         return True
 
@@ -267,6 +277,7 @@ def handle_500_unrecognized_constraint(timeseries_group, compare_text: str) -> b
                 f"with constraints {timeseries_group[0].constraints}"
             ),
             extra=error_extra(timeseries_group, compare_text),
+            exc_info=True,
         )
         return True
 
@@ -310,6 +321,7 @@ def handle_429_too_many_requests(timeseries_group, compare_text: str) -> bool:
         logger.error(
             f"Too many requests to server {timeseries_group[0].dataset.server}",
             extra=error_extra(timeseries_group, compare_text),
+            exc_info=True,
         )
         return True
 
@@ -322,6 +334,7 @@ def handle_400_unrecognized_variable(timeseries_group, compare_text: str) -> boo
         logger.error(
             f"Unrecognized variable for dataset {timeseries_group[0].dataset.name}",
             extra=error_extra(timeseries_group, compare_text),
+            exc_info=True,
         )
         return True
     return False
@@ -350,6 +363,7 @@ def handle_404_dataset_file_not_found(timeseries_group, compare_text: str) -> bo
         logger.error(
             f"{timeseries_group[0].dataset.name} does not exist on the server",
             extra=error_extra(timeseries_group, compare_text),
+            exc_info=True,
         )
         return True
 
@@ -362,6 +376,7 @@ def handle_404_no_matching_time(timeseries_group, compare_text: str) -> bool:
         logger.error(
             f"{timeseries_group[0].dataset.name} does not currently have a valid time",
             extra=error_extra(timeseries_group, compare_text),
+            exc_info=True,
         )
         return True
 
@@ -380,6 +395,7 @@ def handle_404_no_matching_station(timeseries_group, compare_text: str) -> bool:
                 "Please check the constraints"
             ),
             extra=error_extra(timeseries_group, compare_text),
+            exc_info=True,
         )
         return True
 
@@ -398,6 +414,7 @@ def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> bo
                 "Please investigate if the dataset has moved"
             ),
             extra=error_extra(timeseries_group, compare_text),
+            exc_info=True,
         )
         return True
 
@@ -440,7 +457,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
             if handle_500_errors(timeseries_group, response_500.text):
                 return True
 
-            logger.info(
+            logger.error(
                 (
                     f"500 error loading dataset {timeseries_group[0].dataset.name} "
                     f"with constraint {timeseries_group[0].constraints}: {error} "

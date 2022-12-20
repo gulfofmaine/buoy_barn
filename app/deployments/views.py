@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, ParseError
 from rest_framework.response import Response
 
 from .models import ErddapDataset, ErddapServer, Platform
@@ -49,20 +49,28 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ErddapDataset.objects.select_related("server")
     serializer_class = ErddapDatasetSerializer
 
-    def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument
+    def dataset(self, **kwargs) -> ErddapDataset:
+        """Retrieve the dataset from the request kwargs"""
         pk = kwargs["pk"]
 
-        server, dataset = pk.split("-", maxsplit=1)
+        try:
+            server, dataset = pk.split("-", maxsplit=1)
+        except ValueError:
+            raise ParseError(
+                detail="Invalid server-dataset key. Server and dataset must be split by `-`.",
+            )
+
         dataset = get_object_or_404(self.queryset, name=dataset, server__name=server)
+        return dataset
+
+    def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument
+        dataset = self.dataset(**kwargs)
         serializer = self.serializer_class(dataset, context={"request": request})
         return Response(serializer.data)
 
     @action(detail=True)
     def refresh(self, request, **kwargs):
-        pk = kwargs["pk"]
-
-        server, dataset = pk.split("-", maxsplit=1)
-        dataset = get_object_or_404(self.queryset, name=dataset, server__name=server)
+        dataset = self.dataset(**kwargs)
 
         refresh_dataset.delay(dataset.id, healthcheck=True)
 

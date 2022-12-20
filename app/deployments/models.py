@@ -174,6 +174,20 @@ class ErddapServer(models.Model):
             "if the remote server does not support CORS"
         ),
     )
+    request_refresh_time_seconds = models.FloatField(
+        "Refresh request time in seconds",
+        default=0,
+        help_text=(
+            "Minimum number of seconds to attempt to delay between requests. "
+            "If dataset refreshes are triggered independently "
+            "(e.g. via ERDDAP subscriptions) they might ignore this."
+        ),
+    )
+    request_timeout_seconds = models.PositiveIntegerField(
+        "Request timeout in seconds",
+        default=60,
+        help_text=("Seconds before requests time out."),
+    )
 
     def __str__(self):
         if self.name:

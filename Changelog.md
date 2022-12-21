@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Extract timeout seconds into it's own variable to get Sentry to catch it.
+
 ## 0.4.10 - 12/20/2022
 
 Fixes:

@@ -59,7 +59,8 @@ def retrieve_dataframe(
         constraints=constraints,
     )
 
-    e.requests_kwargs["timeout"] = server.request_timeout_seconds
+    timeout_seconds = server.request_timeout_seconds
+    e.requests_kwargs["timeout"] = timeout_seconds
 
     df = e.to_pandas(parse_dates=True)
 

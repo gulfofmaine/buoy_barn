@@ -9,6 +9,7 @@ Changes:
 Fixes:
 
 - Avoids scheduling additional dataset or server refreshes if there is already a refresh task in the queue. This works by when the `/refresh/` view is triggered, it instead schedules a quick task that then checks if the refresh is scheduled (or active or reserved). If it is already scheduled it throws a warning, otherwise it schedules the task.
+- Add exponential backoff when timeout related errors are encountered.
 
 ## 0.4.11 - 12/20/2022
 

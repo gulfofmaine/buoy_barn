@@ -11,13 +11,13 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import APIException, ParseError
 from rest_framework.response import Response
 
+from . import tasks
 from .models import ErddapDataset, ErddapServer, Platform
 from .serializers import (
     ErddapDatasetSerializer,
     ErddapServerSerializer,
     PlatformSerializer,
 )
-from .tasks import refresh_dataset, refresh_server
 
 
 @method_decorator(cache_page(60), name="list")
@@ -72,7 +72,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
     def refresh(self, request, **kwargs):
         dataset = self.dataset(**kwargs)
 
-        refresh_dataset.delay(dataset.id, healthcheck=True)
+        tasks.single_refresh_dataset.delay(dataset.id, healthcheck=True)
 
         serializer = self.serializer_class(dataset, context={"request": request})
         return Response(serializer.data)
@@ -92,7 +92,7 @@ class ServerViewSet(viewsets.ReadOnlyModelViewSet):
 
         server = get_object_or_404(self.queryset, pk=pk)
 
-        refresh_server.delay(server.id, healthcheck=True)
+        tasks.single_refresh_server.delay(server.id, healthcheck=True)
 
         serializer = self.serializer_class(server, context={"request": request})
         return Response(serializer.data)

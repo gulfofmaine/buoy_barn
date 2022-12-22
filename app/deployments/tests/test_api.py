@@ -249,7 +249,7 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
         self.assertIn("base_url", response.data)
         self.assertIn("url", response.data)
 
-    @patch("deployments.tasks.refresh_server.delay")
+    @patch("deployments.tasks.single_refresh_server.delay")
     def test_server_refresh(self, refresh_server):
         response = self.client.get("/api/servers/1/refresh/", format="json")
 
@@ -279,7 +279,7 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
         self.assertIn("name", response.data["server"])
 
     @my_vcr.use_cassette("dataset_detail.yaml")
-    @patch("deployments.tasks.refresh_dataset.delay")
+    @patch("deployments.tasks.single_refresh_dataset.delay")
     def test_dataset_refresh(self, refresh_dataset):
         response = self.client.get(
             "/api/datasets/NERACOOS-N01_sbe37_all/refresh/",

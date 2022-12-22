@@ -136,6 +136,54 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False):
         dataset.healthcheck_complete()
 
 
+def task_queued(task_name: str, task_args: list, task_kwargs: dict) -> bool:
+    """Returns true if the task is already scheduled"""
+    from buoy_barn.celery import app
+    from celery.app.control import Control
+
+    control = Control(app)
+    inspect = control.inspect()
+
+    for worker_tasks in inspect.active().values():
+        for task in worker_tasks:
+            if task["name"] == task_name and task["args"] == task_args:
+                return True
+
+    for worker_tasks in inspect.reserved().values():
+        for task in worker_tasks:
+            if task["name"] == task_name and task["args"] == task_args:
+                return True
+
+    for worker_tasks in inspect.scheduled().values():
+        for task in worker_tasks:
+            if task["name"] == task_name and task["args"] == task_args:
+                return True
+
+    return False
+
+
+@shared_task
+def single_refresh_dataset(dataset_id: int, healthcheck: bool = False):
+    """Schedule dataset refresh, only if it does not already exist"""
+    with push_scope() as scope:
+        scope.set_tag("dataset_id", dataset_id)
+
+        already_queued = task_queued(
+            "deployments.tasks.refresh_dataset",
+            [dataset_id],
+            {"healthcheck": healthcheck},
+        )
+
+        if already_queued:
+            logger.error(
+                f"refresh_dataset is already queued for {dataset_id}. "
+                "Not going to schedule another.",
+                exc_info=True,
+            )
+        else:
+            refresh_dataset.delay(dataset_id, healthcheck=healthcheck)
+
+
 @shared_task
 def refresh_server(server_id: int, healthcheck: bool = False):
     """Refresh all the timeseries data for a server
@@ -154,6 +202,28 @@ def refresh_server(server_id: int, healthcheck: bool = False):
 
     if healthcheck:
         server.healthcheck_complete()
+
+
+@shared_task
+def single_refresh_server(server_id: int, healthcheck: bool = False):
+    """Schedule dataset refresh, only if it does not already exist"""
+    with push_scope() as scope:
+        scope.set_tag("server_id", server_id)
+
+        already_queued = task_queued(
+            "deployments.tasks.refresh_dataset",
+            [server_id],
+            {"healthcheck": healthcheck},
+        )
+
+        if already_queued:
+            logger.error(
+                f"refresh_server is already queued for {server_id}. "
+                "Not going to schedule another.",
+                exc_info=True,
+            )
+        else:
+            refresh_server.delay(server_id, healthcheck=healthcheck)
 
 
 def handle_500_no_rows_error(timeseries_group, compare_text: str) -> bool:

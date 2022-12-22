@@ -40,18 +40,10 @@ def update_values_for_timeseries(timeseries):
                 return
 
         except Timeout as error:
-            logger.error(
-                (
-                    f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
-                    f"with constraint {timeseries[0].constraints}: {error}"
-                ),
-                extra={
-                    "timeseries": timeseries,
-                    "constraints": timeseries[0].constraints,
-                },
-                exc_info=True,
+            raise BackoffError(
+                f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
+                f"with constraint {timeseries[0].constraints}: {error}",
             )
-            return
 
         except OSError as error:
             logger.error(
@@ -130,7 +122,19 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False):
 
     for constraints, timeseries in groups.items():
         time.sleep(request_refresh_time_seconds)
-        update_values_for_timeseries(timeseries)
+
+        try:
+            update_values_for_timeseries(timeseries)
+        except BackoffError:
+            new_request_refresh_time_seconds = max(request_refresh_time_seconds, 1) * 2
+            logger.error(
+                f"Some form of timeout encountered while refreshing dataset {dataset_id}"
+                f"Increasing backoff from {request_refresh_time_seconds} to "
+                "{new_request_refresh_time_seconds}",
+                extra={"timeseries": timeseries, "constraints": constraints},
+                exc_info=True,
+            )
+            request_refresh_time_seconds = new_request_refresh_time_seconds
 
     if healthcheck:
         dataset.healthcheck_complete()
@@ -335,6 +339,10 @@ def error_extra(timeseries_group, compare_text: str = None):
     return extra
 
 
+class BackoffError(Exception):
+    """Raise when a timeout occurs to trigger a backoff and slow down requests"""
+
+
 def handle_500_unrecognized_constraint(timeseries_group, compare_text: str) -> bool:
     """Handle when one of the constraints is invalid
 
@@ -371,7 +379,7 @@ def handle_500_errors(timeseries_group, compare_text: str) -> bool:
     return False
 
 
-def handle_400_errors(timeseries_group, compare_text: str) -> bool:
+def handle_400_errors(timeseries_group, compare_text: str, error: Exception) -> bool:
     """Handle various types of known 400 errors"""
     if handle_400_unrecognized_variable(timeseries_group, compare_text):
         return True
@@ -379,21 +387,36 @@ def handle_400_errors(timeseries_group, compare_text: str) -> bool:
     if handle_404_errors(timeseries_group, compare_text):
         return True
 
-    if handle_429_too_many_requests(timeseries_group, compare_text):
+    if handle_429_too_many_requests(timeseries_group, compare_text, error):
         return True
 
     return False
 
 
-def handle_429_too_many_requests(timeseries_group, compare_text: str) -> bool:
+def handle_408_request_timeout(
+    timeseries_group,
+    compare_text: str,
+    error: Exception,
+) -> bool:
+    """Handle 408 timeouts"""
+    if "code=408" in compare_text and "TimeoutException" in compare_text:
+        raise BackoffError(
+            f"Too many requests to server {timeseries_group[0].dataset.server}",
+        ) from error
+
+    return False
+
+
+def handle_429_too_many_requests(
+    timeseries_group,
+    compare_text: str,
+    error: Exception,
+) -> bool:
     """Too many requests too quickly to the server"""
     if "Too Many Requests" in compare_text and "code=429" in compare_text:
-        logger.error(
+        raise BackoffError(
             f"Too many requests to server {timeseries_group[0].dataset.server}",
-            extra=error_extra(timeseries_group, compare_text),
-            exc_info=True,
-        )
-        return True
+        ) from error
 
     return False
 
@@ -519,6 +542,9 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
             )
             return True
 
+        if error.response.status_code == 408:
+            raise BackoffError("408 Backoff encountered") from error
+
         if error.response.status_code == 500:
             url = error.request.url
 
@@ -550,7 +576,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
     except AttributeError:
         pass
 
-    if handle_400_errors(timeseries_group, str(error)):
+    if handle_400_errors(timeseries_group, str(error), error):
         return True
 
     if handle_500_errors(timeseries_group, str(error)):

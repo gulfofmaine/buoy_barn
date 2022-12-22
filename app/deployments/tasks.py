@@ -390,6 +390,9 @@ def handle_400_errors(timeseries_group, compare_text: str, error: Exception) -> 
     if handle_429_too_many_requests(timeseries_group, compare_text, error):
         return True
 
+    if handle_408_request_timeout(timeseries_group, compare_text, error):
+        return True
+
     return False
 
 
@@ -585,7 +588,8 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
     logger.error(
         (
             f"Error loading dataset {timeseries_group[0].dataset.name} "
-            f"with constraint {timeseries_group[0].constraints}: {error}"
+            f"with constraint {timeseries_group[0].constraints}: {error}. "
+            "Could not find an existing error defined."
         ),
         extra=error_extra(timeseries_group),
         exc_info=True,

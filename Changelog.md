@@ -8,6 +8,12 @@ Changes:
 
 Fixes:
 
+## 0.4.12-2 - 12/21/2022
+
+Fixes:
+
+- Missed including 408 backoff check in error handling.
+
 ## 0.4.12 - 12/21/2022
 
 Fixes:

@@ -8,8 +8,12 @@ Changes:
 
 Fixes:
 
+# 0.4.13 - 01/06/2023
+
+Fixes:
+
 - Filter out healthcheck responses from Sentry transactions. [#654](https://github.com/gulfofmaine/buoy_barn/issues/654)
-- Quiet some deprecation warnings. They should hopefully only yell once now.
+- Quiet some deprecation warnings. They should hopefully only yell once now in logs.
 
 ## 0.4.12-2 - 12/21/2022
 

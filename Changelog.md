@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Filter out healthcheck responses from Sentry transactions. [#654](https://github.com/gulfofmaine/buoy_barn/issues/654)
+
 ## 0.4.12-2 - 12/21/2022
 
 Fixes:

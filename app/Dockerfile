@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 # Don't write bytecode
 ENV PYTHONDONTWRITEBYTECODE 1
 # Show deprication warnings https://docs.djangoproject.com/en/2.2/howto/upgrade-version/#resolving-deprecation-warnings
-ENV PYTHONWARNINGS always
+ENV PYTHONWARNINGS once
 # Do not use virtualenv with Poetry
 ENV POETRY_VIRTUALENVS_CREATE false
 

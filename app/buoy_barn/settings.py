@@ -37,6 +37,28 @@ def before_send(event, hint):
     return event
 
 
+SENTRY_TRACES_SAMPLE_RATE = float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", 0))
+SENTRY_IGNORE_PATHS = {"/ht/"}
+
+
+def trace_filter(trace: dict) -> float:
+    """Filter out unwanted sentry transactions"""
+
+    try:
+        path: str = trace["wsgi_environ"]["PATH_INFO"]
+
+        if path in SENTRY_IGNORE_PATHS:
+            return 0  # don't trace
+
+        if path.startswith("/static/"):
+            return 0
+
+    except KeyError:
+        pass
+
+    return SENTRY_TRACES_SAMPLE_RATE
+
+
 if os.environ.get("DJANGO_ENV", "").lower() != "test":
     try:
         pyproject = toml.load("pyproject.toml")
@@ -46,12 +68,13 @@ if os.environ.get("DJANGO_ENV", "").lower() != "test":
             integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
             environment="dev" if DEBUG else "prod",
             release=f"v{version}",
-            traces_sample_rate=float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", 0)),
+            traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
+            traces_sampler=trace_filter,
             before_send=before_send,
         )
         logger.info("Sentry initialized")
     except KeyError:
-        logger.warning("SENTRY_DSN missing. Sentry is not initalized")
+        logger.warning("SENTRY_DSN missing. Sentry is not initialized")
 else:
     logger.info("Sentry disabled when DJANGO_ENV=test")
 

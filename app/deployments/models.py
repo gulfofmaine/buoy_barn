@@ -288,7 +288,7 @@ class ErddapDataset(models.Model):
 
         for ts in self.timeseries_set.filter(end_time=None, active=True):
             try:
-                groups[tuple(ts.constraints.items())].append(ts)
+                groups[tuple((ts.constraints or {}).items())].append(ts)
             except AttributeError as e:
                 logger.error(f"Unable to set constraint for timeseries {ts} due to {e}")
 

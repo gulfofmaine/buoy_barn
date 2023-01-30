@@ -8,7 +8,13 @@ Changes:
 
 Fixes:
 
-# 0.4.13 - 01/06/2023
+## 0.4.14 - 01/30/2023
+
+Fixes
+
+- Catch some null constraint errors. [#672](https://github.com/gulfofmaine/buoy_barn/issues/672)
+
+## 0.4.13 - 01/06/2023
 
 Fixes:
 

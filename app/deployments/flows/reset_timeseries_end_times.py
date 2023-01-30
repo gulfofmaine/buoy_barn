@@ -32,7 +32,9 @@ def find_outdated_timeseries() -> Iterable[TimeSeriesGroup]:
 
     for ts in TimeSeries.objects.exclude(end_time__isnull=True):
         try:
-            groups[(ts.dataset.name, tuple(ts.constraints.items()))].append(ts.id)
+            groups[(ts.dataset.name, tuple((ts.constraints or {}).items()))].append(
+                ts.id,
+            )
         except AttributeError as e:
             logger.error(f"Unable to set constraint for timeseries {ts} due to {e}")
 

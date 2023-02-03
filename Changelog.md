@@ -8,6 +8,24 @@ Changes:
 
 Fixes:
 
+## 0.4.15 - 02/03/2023
+
+Changes:
+
+- Dependency updates:
+  - Actions:
+    - Docker BuildX from 2.2.1 to 2.4.0
+    - Docker build push from 3.2.0 to 4.0.0
+  - Poetry from 1.1.11 to 1.3.2 (lockfile changed and Dependabot is using the new one)
+  - Sentry SDK from 1.8.0 to 1.14.0
+  - Xarray from 2022.3.0 to 2023.1.0
+  - Pandas from 1.4.3 to 1.5.3
+  - IPython from 8.4 to 8.9
+  - Py.test from 7.1 to 7.2
+  - Prospector from 1.7 to 1.8
+
+Fixes:
+
 - Server proxy paths could only work with single digit server IDs. Now multiple digit id ERDDAP servers can work as proxies and not break other platforms while trying to generate the platform list. Closes [#678](https://github.com/gulfofmaine/buoy_barn/issues/678).
 
 ## 0.4.14 - 01/30/2023

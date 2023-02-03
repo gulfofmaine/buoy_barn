@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import re_path
 from rest_framework import routers
 
 from forecasts.views import ForecastViewSet
@@ -12,5 +12,9 @@ router.register("servers", ServerViewSet)
 router.register("forecasts", ForecastViewSet, basename="forecast")
 
 urlpatterns = [
-    path("servers/<int:server_id>/proxy/", server_proxy, name="server-proxy"),
+    re_path(
+        r"servers/(?P<server_id>\d{1,10})/proxy/",
+        server_proxy,
+        name="server-proxy",
+    ),
 ] + router.urls

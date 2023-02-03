@@ -12,5 +12,9 @@ router.register("servers", ServerViewSet)
 router.register("forecasts", ForecastViewSet, basename="forecast")
 
 urlpatterns = [
-    re_path(r"servers/(?P<server_id>[0-9])/proxy/", server_proxy, name="server-proxy"),
+    re_path(
+        r"servers/(?P<server_id>\d{1,10})/proxy/",
+        server_proxy,
+        name="server-proxy",
+    ),
 ] + router.urls

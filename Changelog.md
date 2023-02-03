@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Server proxy paths could only work with single digit server IDs. Now multiple digit id ERDDAP servers can work as proxies and not break other platforms while trying to generate the platform list. Closes [#678](https://github.com/gulfofmaine/buoy_barn/issues/678).
+
 ## 0.4.14 - 01/30/2023
 
 Fixes

@@ -35,4 +35,4 @@ pyyaml = "^6.0"
 pytest = "^7.2"
 pytest-django = "^4.5"
 pytest-cov = "^4.0"
-prospector = { version = "^1.7", extras = ["with_mypy", "with_vulture"] }
+prospector = { version = "^1.8", extras = ["with_mypy", "with_vulture"] }

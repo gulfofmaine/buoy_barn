@@ -30,7 +30,6 @@ def empty_reverse(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("deployments", "0037_generate_unh_datatypes")]
 
     operations = [migrations.RunPython(create_unh_data_types, empty_reverse)]

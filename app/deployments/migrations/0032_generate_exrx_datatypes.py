@@ -30,7 +30,6 @@ def create_exrx_data_types(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("deployments", "0031_generate_mayflower_datatypes")]
 
     operations = [migrations.RunPython(create_exrx_data_types, empty_reverse)]

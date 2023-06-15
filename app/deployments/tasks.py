@@ -75,7 +75,7 @@ def update_values_for_timeseries(timeseries):
                     },
                     exc_info=True,
                 )
-                return
+                continue
 
             try:
                 variable_name = [

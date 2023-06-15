@@ -8,7 +8,7 @@ authors = ["Alex Kerney <akerney@gmri.org>"]
 [tool.poetry.dependencies]
 python = "^3.10"
 celery = "^5.3"
-django = "^4.1"
+django = "^4.2"
 django-cors-headers = "^4.1"
 django-debug-toolbar = "^4.1"
 django-memoize = "^2.3.1"

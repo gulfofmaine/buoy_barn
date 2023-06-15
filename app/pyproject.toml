@@ -34,5 +34,5 @@ ipython = "^8.14"
 pyyaml = "^6.0"
 pytest = "^7.3"
 pytest-django = "^4.5"
-pytest-cov = "^4.0"
+pytest-cov = "^4.1"
 prospector = { version = "^1.8", extras = ["with_mypy", "with_vulture"] }

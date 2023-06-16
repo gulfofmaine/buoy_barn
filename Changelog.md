@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Prevent duplicate datasets from being made for each server with a unique constraint. Fixes [#787](https://github.com/gulfofmaine/buoy_barn/issues/787).
+
 ## 0.4.16 - 06/16/2023
 
 Fixes:

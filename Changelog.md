@@ -8,8 +8,21 @@ Changes:
 
 Fixes:
 
+## 0.4.17 - 06/19/2023
+
+Fixes:
+
 - Prevent duplicate datasets from being made for each server with a unique constraint. Fixes [#787](https://github.com/gulfofmaine/buoy_barn/issues/787).
 - N+1 query from `/api/platforms/` where Django wasn't pre-fetching the timeseries for the platforms, so they were being fetched on the fly as the serializer tried to assemble the output. Fixes [#793](https://github.com/gulfofmaine/buoy_barn/issues/793)
+
+Dependency updates:
+
+- Python
+  - Django Redis from 5.2 to 5.3
+  - Whitenoise from 6.4 to 6.5
+  - Sqlparse to 0.4.4
+  - Requests to 2.31.0
+  - Tornado to 6.3.2
 
 ## 0.4.16 - 06/16/2023
 

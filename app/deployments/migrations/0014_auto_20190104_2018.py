@@ -8,7 +8,6 @@ import deployments.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("deployments", "0013_alert")]
 
     operations = [

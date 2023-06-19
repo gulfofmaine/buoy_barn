@@ -28,7 +28,6 @@ class ErddapLoaderTestCase(TestCase):
         self.assertEqual(2, self.platform.timeseries_set.count())
 
         for ts in self.platform.timeseries_set.all():
-
             self.assertEqual(ts.constraints, constraints)
             self.assertEqual(ts.dataset.name, dataset)
             self.assertEqual(ts.dataset.server, self.erddap_server)

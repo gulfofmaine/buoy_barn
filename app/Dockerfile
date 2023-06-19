@@ -1,5 +1,5 @@
 #syntax=docker/dockerfile:1.2
-FROM python:3.11.2-slim@sha256:b04f822a9ffdd5acba9e0d042d39a96227ed172d6faced65548ba28fb4c0b5b4
+FROM python:3.11.4-slim@sha256:53a67c012da3b807905559fa59fac48a3a68600d73c5da10c2f0d8adc96dbd01
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1
@@ -13,13 +13,13 @@ ENV POETRY_VIRTUALENVS_CREATE false
 # geodjango spatial requirements
 RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update && apt-get install -y --no-install-recommends \
-    binutils=2.35.2-2 \
-    libproj-dev=7.2.1-1 \
-    gdal-bin=3.2.2+dfsg-2+deb11u2 \
+    binutils=2.40-2 \
+    libproj-dev=9.1.1-1+b1 \
+    gdal-bin=3.6.2+dfsg-1+b2 \
     build-essential=12.9
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install poetry==1.3.2 \
+    pip install poetry==1.5.1 \
     && groupadd uwsgi && useradd -g uwsgi uwsgi
 
 # Working directory

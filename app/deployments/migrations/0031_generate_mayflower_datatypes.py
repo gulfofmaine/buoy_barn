@@ -32,7 +32,6 @@ def create_mayflower_data_types(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("deployments", "0030_auto_20200917_2220")]
 
     operations = [migrations.RunPython(create_mayflower_data_types, empty_reverse)]

@@ -23,7 +23,6 @@ def create_and_connect_datasets(apps, schema_editory):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("deployments", "0021_auto_20190328_1520")]
 
     operations = [migrations.RunPython(create_and_connect_datasets)]

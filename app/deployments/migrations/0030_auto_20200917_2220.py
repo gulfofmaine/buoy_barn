@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("deployments", "0029_delete_deployment")]
 
     operations = [

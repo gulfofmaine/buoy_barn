@@ -9,6 +9,7 @@ Changes:
 Fixes:
 
 - Prevent duplicate datasets from being made for each server with a unique constraint. Fixes [#787](https://github.com/gulfofmaine/buoy_barn/issues/787).
+- N+1 query from `/api/platforms/` where Django wasn't pre-fetching the timeseries for the platforms, so they were being fetched on the fly as the serializer tried to assemble the output. Fixes [#793](https://github.com/gulfofmaine/buoy_barn/issues/793)
 
 ## 0.4.16 - 06/16/2023
 

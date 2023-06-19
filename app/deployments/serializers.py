@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 
 class PlatformSerializer(GeoFeatureModelSerializer):
-
     readings = serializers.SerializerMethodField()
 
     def get_readings(self, obj):

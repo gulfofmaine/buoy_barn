@@ -26,7 +26,6 @@ def create_station_type(apps, schema_editor):
 
 
 def create_data_type(apps, schema_editor):
-
     data_types = [
         ("air_temperature", "AT", "Air Temperature", "celsius"),
         ("amps", "AMPS", "Amps", "counts"),
@@ -178,7 +177,6 @@ def create_data_type(apps, schema_editor):
 
 
 def create_buffer_type(apps, schema_editor):
-
     buffers = [
         "doppler",
         "aanderaa",
@@ -226,7 +224,6 @@ def create_buffer_type(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("deployments", "0001_initial"),
     ]

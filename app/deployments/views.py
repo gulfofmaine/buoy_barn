@@ -31,6 +31,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
         "programattribution_set__program",
         "alerts",
         "programs",
+        "timeseries_set",
     )
     serializer_class = PlatformSerializer
 

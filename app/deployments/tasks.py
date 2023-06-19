@@ -4,6 +4,7 @@ from datetime import timedelta
 
 import requests
 from celery import shared_task
+from django.conf import settings
 from django.utils import timezone
 from pandas import Timedelta
 from requests import HTTPError, Timeout
@@ -74,7 +75,7 @@ def update_values_for_timeseries(timeseries):
                     },
                     exc_info=True,
                 )
-                return
+                continue
 
             try:
                 variable_name = [
@@ -454,7 +455,6 @@ def handle_404_errors(timeseries_group, compare_text: str) -> bool:
 
 
 def handle_404_dataset_file_not_found(timeseries_group, compare_text: str) -> bool:
-
     if "java.io.FileNotFoundException" in compare_text and "code=404" in compare_text:
         logger.error(
             f"{timeseries_group[0].dataset.name} does not exist on the server",
@@ -551,7 +551,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
         if error.response.status_code == 500:
             url = error.request.url
 
-            response_500 = requests.get(url)
+            response_500 = requests.get(url, timeout=settings.ERDDAP_TIMEOUT_SECONDS)
 
             if handle_500_errors(timeseries_group, response_500.text):
                 return True

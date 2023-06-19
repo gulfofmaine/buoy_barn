@@ -250,6 +250,11 @@ class ErddapDataset(models.Model):
         ),
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["name", "server"], name="unique_dataset"),
+        ]
+
     def __str__(self):
         return f"{self.server.name} - {self.name}"
 

@@ -8,6 +8,59 @@ Changes:
 
 Fixes:
 
+- Prevent duplicate datasets from being made for each server with a unique constraint. Fixes [#787](https://github.com/gulfofmaine/buoy_barn/issues/787).
+- N+1 query from `/api/platforms/` where Django wasn't pre-fetching the timeseries for the platforms, so they were being fetched on the fly as the serializer tried to assemble the output. Fixes [#793](https://github.com/gulfofmaine/buoy_barn/issues/793)
+
+## 0.4.16 - 06/16/2023
+
+Fixes:
+
+- We should continue looping through timeseries on NaN and similar index errors, rather than stopping processing them all together. [#772](https://github.com/gulfofmaine/buoy_barn/issues/772)
+
+Dependency updates:
+
+- Actions
+  - Update runners to Ubuntu 22.04. Some were still using 18.04 which is deprecated.
+  - Docker Setup Buildx from 2.4.0 to 2.7.0
+  - Docker Login from 2.1.0 to 2.2.0
+  - Docker Build Push from 4.0.0 to 4.1.1
+  - Release from 1.2.1 to 1.4.1
+- Pre-commit
+  - pre-commit-hooks from 4.3.0 to 4.4.0
+    - Add add `no-commit-to-branch` to prevent mistaken commits to main
+  - Blackdoc from 0.3.7 to 0.3.8
+  - Flake8 from 3.9.2 to 6.0.0
+  - Isort from 5.10.1 to 5.12.0
+  - Black from 22.10.0 to 23.3.0
+  - Pyupgrade from 3.1.0 to 3.6.0
+  - Add trailing comma from 2.3.0 to 2.5.1
+  - Bandit from 1.7.4 to 1.7.5
+  - Gitleaks from 8.15.0 to 8.16.4
+  - Shellcheck from 0.8.0.4 to 0.9.0.5
+  - Django Upgrade from 1.11.0 to 1.13.0
+- Python
+  - Python itself from 3.11.1 to 3.11.4
+  - Poetry from 1.3.2 to 1.5.1
+  - Celery from 5.2 to 5.3
+  - Django from 4.1 to 4.2
+  - Django CORS headers from 3.13 to 4.1
+  - Django Debug Toolbar from 3.7 to 4.1
+  - NetCDF4 from 1.6.0 to 1.6.4
+  - Psycopg2 Bianry from 2.9.5 to 2.9.6
+  - Sentry SDK from 1.14.0 to 1.25.1
+  - VCRpy from 4.2 to 4.3
+  - Whitenoise from 6.2 to 6.4
+  - Xarray from 2023.1.0 to 2023.5.0
+  - IPython from 8.9 to 8.14
+  - Py.test from 7.2 to 7.3
+  - Py.test-cov from 4.0 to 4.1
+  - Prospector from 1.8 to 1.10
+- Apt
+  - Binutils from 2.35.2-2 to 2.40.2
+  - Libproj from 7.2.1-1 to 9.1.1-1
+  - Gdalbin from 3.2.2 to 3.6.2
+- Added Renovate to manage dependencies that Dependabot cannot.
+
 ## 0.4.15 - 02/03/2023
 
 Changes:

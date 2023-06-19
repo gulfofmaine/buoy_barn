@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.4.0
     hooks:
       - id: trailing-whitespace
         # exclude: tests/data
@@ -12,6 +12,7 @@ repos:
       - id: end-of-file-fixer
       - id: check-docstring-first
       - id: check-added-large-files
+      - id: no-commit-to-branch
 
   # Looks for docstrings
   # - repo: https://github.com/econchick/interrogate
@@ -24,19 +25,19 @@ repos:
   #       args: [-vv]
 
   - repo: https://github.com/keewis/blackdoc
-    rev: v0.3.7
+    rev: v0.3.8
     hooks:
       - id: blackdoc
 
   - repo: https://github.com/pycqa/flake8
-    rev: 3.9.2
+    rev: 6.0.0
     hooks:
       - id: flake8
         exclude: docs/source/conf.py
         args: [--max-line-length=105]
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+    rev: 5.12.0
     hooks:
       - id: isort
         additional_dependencies: [toml]
@@ -52,7 +53,7 @@ repos:
           ]
 
   - repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 23.3.0
     hooks:
       - id: black
         language_version: python3
@@ -101,36 +102,36 @@ repos:
   # exclude: docs/cluster.drawio.svg
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.1.0
+    rev: v3.6.0
     hooks:
       - id: pyupgrade
         args:
           - --py310-plus
 
   - repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.3.0
+    rev: v2.5.1
     hooks:
       - id: add-trailing-comma
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.4
+    rev: 1.7.5
     hooks:
       - id: bandit
         exclude: .*\/tests\/.*
 
   - repo: https://github.com/zricethezav/gitleaks/
-    rev: v8.15.0
+    rev: v8.16.4
     hooks:
       - id: gitleaks
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.8.0.4
+    rev: v0.9.0.5
     hooks:
       - id: shellcheck
   #       exclude: services/geoapi/data.neracoos.org_geoapi/entrypoint.sh
 
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.11.0
+    rev: 1.13.0
     hooks:
       - id: django-upgrade
         args: [--target-version, "4.1"]

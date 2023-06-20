@@ -8,7 +8,19 @@ Changes:
 
 Fixes:
 
+## 0.4.18 - 06/19/2023
+
+Fixes:
+
 - Attempt to to fix N+1 query from `/api/platforms/` where Django wasn't pre-fetching the timeseries for the platforms, so they were being fetched on the fly as the serializer tried to assemble the output. Fixes [#793](https://github.com/gulfofmaine/buoy_barn/issues/793)
+
+Dependency updates:
+
+- Pre-commit
+  - Pyupgrade from 3.6.0 to 3.7.0
+  - Gitleaks from 8.16.4 to 8.17.0
+  - Django-upgrade from 1.13.0 to 1.14.0
+- Redis from 5.0.3 to 5.0.14
 
 ## 0.4.17 - 06/19/2023
 

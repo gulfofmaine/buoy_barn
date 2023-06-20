@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Attempt to to fix N+1 query from `/api/platforms/` where Django wasn't pre-fetching the timeseries for the platforms, so they were being fetched on the fly as the serializer tried to assemble the output. Fixes [#793](https://github.com/gulfofmaine/buoy_barn/issues/793)
+
 ## 0.4.17 - 06/19/2023
 
 Fixes:

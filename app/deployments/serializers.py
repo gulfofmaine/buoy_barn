@@ -1,5 +1,6 @@
 import logging
 
+from django.urls import reverse
 from rest_framework import serializers
 from rest_framework_gis.serializers import (
     GeoFeatureModelSerializer,
@@ -15,7 +16,36 @@ class PlatformSerializer(GeoFeatureModelSerializer):
     readings = serializers.SerializerMethodField()
 
     def get_readings(self, obj):
-        return obj.latest_erddap_values()
+        readings = []
+
+        try:
+            timeseries = obj.timeseries_active
+        except AttributeError:
+            timeseries = obj.timeseries_set.filter(active=True)
+
+        for series in timeseries:
+            if not series.end_time:
+                readings.append(
+                    {
+                        "value": series.value,
+                        "time": series.value_time,
+                        "depth": series.depth,
+                        "data_type": series.data_type.json,
+                        "server": series.dataset.server.base_url,
+                        "variable": series.variable,
+                        "constraints": series.constraints,
+                        "dataset": series.dataset.name,
+                        "start_time": series.start_time,
+                        "cors_proxy_url": reverse(
+                            "server-proxy",
+                            kwargs={"server_id": series.dataset.server.id},
+                        )
+                        if series.dataset.server.proxy_cors
+                        else None,
+                    },
+                )
+
+        return readings
 
     location_point = GeometrySerializerMethodField()
 

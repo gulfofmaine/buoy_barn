@@ -2,6 +2,7 @@ from urllib.parse import urljoin
 
 import requests
 from django.conf import settings
+from django.db.models import Prefetch
 from django.http import HttpRequest, HttpResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -12,7 +13,7 @@ from rest_framework.exceptions import APIException, ParseError
 from rest_framework.response import Response
 
 from . import tasks
-from .models import ErddapDataset, ErddapServer, Platform
+from .models import ErddapDataset, ErddapServer, Platform, TimeSeries
 from .serializers import (
     ErddapDatasetSerializer,
     ErddapServerSerializer,
@@ -31,7 +32,16 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
         "programattribution_set__program",
         "alerts",
         "programs",
-        "timeseries_set",
+        Prefetch(
+            "timeseries_set",
+            queryset=TimeSeries.objects.filter(active=True).prefetch_related(
+                "dataset",
+                "dataset__server",
+                "data_type",
+                "buffer_type",
+            ),
+            to_attr="timeseries_active",
+        ),
     )
     serializer_class = PlatformSerializer
 

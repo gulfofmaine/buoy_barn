@@ -5,9 +5,7 @@ from enum import Enum
 
 import requests
 from django.contrib.gis.db import models
-from django.urls import reverse
 from erddapy import ERDDAP
-from memoize import memoize
 
 logger = logging.getLogger(__name__)
 
@@ -54,36 +52,6 @@ class Platform(models.Model):
         if self.geom:
             return self.geom
         return None
-
-    @memoize(timeout=5 * 60)
-    def latest_erddap_values(self):
-        readings = []
-        for series in self.timeseries_set.filter(active=True).select_related(
-            "data_type",
-            "dataset",
-            "dataset__server",
-        ):  # .filter(end_time=None):
-            if not series.end_time:
-                readings.append(
-                    {
-                        "value": series.value,
-                        "time": series.value_time,
-                        "depth": series.depth,
-                        "data_type": series.data_type.json,
-                        "server": series.dataset.server.base_url,
-                        "variable": series.variable,
-                        "constraints": series.constraints,
-                        "dataset": series.dataset.name,
-                        "start_time": series.start_time,
-                        "cors_proxy_url": reverse(
-                            "server-proxy",
-                            kwargs={"server_id": series.dataset.server.id},
-                        )
-                        if series.dataset.server.proxy_cors
-                        else None,
-                    },
-                )
-        return readings
 
     def current_alerts(self):
         alerts = []

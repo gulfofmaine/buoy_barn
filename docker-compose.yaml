@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   db:
-    image: postgis/postgis:15-3.3@sha256:1bfa5a3f772f1838c11ca2b1fd9090bd1f7b118acd6a190e2b13c3b339554aa7
+    image: postgis/postgis:15-3.3@sha256:a8d48e2d25196a4211a00bebf342e9d29830777472faa002fe48bd92930cc466
     restart: always
     env_file:
       - ./docker-data/secret.env

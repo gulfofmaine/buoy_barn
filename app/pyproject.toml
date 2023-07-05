@@ -32,7 +32,7 @@ django-health-check = "^3.17.0"
 [tool.poetry.dev-dependencies]
 ipython = "^8.14"
 pyyaml = "^6.0"
-pytest = "^7.3"
+pytest = "^7.4"
 pytest-django = "^4.5"
 pytest-cov = "^4.1"
 prospector = { version = "^1.10", extras = ["with_mypy", "with_vulture"] }

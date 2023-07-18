@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   db-test:
-    image: postgis/postgis:15-3.3@sha256:f83c3f1b3af24cfe4320edbf62798ec5924dd6c83835bb43067e9fc779c890e5
+    image: postgis/postgis:15-3.3@sha256:30ca591312de8671f656ef7b7fec0b4bb0cfbeb1abaa5af1a8560deb3b9307d2
     env_file:
       - ./docker-data/test.env
 

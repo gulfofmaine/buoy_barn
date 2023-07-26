@@ -99,5 +99,4 @@ class ErddapDatasetSerializer(serializers.ModelSerializer):
         depth = 2
 
     def get_slug(self, obj):
-        print(self, obj)
         return f"{obj.server.name}-{obj.name}"

@@ -340,6 +340,9 @@ class TimeSeries(models.Model):
 
         return server.get_download_url()
 
+    class Meta:
+        ordering = ["data_type"]
+
 
 class Alert(models.Model):
     platform = models.ForeignKey(

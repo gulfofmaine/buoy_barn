@@ -6,6 +6,10 @@ Additions:
 
 Changes:
 
+- API views to see which platforms have active timeseries for an ERDDAP server or dataset.
+- Admin filters to select platforms by ERDDAP server, dataset, active timeseries, or standard name (data type).
+- Customized the admin display for timeseries to make it more compact and collapse less useful info.
+
 Fixes:
 
 ## 0.4.18 - 06/19/2023

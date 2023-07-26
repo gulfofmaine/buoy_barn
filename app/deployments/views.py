@@ -88,6 +88,36 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = self.serializer_class(dataset, context={"request": request})
         return Response(serializer.data)
 
+    @action(detail=True)
+    def platforms(self, request, **kwargs):
+        """Show the platforms with active timeseries for the specified dataset"""
+        dataset = self.dataset(**kwargs)
+
+        qs = (
+            Platform.objects.filter(active=True, timeseries__dataset=dataset)
+            .prefetch_related(
+                "programattribution_set",
+                "programattribution_set__program",
+                "alerts",
+                "programs",
+                Prefetch(
+                    "timeseries_set",
+                    queryset=TimeSeries.objects.filter(active=True).prefetch_related(
+                        "dataset",
+                        "dataset__server",
+                        "data_type",
+                        "buffer_type",
+                    ),
+                    to_attr="timeseries_active",
+                ),
+            )
+            .all()
+        )
+
+        serializer = PlatformSerializer(qs, many=True)
+
+        return Response(serializer.data)
+
 
 class ServerViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -106,6 +136,37 @@ class ServerViewSet(viewsets.ReadOnlyModelViewSet):
         tasks.single_refresh_server.delay(server.id, healthcheck=True)
 
         serializer = self.serializer_class(server, context={"request": request})
+        return Response(serializer.data)
+
+    @action(detail=True)
+    def platforms(self, request, **kwargs):
+        """Show platforms with active timeseries for the specified server"""
+        pk = kwargs["pk"]
+        server, dataset = pk.split("-")
+
+        qs = (
+            Platform.objects.filter(active=True, timeseries__dataset__server=pk)
+            .prefetch_related(
+                "programattribution_set",
+                "programattribution_set__program",
+                "alerts",
+                "programs",
+                Prefetch(
+                    "timeseries_set",
+                    queryset=TimeSeries.objects.filter(active=True).prefetch_related(
+                        "dataset",
+                        "dataset__server",
+                        "data_type",
+                        "buffer_type",
+                    ),
+                    to_attr="timeseries_active",
+                ),
+            )
+            .all()
+        )
+
+        serializer = PlatformSerializer(qs, many=True)
+
         return Response(serializer.data)
 
 

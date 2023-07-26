@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.contrib.admin import BooleanFieldListFilter
 from django.contrib.gis import admin
 from django.utils import timezone
 from django.utils.safestring import mark_safe
@@ -26,6 +27,29 @@ class TimeSeriesInline(admin.StackedInline):
     autocomplete_fields = ["dataset", "data_type", "buffer_type"]
     readonly_fields = ["test_timeseries"]
 
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": [
+                    ("dataset", "variable", "data_type", "depth"),
+                    ("value_time", "constraints"),
+                    ("value", "active"),
+                ],
+            },
+        ),
+        (
+            "Advanced",
+            {
+                "classes": ["collapse"],
+                "fields": [
+                    ("start_time", "end_time"),
+                    ("test_timeseries", "buffer_type"),
+                ],
+            },
+        ),
+    ]
+
     @admin.display(
         description="Test if a timeseries is formatted correctly to connect to ERDDAP",
     )
@@ -45,15 +69,23 @@ class AlertInline(admin.TabularInline):
     extra = 0
 
 
+class TimeseriesActiveFilter(BooleanFieldListFilter):
+    def __init__(self, field, request, params, model, model_admin, field_path) -> None:
+        super().__init__(field, request, params, model, model_admin, field_path)
+
+        self.title = "Timeseries Active"
+
+
 @admin.register(Platform)
 class PlatformAdmin(admin.GISModelAdmin):
-    ordering = ["name"]
+    ordering = ["name", "mooring_site_desc", "ndbc_site_id"]
     inlines = [AlertInline, TimeSeriesInline, ProgramAttributionInline]
 
     actions = ["remove_end_time", "disable_timeseries", "enable_timeseries"]
     search_fields = [
         "name",
         "mooring_site_desc",
+        "ndbc_site_id",
         "alerts__message",
         "timeseries__variable",
         "timeseries__dataset__name",
@@ -62,6 +94,14 @@ class PlatformAdmin(admin.GISModelAdmin):
         "timeseries__data_type__short_name",
         "timeseries__data_type__long_name",
         "timeseries__data_type__units",
+    ]
+
+    list_display = ["name", "mooring_site_desc", "ndbc_site_id"]
+    list_filter = [
+        "timeseries__dataset__server__name",
+        ("timeseries__active", TimeseriesActiveFilter),
+        "timeseries__data_type__standard_name",
+        "timeseries__dataset__name",
     ]
 
     @admin.action(

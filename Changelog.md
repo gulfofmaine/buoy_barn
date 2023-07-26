@@ -6,11 +6,30 @@ Additions:
 
 Changes:
 
+Fixes:
+
+## 0.5.0 - 08/26/2023
+
+Changes:
+
 - API views to see which platforms have active timeseries for an ERDDAP server or dataset.
 - Admin filters to select platforms by ERDDAP server, dataset, active timeseries, or standard name (data type).
 - Customized the admin display for timeseries to make it more compact and collapse less useful info.
 
-Fixes:
+Dependency Updates:
+  - Github actions
+    - Setup Docker Buildx from 2.7.0 to 2.9.1
+  - Pre-Commit
+    - Black from 23.3.0 to 23.7.0
+    - PyUpgrade from 3.7.0 to 3.9.0
+    - Add trailing comma from 2.5.1 to 3.0.0
+  - Python
+    - Django CORS headers from 4.1 to 4.2
+    - Sentry SDK from 1.25.1 to 1.28.1
+    - VCRpy from 4.3 to 5.0
+    - Xarray from 2023.5.0 to 2023.6.0
+    - Py.Test from 7.3 to 7.4
+  - Redis from 5.0.14 to 7.0.12
 
 ## 0.4.18 - 06/19/2023
 

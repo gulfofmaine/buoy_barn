@@ -2774,13 +2774,13 @@ files = [
 
 [[package]]
 name = "xarray"
-version = "2023.6.0"
+version = "2023.7.0"
 description = "N-D labeled arrays and datasets in Python"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "xarray-2023.6.0-py3-none-any.whl", hash = "sha256:bdd4c45511ab4e84f4249ea1030336db59b750968f25369d8e132d6d7ead7cc9"},
-    {file = "xarray-2023.6.0.tar.gz", hash = "sha256:267a231ee4efc0341ebbffc6d4ec60e4a66e4849c16e0305c03fcefeca77698c"},
+    {file = "xarray-2023.7.0-py3-none-any.whl", hash = "sha256:af8b55bf78b792b8ad9326eb9d89980602f1a51e93d8465b445aeea3accca27e"},
+    {file = "xarray-2023.7.0.tar.gz", hash = "sha256:dace2fdbf1b7ff185d9c1226a24bf83c2ae52f3253dbfe80e17d1162600d055c"},
 ]
 
 [package.dependencies]
@@ -2900,4 +2900,4 @@ heapdict = "*"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "4dd598bb4af4eff125e4adb4d63d06ad6eec783c3a0f1538216a65fcf54a25af"
+content-hash = "c9b03d0ab1041472e872917069369013285cb3f5e18392e624f641fd71098ea6"

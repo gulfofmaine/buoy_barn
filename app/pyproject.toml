@@ -26,7 +26,7 @@ vcrpy = "^5.1"
 whitenoise = "^6.5"
 xarray = "^2023.8.0"
 pandas = "^1.5.3"
-prefect = "^1.4.0"
+prefect = "^2.11.5"
 django-health-check = "^3.17.0"
 
 [tool.poetry.dev-dependencies]

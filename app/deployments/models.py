@@ -35,6 +35,16 @@ class Platform(models.Model):
     mooring_site_desc = models.TextField("Mooring Site Description")
     active = models.BooleanField(default=True)
 
+    class PlatformTypes(models.TextChoices):
+        BUOY = "Buoy"
+        TIDE_STATION = "Tide Station"
+
+    platform_type = models.CharField(
+        max_length=50,
+        choices=PlatformTypes.choices,
+        default=PlatformTypes.BUOY,
+    )
+
     programs = models.ManyToManyField(Program, through="ProgramAttribution")
 
     ndbc_site_id = models.CharField(max_length=100, null=True, blank=True)
@@ -314,6 +324,46 @@ class TimeSeries(models.Model):
     active = models.BooleanField(
         default=True,
         help_text="Should this dataset be currently updated?",
+    )
+
+    DATUMS = {
+        "datum_mhhw_meters": "Mean Higher High Water (MHHW) offset in meters",
+        "datum_mhw_meters": "Mean High Water (MHW) offset in meters",
+        "datum_mtl_meters": "Mean Tide Level (MTL) offset in meters",
+        "datum_msl_meters": "Mean Sea Level (MSL) offset in meters",
+        "datum_mlw_meters": "Mean Low Water (MLW) offset in meters",
+        "datum_mllw_meters": "Mean Lower Low Water (MLLW) offset in meters",
+    }
+
+    datum_mhhw_meters = models.FloatField(
+        "Mean Higher High Water (MHHW) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_mhw_meters = models.FloatField(
+        "Mean High Water (MHW) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_mtl_meters = models.FloatField(
+        "Mean Tide Level (MTL) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_msl_meters = models.FloatField(
+        "Mean Sea Level (MSL) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_mlw_meters = models.FloatField(
+        "Mean Low Water (MLW) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_mllw_meters = models.FloatField(
+        "Mean Lower Low Water (MLLW) offset in meters",
+        null=True,
+        blank=True,
     )
 
     def __str__(self):

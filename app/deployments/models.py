@@ -268,6 +268,12 @@ class ErddapDataset(models.Model):
         return groups
 
 
+class TimeSeriesManager(models.Manager):
+    def by_dataset_slug(self, slug: str):
+        server, dataset = slug.split("-", 2)
+        return self.filter(dataset__server__name=server, dataset__name=dataset)
+
+
 class TimeSeries(models.Model):
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
     data_type = models.ForeignKey(DataType, on_delete=models.CASCADE)
@@ -315,6 +321,8 @@ class TimeSeries(models.Model):
         default=True,
         help_text="Should this dataset be currently updated?",
     )
+
+    objects = TimeSeriesManager()
 
     def __str__(self):
         return f"{self.platform.name} - {self.data_type.standard_name} - {self.depth}"

@@ -26,7 +26,7 @@ class PlatformSerializer(GeoFeatureModelSerializer):
         for series in timeseries:
             if not series.end_time:
                 datums = {}
-                for datum_name in TimeSeries.DATUMS.keys():
+                for datum_name in TimeSeries.DATUMS:
                     value = getattr(series, datum_name, None)
                     if value is not None:
                         datums[datum_name] = value

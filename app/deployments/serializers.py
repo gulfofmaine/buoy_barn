@@ -7,7 +7,7 @@ from rest_framework_gis.serializers import (
     GeometrySerializerMethodField,
 )
 
-from .models import ErddapDataset, ErddapServer, Platform, Program
+from .models import ErddapDataset, ErddapServer, Platform, Program, TimeSeries
 
 logger = logging.getLogger(__name__)
 
@@ -19,12 +19,18 @@ class PlatformSerializer(GeoFeatureModelSerializer):
         readings = []
 
         try:
-            timeseries = obj.timeseries_active
+            timeseries: list[TimeSeries] = obj.timeseries_active
         except AttributeError:
-            timeseries = obj.timeseries_set.filter(active=True)
+            timeseries: list[TimeSeries] = obj.timeseries_set.filter(active=True)
 
         for series in timeseries:
             if not series.end_time:
+                datums = {}
+                for datum_name in TimeSeries.DATUMS:
+                    value = getattr(series, datum_name, None)
+                    if value is not None:
+                        datums[datum_name] = value
+
                 readings.append(
                     {
                         "value": series.value,
@@ -42,6 +48,7 @@ class PlatformSerializer(GeoFeatureModelSerializer):
                         )
                         if series.dataset.server.proxy_cors
                         else None,
+                        "datum_offsets": datums,
                     },
                 )
 

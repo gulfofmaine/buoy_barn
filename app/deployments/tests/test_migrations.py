@@ -160,6 +160,30 @@ class DataMigrationTestCase(TestCase):
                 "m",
             ),
             ("dominant_wave_period_3", "DWP", "Dominant Wave Period", "seconds"),
+            (
+                "sea_surface_height_above_geopotential_datum",
+                "Sea Surface Height",
+                "Sea surface height above geopotential datum (NAVD 88)",
+                "Meters",
+            ),
+            (
+                "tidal_sea_surface_height_above_mean_higher_high_water",
+                "MHHW",
+                "Mean Higher High Water",
+                "Meters",
+            ),
+            (
+                "tidal_sea_surface_height_above_mean_sea_level",
+                "MSL",
+                "Mean Sea Level",
+                "Meters",
+            ),
+            (
+                "tidal_sea_surface_height_above_mean_lower_low_water",
+                "MLLW",
+                "Mean Lower Low Water",
+                "Meters",
+            ),
         ]
 
         for standard_name, short_name, long_name, units in data_types:

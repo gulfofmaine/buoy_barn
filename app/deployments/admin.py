@@ -45,6 +45,14 @@ class TimeSeriesInline(admin.StackedInline):
                 "fields": [
                     ("start_time", "end_time"),
                     ("test_timeseries", "buffer_type"),
+                    (
+                        "datum_mhhw_meters",
+                        "datum_mhw_meters",
+                        "datum_mtl_meters",
+                        "datum_msl_meters",
+                        "datum_mlw_meters",
+                        "datum_mllw_meters",
+                    ),
                 ],
             },
         ),

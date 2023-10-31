@@ -825,13 +825,13 @@ files = [
 
 [[package]]
 name = "ipython"
-version = "8.17.0"
+version = "8.17.1"
 description = "IPython: Productive Interactive Computing"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "ipython-8.17.0-py3-none-any.whl", hash = "sha256:5feb75ac603a6663de233196e1beea81ec9e5042916d4e30eb42ac09adc718d8"},
-    {file = "ipython-8.17.0.tar.gz", hash = "sha256:ec8023527c477910939841d4dc2348f8f843b310a504a49db7559bd6b7579953"},
+    {file = "ipython-8.17.1-py3-none-any.whl", hash = "sha256:b4510d0a163c89c78cf81be68acc841dde4a8290b6ee3f3c9578ccdd2574553c"},
+    {file = "ipython-8.17.1.tar.gz", hash = "sha256:9e12020f4bf74f08631c0f033bb580e074fbe36c64903195f3e63b9c0a986cbe"},
 ]
 
 [package.dependencies]

@@ -120,7 +120,7 @@ repos:
         exclude: .*\/tests\/.*
 
   - repo: https://github.com/zricethezav/gitleaks/
-    rev: v8.17.0
+    rev: v8.18.1
     hooks:
       - id: gitleaks
 

@@ -2779,13 +2779,13 @@ files = [
 
 [[package]]
 name = "xarray"
-version = "2023.10.1"
+version = "2023.11.0"
 description = "N-D labeled arrays and datasets in Python"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "xarray-2023.10.1-py3-none-any.whl", hash = "sha256:71ea549e9be6dfeab19c2736acf659967b861aad2397691a80e5fad0c61db2ad"},
-    {file = "xarray-2023.10.1.tar.gz", hash = "sha256:9eeee170c3fc2f3321eb6ba40c17ffe4d8c98d49d55e4a3fba66a75bdc7dd9e5"},
+    {file = "xarray-2023.11.0-py3-none-any.whl", hash = "sha256:933b5101e965120ed58e29525667ab34aafcea1886c236ade72a34d7bb465d9c"},
+    {file = "xarray-2023.11.0.tar.gz", hash = "sha256:9a45e10741844b5f948d8e1e768b460df7e90696d18e2eff2c1d47f5d9d50252"},
 ]
 
 [package.dependencies]
@@ -2794,7 +2794,7 @@ packaging = ">=21.3"
 pandas = ">=1.4"
 
 [package.extras]
-accel = ["bottleneck", "flox", "numbagg", "scipy"]
+accel = ["bottleneck", "flox", "numbagg", "opt-einsum", "scipy"]
 complete = ["xarray[accel,io,parallel,viz]"]
 io = ["cftime", "fsspec", "h5netcdf", "netCDF4", "pooch", "pydap", "scipy", "zarr"]
 parallel = ["dask[complete]"]
@@ -2904,4 +2904,4 @@ heapdict = "*"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "347a5304f87d922223f2256301ea3c296c1f2bb04a7e2a88a0f6177911ddd2f0"
+content-hash = "5c94a3abc28e0cb3e7fe8ebd0c84617247d1429fe05899dd4d371dd8dc4949af"

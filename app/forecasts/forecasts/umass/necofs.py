@@ -1,62 +1,24 @@
 """ UMass NECOFS wave forecasts """
-from datetime import datetime
-
-import numpy as np
-import pandas as pd
-import xarray as xr
-from memoize import memoize
-
-from forecasts.forecasts.base_forecast import BaseForecast, ForecastTypes
+from forecasts.forecasts.base_forecast import ForecastTypes
+from forecasts.forecasts.base_stac_edr_forecast import BaseSTACEDRForecast
 
 NECOFS_CATALOG_URL = (
     "http://www.smast.umassd.edu:8080/"
     "thredds/forecasts.html?dataset=necofs_gom3_wave"
 )
-NECOFS_THREDDS_URL = (
-    "http://www.smast.umassd.edu:8080/"
-    "thredds/dodsC/FVCOM/NECOFS/Forecasts/NECOFS_WAVE_FORECAST.nc"
-)
-TIMEOUT_DAY_SECONDS = 24 * 60 * 60
 
 
-def necofs_ds() -> xr.Dataset:
-    """Return an xarray Dataset for NECOFS"""
-    return xr.open_dataset(NECOFS_THREDDS_URL)
-
-
-@memoize(timeout=TIMEOUT_DAY_SECONDS)
-def necofs_node(lat: float, lon: float) -> int:
-    """Return the NECOFS Node index that is closest to the given lat, lon"""
-    ds = necofs_ds()
-    distance = np.sqrt(((ds["lat"] - lat) ** 2) + ((ds["lon"] - lon) ** 2))
-    return int(distance.argmin())
-
-
-class BaseNecofsForecast(BaseForecast):
-    """Common base for NECOFS wave firecasts"""
+class BaseNECOFSForecast(BaseSTACEDRForecast):
+    """NECOFS FVCOM dataset info"""
 
     source_url = NECOFS_CATALOG_URL
-    field: str = NotImplemented
-
-    def point_forecast(self, lat: float, lon: float) -> list[tuple[datetime, float]]:
-        node = necofs_node(lat, lon)
-
-        ds = necofs_ds()
-
-        dataarray = ds[self.field].isel(node=node)
-
-        return [
-            (pd.Timestamp(row.time.values, tz="UTC"), self.offset_value(row.data))
-            for row in dataarray
-        ]
-
-    def offset_value(self, value: float) -> float:  # pylint: disable=no-self-use
-        """Allows you to override a value to return something more helpful
-        (say Celsius rather than Kelvin)"""
-        return value
+    source_collection_url = (
+        "https://data.neracoos.org/stac/FVCOM_GOM3_WAVE/collection.json"
+    )
+    date_pattern = "FVCOM_GOM3_Wave_%Y%m%d%H"
 
 
-class NecofsWaveHeight(BaseNecofsForecast):
+class NecofsWaveHeight(BaseNECOFSForecast):
     """NECOFS wave height forecast"""
 
     slug = "necofs_wave_height"
@@ -68,7 +30,7 @@ class NecofsWaveHeight(BaseNecofsForecast):
     field = "hs"
 
 
-class NecofsWavePeriod(BaseNecofsForecast):
+class NecofsWavePeriod(BaseNECOFSForecast):
     """NECOFS wave period forecast"""
 
     slug = "necofs_wave_period"
@@ -80,7 +42,7 @@ class NecofsWavePeriod(BaseNecofsForecast):
     field = "tpeak"
 
 
-class NecofsWaveDirection(BaseNecofsForecast):
+class NecofsWaveDirection(BaseNECOFSForecast):
     """NECOFS wave direction forecast"""
 
     slug = "necofs_wave_direction"

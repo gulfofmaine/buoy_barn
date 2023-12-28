@@ -1,12 +1,12 @@
+from forecasts.forecasts.bio.bedford import (
+    BedfordWaveDirection,
+    BedfordWaveHeight,
+    BedfordWavePeriod,
+)
 from forecasts.forecasts.coastwatch_erddap.gfs import (
     GFSAirTemp,
     GFSWindDirection,
     GFSWindSpeed,
-)
-from forecasts.forecasts.neracoos_erddap.bedford import (
-    BedfordWaveDirection,
-    BedfordWaveHeight,
-    BedfordWavePeriod,
 )
 from forecasts.forecasts.umass.necofs import (
     NecofsWaveDirection,

@@ -1,15 +1,16 @@
 """Bedford Institute forecasts"""
 from forecasts.forecasts.base_forecast import ForecastTypes
-from forecasts.forecasts.neracoos_erddap.base_neracoos_erddap_forecast import (
-    BaseNERACOOSERDDAPForecast,
-)
+from forecasts.forecasts.base_stac_edr_forecast import BaseSTACEDRForecast
 
 
-class BaseBedfordForecast(BaseNERACOOSERDDAPForecast):
+class BaseBedfordForecast(BaseSTACEDRForecast):
     """Bedford dataset information"""
 
-    dataset = "WW3_72_GulfOfMaine_latest"
     source_url = "http://www.neracoos.org/erddap/griddap/WW3_72_GulfOfMaine_latest.html"
+    source_collection_url = (
+        "https://data.neracoos.org/stac/WW3_72_GulfOfMaine/collection.json"
+    )
+    date_pattern = "WW3_72_GulfOfMaine_%Y%m%d%H"
 
 
 class BedfordWaveHeight(BaseBedfordForecast):

@@ -2,7 +2,7 @@
 Generate forecast timeseries from EDR API references in STAC catalongs
 """
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pandas as pd
 import requests
@@ -11,9 +11,12 @@ from pystac import Collection, Item, Link
 
 from forecasts.forecasts.base_forecast import BaseForecast
 
-
-RETRIEVE_FORECAST_CACHE_SECONDS = float(os.environ.get("RETRIEVE_FORECAST_CACHE_SECONDS", 15 * 60))
-RETRIEVE_FORECAST_TIMEOUT_SECONDS = float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60))
+RETRIEVE_FORECAST_CACHE_SECONDS = float(
+    os.environ.get("RETRIEVE_FORECAST_CACHE_SECONDS", 15 * 60),
+)
+RETRIEVE_FORECAST_TIMEOUT_SECONDS = float(
+    os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60),
+)
 
 
 class BaseSTACEDRForecast(BaseForecast):
@@ -43,11 +46,6 @@ class BaseSTACEDRForecast(BaseForecast):
         edr_url = edr_url_for_field(base_edr_url, self.field, lat, lon)
         response = requests.get(edr_url, timeout=RETRIEVE_FORECAST_TIMEOUT_SECONDS)
         forecast = forecast_from_response(response.json(), self.field)
-
-        day_ago = datetime.now() - timedelta(hours=24)
-
-        forecast = [(dt, value) for (dt, value) in forecast if day_ago < dt]
-
         return forecast
 
 
@@ -63,7 +61,10 @@ def forecast_from_response(response_json, field: str) -> list[tuple[datetime, fl
 
 
 def edr_url_for_field(
-    base_url: str, field: str, latitude: float, longitude: float,
+    base_url: str,
+    field: str,
+    latitude: float,
+    longitude: float,
 ) -> str:
     wkt = f"POINT ({longitude} {latitude})"
     return base_url + f"?parameter-name={field}&coords={wkt}"
@@ -73,18 +74,20 @@ def latest_item_link_in_collection(collection: Collection, pattern: str) -> Link
     """Find the latest item in the collection"""
     latest = None
 
-    for l in collection.links:
-        if l.rel == "item":
+    for link in collection.links:
+        if link.rel == "item":
             item_date = datetime.strptime(
-                l.href.split("/")[-1].removesuffix(".json"), pattern,
+                link.href.split("/")[-1].removesuffix(".json"),
+                pattern,
             )
             try:
                 if item_date > datetime.strptime(
-                    latest.href.split("/")[-1].removesuffix(".json"), pattern,
+                    latest.href.split("/")[-1].removesuffix(".json"),
+                    pattern,
                 ):
-                    latest = l
+                    latest = link
             except AttributeError:
-                latest = l
+                latest = link
 
     if latest is None:
         raise KeyError("No items in links")

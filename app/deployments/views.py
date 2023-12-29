@@ -8,20 +8,23 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework import viewsets
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from rest_framework.decorators import action, authentication_classes, permission_classes
+
+# from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.decorators import (
+    action,  # , authentication_classes, permission_classes
+)
 from rest_framework.exceptions import APIException, ParseError
-from rest_framework.permissions import IsAuthenticated
+
+# from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from . import tasks
 from .models import ErddapDataset, ErddapServer, Platform, TimeSeries
-from .serializers import (
+from .serializers import (  # TimeSeriesUpdateResponseSerializer,
     ErddapDatasetSerializer,
     ErddapServerSerializer,
     PlatformSerializer,
     TimeSeriesSerializer,
-    TimeSeriesUpdateResponseSerializer,
     TimeSeriesUpdateSerializer,
 )
 
@@ -44,6 +47,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
                 "dataset__server",
                 "data_type",
                 "buffer_type",
+                "flood_levels",
             ),
             to_attr="timeseries_active",
         ),
@@ -181,7 +185,11 @@ class TimeSeriesViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     queryset = TimeSeries.objects.filter(active=True).prefetch_related(
-        "dataset", "dataset__server", "data_type", "buffer_type", "platform",
+        "dataset",
+        "dataset__server",
+        "data_type",
+        "buffer_type",
+        "platform",
     )
     # serializer_class = TimeSeriesSerializer
     # permission_classes = []
@@ -205,45 +213,48 @@ class TimeSeriesViewSet(viewsets.ReadOnlyModelViewSet):
     #     """List all the outdated timeseries"""
     #     pass
 
-    @action(detail=False, methods=["put"])
-    @authentication_classes([SessionAuthentication, TokenAuthentication])
-    @permission_classes([IsAuthenticated])
-    def batch(self, request):
-        """Update a collection of timeseries.
+    # @action(detail=False, methods=["put"])
+    # @authentication_classes([SessionAuthentication, TokenAuthentication])
+    # @permission_classes([IsAuthenticated])
+    # def batch(self, request):
+    #     """Update a collection of timeseries.
 
-        Timeseries will be matched by dataset slug, variable, and constraints, and the value and value times will be updated
-        """
-        serializer = TimeSeriesUpdateSerializer(data=request.data, many=True)
+    #     Timeseries will be matched by dataset slug, variable, and constraints,
+    #     and the value and value times will be updated
+    #     """
+    #     serializer = TimeSeriesUpdateSerializer(data=request.data, many=True)
 
-        updated_timeseries = []
+    #     updated_timeseries = []
 
-        if serializer.is_valid():
-            for updated_value in serializer.validated_data:
-                print(updated_value)
-                qs = TimeSeries.objects.by_dataset_slug(
-                    updated_value["dataset"],
-                ).filter(
-                    variable=updated_value["variable"],
-                    constraints=updated_value["constraints"],
-                )
-                update_count = qs.update(
-                    value=updated_value["value"], value_time=updated_value["value_time"],
-                )
-                print(update_count)
+    #     if serializer.is_valid():
+    #         for updated_value in serializer.validated_data:
+    #             print(updated_value)
+    #             qs = TimeSeries.objects.by_dataset_slug(
+    #                 updated_value["dataset"],
+    #             ).filter(
+    #                 variable=updated_value["variable"],
+    #                 constraints=updated_value["constraints"],
+    #             )
+    #             update_count = qs.update(
+    #                 value=updated_value["value"], value_time=updated_value["value_time"],
+    #             )
+    #             print(update_count)
 
-                updated_timeseries.extend(qs.all())
+    #             updated_timeseries.extend(qs.all())
 
-                if update_count < 1:
-                    print("Unable to update timeseries")
+    #             if update_count < 1:
+    #                 print("Unable to update timeseries")
 
-        serializer = TimeSeriesSerializer(
-            updated_timeseries, many=True, context={"request": self.request},
-        )
-        # serializer = TimeSeriesUpdateResponseSerializer({"updated_timeseries": updated_timeseries}, context={"request": self.request})
-        return Response(serializer.data)
+    #     serializer = TimeSeriesSerializer(
+    #         updated_timeseries, many=True, context={"request": self.request},
+    #     )
+    #     # serializer = TimeSeriesUpdateResponseSerializer(
+    #     #  {"updated_timeseries": updated_timeseries}, context={"request": self.request})
+    #     return Response(serializer.data)
 
 
-# [{"variable": "bar", "constraints": {"station=": "NAXR1"}, "dataset": "Coastwatch-cwwcNDBCMet", "value": 42, "value_time": "2024-01-01T00:00:00"}]
+# [{"variable": "bar", "constraints": {"station=": "NAXR1"},
+# "dataset": "Coastwatch-cwwcNDBCMet", "value": 42, "value_time": "2024-01-01T00:00:00"}]
 
 
 class ProxyTimeout(APIException):

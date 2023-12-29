@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2.10.0
+        uses: docker/setup-buildx-action@v3.0.0
 
       - name: Cache Docker layers
         uses: actions/cache@v3
@@ -32,14 +32,14 @@ jobs:
             buoy-barn-image-
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v2.2.0
+        uses: docker/login-action@v3.0.0
         continue-on-error: true
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Buoy Barn
-        uses: docker/build-push-action@v4.2.1
+        uses: docker/build-push-action@v5.1.0
         with:
           context: ./app
           push: false
@@ -116,7 +116,7 @@ jobs:
           docker image ls -a
 
       - name: "Login to Docker Hub"
-        uses: docker/login-action@v2.2.0
+        uses: docker/login-action@v3.0.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -150,7 +150,7 @@ jobs:
           git diff --exit-code && echo 'Already Deployed' || (git commit -am 'Upgrade Buoy Barn to ${{ steps.tagName.outputs.tag }}' && git push)
 
       - name: Create Sentry Release
-        uses: getsentry/action-release@v1.4.1
+        uses: getsentry/action-release@v1.6.0
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}

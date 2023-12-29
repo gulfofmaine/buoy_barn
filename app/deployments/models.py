@@ -35,6 +35,16 @@ class Platform(models.Model):
     mooring_site_desc = models.TextField("Mooring Site Description")
     active = models.BooleanField(default=True)
 
+    class PlatformTypes(models.TextChoices):
+        BUOY = "Buoy"
+        TIDE_STATION = "Tide Station"
+
+    platform_type = models.CharField(
+        max_length=50,
+        choices=PlatformTypes.choices,
+        default=PlatformTypes.BUOY,
+    )
+
     programs = models.ManyToManyField(Program, through="ProgramAttribution")
 
     ndbc_site_id = models.CharField(max_length=100, null=True, blank=True)
@@ -290,7 +300,7 @@ class TimeSeries(models.Model):
 
     depth = models.FloatField(null=True, blank=True)
 
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now)
     end_time = models.DateTimeField(null=True, blank=True)
 
     buffer_type = models.ForeignKey(
@@ -322,6 +332,46 @@ class TimeSeries(models.Model):
         help_text="Should this dataset be currently updated?",
     )
 
+    DATUMS = {
+        "datum_mhhw_meters": "Mean Higher High Water (MHHW) offset in meters",
+        "datum_mhw_meters": "Mean High Water (MHW) offset in meters",
+        "datum_mtl_meters": "Mean Tide Level (MTL) offset in meters",
+        "datum_msl_meters": "Mean Sea Level (MSL) offset in meters",
+        "datum_mlw_meters": "Mean Low Water (MLW) offset in meters",
+        "datum_mllw_meters": "Mean Lower Low Water (MLLW) offset in meters",
+    }
+
+    datum_mhhw_meters = models.FloatField(
+        "Mean Higher High Water (MHHW) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_mhw_meters = models.FloatField(
+        "Mean High Water (MHW) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_mtl_meters = models.FloatField(
+        "Mean Tide Level (MTL) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_msl_meters = models.FloatField(
+        "Mean Sea Level (MSL) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_mlw_meters = models.FloatField(
+        "Mean Low Water (MLW) offset in meters",
+        null=True,
+        blank=True,
+    )
+    datum_mllw_meters = models.FloatField(
+        "Mean Lower Low Water (MLLW) offset in meters",
+        null=True,
+        blank=True,
+    )
+
     objects = TimeSeriesManager()
 
     def __str__(self):
@@ -350,6 +400,35 @@ class TimeSeries(models.Model):
 
     class Meta:
         ordering = ["data_type"]
+        verbose_name_plural = "Time Series"
+
+
+class FloodLevel(models.Model):
+    timeseries = models.ForeignKey(
+        TimeSeries,
+        on_delete=models.CASCADE,
+        related_name="flood_levels",
+    )
+
+    min_value = models.FloatField()
+
+    class Level(ChoiceEnum):
+        MINOR = "Minor"
+        MODERATE = "Moderate"
+        MAJOR = "Major"
+
+        OTHER = "Other"
+
+    level = models.CharField("Level", choices=Level.choices(), max_length=16)
+    level_other = models.CharField(
+        "Optional name for 'Other level'",
+        blank=True,
+        null=True,
+    )
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.level_other if self.level_other else self.level} - {self.value}"
 
 
 class Alert(models.Model):

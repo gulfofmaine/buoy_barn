@@ -15,6 +15,7 @@ import os
 
 import sentry_sdk
 import toml
+from corsheaders.defaults import default_headers
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
@@ -134,6 +135,11 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "baggage",
+    "sentry-trace",
+)
 
 ROOT_URLCONF = "buoy_barn.urls"
 

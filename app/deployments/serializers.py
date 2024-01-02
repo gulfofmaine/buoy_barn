@@ -7,7 +7,15 @@ from rest_framework_gis.serializers import (
     GeometrySerializerMethodField,
 )
 
-from .models import DataType, ErddapDataset, ErddapServer, Platform, Program, TimeSeries
+from .models import (
+    DataType,
+    ErddapDataset,
+    ErddapServer,
+    FloodLevel,
+    Platform,
+    Program,
+    TimeSeries,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +43,9 @@ class PlatformSerializer(GeoFeatureModelSerializer):
                 for fl in series.flood_levels.all():
                     flood_levels.append(
                         {
-                            "name": fl.level_other if fl.level_other else fl.level,
+                            "name": fl.level_other
+                            if fl.level_other
+                            else FloodLevel.Level[fl.level].value,
                             "min_value": fl.min_value,
                             "description": fl.description,
                         },

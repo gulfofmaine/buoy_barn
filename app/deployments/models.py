@@ -428,7 +428,8 @@ class FloodLevel(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.level_other if self.level_other else self.level} - {self.value}"
+        name = self.level_other if self.level_other else self.Level[self.level].value
+        return f"{name} - {self.min_value}"
 
 
 class Alert(models.Model):

@@ -17,6 +17,10 @@ logs:
 migrations:
 	docker compose exec web python manage.py makemigrations
 
+blank-migration:
+	# docker compose exec web python manage.py makemigrations -n tide_data_types --empty deployments
+	docker compose exec web python manage.py makemigrations --empty deployments
+
 migrate:
 	docker compose exec web python manage.py migrate
 

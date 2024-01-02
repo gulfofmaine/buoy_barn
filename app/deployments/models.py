@@ -278,6 +278,12 @@ class ErddapDataset(models.Model):
         return groups
 
 
+class TimeSeriesManager(models.Manager):
+    def by_dataset_slug(self, slug: str):
+        server, dataset = slug.split("-", 2)
+        return self.filter(dataset__server__name=server, dataset__name=dataset)
+
+
 class TimeSeries(models.Model):
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
     data_type = models.ForeignKey(DataType, on_delete=models.CASCADE)
@@ -294,7 +300,7 @@ class TimeSeries(models.Model):
 
     depth = models.FloatField(null=True, blank=True)
 
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(default=datetime.now)
     end_time = models.DateTimeField(null=True, blank=True)
 
     buffer_type = models.ForeignKey(
@@ -366,6 +372,8 @@ class TimeSeries(models.Model):
         blank=True,
     )
 
+    objects = TimeSeriesManager()
+
     def __str__(self):
         return f"{self.platform.name} - {self.data_type.standard_name} - {self.depth}"
 
@@ -392,6 +400,36 @@ class TimeSeries(models.Model):
 
     class Meta:
         ordering = ["data_type"]
+        verbose_name_plural = "Time Series"
+
+
+class FloodLevel(models.Model):
+    timeseries = models.ForeignKey(
+        TimeSeries,
+        on_delete=models.CASCADE,
+        related_name="flood_levels",
+    )
+
+    min_value = models.FloatField()
+
+    class Level(ChoiceEnum):
+        MINOR = "Minor"
+        MODERATE = "Moderate"
+        MAJOR = "Major"
+
+        OTHER = "Other"
+
+    level = models.CharField("Level", choices=Level.choices(), max_length=16)
+    level_other = models.CharField(
+        "Optional name for 'Other level'",
+        blank=True,
+        null=True,
+    )
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        name = self.level_other if self.level_other else self.Level[self.level].value
+        return f"{name} - {self.min_value}"
 
 
 class Alert(models.Model):

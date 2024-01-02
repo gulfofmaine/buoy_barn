@@ -7,7 +7,15 @@ from rest_framework_gis.serializers import (
     GeometrySerializerMethodField,
 )
 
-from .models import ErddapDataset, ErddapServer, Platform, Program, TimeSeries
+from .models import (
+    DataType,
+    ErddapDataset,
+    ErddapServer,
+    FloodLevel,
+    Platform,
+    Program,
+    TimeSeries,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +39,18 @@ class PlatformSerializer(GeoFeatureModelSerializer):
                     if value is not None:
                         datums[datum_name] = value
 
+                flood_levels = []
+                for fl in series.flood_levels.all():
+                    flood_levels.append(
+                        {
+                            "name": fl.level_other
+                            if fl.level_other
+                            else FloodLevel.Level[fl.level].value,
+                            "min_value": fl.min_value,
+                            "description": fl.description,
+                        },
+                    )
+
                 readings.append(
                     {
                         "value": series.value,
@@ -49,6 +69,7 @@ class PlatformSerializer(GeoFeatureModelSerializer):
                         if series.dataset.server.proxy_cors
                         else None,
                         "datum_offsets": datums,
+                        "flood_levels": flood_levels,
                     },
                 )
 
@@ -107,3 +128,63 @@ class ErddapDatasetSerializer(serializers.ModelSerializer):
 
     def get_slug(self, obj):
         return f"{obj.server.name}-{obj.name}"
+
+
+class DataTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DataType
+        exclude = ["id"]
+
+
+class PlatformPartialSerializer(GeoFeatureModelSerializer):
+    location_point = GeometrySerializerMethodField()
+
+    def get_location_point(self, obj):
+        try:
+            return obj.location
+        except AttributeError:
+            logger.error(
+                f"Platform ({obj.name}) does not have a valid location attribute",
+                exc_info=True,
+            )
+            return None
+
+    class Meta:
+        model = Platform
+        exclude = ["geom", "programs"]
+        id_field = "name"
+        geo_field = "location_point"
+
+
+class TimeSeriesSerializer(serializers.ModelSerializer):
+    platform = PlatformPartialSerializer()
+    dataset = ErddapDatasetSerializer()
+    data_type = DataTypeSerializer()
+
+    class Meta:
+        model = TimeSeries
+        exclude = ["buffer_type"]
+        # depth = 2
+
+
+class TimeSeriesUpdateSerializer(serializers.ModelSerializer):
+    dataset = serializers.SlugField(max_length=512)
+
+    class Meta:
+        model = TimeSeries
+        fields = [
+            "variable",
+            "constraints",
+            "dataset",
+            "value",
+            "value_time",
+        ]
+        # read_only_fields = [
+        #     "variable",
+        #     "constraints",
+        #     "dataset",
+        # ]
+
+
+class TimeSeriesUpdateResponseSerializer(serializers.Serializer):
+    updated_timeseries = TimeSeriesSerializer(many=True)

@@ -11,6 +11,7 @@ from .models import (
     DataType,
     ErddapDataset,
     ErddapServer,
+    FloodLevel,
     MooringType,
     Platform,
     Program,
@@ -20,6 +21,28 @@ from .models import (
 )
 
 
+class FloodLevelInline(admin.StackedInline):
+    model = FloodLevel
+    extra = 0
+
+
+@admin.register(TimeSeries)
+class TimeSeriesAdmin(admin.ModelAdmin):
+    model = TimeSeries
+    inlines = [FloodLevelInline]
+
+    autocomplete_fields = ["dataset", "data_type", "buffer_type"]
+    readonly_fields = ["test_timeseries"]
+
+    @admin.display(
+        description="Test if a timeseries is formatted correctly to connect to ERDDAP",
+    )
+    def test_timeseries(self, instance):
+        dataset_url = instance.dataset_url("htmlTable")
+
+        return mark_safe(f"<a href='{dataset_url}'>Test ERDDAP Timeseries</a>")  # nosec
+
+
 class TimeSeriesInline(admin.StackedInline):
     model = TimeSeries
     extra = 0
@@ -27,32 +50,21 @@ class TimeSeriesInline(admin.StackedInline):
     autocomplete_fields = ["dataset", "data_type", "buffer_type"]
     readonly_fields = ["test_timeseries"]
 
+    show_change_link = True
+
     fieldsets = [
         (
             None,
             {
                 "fields": [
-                    ("dataset", "variable", "data_type", "depth"),
+                    (
+                        "dataset",
+                        "variable",
+                    ),
+                    ("data_type", "depth"),
                     ("value_time", "constraints"),
                     ("value", "active"),
-                ],
-            },
-        ),
-        (
-            "Advanced",
-            {
-                "classes": ["collapse"],
-                "fields": [
-                    ("start_time", "end_time"),
-                    ("test_timeseries", "buffer_type"),
-                    (
-                        "datum_mhhw_meters",
-                        "datum_mhw_meters",
-                        "datum_mtl_meters",
-                        "datum_msl_meters",
-                        "datum_mlw_meters",
-                        "datum_mllw_meters",
-                    ),
+                    ("test_timeseries",),
                 ],
             },
         ),

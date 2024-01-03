@@ -9,11 +9,11 @@ from ..models import ErddapServer
 logger = getLogger(__name__)
 
 
-def filter_dataframe(df: DataFrame, column: str) -> DataFrame:
+def filter_dataframe(df_to_filter: DataFrame, column: str) -> DataFrame:
     """Remove invalid times and for the specified column"""
-    df = df[df["time (UTC)"].notna()]
-    column_name = [col for col in df.columns if col.split(" ")[0] == column][0]
-    return df[df[column_name].notna()]
+    filtered_df = df_to_filter[df_to_filter["time (UTC)"].notna()]
+    column_name = [col for col in filtered_df.columns if col.split(" ")[0] == column][0]
+    return filtered_df[filtered_df[column_name].notna()]
 
 
 def setup_variables(
@@ -27,10 +27,7 @@ def setup_variables(
     server.response = "nc"
     server.protocol = "tabledap"
 
-    if not constraints:
-        constraints = {}
-    else:
-        constraints = constraints.copy()
+    constraints = {} if not constraints else constraints.copy()
 
     if not time:
         time = datetime.utcnow() - timedelta(hours=24)
@@ -51,7 +48,8 @@ def retrieve_dataframe(
 ) -> DataFrame:
     """Returns a dataframe from ERDDAP for a given dataset
 
-    Attempts to sort the dataframe by time"""
+    Attempts to sort the dataframe by time
+    """
     e = setup_variables(
         server.connection(),
         dataset,
@@ -62,11 +60,11 @@ def retrieve_dataframe(
     timeout_seconds = server.request_timeout_seconds
     e.requests_kwargs["timeout"] = timeout_seconds
 
-    df = e.to_pandas(parse_dates=True)
+    erddap_df = e.to_pandas(parse_dates=True)
 
     try:
-        df = df.sort_values("time (UTC)")
+        erddap_df = erddap_df.sort_values("time (UTC)")
     except KeyError:
         logger.warning(f"Unable to sort dataframe by `time (UTC)` for {dataset}")
 
-    return df
+    return erddap_df

@@ -1,5 +1,4 @@
-"""
-Generate forecast timeseries from EDR API references in STAC catalongs
+"""Generate forecast timeseries from EDR API references in STAC catalongs
 """
 import os
 from datetime import datetime
@@ -56,6 +55,7 @@ def forecast_from_response(response_json, field: str) -> list[tuple[datetime, fl
                 response_json["domain"]["axes"]["t"]["values"],
             ).to_pydatetime(),
             response_json["ranges"][field]["values"],
+            strict=False,
         ),
     )
 

@@ -31,9 +31,7 @@ from .serializers import (  # TimeSeriesUpdateResponseSerializer,
 
 @method_decorator(cache_page(60), name="list")
 class PlatformViewset(viewsets.ReadOnlyModelViewSet):
-    """
-    A viewset for viewing Platforms
-    """
+    """A viewset for viewing Platforms"""
 
     queryset = Platform.objects.filter(active=True).prefetch_related(
         "programattribution_set",
@@ -62,9 +60,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
 
 
 class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    A viewset for viewing and triggering refreshed of datasets
-    """
+    """A viewset for viewing and triggering refreshed of datasets"""
 
     queryset = ErddapDataset.objects.select_related("server")
     serializer_class = ErddapDatasetSerializer
@@ -78,7 +74,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
         except ValueError:
             raise ParseError(
                 detail="Invalid server-dataset key. Server and dataset must be split by `-`.",
-            )
+            ) from None
 
         dataset = get_object_or_404(self.queryset, name=dataset, server__name=server)
         return dataset
@@ -129,9 +125,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ServerViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    A viewset for viewing and triggering refreshes of all timeseries for a server
-    """
+    """A viewset for viewing and triggering refreshes of all timeseries for a server"""
 
     queryset = ErddapServer.objects
     serializer_class = ErddapServerSerializer
@@ -180,9 +174,7 @@ class ServerViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class TimeSeriesViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    A viewset for retrieving and updating timeseries data
-    """
+    """A viewset for retrieving and updating timeseries data"""
 
     queryset = TimeSeries.objects.filter(active=True).prefetch_related(
         "dataset",

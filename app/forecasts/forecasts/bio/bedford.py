@@ -7,9 +7,7 @@ class BaseBedfordForecast(BaseSTACEDRForecast):
     """Bedford dataset information"""
 
     source_url = "http://www.neracoos.org/erddap/griddap/WW3_72_GulfOfMaine_latest.html"
-    source_collection_url = (
-        "https://data.neracoos.org/stac/WW3_72_GulfOfMaine/collection.json"
-    )
+    source_collection_url = "https://data.neracoos.org/stac/WW3_72_GulfOfMaine/collection.json"
     date_pattern = "WW3_72_GulfOfMaine_%Y%m%d%H"
 
 

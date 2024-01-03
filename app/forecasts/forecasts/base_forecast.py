@@ -18,7 +18,8 @@ class BaseForecast:
     and the point_forecast method with the same signatures
     as this is the interface that the API will interact with.
 
-    Attributes:
+    Attributes
+    ----------
         slug (str): URL save slug (should be unique among forecasts)
         forecast_type (ForecastTypes): Type of forecast, so that the related datasets can also be loaded.
         name (str): Short name of forecast
@@ -39,10 +40,12 @@ class BaseForecast:
         for a point of given latitude and longitude
 
         Args:
+        ----
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
 
         Returns:
+        -------
             List of tuples of forecasted times and values
         """
         raise NotImplementedError

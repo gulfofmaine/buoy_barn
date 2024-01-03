@@ -6,7 +6,7 @@ from pandas import DataFrame
 
 def attribute_value(info_df: DataFrame, attribute: str) -> float | str | int:
     """Return the value of a single dataset attribute"""
-    row = info_df[info_df["Attribute Name"] == attribute].values[0]
+    row = info_df[info_df["Attribute Name"] == attribute].to_numpy()[0]
     value = row[-1]
     value_type = row[-2]
     if value_type == "int":
@@ -36,16 +36,12 @@ def coordinates_str(info_df: DataFrame, lat: float, lon: float) -> str:
     lat_precision = attribute_value(info_df, "geospatial_lat_resolution")
     lat_value = str(round_to(lat, lat_precision)).split(".")
 
-    lat_str = (
-        f"[({lat_value[0]}.{lat_value[1][:2]}):1:({lat_value[0]}.{lat_value[1][:2]})]"
-    )
+    lat_str = f"[({lat_value[0]}.{lat_value[1][:2]}):1:({lat_value[0]}.{lat_value[1][:2]})]"
 
     lon_precision = attribute_value(info_df, "geospatial_lon_resolution")
     lon_value = str(round_to(lon, lon_precision)).split(".")
 
-    lon_str = (
-        f"[({lon_value[0]}.{lon_value[1][:2]}):1:({lon_value[0]}.{lon_value[1][:2]})]"
-    )
+    lon_str = f"[({lon_value[0]}.{lon_value[1][:2]}):1:({lon_value[0]}.{lon_value[1][:2]})]"
 
     return lat_str + lon_str
 

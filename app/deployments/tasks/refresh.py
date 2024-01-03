@@ -29,7 +29,7 @@ def update_values_for_timeseries(timeseries):
 
         logger.info(f"Working on timeseries: {timeseries}")
         try:
-            df = retrieve_dataframe(
+            timeseries_df = retrieve_dataframe(
                 timeseries[0].dataset.server,
                 timeseries[0].dataset.name,
                 timeseries[0].constraints,
@@ -44,7 +44,7 @@ def update_values_for_timeseries(timeseries):
             raise BackoffError(
                 f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
                 f"with constraint {timeseries[0].constraints}: {error}",
-            )
+            ) from error
 
         except OSError as error:
             logger.error(
@@ -61,7 +61,7 @@ def update_values_for_timeseries(timeseries):
             return
 
         for series in timeseries:
-            filtered_df = filter_dataframe(df, series.variable)
+            filtered_df = filter_dataframe(timeseries_df, series.variable)
 
             try:
                 row = filtered_df.iloc[-1]
@@ -78,9 +78,7 @@ def update_values_for_timeseries(timeseries):
                 continue
 
             try:
-                variable_name = [
-                    key for key in row.keys() if key.split(" ")[0] == series.variable
-                ]
+                variable_name = [key for key in row.keys() if key.split(" ")[0] == series.variable]  # noqa: SIM118
                 value = row[variable_name]
 
                 if isinstance(value, Timedelta):
@@ -155,8 +153,7 @@ def single_refresh_dataset(dataset_id: int, healthcheck: bool = False):
 
         if already_queued:
             logger.error(
-                f"refresh_dataset is already queued for {dataset_id}. "
-                "Not going to schedule another.",
+                f"refresh_dataset is already queued for {dataset_id}. " "Not going to schedule another.",
                 exc_info=True,
             )
         else:
@@ -197,8 +194,7 @@ def single_refresh_server(server_id: int, healthcheck: bool = False):
 
         if already_queued:
             logger.error(
-                f"refresh_server is already queued for {server_id}. "
-                "Not going to schedule another.",
+                f"refresh_server is already queued for {server_id}. " "Not going to schedule another.",
                 exc_info=True,
             )
         else:

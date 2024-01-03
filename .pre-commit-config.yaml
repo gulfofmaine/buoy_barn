@@ -14,50 +14,6 @@ repos:
       - id: check-added-large-files
       - id: no-commit-to-branch
 
-  # Looks for docstrings
-  # - repo: https://github.com/econchick/interrogate
-  #   rev: 1.5.0
-  #   hooks:
-  #     - id: interrogate
-  #       # exclude: ^(docs|setup.py|tests)
-  #       exclude: .*\/tests\/.*
-  #       # args: [--config=pyproject.toml]
-  #       args: [-vv]
-
-  - repo: https://github.com/keewis/blackdoc
-    rev: v0.3.9
-    hooks:
-      - id: blackdoc
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
-    hooks:
-      - id: flake8
-        exclude: docs/source/conf.py
-        args: [--max-line-length=105]
-
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-        additional_dependencies: [toml]
-        args:
-          [
-            "--profile",
-            "black",
-            "--filter-files",
-            "-p",
-            "deployments",
-            "-p",
-            "forecasts",
-          ]
-
-  - repo: https://github.com/psf/black
-    rev: 23.12.1
-    hooks:
-      - id: black
-        language_version: python3
-
   # - repo: https://github.com/pre-commit/mirrors-mypy
   #   rev: v0.961
   #   hooks:
@@ -101,13 +57,6 @@ repos:
   #         - --uri-ignore-words-list=BA
   # exclude: docs/cluster.drawio.svg
 
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.0
-    hooks:
-      - id: pyupgrade
-        args:
-          - --py310-plus
-
   - repo: https://github.com/asottile/add-trailing-comma
     rev: v3.1.0
     hooks:
@@ -135,3 +84,20 @@ repos:
     hooks:
       - id: django-upgrade
         args: [--target-version, "4.1"]
+
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: 1.5.3
+    hooks:
+      - id: pyproject-fmt
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.1.11
+    hooks:
+    # Run the linter.
+    - id: ruff
+      types_or: [ python, pyi, jupyter ]
+      args: [ --fix, --exit-non-zero-on-fix ]
+    # Run the formatter.
+    - id: ruff-format
+      types_or: [ python, pyi, jupyter ]

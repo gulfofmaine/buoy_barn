@@ -14,9 +14,7 @@ class BaseWaveWatch(BaseCoastWatchRDDAPForecast):
 class GlobalWaveWatchHeight(BaseWaveWatch):
     slug = "global_wave_watch_height"
     name = "Global Wave Watch III - Significant Wave Height"
-    description = (
-        "Wave Height from the Global Wave Watch III model by the University of Hawaii"
-    )
+    description = "Wave Height from the Global Wave Watch III model by the University of Hawaii"
     forecast_type = ForecastTypes.WAVE_HEIGHT
 
     field = "Thgt"

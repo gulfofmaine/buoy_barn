@@ -27,6 +27,7 @@ migrate:
 prune:
 	docker volume rm $(shell docker volume ls -qf dangling=true)
 	docker buildx prune -f
+	docker system prune --volumes
 	docker system prune -a
 
 load:

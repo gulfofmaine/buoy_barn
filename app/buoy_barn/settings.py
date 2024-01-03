@@ -15,6 +15,7 @@ import os
 
 import sentry_sdk
 import toml
+from celery.schedules import crontab
 from corsheaders.defaults import default_headers
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -232,6 +233,16 @@ STATIC_ROOT = "/static/"
 
 # Celery TASK management
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
+
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BEAT_SCHEDULE = {
+    "hourly_default_dataset_refresh": {
+        "task": "deployments.tasks.periodic_refresh.hourly_default_dataset_refresh",
+        "schedule": crontab(minute=5),
+    },
+}
 
 if DEBUG:
     INSTALLED_APPS = INSTALLED_APPS + ["debug_toolbar"]

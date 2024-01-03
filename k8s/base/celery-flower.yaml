@@ -4,31 +4,34 @@ metadata:
   labels:
     service: celery
     tier: backend
-    role: worker
-  name: worker
+    role: flower
+  name: flower
 spec:
   selector:
     matchLabels:
       service: celery
       tier: backend
-      role: worker
+      role: flower
   template:
     metadata:
       labels:
         service: celery
         tier: backend
-        role: worker
+        role: flower
     spec:
       containers:
-        - name: worker
+        - name: flower
           image: gmri/neracoos-buoy-barn
           args:
             - celery
             - -A
             - buoy_barn
-            - worker
+            - flower
             - -l
             - info
+          ports:
+            - containerPort: 5555
+              name: http
           envFrom:
             - secretRef:
                 name: buoy-barn-secrets
@@ -38,7 +41,7 @@ spec:
             - name: DJANGO_MANAGEPY_MIGRATE
               value: "on"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
-              value: "on"
+              value: "off"
           volumeMounts:
             - name: django-static
               mountPath: /static

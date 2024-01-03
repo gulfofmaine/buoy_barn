@@ -249,7 +249,7 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
         self.assertIn("base_url", response.data)
         self.assertIn("url", response.data)
 
-    @patch("deployments.tasks.single_refresh_server.delay")
+    @patch("deployments.tasks.refresh.single_refresh_server.delay")
     def test_server_refresh(self, refresh_server):
         response = self.client.get("/api/servers/1/refresh/", format="json")
 

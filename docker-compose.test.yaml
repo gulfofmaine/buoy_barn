@@ -13,7 +13,7 @@ services:
     build: ./app
     image: gmri/neracoos-buoy-barn
     volumes:
-      - ./app:/app
+      - ./app:/app:cached
     env_file:
       - ./docker-data/test.env
     links:

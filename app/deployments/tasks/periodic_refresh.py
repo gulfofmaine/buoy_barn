@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from deployments.models import ErddapDataset
 
-from .refresh import refresh_dataset
+from .refresh import single_refresh_dataset
 
 NOT_RECENTLY = timedelta(minutes=45)
 
@@ -20,7 +20,7 @@ def hourly_default_dataset_refresh():
     """Attempt to refresh any datasets that haven't been refreshed in the last hour."""
     old_dataset_ids = not_recently_refreshed_datasets(NOT_RECENTLY)
     for dataset_id in old_dataset_ids:
-        refresh_dataset.delay(dataset_id, healthcheck=True)
+        single_refresh_dataset.delay(dataset_id, healthcheck=True)
     logger.info(f"Launched dataset refreshes for {old_dataset_ids}")
 
 

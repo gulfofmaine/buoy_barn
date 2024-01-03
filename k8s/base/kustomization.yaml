@@ -5,8 +5,10 @@ resources:
   - deployment.yaml
   - ingress.yaml
   - web-service.yaml
-  - worker.yaml
-  - prefect-agent.yaml
+  - celery-worker.yaml
+  - celery-beat.yaml
+  - celery-flower.yaml
+  - celery-flower-service.yaml
 configMapGenerator:
   - name: buoy-barn-config
     envs:

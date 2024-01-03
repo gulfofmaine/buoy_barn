@@ -26,14 +26,12 @@ services:
     # # command: "gunicorn --bind 0.0.0.0:8080 buoy_barn.wsgi:application"
     restart: always
     volumes:
-      - ./app:/app
-      - ./.prospector.yaml:/app/.prospector.yaml
-      - ./docker-data/django-static:/static
+      - ./app:/app:cached
+      - ./docker-data/django-static:/static:cached
     ports:
       - "8080:8080"
     environment:
       DJANGO_MANAGEPY_COLLECTSTATIC: "on"
-      PREFECT_PROJECT_NAME: buoy-barn-dev
       SENTRY_TRACES_SAMPLE_RATE: 0
     env_file:
       - ./docker-data/secret.env
@@ -52,18 +50,26 @@ services:
       - db
       - cache
 
-  prefect-agent:
+  celery-beat:
     build: ./app
     image: gmri/neracoos-buoy-barn
-    command: python manage.py prefect --register --agent
-    volumes:
-      - ./app:/app
-      - ./.prospector.yaml:/app/.prospector.yaml
-      - ./docker-data/django-static:/static
-    environment:
-      PREFECT_PROJECT_NAME: buoy-barn-dev
+    command: celery -A buoy_barn beat -l info
+    restart: always
     env_file:
       - ./docker-data/secret.env
     links:
       - db
       - cache
+
+  celery-flower:
+    build: ./app
+    image: gmri/neracoos-buoy-barn
+    command: celery -A buoy_barn flower -l info
+    restart: always
+    env_file:
+      - ./docker-data/secret.env
+    links:
+      - db
+      - cache
+    ports:
+      - "5555:5555"

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: celery
+    tier: backend
+    role: beat
+  name: beat
+spec:
+  selector:
+    matchLabels:
+      service: celery
+      tier: backend
+      role: beat
+  template:
+    metadata:
+      labels:
+        service: celery
+        tier: backend
+        role: beat
+    spec:
+      containers:
+        - name: beat
+          image: gmri/neracoos-buoy-barn
+          args:
+            - celery
+            - -A
+            - buoy_barn
+            - beat
+            - -l
+            - info
+          envFrom:
+            - secretRef:
+                name: buoy-barn-secrets
+            - configMapRef:
+                name: buoy-barn-config
+          env:
+            - name: DJANGO_MANAGEPY_MIGRATE
+              value: "on"
+            - name: DJANGO_MANAGEPY_COLLECTSTATIC
+              value: "off"
+          volumeMounts:
+            - name: django-static
+              mountPath: /static
+      volumes:
+        - name: django-static
+          emptyDir: {}

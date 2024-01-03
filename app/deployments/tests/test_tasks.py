@@ -96,7 +96,7 @@ class TaskTestCase(TransactionTestCase):
             dataset=self.ds_M01_sbe37,
         )
 
-    @patch("deployments.tasks.update_values_for_timeseries")
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
     def test_refresh_server(self, update_values_for_timeseries):
         tasks.refresh_server(self.erddap.id)
 
@@ -109,7 +109,7 @@ class TaskTestCase(TransactionTestCase):
             ),
         )
 
-    @patch("deployments.tasks.update_values_for_timeseries")
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
     def test_refresh_dataset(self, update_values_for_timeseries):
         tasks.refresh_dataset(self.ds_M01_sbe37.id)
 

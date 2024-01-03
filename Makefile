@@ -27,6 +27,7 @@ migrate:
 prune:
 	docker volume rm $(shell docker volume ls -qf dangling=true)
 	docker buildx prune -f
+	docker system prune --volumes
 	docker system prune -a
 
 load:
@@ -48,10 +49,10 @@ shell:
 	docker compose exec web python manage.py shell
 
 test:
-	docker compose -f docker-compose.test.yaml run -e DJANGO_ENV=test web-test pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml
+	docker compose -f docker-compose.test.yaml run --rm -e DJANGO_ENV=test web-test pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml
 
 test-debug:
-	docker compose -f docker-compose.test.yaml run -e DJANGO_ENV=test web-test pytest -v --pdb --log-cli-level=INFO
+	docker compose -f docker-compose.test.yaml run --rm -e DJANGO_ENV=test web-test pytest -v --pdb --log-cli-level=INFO
 
 coverage:
 	docker compose exec web coverage run --source='.' manage.py test

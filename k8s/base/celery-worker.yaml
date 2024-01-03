@@ -2,32 +2,33 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: prefect-agent
+    service: celery
     tier: backend
     role: worker
-  name: prefect-agent
+  name: worker
 spec:
   selector:
     matchLabels:
-      service: prefect-agent
+      service: celery
       tier: backend
       role: worker
   template:
     metadata:
       labels:
-        service: prefect-agent
+        service: celery
         tier: backend
         role: worker
     spec:
       containers:
-        - name: prefect-agent
+        - name: worker
           image: gmri/neracoos-buoy-barn
           args:
-            - python
-            - manage.py
-            - prefect
-            - --register
-            - --agent
+            - celery
+            - -A
+            - buoy_barn
+            - worker
+            - -l
+            - info
           envFrom:
             - secretRef:
                 name: buoy-barn-secrets
@@ -37,7 +38,7 @@ spec:
             - name: DJANGO_MANAGEPY_MIGRATE
               value: "on"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
-              value: "on"
+              value: "off"
           volumeMounts:
             - name: django-static
               mountPath: /static

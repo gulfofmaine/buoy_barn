@@ -40,6 +40,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
         "programattribution_set__program",
         "alerts",
         "programs",
+        "links",
         Prefetch(
             "timeseries_set",
             queryset=TimeSeries.objects.filter(active=True).prefetch_related(
@@ -109,6 +110,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
                 "programattribution_set__program",
                 "alerts",
                 "programs",
+                "links",
                 Prefetch(
                     "timeseries_set",
                     queryset=TimeSeries.objects.filter(active=True).prefetch_related(
@@ -116,6 +118,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
                         "dataset__server",
                         "data_type",
                         "buffer_type",
+                        "flood_levels",
                     ),
                     to_attr="timeseries_active",
                 ),

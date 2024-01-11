@@ -13,6 +13,7 @@ from .models import (
     ErddapServer,
     FloodLevel,
     Platform,
+    PlatformLink,
     Program,
     TimeSeries,
 )
@@ -20,8 +21,15 @@ from .models import (
 logger = logging.getLogger(__name__)
 
 
+class PlatformLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlatformLink
+        exclude = ["id", "platform"]
+
+
 class PlatformSerializer(GeoFeatureModelSerializer):
     readings = serializers.SerializerMethodField()
+    links = PlatformLinkSerializer(many=True)
 
     def get_readings(self, obj):
         readings = []

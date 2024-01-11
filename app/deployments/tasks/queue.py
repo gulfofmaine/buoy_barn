@@ -16,9 +16,12 @@ def task_queued(task_name: str, task_args: list, task_kwargs: dict) -> bool:
             if task["name"] == task_name and task["args"] == task_args:
                 return True
 
-    for worker_tasks in inspect.scheduled().values():
-        for task in worker_tasks:
-            if task["name"] == task_name and task["args"] == task_args:
-                return True
+    try:
+        for worker_tasks in inspect.scheduled().values():
+            for task in worker_tasks:
+                if task["name"] == task_name and task["args"] == task_args:
+                    return True
+    except AttributeError:
+        pass
 
     return False

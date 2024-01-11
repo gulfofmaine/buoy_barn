@@ -14,6 +14,7 @@ from .models import (
     FloodLevel,
     MooringType,
     Platform,
+    PlatformLink,
     Program,
     ProgramAttribution,
     StationType,
@@ -89,6 +90,11 @@ class AlertInline(admin.TabularInline):
     extra = 0
 
 
+class PlatformLinkInline(admin.TabularInline):
+    model = PlatformLink
+    extra = 0
+
+
 class TimeseriesActiveFilter(BooleanFieldListFilter):
     def __init__(self, field, request, params, model, model_admin, field_path) -> None:
         super().__init__(field, request, params, model, model_admin, field_path)
@@ -99,7 +105,12 @@ class TimeseriesActiveFilter(BooleanFieldListFilter):
 @admin.register(Platform)
 class PlatformAdmin(admin.GISModelAdmin):
     ordering = ["name", "mooring_site_desc", "ndbc_site_id"]
-    inlines = [AlertInline, TimeSeriesInline, ProgramAttributionInline]
+    inlines = [
+        AlertInline,
+        TimeSeriesInline,
+        ProgramAttributionInline,
+        PlatformLinkInline,
+    ]
 
     actions = ["remove_end_time", "disable_timeseries", "enable_timeseries"]
     search_fields = [

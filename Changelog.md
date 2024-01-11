@@ -8,6 +8,12 @@ Changes:
 
 Fixes:
 
+## 0.6.1 - 01/11/2024
+
+Fixes:
+
+- Fix for when a celery worker queue is empty. [#1000](https://github.com/gulfofmaine/buoy_barn/pull/1000)
+
 ## 0.6.0 - 01/11/2024
 
 Additions:

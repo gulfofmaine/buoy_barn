@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "buoy_barn"
-version = "0.6.0"
+version = "0.6.1"
 description = "NERACOOS lightweight API sitting in front of ERDDAP"
 authors = ["Alex Kerney <akerney@gmri.org>"]
 

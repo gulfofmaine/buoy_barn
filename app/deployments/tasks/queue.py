@@ -6,15 +6,21 @@ def task_queued(task_name: str, task_args: list, task_kwargs: dict) -> bool:
     control = Control(app)
     inspect = control.inspect()
 
-    for worker_tasks in inspect.active().values():
-        for task in worker_tasks:
-            if task["name"] == task_name and task["args"] == task_args:
-                return True
+    try:
+        for worker_tasks in inspect.active().values():
+            for task in worker_tasks:
+                if task["name"] == task_name and task["args"] == task_args:
+                    return True
+    except AttributeError:
+        pass
 
-    for worker_tasks in inspect.reserved().values():
-        for task in worker_tasks:
-            if task["name"] == task_name and task["args"] == task_args:
-                return True
+    try:
+        for worker_tasks in inspect.reserved().values():
+            for task in worker_tasks:
+                if task["name"] == task_name and task["args"] == task_args:
+                    return True
+    except AttributeError:
+        pass
 
     try:
         for worker_tasks in inspect.scheduled().values():

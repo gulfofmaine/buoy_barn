@@ -8,6 +8,8 @@ Changes:
 
 Fixes:
 
+- Fix for when a celery worker queue is empty, part 2.
+
 ## 0.6.1 - 01/11/2024
 
 Fixes:

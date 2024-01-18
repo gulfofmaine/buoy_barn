@@ -1087,17 +1087,14 @@ files = [
 
 [[package]]
 name = "packaging"
-version = "21.3"
+version = "23.2"
 description = "Core utilities for Python packages"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
-    {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
+    {file = "packaging-23.2-py3-none-any.whl", hash = "sha256:8c491190033a9af7e1d931d0b5dacc2ef47509b34dd0de67ed209b5203fc88c7"},
+    {file = "packaging-23.2.tar.gz", hash = "sha256:048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"},
 ]
-
-[package.dependencies]
-pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "pandas"
@@ -1546,20 +1543,6 @@ files = [
 
 [package.dependencies]
 pylint = ">=1.7"
-
-[[package]]
-name = "pyparsing"
-version = "3.0.9"
-description = "pyparsing module - Classes and methods to define and execute parsing grammars"
-optional = false
-python-versions = ">=3.6.8"
-files = [
-    {file = "pyparsing-3.0.9-py3-none-any.whl", hash = "sha256:5026bae9a10eeaefb61dab2f09052b9f4307d44aee4eda64b309723d8d206bbc"},
-    {file = "pyparsing-3.0.9.tar.gz", hash = "sha256:2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"},
-]
-
-[package.extras]
-diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
 name = "pystac"
@@ -2187,19 +2170,19 @@ files = [
 
 [[package]]
 name = "xarray"
-version = "2023.12.0"
+version = "2024.1.0"
 description = "N-D labeled arrays and datasets in Python"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "xarray-2023.12.0-py3-none-any.whl", hash = "sha256:3c22b6824681762b6c3fcad86dfd18960a617bccbc7f456ce21b43a20e455fb9"},
-    {file = "xarray-2023.12.0.tar.gz", hash = "sha256:4565dbc890de47e278346c44d6b33bb07d3427383e077a7ca8ab6606196fd433"},
+    {file = "xarray-2024.1.0-py3-none-any.whl", hash = "sha256:df040f835441babf0a04c0bd6eacf7780f7dad6044a86603b16f6b4d204a99bd"},
+    {file = "xarray-2024.1.0.tar.gz", hash = "sha256:56b4bcb7c7be2e31143608261c1608c0e52579b8a51ba1b240bc2509e04d28d0"},
 ]
 
 [package.dependencies]
-numpy = ">=1.22"
-packaging = ">=21.3"
-pandas = ">=1.4"
+numpy = ">=1.23"
+packaging = ">=22"
+pandas = ">=1.5"
 
 [package.extras]
 accel = ["bottleneck", "flox", "numbagg", "opt-einsum", "scipy"]
@@ -2298,4 +2281,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "58610ac8297c90cbedb264562451dcbc046125864af797671a3775f263ca1c79"
+content-hash = "8562127c5aaca1ac627d1997fdb5865dce611d8193f2d3a93ad80b8315ff5c43"

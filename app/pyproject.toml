@@ -26,7 +26,7 @@ vcrpy = "^5.1"
 whitenoise = "^6.6"
 xarray = "^2023.12.0"
 pandas = "^1.5.3"
-django-health-check = "^3.17.0"
+django-health-check = "^3.18.0"
 pystac = "^1.9.0"
 flower = "^2.0.1"
 

@@ -8,6 +8,12 @@ Changes:
 
 Fixes:
 
+## 0.6.4 - 01/30/2024
+
+Changes
+
+- Added refresh actions to platform, dataset, and server admin pages closing [#289](https://github.com/gulfofmaine/buoy_barn/issues/289). [#1020](https://github.com/gulfofmaine/buoy_barn/pull/1020)
+
 ## 0.6.3 - 01/30/2024
 
 Changes:

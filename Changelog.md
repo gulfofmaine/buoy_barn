@@ -8,6 +8,32 @@ Changes:
 
 Fixes:
 
+## 0.6.3 - 01/30/2024
+
+Changes:
+
+- Switch formatting and linting to Ruff. [#990](https://github.com/gulfofmaine/buoy_barn/pull/990)
+- Configure Sentry Spotlight for development. [#1016](https://github.com/gulfofmaine/buoy_barn/pull/1016)
+
+Fixes:
+
+- Recover from invalid data type errors. [#1016](https://github.com/gulfofmaine/buoy_barn/pull/1016)
+
+Dependency Updates:
+
+- Github Actions
+  - Cache from v3 to v4
+- Pre-commit
+  - Bandit from 1.7.6 to 1.7.7
+- Python
+  - Sentry SDK from 1.39.2 to 1.40.0
+  - Xarray from 2023.12.0 to 2024.1.1
+  - Django Health Check from 3.17.0 to 3.18.0
+  - Py.test from 7.4 to 8.0
+  - Py.test Django from 4.7 to 4.8
+- Docker
+  - Redis from 7.2.3 to 7.2.4
+
 ## 0.6.2 - 01/12/2024
 
 Fixes:

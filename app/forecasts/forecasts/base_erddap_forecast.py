@@ -17,7 +17,8 @@ from forecasts.utils import erddap as erddap_utils
 class BaseERDDAPForecast(BaseForecast):
     """Extends BaseForecast with methods for accessing and retrieving forecasts from ERDDAP servers
 
-    Attributes:
+    Attributes
+    ----------
         server (str): ERDDAP server URL without trailing slash
         dataset (str): Dataset Id (for example: N01_aanderaa_all)
         to_360 (bool): Does the longitude of the dataset go from 0 - 360 instead of from -180 to 180
@@ -35,10 +36,12 @@ class BaseERDDAPForecast(BaseForecast):
         Can be overridded for datasets that have multiple fields or other extra computation needed.
 
         Args:
+        ----
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
 
         Returns:
+        -------
             List of tuples of forecasted times and values
         """
         json = self.request_dataset(lat, lon)
@@ -70,7 +73,8 @@ class BaseERDDAPForecast(BaseForecast):
 
     def offset_value(self, value: float) -> float:  # pylint: disable=no-self-use
         """Allows you to override a value to return something more helpful
-        (say Celsius rather than Kelvin)"""
+        (say Celsius rather than Kelvin)
+        """
         return value
 
     def connection(self) -> ERDDAP:
@@ -84,10 +88,12 @@ class BaseERDDAPForecast(BaseForecast):
         """Return the dataset JSON table dict for a given latitude and longitude
 
         Args:
+        ----
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
 
         Returns:
+        -------
             Table object from ERDDAP dataset for a given latitude and longitude
         """
         sentry_sdk.set_tag("forecast_dataset_id", self.dataset)
@@ -106,7 +112,8 @@ class BaseERDDAPForecast(BaseForecast):
     def dataset_info_df(self) -> pd.DataFrame:
         """Retrieve the most recent metadata for a dataset to find valid time and coordinates
 
-        Returns:
+        Returns
+        -------
             Pandas DataFrame
         """
         conn = self.connection()
@@ -119,10 +126,12 @@ class BaseERDDAPForecast(BaseForecast):
         """Return the full url of the dataset with query string for a given latitude and longitude.
 
         Args:
+        ----
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
 
         Returns:
+        -------
             Dataset URL
         """
         return f"{self.server}/griddap/{self.dataset}.json?{self.dataset_query_string(lat, lon)}"
@@ -131,10 +140,12 @@ class BaseERDDAPForecast(BaseForecast):
         """Create the query string for a dataset
 
         Args:
+        ----
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
 
         Returns:
+        -------
             Query string for dataset with variables, times, and coordinates
         """
         info_df = self.dataset_info_df()
@@ -151,6 +162,7 @@ class BaseERDDAPForecast(BaseForecast):
         """Formatted query string element for forecast coverage time range
 
         Args:
+        ----
             info_df (pd.DataFrame): Pandas DataFrame
         """
         return erddap_utils.coverage_time_str(info_df)
@@ -159,7 +171,8 @@ class BaseERDDAPForecast(BaseForecast):
         """The variables that should be requested from the dataset.
         Can be overridden for more complicated datasets that require multiple fields
 
-        Returns:
+        Returns
+        -------
             List of ERDDAP variable strings
         """
         return [self.field]
@@ -168,13 +181,11 @@ class BaseERDDAPForecast(BaseForecast):
         """Create coordinates query string element
 
         Arguments:
+        ---------
             info_df(pd.DataFrame): Dataset metadata DataFrame
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
         """
-        if self.to_360:
-            lon_value = 360 + lon
-        else:
-            lon_value = lon
+        lon_value = 360 + lon if self.to_360 else lon
 
         return erddap_utils.coordinates_str(info_df, lat, lon_value)

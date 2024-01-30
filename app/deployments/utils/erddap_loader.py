@@ -22,20 +22,16 @@ def convert_time(time: str) -> datetime:
     return datetime.fromisoformat(time.replace("Z", ""))
 
 
-def add_timeseries(
-    platform: Platform,
-    server: str,
-    dataset: str,
-    constraints,
-):  # pylint: disable=too-many-locals
+def add_timeseries(platform: Platform, server: str, dataset: str, constraints):  # noqa: PLR0912,PLR0915
     """Add datatypes for a new dataset to a platform.
-    See instructions in Readme.md"""
+    See instructions in Readme.md
+    """
     e = ERDDAP(server)
 
     info = pd.read_csv(e.get_info_url(dataset, response="csv"))
     info_vars = info[info["Row Type"] == "variable"]
 
-    print(f"Opened dataset from ERDDAP and found variables: {''.join(info_vars)}")
+    logger.info(f"Opened dataset from ERDDAP and found variables: {''.join(info_vars)}")
 
     variables = [
         var
@@ -122,10 +118,7 @@ def add_timeseries(
                         ).first()
 
             except DataType.DoesNotExist:
-                if all(
-                    attr in dir(data_array)
-                    for attr in ["standard_name", "long_name", "units"]
-                ):
+                if all(attr in dir(data_array) for attr in ["standard_name", "long_name", "units"]):
                     data_type = DataType(
                         standard_name=data_array.standard_name,
                         long_name=data_array.long_name,

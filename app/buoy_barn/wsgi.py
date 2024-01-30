@@ -1,5 +1,4 @@
-"""
-WSGI config for buoy_barn project.
+"""WSGI config for buoy_barn project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

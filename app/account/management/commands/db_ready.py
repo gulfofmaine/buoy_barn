@@ -14,7 +14,7 @@ def check_db_connection() -> bool:
 
 
 class Command(BaseCommand):
-    help = "Check if the database is currently avaliable"
+    help = "Check if the database is currently available"  # noqa: A003
 
     def add_arguments(self, parser):
         parser.add_argument(

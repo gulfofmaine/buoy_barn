@@ -7,20 +7,20 @@ from freezegun import freeze_time
 
 from forecasts.utils import erddap
 
-df = pd.read_csv(Path(__file__).parents[0] / "test_griddap_attributes.csv")
+test_df = pd.read_csv(Path(__file__).parents[0] / "test_griddap_attributes.csv")
 
 
 class ErddapUtilsTestCase(TestCase):
     def test_attribute_value(self):
-        time = erddap.attribute_value(df, "time_coverage_end")
+        time = erddap.attribute_value(test_df, "time_coverage_end")
         self.assertEqual(time, "2019-01-11T00:00:00Z")
 
-        precision = erddap.attribute_value(df, "geospatial_lat_resolution")
+        precision = erddap.attribute_value(test_df, "geospatial_lat_resolution")
         self.assertEqual(precision, 0.05)
 
     @freeze_time("2019-01-09 00:00:00")
     def test_coverage_time(self):
-        coverage_time = erddap.coverage_time_str(df)
+        coverage_time = erddap.coverage_time_str(test_df)
 
         self.assertEqual(
             coverage_time,
@@ -30,7 +30,7 @@ class ErddapUtilsTestCase(TestCase):
 
     @freeze_time("2019-01-07 00:00:00")
     def test_coverage_later_time(self):
-        coverage_time = erddap.coverage_time_str(df)
+        coverage_time = erddap.coverage_time_str(test_df)
 
         self.assertEqual(
             coverage_time,
@@ -39,7 +39,7 @@ class ErddapUtilsTestCase(TestCase):
         )
 
     def test_coordinate_str(self):
-        coord_str = erddap.coordinates_str(df, 43.650608, -70.250745)
+        coord_str = erddap.coordinates_str(test_df, 43.650608, -70.250745)
 
         self.assertEqual(coord_str, "[(43.65):1:(43.65)][(-70.25):1:(-70.25)]")
 

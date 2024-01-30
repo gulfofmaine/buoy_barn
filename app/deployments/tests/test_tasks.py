@@ -244,9 +244,7 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
-        assert (
-            "Unable to parse datetimes in error processing dataset" in self.caplog.text
-        )
+        assert "Unable to parse datetimes in error processing dataset" in self.caplog.text
 
     @my_vcr.use_cassette("500_unrecognized_constraint.yaml")
     def test_500_unrecognized_contraint(self):
@@ -362,10 +360,7 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
-        assert (
-            "does not have a requested station. Please check the constraints"
-            in self.caplog.text
-        )
+        assert "does not have a requested station. Please check the constraints" in self.caplog.text
 
     # @my_vcr.use_cassette("404_no_data_matches_time")
     # def test_404_no_data_matches_time(self):

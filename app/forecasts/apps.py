@@ -22,11 +22,7 @@ def check_duplicate_forecasts(app_configs, **kwargs):  # pylint: disable=unused-
 
     for slug, count in slug_counter.items():
         forecasts_for_slug = ", ".join(
-            [
-                str(forecast.__class__)
-                for forecast in forecast_list
-                if forecast.slug == slug
-            ],
+            [str(forecast.__class__) for forecast in forecast_list if forecast.slug == slug],
         )
 
         if count > 1:
@@ -57,7 +53,7 @@ def check_duplicate_forecasts(app_configs, **kwargs):  # pylint: disable=unused-
 
 
 @register()
-def check_forecasts(app_configs, **kwargs):  # pylint: disable=unused-argument
+def check_forecasts(app_configs, **kwargs):  # noqa: PLR0912
     """Check forecast attributes and methods are implemented"""
     errors = []
 
@@ -128,10 +124,7 @@ def check_forecasts(app_configs, **kwargs):  # pylint: disable=unused-argument
             )
 
         # Check that the point_forecast methods are not the same https://stackoverflow.com/a/20059029
-        if (
-            forecast.point_forecast.__code__.co_code
-            == BaseForecast.point_forecast.__code__.co_code
-        ):
+        if forecast.point_forecast.__code__.co_code == BaseForecast.point_forecast.__code__.co_code:
             errors.append(
                 Error(
                     "point_forecast has not been implemented",

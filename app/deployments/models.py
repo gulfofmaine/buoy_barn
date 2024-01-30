@@ -41,7 +41,7 @@ class Platform(models.Model):
 
     platform_type = models.CharField(
         max_length=50,
-        choices=PlatformTypes.choices,
+        choices=PlatformTypes,
         default=PlatformTypes.BUOY,
     )
 
@@ -64,10 +64,9 @@ class Platform(models.Model):
         return None
 
     def current_alerts(self):
-        alerts = []
-        for alert in self.alerts.all():
-            if not alert.end_time or date.today() < alert.end_time:
-                alerts.append(alert)
+        alerts = [
+            alert for alert in self.alerts.all() if not alert.end_time or date.today() < alert.end_time
+        ]
         return alerts
 
 
@@ -397,10 +396,7 @@ class TimeSeries(models.Model):
         server.response = file_type
         server.protocol = "tabledap"
 
-        if not self.constraints:
-            constraints = {}
-        else:
-            constraints = self.constraints.copy()
+        constraints = {} if not self.constraints else self.constraints.copy()
 
         if not time_after:
             time_after = datetime.utcnow() - timedelta(hours=24)

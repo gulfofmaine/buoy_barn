@@ -20,6 +20,7 @@ from .models import (
     StationType,
     TimeSeries,
 )
+from .tasks import refresh
 
 
 class FloodLevelInline(admin.StackedInline):
@@ -112,7 +113,7 @@ class PlatformAdmin(admin.GISModelAdmin):
         PlatformLinkInline,
     ]
 
-    actions = ["remove_end_time", "disable_timeseries", "enable_timeseries"]
+    actions = ["remove_end_time", "disable_timeseries", "enable_timeseries", "refresh_timeseries"]
     search_fields = [
         "name",
         "mooring_site_desc",
@@ -134,6 +135,22 @@ class PlatformAdmin(admin.GISModelAdmin):
         "timeseries__data_type__standard_name",
         "timeseries__dataset__name",
     ]
+
+    @admin.action(description="Refresh timeseries datasets")
+    def refresh_timeseries(self, request, queryset):
+        datasets_to_queue = set()
+
+        for platform in queryset.iterator():
+            for ts in platform.timeseries_set.all():
+                datasets_to_queue.add(ts.dataset_id)
+
+        for dataset_id in datasets_to_queue:
+            refresh.refresh_dataset.delay(dataset_id)
+
+        self.message_user(
+            request,
+            f"{len(datasets_to_queue)} datasets queued to be refreshed.",
+        )
 
     @admin.action(
         description="Remove end time for timeseries that have an end time in the last year",
@@ -203,7 +220,20 @@ class PlatformAdmin(admin.GISModelAdmin):
 class ErddapServerAdmin(admin.ModelAdmin):
     ordering = ["name"]
 
-    actions = ["disable_timeseries", "enable_timeseries"]
+    actions = ["disable_timeseries", "enable_timeseries", "refresh_server"]
+
+    @admin.action(description="Refresh timeseries for servers")
+    def refresh_server(self, request, queryset):
+        queued_servers = []
+
+        for server in queryset.iterator():
+            refresh.refresh_server.delay(server.id, healthcheck=False)
+            queued_servers.append(server)
+
+        self.message_user(
+            request,
+            f"Queued timeseries from {len(queued_servers)} server to be refreshed",
+        )
 
     @admin.action(description="Disable updating of timeseries")
     def disable_timeseries(self, request, queryset):
@@ -249,7 +279,20 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
     ordering = ["name"]
     search_fields = ["name", "server__name", "server__base_url"]
 
-    actions = ["disable_timeseries", "enable_timeseries"]
+    actions = ["disable_timeseries", "enable_timeseries", "refresh_dataset"]
+
+    @admin.action(description="Refresh timeseries associated with datasets")
+    def refresh_dataset(self, request, queryset):
+        queued_datasets = []
+
+        for dataset in queryset.iterator():
+            refresh.refresh_dataset.delay(dataset.id, healthcheck=False)
+            queued_datasets.append(dataset)
+
+        self.message_user(
+            request,
+            f"Queued timeseries to be refreshed from {len(queued_datasets)} datasets",
+        )
 
     @admin.action(description="Disable updating of timeseries")
     def disable_timeseries(self, request, queryset):

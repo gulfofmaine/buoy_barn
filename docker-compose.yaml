@@ -73,3 +73,8 @@ services:
       - cache
     ports:
       - "5555:5555"
+
+  spotlight:
+    image: ghcr.io/getsentry/spotlight:latest
+    ports:
+      - "8969:8969/tcp"

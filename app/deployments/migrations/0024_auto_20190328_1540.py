@@ -14,8 +14,7 @@ class Migration(migrations.Migration):
             name="name",
             field=models.CharField(
                 help_text=(
-                    "Or as ERDDAP knows it as the Dataset ID. "
-                    "EX: 'Dataset ID: A01_accelerometer_all'"
+                    "Or as ERDDAP knows it as the Dataset ID. " "EX: 'Dataset ID: A01_accelerometer_all'"
                 ),
                 max_length=256,
             ),

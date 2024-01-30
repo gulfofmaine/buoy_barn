@@ -47,17 +47,14 @@ class PlatformSerializer(GeoFeatureModelSerializer):
                     if value is not None:
                         datums[datum_name] = value
 
-                flood_levels = []
-                for fl in series.flood_levels.all():
-                    flood_levels.append(
-                        {
-                            "name": fl.level_other
-                            if fl.level_other
-                            else FloodLevel.Level[fl.level].value,
-                            "min_value": fl.min_value,
-                            "description": fl.description,
-                        },
-                    )
+                flood_levels = [
+                    {
+                        "name": fl.level_other if fl.level_other else FloodLevel.Level[fl.level].value,
+                        "min_value": fl.min_value,
+                        "description": fl.description,
+                    }
+                    for fl in series.flood_levels.all()
+                ]
 
                 readings.append(
                     {

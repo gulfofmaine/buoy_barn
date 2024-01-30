@@ -29,7 +29,7 @@ def update_values_for_timeseries(timeseries):
 
         logger.info(f"Working on timeseries: {timeseries}")
         try:
-            df = retrieve_dataframe(
+            timeseries_df = retrieve_dataframe(
                 timeseries[0].dataset.server,
                 timeseries[0].dataset.name,
                 timeseries[0].constraints,
@@ -44,7 +44,7 @@ def update_values_for_timeseries(timeseries):
             raise BackoffError(
                 f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
                 f"with constraint {timeseries[0].constraints}: {error}",
-            )
+            ) from error
 
         except OSError as error:
             logger.error(
@@ -61,43 +61,54 @@ def update_values_for_timeseries(timeseries):
             return
 
         for series in timeseries:
-            filtered_df = filter_dataframe(df, series.variable)
+            filtered_df = filter_dataframe(timeseries_df, series.variable)
+
+            extra_context = {
+                "timeseries": timeseries,
+                "constraints": timeseries[0].constraints,
+            }
 
             try:
                 row = filtered_df.iloc[-1]
+                extra_context["row"] = row
             except IndexError:
                 logger.error(
                     f"Unable to find position in dataframe for {series.platform.name} - "
                     f"{series.variable}",
-                    extra={
-                        "timeseries": timeseries,
-                        "constraints": timeseries[0].constraints,
-                    },
+                    extra=extra_context,
                     exc_info=True,
                 )
                 continue
 
             try:
-                variable_name = [
-                    key for key in row.keys() if key.split(" ")[0] == series.variable
-                ]
+                variable_name = [key for key in row.keys() if key.split(" ")[0] == series.variable]  # noqa: SIM118
                 value = row[variable_name]
+
+                extra_context["series"] = series
+                extra_context["variable"] = series.variable
+                extra_context["value"] = value
 
                 if isinstance(value, Timedelta):
                     logger.info("Converting from Timedelta to seconds")
                     value = value.seconds
 
                 series.value = value
+
                 time = row["time (UTC)"]
+                extra_context["time"] = time
+
                 series.value_time = parse_time_string(time)[0]
                 series.save()
             except TypeError as error:
                 logger.error(
                     f"Could not save {series.variable} from {row}: {error}",
-                    extra={
-                        "timeseries": timeseries,
-                        "constraints": timeseries[0].constraints,
-                    },
+                    extra=extra_context,
+                    exc_info=True,
+                )
+            except ValueError as error:
+                logger.error(
+                    f"Could not save {series.variable} from {row}: {error}",
+                    extra=extra_context,
                     exc_info=True,
                 )
 
@@ -155,8 +166,7 @@ def single_refresh_dataset(dataset_id: int, healthcheck: bool = False):
 
         if already_queued:
             logger.error(
-                f"refresh_dataset is already queued for {dataset_id}. "
-                "Not going to schedule another.",
+                f"refresh_dataset is already queued for {dataset_id}. " "Not going to schedule another.",
                 exc_info=True,
             )
         else:
@@ -197,8 +207,7 @@ def single_refresh_server(server_id: int, healthcheck: bool = False):
 
         if already_queued:
             logger.error(
-                f"refresh_server is already queued for {server_id}. "
-                "Not going to schedule another.",
+                f"refresh_server is already queued for {server_id}. " "Not going to schedule another.",
                 exc_info=True,
             )
         else:

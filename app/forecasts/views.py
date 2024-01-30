@@ -1,6 +1,6 @@
 """Viewset for displaying forecasts, and fetching point forecast data is lat,lon are specified"""
 import logging
-from datetime import timezone
+from datetime import UTC
 from json import JSONDecodeError
 
 from rest_framework import viewsets
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class ForecastViewSet(viewsets.ViewSet):
     """A viewset for forecasts"""
 
-    def list(self, request):  # pylint: disable=no-self-use,unused-argument
+    def list(self, request):  # noqa: A003
         """List all forecasts"""
         serializer = ForecastSerializer(forecast_list, many=True)
         return Response(serializer.data)
@@ -28,7 +28,7 @@ class ForecastViewSet(viewsets.ViewSet):
             forecast = filtered[0]
         except IndexError:
             logger.warning(f"Unknown forecast slug: {pk}")
-            raise NotFound(detail=f"Unknown forecast slug: {pk}")
+            raise NotFound(detail=f"Unknown forecast slug: {pk}") from None
         seralizer = ForecastSerializer(forecast)
         data = seralizer.data
 
@@ -54,13 +54,13 @@ class ForecastViewSet(viewsets.ViewSet):
                 )
                 raise APIException(
                     detail=f"Error retrieving dataset for forecast slug: {pk}",
-                )
+                ) from None
             except ConnectionError as error:
                 if "Connection timed out" in str(error):
                     logger.info(f"Upstream forecast timed out: {error}")
                     raise APIException(
                         detail=f"Upstream forecast source timed out for forecast: {pk}",
-                    )
+                    ) from None
 
                 logger.error(
                     f"ConnectionError (probably a timeout): {error}",
@@ -68,11 +68,10 @@ class ForecastViewSet(viewsets.ViewSet):
                 )
                 raise APIException(
                     detail=f"Error retrieving dataset for forecast slug: {pk}",
-                )
+                ) from None
 
             data["time_series"] = [
-                {"time": time.replace(tzinfo=timezone.utc), "reading": reading}
-                for time, reading in time_series
+                {"time": time.replace(tzinfo=UTC), "reading": reading} for time, reading in time_series
             ]
 
         else:

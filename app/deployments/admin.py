@@ -96,7 +96,7 @@ class PlatformLinkInline(admin.TabularInline):
 
 
 class TimeseriesActiveFilter(BooleanFieldListFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path) -> None:
+    def __init__(self, field, request, params, model, model_admin, field_path) -> None:  # noqa: PLR0913
         super().__init__(field, request, params, model, model_admin, field_path)
 
         self.title = "Timeseries Active"

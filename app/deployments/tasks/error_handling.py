@@ -1,5 +1,6 @@
 import logging
 from datetime import timedelta
+from http import HTTPStatus
 
 import requests
 from django.conf import settings
@@ -52,7 +53,8 @@ def handle_500_variable_actual_range_error(timeseries_group, compare_text: str) 
 def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
     """Did the request fall outside the range of times for the dataset
 
-    returns True if handled"""
+    returns True if handled
+    """
     if "is outside of the variable" in compare_text:
         try:
             times_str = compare_text.rpartition("actual_range:")[-1].rpartition(")")[0]
@@ -283,10 +285,7 @@ def handle_404_no_matching_station(timeseries_group, compare_text: str) -> bool:
 
 def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> bool:
     """Handle when the Dataset does not exist on the ERDDAP server"""
-    if (
-        "Resource not found" in compare_text
-        and "Currently unknown datasetID" in compare_text
-    ):
+    if "Resource not found" in compare_text and "Currently unknown datasetID" in compare_text:
         logger.error(
             (
                 f"{timeseries_group[0].dataset.name} is currently unknown by the server. "
@@ -300,11 +299,10 @@ def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> bo
     return False
 
 
-def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
+def handle_http_errors(timeseries_group, error: HTTPError) -> bool:  # noqa: PLR0911
     """Handle various types of HTTPErrors. Returns True if handled"""
-
     try:
-        if error.response.status_code == 403:
+        if error.response.status_code == HTTPStatus.FORBIDDEN:
             logger.error(
                 (
                     f"403 error loading dataset {timeseries_group[0].dataset.name}. "
@@ -317,7 +315,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
             )
             return True
 
-        if error.response.status_code == 404:
+        if error.response.status_code == HTTPStatus.NOT_FOUND:
             logger.error(
                 (
                     f"No rows found for {timeseries_group[0].dataset.name} "
@@ -328,10 +326,10 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> bool:
             )
             return True
 
-        if error.response.status_code == 408:
+        if error.response.status_code == HTTPStatus.REQUEST_TIMEOUT:
             raise BackoffError("408 Backoff encountered") from error
 
-        if error.response.status_code == 500:
+        if error.response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
             url = error.request.url
 
             response_500 = requests.get(url, timeout=settings.ERDDAP_TIMEOUT_SECONDS)

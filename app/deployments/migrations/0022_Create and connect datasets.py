@@ -4,9 +4,7 @@ from django.db import migrations
 
 
 def create_and_connect_datasets(apps, schema_editory):
-    """
-    Create and connect datasets to timeseries
-    """
+    """Create and connect datasets to timeseries"""
     ErddapDataset = apps.get_model("deployments", "ErddapDataset")
     TimeSeries = apps.get_model("deployments", "TimeSeries")
 

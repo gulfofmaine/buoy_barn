@@ -5,7 +5,7 @@ from forecasts.forecasts import forecast_list
 @my_vcr.use_cassette("test_forecasts_api.yaml")
 def test_forecasts_api(client):
     for forecast in forecast_list:
-        print(forecast.slug)
+        print(forecast.slug)  # noqa: T201
         url = f"/api/forecasts/{forecast.slug}/?lat=43.7148&lon=-69.3578"
         response = client.get(url, format="json")
 

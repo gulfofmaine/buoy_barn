@@ -34,7 +34,8 @@ class GFSAirTemp(BaseGFSForecast):
 class WindReading:
     """Class for a wind measurement at a given time
 
-    Attributes:
+    Attributes
+    ----------
         time (datetime): Time of forecasted value
         east (float): Wind component in m/s to the East
         north (float): Wind component in m/s to the North
@@ -58,7 +59,8 @@ class BaseGFSWindForecast(BaseGFSForecast):
     This means that we have to compute the direction and speed from those components,
     and retrieve both from the server
 
-    Attributes:
+    Attributes
+    ----------
         east_wind_field (str): ERDDAP dataset variable for the East component of the wind data
         north_wind_field (str): ERDDAP dataset variable for the North component of the wind data
     """
@@ -74,10 +76,12 @@ class BaseGFSWindForecast(BaseGFSForecast):
         """Return a list of WindReadings for a given lat, lon forecast point
 
         Args:
+        ----
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
 
         Returns:
+        -------
             List of WindReading instances
         """
         json = self.request_dataset(lat, lon)
@@ -112,6 +116,7 @@ class GFSWindSpeed(BaseGFSWindForecast):
         """Return a list of tuples for the wind speed
 
         Args:
+        ----
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
         """
@@ -132,6 +137,7 @@ class GFSWindDirection(BaseGFSWindForecast):
         """Return a list of tuples for the wind direction
 
         Args:
+        ----
             lat (float): Latitude in degrees North
             lon (float): Longitude in degrees East
         """

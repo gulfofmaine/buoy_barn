@@ -2,9 +2,7 @@
 from forecasts.forecasts.base_forecast import ForecastTypes
 from forecasts.forecasts.base_stac_edr_forecast import BaseSTACEDRForecast
 
-NECOFS_CATALOG_URL = (
-    "http://www.smast.umassd.edu:8080/" "thredds/forecasts.html?dataset=necofs_gom3_wave"
-)
+NECOFS_CATALOG_URL = "http://www.smast.umassd.edu:8080/thredds/forecasts.html?dataset=necofs_gom3_wave"
 
 
 class BaseNECOFSForecast(BaseSTACEDRForecast):

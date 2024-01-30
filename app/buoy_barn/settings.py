@@ -57,25 +57,26 @@ def trace_filter(trace: dict) -> float:
     except KeyError:
         pass
 
+    # Send all traces to spotlight during during development
+    if os.environ.get("DJANGO_ENV", "").lower() == "dev":
+        return 1
+
     return SENTRY_TRACES_SAMPLE_RATE
 
 
 if os.environ.get("DJANGO_ENV", "").lower() != "test":
-    try:
-        pyproject = toml.load("pyproject.toml")
-        version = pyproject["tool"]["poetry"]["version"]
-        sentry_sdk.init(
-            dsn=os.environ["SENTRY_DSN"],
-            integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
-            environment="dev" if DEBUG else "prod",
-            release=f"v{version}",
-            traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
-            traces_sampler=trace_filter,
-            before_send=before_send,
-        )
-        logger.info("Sentry initialized")
-    except KeyError:
-        logger.warning("SENTRY_DSN missing. Sentry is not initialized")
+    pyproject = toml.load("pyproject.toml")
+    version = pyproject["tool"]["poetry"]["version"]
+    sentry_sdk.init(
+        dsn=os.environ.get("SENTRY_DSN"),
+        integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
+        environment="dev" if DEBUG else "prod",
+        release=f"v{version}",
+        traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
+        spotlight=(os.environ.get("DJANGO_ENV") == "dev") and "http://spotlight:8969/stream",
+        traces_sampler=trace_filter,
+        before_send=before_send,
+    )
 else:
     logger.info("Sentry disabled when DJANGO_ENV=test")
 

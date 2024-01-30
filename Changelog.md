@@ -8,6 +8,81 @@ Changes:
 
 Fixes:
 
+## 0.6.2 - 01/12/2024
+
+Fixes:
+
+- Fix for when a celery worker queue is empty, part 2.
+
+## 0.6.1 - 01/11/2024
+
+Fixes:
+
+- Fix for when a celery worker queue is empty. [#1000](https://github.com/gulfofmaine/buoy_barn/pull/1000)
+
+## 0.6.0 - 01/11/2024
+
+Additions:
+
+- Tidal datums, platform type, and various tidal data types. [#903](https://github.com/gulfofmaine/buoy_barn/pull/903)
+- The ability to define both standard (minor, moderate, and major) and custom flooding levels for individual time series. [#986](https://github.com/gulfofmaine/buoy_barn/pull/986)
+- Platform specific links for more info. [#997](https://github.com/gulfofmaine/buoy_barn/pull/997)
+- Initial work towards being able to push observations to Buoy Barn, rather than waiting for it to fetch. [#902](https://github.com/gulfofmaine/buoy_barn/pull/902)
+
+Changes:
+
+- Use OGC EDR API to fetch FVCOM and BIO forecasts to build on our work fetching that data for modeling, and reducing the real time dependency on UMass servers. [#985](https://github.com/gulfofmaine/buoy_barn/pull/985)
+- Moved from Prefect to Celery beat for periodic tasks. [#989](https://github.com/gulfofmaine/buoy_barn/pull/989)
+- Cleaned up the admin for time series configuration, and moved many of the advanced options to a separate configuration screen. [#986](https://github.com/gulfofmaine/buoy_barn/pull/986)
+
+Fixes:
+
+- Some Sentry headers sometimes caused CORS errors. [#903](https://github.com/gulfofmaine/buoy_barn/pull/903)
+
+Dependency Updates:
+
+- Github Actions
+  - Checkout from 3 to 4
+  - Setup Docker Buildx from 2.9.1 to 3.0.0
+  - Docker Login from 2.2.0 to 3.0.0
+  - Docker build push from 4.1.1 to 5.1.0
+  - Sentry release from 1.4.1 to 1.7.0
+  - CodeQL from 2 to 3
+    - Init
+    - Autobuild
+    - Analyze
+  - Setup Python from 4 to 5
+- Pre Commit
+  - Pre-commit-hooks from 4.4.0 to 4.5.0
+  - Blackdoc from 0.3.8 to 0.3.9
+  - Flake8 from 6.0.0 to 7.0.0
+  - Isort from 5.12.0 to 5.13.0
+  - Black from 23.7.0 to 23.12.1
+  - PyUpgrade from 3.9.0 to 3.15.0
+  - Add trailing comma from 3.0.0 to 3.1.0
+  - Bandit from 1.7.5 to 1.7.6
+  - Gitleaks from 8.17.0 to 8.18.1
+  - Shellcheck from 0.9.0.5 to 0.9.0.6
+  - Django Upgrade from 1.14.0 to 1.15.0
+- Python
+  - Python itself from 3.11.4 to 3.11.5
+  - Django from 4.2 to 5.0
+  - Django CORS headers from 4.2 to 4.3
+  - Django Debug toolbar from 4.1 to 4.2
+  - Django Redis from 5.3 to 5.4
+  - Freezegun from 1.2.1 to 1.4.0
+  - Geojson from 2.5.0 to 3.1.0
+  - NetCDF4 from 1.6.4 to 1.6.5
+  - Psycopg2-Binary from 2.9.6 to 2.9.9
+  - Sentry SDK from 1.28.1 to 1.39.2
+  - uWSGI from 2.0.20 to 2.0.23
+  - VCRpy from 5.0 to 5.1
+  - Whitenoise from 6.5 to 6.6
+  - Xarray from 2023.6.0 to 2023.12.0
+  - IPython from 8.14 to 8.20
+  - Py.test Django from 4.5 to 4.7
+
+
 ## 0.5.0 - 08/26/2023
 
 Changes:

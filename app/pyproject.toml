@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "buoy_barn"
-version = "0.5.0"
+version = "0.6.2"
 description = "NERACOOS lightweight API sitting in front of ERDDAP"
 authors = ["Alex Kerney <akerney@gmri.org>"]
 
@@ -20,20 +20,20 @@ freezegun = "^1.4.0"
 geojson = "^3.1.0"
 netcdf4 = "^1.6.5"
 psycopg2-binary = "^2.9.9"
-sentry-sdk = "^1.39.1"
+sentry-sdk = "^1.39.2"
 uwsgi = "^2.0.23"
-vcrpy = "^5.1"
+vcrpy = "^6.0"
 whitenoise = "^6.6"
-xarray = "^2023.12.0"
+xarray = "^2024.1.1"
 pandas = "^1.5.3"
-django-health-check = "^3.17.0"
+django-health-check = "^3.18.0"
 pystac = "^1.9.0"
 flower = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
-ipython = "^8.19"
+ipython = "^8.20"
 pyyaml = "^6.0"
-pytest = "^7.4"
+pytest = "^8.0"
 pytest-django = "^4.7"
 pytest-cov = "^4.1"
 prospector = { version = "^1.10", extras = ["with_mypy", "with_vulture"] }

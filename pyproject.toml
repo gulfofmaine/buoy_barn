@@ -17,7 +17,7 @@ select = [
     # "EM", # flake8-errmsg
     "EXE", # flake8-executable
     "F", # flakes
-    "FURB", # refurb
+    # "FURB", # refurb
     "I", # import sorting
     "ICN", # flake8-import-conventions
     # "G", # flake8-logging-format

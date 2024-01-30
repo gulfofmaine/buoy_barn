@@ -41,7 +41,7 @@ class Platform(models.Model):
 
     platform_type = models.CharField(
         max_length=50,
-        choices=PlatformTypes.choices,
+        choices=PlatformTypes,
         default=PlatformTypes.BUOY,
     )
 
@@ -68,6 +68,20 @@ class Platform(models.Model):
             alert for alert in self.alerts.all() if not alert.end_time or date.today() < alert.end_time
         ]
         return alerts
+
+
+class PlatformLink(models.Model):
+    platform = models.ForeignKey(
+        Platform,
+        on_delete=models.CASCADE,
+        related_name="links",
+    )
+    title = models.CharField("URL title", max_length=128)
+    url = models.CharField("URL", max_length=512)
+    alt_text = models.TextField("Alternate text", blank=True, null=True)
+
+    def __str__(self):
+        return self.title
 
 
 class ProgramAttribution(models.Model):

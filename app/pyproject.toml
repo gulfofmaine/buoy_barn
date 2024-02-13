@@ -31,7 +31,7 @@ pystac = "^1.9.0"
 flower = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
-ipython = "^8.20"
+ipython = "^8.21"
 pyyaml = "^6.0"
 pytest = "^8.0"
 pytest-django = "^4.8"

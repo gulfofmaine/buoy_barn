@@ -8,6 +8,9 @@ classifiers = [
 ]
 
 [tool.ruff]
+line-length = 105
+
+[tool.ruff.lint]
 select = [
     "A", # flake8-builtins
     "B", # flake8-bugbear
@@ -33,9 +36,8 @@ select = [
     "UP", # upgrade
     "W", # pycodestyle
 ]
-line-length = 105
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = [
     "deployments",
     "forecasts",

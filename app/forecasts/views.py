@@ -1,4 +1,5 @@
 """Viewset for displaying forecasts, and fetching point forecast data is lat,lon are specified"""
+
 import logging
 from datetime import UTC
 from json import JSONDecodeError

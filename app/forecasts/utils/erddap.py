@@ -1,4 +1,5 @@
 """ERDDAP dataset interaction utility functions"""
+
 from datetime import datetime
 
 from pandas import DataFrame

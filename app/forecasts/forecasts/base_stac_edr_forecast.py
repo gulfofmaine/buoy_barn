@@ -1,5 +1,5 @@
-"""Generate forecast timeseries from EDR API references in STAC catalongs
-"""
+"""Generate forecast timeseries from EDR API references in STAC catalongs"""
+
 import os
 from datetime import datetime
 

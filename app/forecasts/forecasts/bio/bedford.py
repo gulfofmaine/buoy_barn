@@ -1,4 +1,5 @@
 """Bedford Institute forecasts"""
+
 from forecasts.forecasts.base_forecast import ForecastTypes
 from forecasts.forecasts.base_stac_edr_forecast import BaseSTACEDRForecast
 

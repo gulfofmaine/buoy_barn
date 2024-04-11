@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from django.contrib.admin import BooleanFieldListFilter
 from django.contrib.gis import admin
@@ -113,7 +113,13 @@ class PlatformAdmin(admin.GISModelAdmin):
         PlatformLinkInline,
     ]
 
-    actions = ["remove_end_time", "disable_timeseries", "enable_timeseries", "refresh_timeseries"]
+    actions = [
+        "disable_old_timeseries",
+        "remove_end_time",
+        "disable_timeseries",
+        "enable_timeseries",
+        "refresh_timeseries",
+    ]
     search_fields = [
         "name",
         "mooring_site_desc",
@@ -135,6 +141,31 @@ class PlatformAdmin(admin.GISModelAdmin):
         "timeseries__data_type__standard_name",
         "timeseries__dataset__name",
     ]
+
+    @admin.action(description="Disable timeseries that are more than a week out of date")
+    def disable_old_timeseries(self, request, queryset):
+        platforms_ids = [platform.id for platform in queryset.iterator()]
+        timeseries_to_update = []
+
+        week_ago = datetime.now() - timedelta(days=7)
+
+        ts_week_ago = TimeSeries.objects.filter(
+            value_time__lt=week_ago,
+            active=True,
+            platform_id__in=platforms_ids,
+        )
+
+        for ts in ts_week_ago.iterator():
+            ts.active = False
+            timeseries_to_update.append(ts)
+
+        TimeSeries.objects.bulk_update(timeseries_to_update, ["active"])
+
+        self.message_user(
+            request,
+            f"Disabled {len(timeseries_to_update)} that all were updated longer than a week ago "
+            f"from {len(platforms_ids)} platforms.",
+        )
 
     @admin.action(description="Refresh timeseries datasets")
     def refresh_timeseries(self, request, queryset):

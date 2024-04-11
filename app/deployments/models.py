@@ -31,7 +31,8 @@ class Program(models.Model):
 
 
 class Platform(models.Model):
-    name = models.CharField("Platform name", max_length=50)
+    name = models.CharField("Platform slug/station_id", max_length=50)
+    station_name = models.CharField("Platform name", max_length=100, default="", blank=True)
     mooring_site_desc = models.TextField("Mooring Site Description")
     active = models.BooleanField(default=True)
 

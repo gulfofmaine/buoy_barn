@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('deployments', '0049_platform_station_name_alter_platform_name'),
+        ("deployments", "0049_platform_station_name_alter_platform_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='platform',
-            name='station_name',
-            field=models.CharField(blank=True, default='', max_length=100, verbose_name='Platform name'),
+            model_name="platform",
+            name="station_name",
+            field=models.CharField(blank=True, default="", max_length=100, verbose_name="Platform name"),
         ),
     ]

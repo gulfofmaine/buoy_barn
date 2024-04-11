@@ -252,3 +252,13 @@ if DEBUG:
         return True
 
     DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": show_toolbar}
+
+
+SLACK_API_TOKEN = os.environ.get("SLACK_API_TOKEN")
+SLACK_API_CHANNEL = os.environ.get("SLACK_API_CHANNEL")
+
+if SLACK_API_TOKEN and SLACK_API_CHANNEL:
+    CELERY_BEAT_SCHEDULE["more_thank_a_week_old"] = {
+        "task": "deployments.tasks.old_timeseries.more_thank_a_week_old",
+        "schedule": crontab(day_of_week=1, hour=15),  # Mondays at 10-ish
+    }

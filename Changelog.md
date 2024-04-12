@@ -8,6 +8,40 @@ Changes:
 
 Fixes:
 
+## 0.6.5 - 04/11/2024
+
+Changes:
+
+- Add station name and rename station slug in https://github.com/gulfofmaine/buoy_barn/pull/1083
+- Notify about out of date timeseries in https://github.com/gulfofmaine/buoy_barn/pull/1084
+
+Dependency Updates:
+
+- Github Actions
+  - Setup Docker Buildx from 3.0.0 to 3.3.0
+  - Docker Login from 3.0.0 to 3.1.0
+  - Docker Build Push from 5.1.0 to 5.3.0
+  - Pre-commit from 3.0.0 to 3.0.1
+- Pre-commit
+  - Pre-commit-hooks from 4.5.0 to 4.6.0
+  - Bandit from 1.7.7 to 1.7.8
+  - Gitleaks from 8.18.1 to 8.18.2
+  - Django Upgrade from 1.15.0 to 1.16.0
+  - Ruff from 0.1.15 to 0.3.5
+- Docker
+  - Syntax from 1.6 to 1.7
+- Python
+  - Django Debug Toolbar from 4.2 to 4.3
+  - Django Rest Framework from 3.14 to 3.15
+  - Sentry-SDK from 1.40.0 to 1.45.0
+  - uWSGI from 2.0.23 to 2.0.24
+  - Django Health Check from 2.18.0 to 3.18.1
+  - PyStac from 1.9.0 to 1.10.0
+  - IPython from 8.20 to 8.23
+  - Py.test from 8.0 to 8.1
+  - Py.test Cov from 4.1 to 5.0
+  - Xarray from 2024.1.1 to 2024.3.0
+
 ## 0.6.4 - 01/30/2024
 
 Changes

@@ -260,5 +260,5 @@ SLACK_API_CHANNEL = os.environ.get("SLACK_API_CHANNEL")
 if SLACK_API_TOKEN and SLACK_API_CHANNEL:
     CELERY_BEAT_SCHEDULE["more_thank_a_week_old"] = {
         "task": "deployments.tasks.old_timeseries.more_thank_a_week_old",
-        "schedule": crontab(day_of_week=1, hour=15),  # Mondays at 10-ish
+        "schedule": crontab(day_of_week=1, hour=15, minute=0),  # Mondays at 10-ish
     }

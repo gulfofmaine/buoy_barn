@@ -8,6 +8,12 @@ Changes:
 
 Fixes:
 
+## 0.6.6 - 04/15/2024
+
+Fixes:
+
+- Only Slack at the top of the hour about out of date timeseries, instead of every minute https://github.com/gulfofmaine/buoy_barn/pull/1088
+
 ## 0.6.5 - 04/11/2024
 
 Changes:

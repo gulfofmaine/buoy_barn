@@ -1,5 +1,6 @@
 docker-data/postgres
 secret.env
+.DS_Store
 
 # Ignore from https://github.com/github/gitignore/blob/master/Python.gitignore
 # Byte-compiled / optimized / DLL files

@@ -312,6 +312,21 @@ class TimeSeries(models.Model):
         blank=True,
     )
 
+    class Highlighted(models.TextChoices):
+        NO = "No"
+        BEFORE = "Before"
+        AFTER = "After"
+
+    highlighted = models.CharField(
+        max_length=50,
+        choices=Highlighted,
+        default=Highlighted.NO,
+        help_text=(
+            "Should this timeseries be elevated to current conditions/latest values, "
+            "and should it go before or after the existing set?"
+        ),
+    )
+
     depth = models.FloatField(null=True, blank=True)
 
     start_time = models.DateTimeField(default=datetime.now)

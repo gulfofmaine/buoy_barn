@@ -75,6 +75,7 @@ class PlatformSerializer(GeoFeatureModelSerializer):
                         else None,
                         "datum_offsets": datums,
                         "flood_levels": flood_levels,
+                        "highlighted": series.highlighted,
                     },
                 )
 

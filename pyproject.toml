@@ -42,3 +42,6 @@ known-first-party = [
     "deployments",
     "forecasts",
 ]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"**/migrations/*.py" = ["E501"]

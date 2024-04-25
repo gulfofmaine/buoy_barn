@@ -8,6 +8,26 @@ Changes:
 
 Fixes:
 
+## 0.6.7 - 04/25/2024
+
+Changes:
+
+- Add the ability to highlight timeseries https://github.com/gulfofmaine/buoy_barn/pull/1099
+
+Fixes:
+
+- Ignore long migrations line errors in Ruff
+
+Dependency updates:
+
+- Pre-commit
+  - Pyproject Format from 1.7.0 to 1.8.0
+  - Ruff from 0.3.5 to 0.4.1
+- Python
+  - Celery from 5.3 to 5.4
+  - Freezegun from 1.4.0 to 1.5.0
+  - UWSGI from 2.0.24 to 2.0.25
+
 ## 0.6.6 - 04/15/2024
 
 Fixes:

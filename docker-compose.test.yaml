@@ -7,7 +7,7 @@ services:
       - ./docker-data/test.env
 
   cache-test:
-    image: redis:7.2.4-alpine@sha256:a40e29800d387e3cf9431902e1e7a362e4d819233d68ae39380532c3310091ac
+    image: redis:7.2.5-alpine@sha256:52feec9e3be7fd87b86ff8ffd4eeec4c7b8f4243bc09ff173ecef6c77b78b33a
 
   web-test:
     build: ./app

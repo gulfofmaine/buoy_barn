@@ -27,7 +27,7 @@ whitenoise = "^6.6"
 xarray = "^2024.3.0"
 pandas = "^1.5.3"
 django-health-check = "^3.18.1"
-pystac = "^1.10.0"
+pystac = "^1.10.1"
 flower = "^2.0.1"
 slack-sdk = "^3.28.0"
 

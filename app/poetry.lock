@@ -1548,13 +1548,13 @@ pylint = ">=1.7"
 
 [[package]]
 name = "pystac"
-version = "1.10.0"
+version = "1.10.1"
 description = "Python library for working with the SpatioTemporal Asset Catalog (STAC) specification"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pystac-1.10.0-py3-none-any.whl", hash = "sha256:2d1eb969abc7e13e2bdb4bb5ae1a68780da1e06f30f66fcf0d4143f51eb03f38"},
-    {file = "pystac-1.10.0.tar.gz", hash = "sha256:e2762a700953ae9bab914137116cea31e08378f6c7024d805d651009a6341e20"},
+    {file = "pystac-1.10.1-py3-none-any.whl", hash = "sha256:a7c31b3dacc44dfc955d9da8c7351c7b5b99100254b36301a1e312709b51bf2f"},
+    {file = "pystac-1.10.1.tar.gz", hash = "sha256:4617fe5315a79785f79b616b8ac248ba3d4d561457c8300b34573309715808cd"},
 ]
 
 [package.dependencies]
@@ -2306,4 +2306,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "672f43444026c484933b065c6828e1326256b226bcadff71e8ad61d4c935ba59"
+content-hash = "e8c644e7d07803a028b734df4ea95197599cd7879fd65ae791788d13cb9eb3d2"

@@ -2032,12 +2032,12 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "uwsgi"
-version = "2.0.25.1"
+version = "2.0.26"
 description = "The uWSGI server"
 optional = false
 python-versions = "*"
 files = [
-    {file = "uwsgi-2.0.25.1.tar.gz", hash = "sha256:d653d2d804c194c8cbe2585fa56efa2650313ae75c686a9d7931374d4dfbfc6e"},
+    {file = "uwsgi-2.0.26.tar.gz", hash = "sha256:86e6bfcd4dc20529665f5b7777193cdc48622fb2c59f0a7f1e3dc32b3882e7f9"},
 ]
 
 [[package]]
@@ -2306,4 +2306,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "e8c644e7d07803a028b734df4ea95197599cd7879fd65ae791788d13cb9eb3d2"
+content-hash = "7307f97ec002603e196b9a24a2dde5371e4f25ddf8dc160f07240e6a33d1b83e"

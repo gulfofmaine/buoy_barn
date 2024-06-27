@@ -39,7 +39,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Buoy Barn
-        uses: docker/build-push-action@v6.1.0
+        uses: docker/build-push-action@v6.2.0
         with:
           context: ./app
           push: false

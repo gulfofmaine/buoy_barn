@@ -32,7 +32,7 @@ flower = "^2.0.1"
 slack-sdk = "^3.31.0"
 
 [tool.poetry.dev-dependencies]
-ipython = "^8.26"
+ipython = "^8.27"
 pyyaml = "^6.0"
 pytest = "^8.3"
 pytest-django = "^4.8"

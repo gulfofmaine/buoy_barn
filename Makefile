@@ -2,8 +2,7 @@ build:
 	docker compose build
 
 up: down build
-	docker compose up -d
-	docker compose logs -f
+	docker compose up --watch
 
 down:
 	docker compose -f docker-compose.test.yaml -f docker-compose.yaml down

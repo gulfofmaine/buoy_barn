@@ -1,40 +1,51 @@
-[tool]
-[tool.poetry]
-name = "buoy_barn"
+[project]
+name = "buoy-barn"
 version = "0.6.7"
 description = "NERACOOS lightweight API sitting in front of ERDDAP"
-authors = ["Alex Kerney <akerney@gmri.org>"]
+authors = [{name = "Alex Kerney", email = "<akerney@gmri.org>"}]
+requires-python = ">=3.11"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "celery~=5.4",
+  "django~=5.0",
+  "django-cors-headers~=4.4",
+  "django-debug-toolbar~=4.4",
+  "django-health-check~=3.18.3",
+  "django-memoize~=2.3.1",
+  "django-redis~=5.4",
+  "djangorestframework~=3.15",
+  "djangorestframework-gis~=1.0",
+  "erddapy==1.2.1",
+  "flower~=2.0.1",
+  "freezegun~=1.5.1",
+  "geojson~=3.1.0",
+  "netcdf4~=1.7.1",
+  "pandas~=1.5.3",
+  "psycopg2-binary~=2.9.9",
+  "pystac~=1.10.1",
+  "sentry-sdk~=2.12.0",
+  "slack-sdk~=3.31.0",
+  "uwsgi~=2.0.26",
+  "vcrpy~=6.0",
+  "whitenoise~=6.7",
+  "xarray~=2024.3.0",
+]
+[project.optional-dependencies]
+dev = [
+  "ipython~=8.26",
+  "prospector[with_mypy,with_vulture]~=1.10",
+  "pytest~=8.3",
+  "pytest-cov~=5.0",
+  "pytest-django~=4.8",
+  "pyyaml~=6.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-celery = "^5.4"
-django = "^5.0"
-django-cors-headers = "^4.4"
-django-debug-toolbar = "^4.4"
-django-memoize = "^2.3.1"
-django-redis = "^5.4"
-djangorestframework = "^3.15"
-djangorestframework-gis = "^1.0"
-erddapy = "1.2.1"
-freezegun = "^1.5.1"
-geojson = "^3.1.0"
-netcdf4 = "^1.7.1"
-psycopg2-binary = "^2.9.9"
-sentry-sdk = "^2.12.0"
-uwsgi = "^2.0.26"
-vcrpy = "^6.0"
-whitenoise = "^6.7"
-xarray = "^2024.3.0"
-pandas = "^1.5.3"
-django-health-check = "^3.18.3"
-pystac = "^1.10.1"
-flower = "^2.0.1"
-slack-sdk = "^3.31.0"
-
-[tool.poetry.dev-dependencies]
-ipython = "^8.26"
-pyyaml = "^6.0"
-pytest = "^8.3"
-pytest-django = "^4.8"
-pytest-cov = "^5.0"
-prospector = { version = "^1.10", extras = ["with_mypy", "with_vulture"] }
+[tool.uv]
+constraint-dependencies = [
+    "numpy<2"
+]
+# test rebuild?

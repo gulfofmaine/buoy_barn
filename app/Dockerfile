@@ -1,14 +1,15 @@
 #syntax=docker/dockerfile:1.9
-FROM python:3.11.5-slim@sha256:edaf703dce209d774af3ff768fc92b1e3b60261e7602126276f9ceb0e3a96874
+# Use a Python image with uv pre-installed
+FROM ghcr.io/astral-sh/uv:python3.11-bookworm-slim
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1
-# Don't write bytecode
-ENV PYTHONDONTWRITEBYTECODE 1
 # Show deprication warnings https://docs.djangoproject.com/en/2.2/howto/upgrade-version/#resolving-deprecation-warnings
 ENV PYTHONWARNINGS once
-# Do not use virtualenv with Poetry
-ENV POETRY_VIRTUALENVS_CREATE false
+# Enable bytecode compilation
+ENV UV_COMPILE_BYTECODE=1
+# Copy from the cache instead of linking since it's a mounted volume
+ENV UV_LINK_MODE=copy
 
 # geodjango spatial requirements
 RUN --mount=type=cache,target=/var/cache/apt \
@@ -18,18 +19,19 @@ RUN --mount=type=cache,target=/var/cache/apt \
     gdal-bin=3.6.2+dfsg-1+b2 \
     build-essential=12.9
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install poetry==1.5.1 \
-    && groupadd uwsgi && useradd -g uwsgi uwsgi
+RUN groupadd uwsgi && useradd -g uwsgi uwsgi
 
 # Working directory
 RUN mkdir /app
 WORKDIR /app
 
 # Install requirements
-COPY ./pyproject.toml ./poetry.lock /app/
-RUN --mount=type=cache,target=/root/.cache/pypoetry \
-    poetry install --no-interaction
+COPY ./pyproject.toml ./uv.lock /app/
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-install-project --no-dev
+
+# Place executables in the environment at the front of the path
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy app to working directory
 COPY ./ /app/

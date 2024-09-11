@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 
 import sentry_sdk
-import toml
+import tomllib
 from celery.schedules import crontab
 from corsheaders.defaults import default_headers
 from sentry_sdk.integrations.celery import CeleryIntegration
@@ -65,8 +65,9 @@ def trace_filter(trace: dict) -> float:
 
 
 if os.environ.get("DJANGO_ENV", "").lower() != "test":
-    pyproject = toml.load("pyproject.toml")
-    version = pyproject["tool"]["poetry"]["version"]
+    with open("pyproject.toml", "rb") as f:
+        pyproject = tomllib.load(f)
+    version = pyproject["project"]["version"]
     sentry_sdk.init(
         dsn=os.environ.get("SENTRY_DSN"),
         integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],

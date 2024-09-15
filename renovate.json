@@ -4,5 +4,8 @@
   "schedule": ["before 4am on Tuesday"],
   "pre-commit": {
     "enabled": true
+  },
+  "lockFileMaintenance": {
+    "enabled": true
   }
 }

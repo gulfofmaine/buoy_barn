@@ -10,8 +10,8 @@ services:
   web-test:
     build: ./app
     image: gmri/neracoos-buoy-barn
-    volumes:
-      - ./app:/app:cached
+    # volumes:
+    #   - ./app:/app:cached
     env_file:
       - ./docker-data/test.env
     links:

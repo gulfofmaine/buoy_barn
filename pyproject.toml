@@ -24,7 +24,7 @@ select = [
     "I", # import sorting
     "ICN", # flake8-import-conventions
     # "G", # flake8-logging-format
-    # "LOG", # flake8-logging
+  # "LOG", # flake8-logging
     "NPY", # numpy
     "PD", # pandas-vet
     "PERF", # perflint
@@ -35,6 +35,9 @@ select = [
     "T20", # flake8-print
     "UP", # upgrade
     "W", # pycodestyle
+]
+ignore = [
+  "EXE003"
 ]
 
 [tool.ruff.lint.isort]

@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import logging
 import os
+import tomllib
 from pathlib import Path
 
 import sentry_sdk
-import tomllib
 from celery.schedules import crontab
 from corsheaders.defaults import default_headers
 from sentry_sdk.integrations.celery import CeleryIntegration
@@ -65,7 +65,7 @@ def trace_filter(trace: dict) -> float:
 
 
 if os.environ.get("DJANGO_ENV", "").lower() != "test":
-    with open("pyproject.toml", "rb") as f:
+    with Path("pyproject.toml").open("rb") as f:
         pyproject = tomllib.load(f)
     version = pyproject["project"]["version"]
     sentry_sdk.init(

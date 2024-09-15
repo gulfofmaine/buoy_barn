@@ -40,4 +40,4 @@ RUN chown -R uwsgi:uwsgi /app
 
 ENTRYPOINT ["/app/utils/entrypoint.sh"]
 
-CMD ["uwsgi", "--http", ":8080", "--wsgi-file", "buoy_barn/wsgi.py", "--master", "--processes", "4", "--threads", "2", "--uid", "uwsgi", "--gid", "uwsgi"]
+CMD ["uv", "run", "uwsgi", "--http", ":8080", "--wsgi-file", "buoy_barn/wsgi.py", "--master", "--processes", "4", "--threads", "2", "--uid", "uwsgi", "--gid", "uwsgi"]

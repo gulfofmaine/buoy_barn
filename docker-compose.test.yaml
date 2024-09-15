@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   db-test:
     image: postgis/postgis:15-3.3@sha256:a2fc46b52819d25add4ed93d3da83e106e17ea3ace6883cce3791631c9820bb2
@@ -14,6 +12,7 @@ services:
     image: gmri/neracoos-buoy-barn
     volumes:
       - ./app:/app:cached
+      - /app/.venv
     env_file:
       - ./docker-data/test.env
     links:

@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   db:
     image: postgis/postgis:15-3.3@sha256:a2fc46b52819d25add4ed93d3da83e106e17ea3ace6883cce3791631c9820bb2
@@ -20,14 +18,24 @@ services:
   web:
     build: ./app
     image: gmri/neracoos-buoy-barn
-    command: python manage.py runserver 0:8080
+    command: uv run manage.py runserver 0:8080
     # # command: "uwsgi --http :8080 --wsgi-file buoy_barn/wsgi.py  --master --processes 4 --threads 2"
     # command: "uwsgi --module=buoy_barn.wsgi:application --master --pidfile=/tmp/project-master.pid --http :8080 --uid=1000 --gid=2000 --max-requests=5000 --vacuum --processes 4"
     # # command: "gunicorn --bind 0.0.0.0:8080 buoy_barn.wsgi:application"
     restart: always
-    volumes:
-      - ./app:/app:cached
-      - ./docker-data/django-static:/static:cached
+    # volumes:
+    # #   - ./app:/app:cached
+    # #   - /app/.venv
+    #   - ./docker-data/django-static:/static:cached
+    develop:
+      watch:
+        - action: sync
+          path: ./app
+          target: /app
+          ignore:
+            - ./app/.venv
+        - action: rebuild
+          path: ./app/pyproject.toml
     ports:
       - "8080:8080"
     environment:

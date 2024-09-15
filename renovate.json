@@ -5,5 +5,7 @@
   "pre-commit": {
     "enabled": true
   },
-  "ignorePaths": ["app/pyproject.toml"]
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }

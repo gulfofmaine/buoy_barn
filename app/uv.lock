@@ -132,7 +132,7 @@ requires-dist = [
     { name = "psycopg2-binary", specifier = "~=2.9.9" },
     { name = "pystac", specifier = "~=1.10.1" },
     { name = "sentry-sdk", specifier = "~=2.14.0" },
-    { name = "slack-sdk", specifier = "~=3.31.0" },
+    { name = "slack-sdk", specifier = "~=3.32.0" },
     { name = "uwsgi", specifier = "~=2.0.26" },
     { name = "vcrpy", specifier = "~=6.0" },
     { name = "whitenoise", specifier = "~=6.7" },
@@ -1325,11 +1325,11 @@ wheels = [
 
 [[package]]
 name = "slack-sdk"
-version = "3.31.0"
+version = "3.32.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a5/e3/4a2491cbf793bb8da8a51120207df8c097faeda42bf720f7acf7c40e4ca8/slack_sdk-3.31.0.tar.gz", hash = "sha256:740d2f9c49cbfcbd46fca56b4be9d527934c225312aac18fd2c0fca0ef6bc935", size = 230928 }
+sdist = { url = "https://files.pythonhosted.org/packages/42/d7/a41c229830573ce025286d850f342e10e5af2049a07cc1449cd8429918ed/slack_sdk-3.32.0.tar.gz", hash = "sha256:af8fc4ef1d1cbcecd28d01acf6955a3bb5b13d56f0a43a1b1c7e3b212cc5ec5b", size = 232064 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/57/04/f4517d8403c49910f45ad91205de352f2eccf12ae28865a27da7d7d05bf6/slack_sdk-3.31.0-py2.py3-none-any.whl", hash = "sha256:a120cc461e8ebb7d9175f171dbe0ded37a6878d9f7b96b28e4bad1227399047b", size = 289845 },
+    { url = "https://files.pythonhosted.org/packages/23/2e/abff1092765648d4c50a1430943b419f9588c4dfd0a455d0c2289e236577/slack_sdk-3.32.0-py2.py3-none-any.whl", hash = "sha256:f35e85f2847e6c25cf7c2d1df206ca0ad75556263fb592457bf03cca68ef64bb", size = 290956 },
 ]
 
 [[package]]

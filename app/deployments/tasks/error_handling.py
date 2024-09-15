@@ -159,10 +159,7 @@ def handle_500_errors(timeseries_group, compare_text: str) -> bool:
     if handle_500_variable_actual_range_error(timeseries_group, compare_text):
         return True
 
-    if handle_500_unrecognized_constraint(timeseries_group, compare_text):
-        return True
-
-    return False
+    return handle_500_unrecognized_constraint(timeseries_group, compare_text)
 
 
 def handle_400_errors(timeseries_group, compare_text: str, error: Exception) -> bool:
@@ -176,10 +173,7 @@ def handle_400_errors(timeseries_group, compare_text: str, error: Exception) -> 
     if handle_429_too_many_requests(timeseries_group, compare_text, error):
         return True
 
-    if handle_408_request_timeout(timeseries_group, compare_text, error):
-        return True
-
-    return False
+    return handle_408_request_timeout(timeseries_group, compare_text, error)
 
 
 def handle_408_request_timeout(
@@ -233,10 +227,7 @@ def handle_404_errors(timeseries_group, compare_text: str) -> bool:
     if handle_404_no_matching_time(timeseries_group, compare_text):
         return True
 
-    if handle_404_dataset_file_not_found(timeseries_group, compare_text):
-        return True
-
-    return False
+    return handle_404_dataset_file_not_found(timeseries_group, compare_text)
 
 
 def handle_404_dataset_file_not_found(timeseries_group, compare_text: str) -> bool:

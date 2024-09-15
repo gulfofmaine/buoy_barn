@@ -59,14 +59,23 @@ class TimeSeriesInline(admin.StackedInline):
             None,
             {
                 "fields": [
-                    (
-                        "dataset",
-                        "variable",
-                    ),
-                    ("data_type", "depth"),
-                    ("value_time", "constraints"),
-                    ("value", "active"),
-                    ("test_timeseries",),
+                    ("dataset", "variable"),
+                    ("data_type", "active"),
+                    ("value_time", "end_time"),
+                    ("value", "test_timeseries"),
+                ],
+            },
+        ),
+        (
+            "Advanced",
+            {
+                "classes": ["collapse"],
+                "fields": [
+                    ("constraints", "depth"),
+                    ("buffer_type",),
+                    ("datum_mhhw_meters", "datum_mhw_meters"),
+                    ("datum_mtl_meters", "datum_msl_meters"),
+                    ("datum_mlw_meters", "datum_mllw_meters"),
                 ],
             },
         ),

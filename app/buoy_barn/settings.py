@@ -34,7 +34,7 @@ def before_send(event, hint):
     via: https://stumbles.id.au/how-to-fix-uwsgi-oserror-write-error.html
     """
     exc_type, exc_value, _ = hint.get("exc_info", [None, None, None])
-    if exc_type == OSError and str(exc_value) == "write error":
+    if exc_type is OSError and str(exc_value) == "write error":
         return None
     return event
 

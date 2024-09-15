@@ -4,6 +4,5 @@
   "schedule": ["before 4am on Tuesday"],
   "pre-commit": {
     "enabled": true
-  },
-  "ignorePaths": ["app/pyproject.toml"]
+  }
 }

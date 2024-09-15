@@ -2,7 +2,7 @@
 name = "buoy-barn"
 version = "0.6.7"
 description = "NERACOOS lightweight API sitting in front of ERDDAP"
-authors = [{name = "Alex Kerney", email = "<akerney@gmri.org>"}]
+authors = [ { name = "Alex Kerney", email = "<akerney@gmri.org>" } ]
 requires-python = ">=3.11"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
@@ -45,6 +45,6 @@ dev-dependencies = [
   "pyyaml~=6.0",
 ]
 constraint-dependencies = [
-    "numpy<2"
+  "numpy<2",
 ]
 # test rebuild?

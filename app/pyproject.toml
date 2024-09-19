@@ -19,7 +19,7 @@ dependencies = [
   "django-redis~=5.4",
   "djangorestframework~=3.15",
   "djangorestframework-gis~=1.0",
-  "erddapy==1.2.1",
+  "erddapy==2.2.1",
   "flower~=2.0.1",
   "freezegun~=1.5.1",
   "geojson~=3.1.0",

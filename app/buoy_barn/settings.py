@@ -253,6 +253,8 @@ if DEBUG:
         return True
 
     DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": show_toolbar}
+else:
+    MIDDLEWARE = ["django.middleware.gzip.GZipMiddleware"] + MIDDLEWARE
 
 
 SLACK_API_TOKEN = os.environ.get("SLACK_API_TOKEN")

@@ -8,6 +8,31 @@ Changes:
 
 Fixes:
 
+## 0.6.8 - 10/28/2024
+
+Changes:
+- Switch to using Docker Compose watch mode
+- Enabled GZip middleware
+- Restructured the inline timeseries admins in platform admin panels to bring the common fields to the forefront, but have a collapsed inline for some advanced fields.
+
+Dependency updates:
+- Switched to using uv rather than Poetry
+- Github Actions
+  - Setup Docker Buildx from 3.3.0 to 3.7.1
+  - Docker login from 3.1.0 to 3.3.0
+  - Docker build push from 5.3.0 to 6.9.0
+- Pre-commit
+  - Pre-commit-hooks from 4.6.0 to 5.0.0
+  - Bandit from 1.7.8 to 1.7.10
+  - Gitleaks from 8.18.2 to 8.21.2
+  - Shellcheck from 0.9.0.6 to 0.10.0.1
+  - Django Upgrade from 1.16.0 to 1.22.0
+  - Pyproject Format from 1.8.0 to 2.4.3
+  - Ruff from 0.4.1 to 0.7.1
+- Docker
+  - Redis from 7.2.4 to 7.2.5
+
+
 ## 0.6.7 - 04/25/2024
 
 Changes:

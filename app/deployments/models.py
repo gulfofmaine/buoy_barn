@@ -283,7 +283,11 @@ class ErddapDataset(models.Model):
     def group_timeseries_by_constraint(self):
         groups = defaultdict(list)
 
-        for ts in self.timeseries_set.filter(end_time=None, active=True):
+        for ts in (
+            self.timeseries_set.filter(end_time=None, active=True)
+            .select_related("platform")
+            .prefetch_related("data_type")
+        ):
             try:
                 groups[tuple((ts.constraints or {}).items())].append(ts)
             except AttributeError as e:

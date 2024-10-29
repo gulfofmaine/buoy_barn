@@ -45,7 +45,7 @@ user:
 	docker compose exec web manage.py createsuperuser
 
 shell:
-	docker compose exec web manage.py shell
+	docker compose exec web uv run manage.py shell
 
 test:
 	docker compose -f docker-compose.test.yaml run --rm -e DJANGO_ENV=test web-test uv run pytest --cov=. --cov-config=tox.ini --cov-report=xml:./coverage.xml

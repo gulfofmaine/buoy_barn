@@ -72,7 +72,7 @@ class TimeSeriesInline(admin.StackedInline):
                 "classes": ["collapse"],
                 "fields": [
                     ("constraints", "depth"),
-                    ("buffer_type",),
+                    ("timeseries_type", "extrema", "buffer_type"),
                     ("datum_mhhw_meters", "datum_mhw_meters"),
                     ("datum_mtl_meters", "datum_msl_meters"),
                     ("datum_mlw_meters", "datum_mllw_meters"),

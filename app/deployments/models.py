@@ -39,6 +39,7 @@ class Platform(models.Model):
     class PlatformTypes(models.TextChoices):
         BUOY = "Buoy"
         TIDE_STATION = "Tide Station"
+        OVERLAND_FLOOD = "Overland Flood"
 
     platform_type = models.CharField(
         max_length=50,
@@ -316,10 +317,28 @@ class TimeSeries(models.Model):
         blank=True,
     )
 
+    class TimeSeriesType(models.TextChoices):
+        OBSERVATION = "Observation"
+        PREDICTION = "Prediction"
+        FORECAST = "Forecast"
+        CLIMATOLOGY = "Climatology"
+
+    timeseries_type = models.CharField(
+        max_length=50,
+        choices=TimeSeriesType.choices,
+        default=TimeSeriesType.OBSERVATION,
+        help_text="Is this timeseries an observation, prediction, forecast, or climatology?",
+    )
+
     class Highlighted(models.TextChoices):
         NO = "No"
         BEFORE = "Before"
         AFTER = "After"
+
+    extrema = models.BooleanField(
+        default=False,
+        help_text=("Is this timeseries an extrema (high or low), or regularly spaced?"),
+    )
 
     highlighted = models.CharField(
         max_length=50,

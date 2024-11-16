@@ -379,6 +379,10 @@ class TimeSeries(models.Model):
         blank=True,
         help_text="Time of the most recent value",
     )
+    extrema_values = models.JSONField(
+        "Calculated extremes (and tides if applicable) for the loaded window (last 1 or next 7 days)",
+        default=dict,
+    )
     active = models.BooleanField(
         default=True,
         help_text="Should this dataset be currently updated?",

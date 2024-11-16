@@ -4,15 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('deployments', '0053_rename_extrama_timeseries_extrema'),
+        ("deployments", "0053_rename_extrama_timeseries_extrema"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='timeseries',
-            name='timeseries_type',
-            field=models.CharField(choices=[('Observation', 'Observation'), ('Prediction', 'Prediction'), ('Forecast', 'Forecast'), ('Climatology', 'Climatology')], default='Observation', help_text='Is this timeseries an observation, prediction, forecast, or climatology?', max_length=50),
+            model_name="timeseries",
+            name="timeseries_type",
+            field=models.CharField(
+                choices=[
+                    ("Observation", "Observation"),
+                    ("Prediction", "Prediction"),
+                    ("Forecast", "Forecast"),
+                    ("Climatology", "Climatology"),
+                ],
+                default="Observation",
+                help_text="Is this timeseries an observation, prediction, forecast, or climatology?",
+                max_length=50,
+            ),
         ),
     ]

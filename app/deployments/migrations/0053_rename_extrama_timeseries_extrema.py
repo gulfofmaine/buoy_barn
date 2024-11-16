@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('deployments', '0052_timeseries_extrama_timeseries_timeseries_type_and_more'),
+        ("deployments", "0052_timeseries_extrama_timeseries_timeseries_type_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='timeseries',
-            old_name='extrama',
-            new_name='extrema',
+            model_name="timeseries",
+            old_name="extrama",
+            new_name="extrema",
         ),
     ]

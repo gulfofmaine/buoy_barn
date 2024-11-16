@@ -16,6 +16,7 @@ from deployments.models import ErddapDataset, ErddapServer
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
 
 from .error_handling import BackoffError, handle_http_errors
+from .extrema import extrema_for_timeseries
 from .queue import task_queued
 
 logger = logging.getLogger(__name__)
@@ -98,6 +99,7 @@ def update_values_for_timeseries(timeseries):
                 extra_context["time"] = time
 
                 series.value_time = parse_time_string(time)[0]
+                series.extrema_values = extrema_for_timeseries(series, filtered_df)
                 series.save()
             except TypeError as error:
                 logger.error(

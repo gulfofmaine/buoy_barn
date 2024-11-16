@@ -60,10 +60,7 @@ def retrieve_dataframe(
 
     Attempts to sort the dataframe by time
     """
-    forecast = any(
-        ts.timeseries_type in TimeSeries.FUTURE_TYPES
-        for ts in timeseries
-    )
+    forecast = any(ts.timeseries_type in TimeSeries.FUTURE_TYPES for ts in timeseries)
     e = setup_variables(
         server.connection(),
         dataset,

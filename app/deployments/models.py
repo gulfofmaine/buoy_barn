@@ -291,9 +291,9 @@ class ErddapDataset(models.Model):
             .prefetch_related("data_type")
         ):
             try:
-                groups[tuple((ts.constraints or {}).items())].append(ts)
+                groups[(tuple((ts.constraints or {}).items()), ts.timeseries_type)].append(ts)
             except AttributeError as e:
-                logger.error(f"Unable to set constraint for timeseries {ts} due to {e}")
+                logger.error(f"Unable to set constraints for timeseries {ts} due to {e}")
 
         return groups
 

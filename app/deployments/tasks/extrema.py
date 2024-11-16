@@ -44,6 +44,7 @@ def tidal_extrema(
     water_level_df = df.copy()
 
     cycle = water_level_df.groupby(pd.Grouper(freq=f"{12 * 60 + 25}min"))
+
     high_times = cycle.idxmax()
     low_times = cycle.idxmin()
 

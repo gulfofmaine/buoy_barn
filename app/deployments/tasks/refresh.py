@@ -70,7 +70,10 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
             }
 
             try:
-                row = filtered_df.iloc[-1]
+                if series.timeseries_type in TimeSeries.FUTURE_TYPES:
+                    row = filtered_df.iloc[1]
+                else:
+                    row = filtered_df.iloc[-1]
                 extra_context["row"] = row
             except IndexError:
                 logger.error(

@@ -28,6 +28,7 @@ dependencies = [
   "pandas~=1.5.3",
   "psycopg2-binary~=2.9.9",
   "pystac~=1.11.0",
+  "requests>=2.32.3",
   "sentry-sdk~=2.18.0",
   "slack-sdk~=3.33.0",
   "uwsgi~=2.0.26",

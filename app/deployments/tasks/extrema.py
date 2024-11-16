@@ -1,8 +1,8 @@
 import pandas as pd
-import numpy as np
 
-from deployments.models import TimeSeries
 from deployments import standard_names
+from deployments.models import TimeSeries
+
 
 def extrema_for_timeseries(ts: TimeSeries, df: pd.DataFrame) -> dict:
     """
@@ -23,7 +23,7 @@ def extrema_for_timeseries(ts: TimeSeries, df: pd.DataFrame) -> dict:
             "min": {
                 "time": extrema_df[column_name].idxmin().isoformat(),
                 "value": extrema_df[column_name].min(),
-            }
+            },
         }
     except KeyError as e:
         raise KeyError(f"Unable to find {ts.variable} in {extrema_df.columns}") from e
@@ -35,8 +35,11 @@ def extrema_for_timeseries(ts: TimeSeries, df: pd.DataFrame) -> dict:
     return extrema
 
 
-
-def tidal_extrema(df: pd.DataFrame, water_level_column: str, time_col: str = "time (UTC)") -> pd.DataFrame:
+def tidal_extrema(
+    df: pd.DataFrame,
+    water_level_column: str,
+    time_col: str = "time (UTC)",
+) -> pd.DataFrame:
     """Calculate the high and low tides for a timeseries"""
     water_level_df = df.copy()
 

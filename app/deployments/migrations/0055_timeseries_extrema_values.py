@@ -4,15 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('deployments', '0054_alter_timeseries_timeseries_type'),
+        ("deployments", "0054_alter_timeseries_timeseries_type"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='timeseries',
-            name='extrema_values',
-            field=models.JSONField(default=dict, verbose_name='Calculated extremes (and tides if applicable) for the loaded window (last 1 or next 7 days)'),
+            model_name="timeseries",
+            name="extrema_values",
+            field=models.JSONField(
+                default=dict,
+                verbose_name="Calculated extremes (and tides if applicable) for the loaded window (last 1 or next 7 days)",
+            ),
         ),
     ]

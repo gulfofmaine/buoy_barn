@@ -12,7 +12,7 @@ try:
 except ImportError:
     from pandas._libs.tslibs.parsing import parse_time_string
 
-from deployments.models import ErddapDataset, ErddapServer
+from deployments.models import ErddapDataset, ErddapServer, TimeSeries
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
 
 from .error_handling import BackoffError, handle_http_errors
@@ -22,7 +22,7 @@ from .queue import task_queued
 logger = logging.getLogger(__name__)
 
 
-def update_values_for_timeseries(timeseries):
+def update_values_for_timeseries(timeseries: list[TimeSeries]):
     """Update values and most recent times for a group of timeseries that have the same constraints"""
     with push_scope() as scope:
         scope.set_tag("erddap-server", timeseries[0].dataset.server)
@@ -132,9 +132,9 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False):
     if healthcheck:
         dataset.healthcheck_start()
 
-    groups = dataset.group_timeseries_by_constraint()
+    groups = dataset.group_timeseries_by_constraint_and_type()
 
-    for constraints, timeseries in groups.items():
+    for (constraints, _), timeseries in groups.items():
         time.sleep(request_refresh_time_seconds)
 
         try:

@@ -281,7 +281,8 @@ class ErddapDataset(models.Model):
                     exc_info=True,
                 )
 
-    def group_timeseries_by_constraint(self):
+    def group_timeseries_by_constraint_and_type(self) -> dict[tuple[tuple, str], list["TimeSeries"]]:
+        """Groups the datasets active timeseries by constraints and types"""
         groups = defaultdict(list)
 
         for ts in (
@@ -322,6 +323,8 @@ class TimeSeries(models.Model):
         PREDICTION = "Prediction"
         FORECAST = "Forecast"
         CLIMATOLOGY = "Climatology"
+
+    FUTURE_TYPES = {TimeSeriesType.PREDICTION, TimeSeriesType.FORECAST}
 
     timeseries_type = models.CharField(
         max_length=50,

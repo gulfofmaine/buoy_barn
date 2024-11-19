@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import pandas as pd
 
 from deployments import standard_names
@@ -41,22 +43,24 @@ def tidal_extrema(
     time_col: str = "time (UTC)",
 ) -> pd.DataFrame:
     """Calculate the high and low tides for a timeseries"""
-    water_level_df = df.copy()
+    from scipy.signal import find_peaks
 
-    cycle = water_level_df.groupby(pd.Grouper(freq=f"{12 * 60 + 25}min"))
+    # Hannah suggested a minimum distance of ten hours between tides,
+    # but we need to specifiy the number of values
+    # pandas <2 doesn't allow .diff() on index
+    min_distance = timedelta(hours=10) / df.reset_index()[time_col].diff().mean()
 
-    high_times = cycle.idxmax()
-    low_times = cycle.idxmin()
+    high_idx = find_peaks(df[water_level_column], distance=min_distance)
+    low_idx = find_peaks(-df[water_level_column], distance=min_distance)
 
-    high_tides = water_level_df.loc[high_times[water_level_column]]
+    high_tides = df.iloc[high_idx[0]]
     high_tides["tide"] = "high"
 
-    low_tides = water_level_df.loc[low_times[water_level_column]]
+    low_tides = df.iloc[low_idx[0]]
     low_tides["tide"] = "low"
 
     tides_df = pd.concat([high_tides, low_tides])
-    tides_df = tides_df.sort_index()
-    tides_df = tides_df.reset_index()
+    tides_df = tides_df.sort_index().reset_index()
 
     tides_df[time_col] = tides_df[time_col].map(lambda x: x.isoformat())
     tides_df = tides_df.rename(columns={water_level_column: "value", time_col: "time"})

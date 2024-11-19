@@ -1,12 +1,13 @@
 import logging
 import time
 
+import pandas as pd
 from celery import shared_task
 from django.utils import timezone
-import pandas as pd
+from httpx import HTTPError, TimeoutException
+
 # from requests import HTTPError, Timeout
 from sentry_sdk import push_scope
-from httpx import HTTPError, TimeoutException
 
 from deployments.models import ErddapDataset, ErddapServer, TimeSeries
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe

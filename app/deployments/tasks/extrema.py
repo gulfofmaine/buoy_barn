@@ -1,10 +1,33 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
+import numpy as np
 import pandas as pd
 from scipy.signal import find_peaks
 
 from deployments import standard_names
 from deployments.models import TimeSeries
+
+
+def encode_value(value):  # noqa: PLR0911
+    """Make Pandas and Numpy values json serializable"""
+    if isinstance(value, np.bool_):
+        return bool(value)
+    if isinstance(value, np.integer):
+        return int(value)
+    if isinstance(value, np.floating):
+        return float(value)
+    if isinstance(value, pd.Timestamp | datetime):
+        return value.isoformat()
+    if isinstance(value, list | np.ndarray | pd.Series):
+        return [encode_value(v) for v in value]
+    if isinstance(value, dict):
+        return {encode_value(k): encode_value(v) for k, v in value.items()}
+    try:
+        if pd.isna(value):
+            return None
+    except ValueError as e:
+        raise ValueError(f"Unable to encode value {value}") from e
+    return value
 
 
 def extrema_for_timeseries(ts: TimeSeries, df: pd.DataFrame) -> dict:
@@ -20,11 +43,11 @@ def extrema_for_timeseries(ts: TimeSeries, df: pd.DataFrame) -> dict:
     try:
         extrema = {
             "max": {
-                "time": extrema_df[column_name].idxmax().isoformat(),
+                "time": extrema_df[column_name].idxmax(),
                 "value": extrema_df[column_name].max(),
             },
             "min": {
-                "time": extrema_df[column_name].idxmin().isoformat(),
+                "time": extrema_df[column_name].idxmin(),
                 "value": extrema_df[column_name].min(),
             },
         }
@@ -35,7 +58,7 @@ def extrema_for_timeseries(ts: TimeSeries, df: pd.DataFrame) -> dict:
         tides_df = tidal_extrema(extrema_df, column_name)
         extrema["tides"] = tides_df.to_dict(orient="records")
 
-    return extrema
+    return encode_value(extrema)
 
 
 def tidal_extrema(
@@ -53,10 +76,10 @@ def tidal_extrema(
     low_idx = find_peaks(-df[water_level_column], distance=min_distance)
 
     high_tides = df.iloc[high_idx[0]]
-    high_tides["tide"] = "high"
+    high_tides.loc[:, "tide"] = "high"
 
     low_tides = df.iloc[low_idx[0]]
-    low_tides["tide"] = "low"
+    low_tides.loc[:, "tide"] = "low"
 
     tides_df = pd.concat([high_tides, low_tides])
     tides_df = tides_df.sort_index().reset_index()

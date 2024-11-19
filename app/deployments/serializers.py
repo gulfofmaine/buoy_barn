@@ -76,6 +76,9 @@ class PlatformSerializer(GeoFeatureModelSerializer):
                         "datum_offsets": datums,
                         "flood_levels": flood_levels,
                         "highlighted": series.highlighted,
+                        "type": series.timeseries_type,
+                        "extrema": series.extrema,
+                        "extrema_values": series.extrema_values,
                     },
                 )
 

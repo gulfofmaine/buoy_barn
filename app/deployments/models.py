@@ -39,6 +39,7 @@ class Platform(models.Model):
     class PlatformTypes(models.TextChoices):
         BUOY = "Buoy"
         TIDE_STATION = "Tide Station"
+        OVERLAND_FLOOD = "Overland Flood"
 
     platform_type = models.CharField(
         max_length=50,
@@ -280,7 +281,8 @@ class ErddapDataset(models.Model):
                     exc_info=True,
                 )
 
-    def group_timeseries_by_constraint(self):
+    def group_timeseries_by_constraint_and_type(self) -> dict[tuple[tuple, str], list["TimeSeries"]]:
+        """Groups the datasets active timeseries by constraints and types"""
         groups = defaultdict(list)
 
         for ts in (
@@ -289,9 +291,9 @@ class ErddapDataset(models.Model):
             .prefetch_related("data_type")
         ):
             try:
-                groups[tuple((ts.constraints or {}).items())].append(ts)
+                groups[(tuple((ts.constraints or {}).items()), ts.timeseries_type)].append(ts)
             except AttributeError as e:
-                logger.error(f"Unable to set constraint for timeseries {ts} due to {e}")
+                logger.error(f"Unable to set constraints for timeseries {ts} due to {e}")
 
         return groups
 
@@ -316,10 +318,30 @@ class TimeSeries(models.Model):
         blank=True,
     )
 
+    class TimeSeriesType(models.TextChoices):
+        OBSERVATION = "Observation"
+        PREDICTION = "Prediction"
+        FORECAST = "Forecast"
+        CLIMATOLOGY = "Climatology"
+
+    FUTURE_TYPES = {TimeSeriesType.PREDICTION, TimeSeriesType.FORECAST}
+
+    timeseries_type = models.CharField(
+        max_length=50,
+        choices=TimeSeriesType.choices,
+        default=TimeSeriesType.OBSERVATION,
+        help_text="Is this timeseries an observation, prediction, forecast, or climatology?",
+    )
+
     class Highlighted(models.TextChoices):
         NO = "No"
         BEFORE = "Before"
         AFTER = "After"
+
+    extrema = models.BooleanField(
+        default=False,
+        help_text=("Is this timeseries an extrema (high or low), or regularly spaced?"),
+    )
 
     highlighted = models.CharField(
         max_length=50,
@@ -359,6 +381,10 @@ class TimeSeries(models.Model):
         null=True,
         blank=True,
         help_text="Time of the most recent value",
+    )
+    extrema_values = models.JSONField(
+        "Calculated extremes (and tides if applicable) for the loaded window (last 1 or next 7 days)",
+        default=dict,
     )
     active = models.BooleanField(
         default=True,

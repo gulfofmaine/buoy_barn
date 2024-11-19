@@ -1,10 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from logging import getLogger
 
 from erddapy import ERDDAP
 from pandas import DataFrame
 
-from ..models import ErddapServer
+from ..models import ErddapServer, TimeSeries
 
 logger = getLogger(__name__)
 
@@ -16,23 +16,33 @@ def filter_dataframe(df_to_filter: DataFrame, column: str) -> DataFrame:
     return filtered_df[filtered_df[column_name].notna()]
 
 
-def setup_variables(
+def setup_variables(  # noqa: PLR0913
     server: ERDDAP,
     dataset: str,
     variables: list[str],
     constraints=None,
     time: datetime = None,
+    forecast: bool = False,
 ) -> ERDDAP:
+    """Configure ERDDAP variable for requests.
+
+    Will default to the last 24 hours if time isn't specified, unless it is a
+    forecast/prediction then it will fetch the next 7 days.
+    """
     server.dataset_id = dataset
     server.response = "nc"
     server.protocol = "tabledap"
 
     constraints = {} if not constraints else constraints.copy()
 
-    if not time:
-        time = datetime.utcnow() - timedelta(hours=24)
+    if time:
+        constraints["time>="] = time
+    elif forecast:
+        constraints["time>="] = datetime.now(UTC)
+        constraints["time<="] = datetime.now(UTC) + timedelta(days=7)
+    else:
+        constraints["time>="] = datetime.now(UTC) - timedelta(hours=24)
 
-    constraints["time>="] = time
     server.constraints = constraints
 
     server.variables = ["time"] + variables
@@ -44,17 +54,19 @@ def retrieve_dataframe(
     server: ErddapServer,
     dataset: str,
     constraints,
-    timeseries,
+    timeseries: list[TimeSeries],
 ) -> DataFrame:
     """Returns a dataframe from ERDDAP for a given dataset
 
     Attempts to sort the dataframe by time
     """
+    forecast = any(ts.timeseries_type in TimeSeries.FUTURE_TYPES for ts in timeseries)
     e = setup_variables(
         server.connection(),
         dataset,
         list({series.variable for series in timeseries}),
         constraints=constraints,
+        forecast=forecast,
     )
 
     timeout_seconds = server.request_timeout_seconds

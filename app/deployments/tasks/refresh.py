@@ -102,8 +102,17 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                 extra_context["time"] = time
 
                 series.value_time = parse_time_string(time)[0]
-                series.extrema_values = extrema_for_timeseries(series, filtered_df)
                 series.save()
+
+                try:
+                    series.extrema_values = extrema_for_timeseries(series, filtered_df)
+                    series.save()
+                except TypeError as error:
+                    logger.error(
+                        f"Could not save extrema for {series.variable} from {row}: {error}",
+                        extra=extra_context,
+                        exc_info=True,
+                    )
             except TypeError as error:
                 logger.error(
                     f"Could not save {series.variable} from {row}: {error}",

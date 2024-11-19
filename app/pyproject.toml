@@ -42,7 +42,7 @@ dev-dependencies = [
   "ipython~=8.26",
   "prospector[with_mypy,with_vulture]~=1.10",
   "pytest~=8.3",
-  "pytest-cov~=5.0",
+  "pytest-cov~=6.0",
   "pytest-django~=4.8",
   "pyyaml~=6.0",
 ]

@@ -5,12 +5,9 @@ from http import HTTPStatus
 import requests
 from django.conf import settings
 from django.utils import timezone
-from requests import HTTPError
+from httpx import HTTPError, HTTPStatusError, TimeoutException
 
-try:
-    from pandas.core.indexes.period import DateParseError, parse_time_string
-except ImportError:
-    from pandas._libs.tslibs.parsing import DateParseError, parse_time_string
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -72,9 +69,9 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
         times = []
         for potential_time in times_str.split(" "):
             try:
-                time = parse_time_string(potential_time)
+                time = pd.to_datetime(potential_time)
                 times.append(time[0])
-            except (DateParseError, ValueError):
+            except ValueError:
                 pass
         times.sort(reverse=True)
 
@@ -292,71 +289,72 @@ def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> bo
 
 def handle_http_errors(timeseries_group, error: HTTPError) -> bool:  # noqa: PLR0911
     """Handle various types of HTTPErrors. Returns True if handled"""
-    try:
-        if error.response.status_code == HTTPStatus.FORBIDDEN:
-            logger.error(
-                (
-                    f"403 error loading dataset {timeseries_group[0].dataset.name}. "
-                    "NOAA Coastwatch most likely blacklisted us. "
-                    "Try running the request manually from the worker pod to "
-                    f"replicate the error and access the returned text. {error}"
-                ),
-                extra=error_extra(timeseries_group),
-                exc_info=True,
-            )
-            return True
+    if isinstance(error.__cause__, HTTPStatusError):
+        try:
+            if error.__cause__.response.status_code == HTTPStatus.FORBIDDEN:
+                logger.error(
+                    (
+                        f"403 error loading dataset {timeseries_group[0].dataset.name}. "
+                        "NOAA Coastwatch most likely blacklisted us. "
+                        "Try running the request manually from the worker pod to "
+                        f"replicate the error and access the returned text. {error}"
+                    ),
+                    extra=error_extra(timeseries_group),
+                    exc_info=True,
+                )
+                return True
 
-        if error.response.status_code == HTTPStatus.NOT_FOUND:
-            logger.error(
-                (
-                    f"No rows found for {timeseries_group[0].dataset.name} "
-                    f"with constraint {timeseries_group[0].constraints}: {error}"
-                ),
-                extra=error_extra(timeseries_group),
-                exc_info=True,
-            )
-            return True
+            if error.__cause__.response.status_code == HTTPStatus.NOT_FOUND:
+                logger.error(
+                    (
+                        f"No rows found for {timeseries_group[0].dataset.name} "
+                        f"with constraint {timeseries_group[0].constraints}: {error}"
+                    ),
+                    extra=error_extra(timeseries_group),
+                    exc_info=True,
+                )
+                return True
 
-        if error.response.status_code == HTTPStatus.REQUEST_TIMEOUT:
-            raise BackoffError("408 Backoff encountered") from error
+            if error.__cause__.response.status_code == HTTPStatus.REQUEST_TIMEOUT:
+                raise BackoffError("408 Backoff encountered") from error
 
-        if error.response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
-            url = error.request.url
+            if error.__cause__.response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
+                url = error.request.url
 
-            response_500 = requests.get(url, timeout=settings.ERDDAP_TIMEOUT_SECONDS)
+                response_500 = requests.get(url, timeout=settings.ERDDAP_TIMEOUT_SECONDS)
 
-            if handle_500_errors(timeseries_group, response_500.text):
+                if handle_500_errors(timeseries_group, response_500.text):
+                    return True
+
+                logger.error(
+                    (
+                        f"500 error loading dataset {timeseries_group[0].dataset.name} "
+                        f"with constraint {timeseries_group[0].constraints}: {error} "
+                    ),
+                    extra=error_extra(timeseries_group, response_500.text),
+                    exc_info=True,
+                )
                 return True
 
             logger.error(
                 (
-                    f"500 error loading dataset {timeseries_group[0].dataset.name} "
-                    f"with constraint {timeseries_group[0].constraints}: {error} "
+                    f"{error.response.status_code} error loading dataset {timeseries_group[0].dataset.name}"
+                    f" with constraint {timeseries_group[0].constraints}: {error}"
                 ),
-                extra=error_extra(timeseries_group, response_500.text),
+                extra=error_extra(timeseries_group),
                 exc_info=True,
             )
             return True
 
-        logger.error(
-            (
-                f"{error.response.status_code} error loading dataset {timeseries_group[0].dataset.name}"
-                f" with constraint {timeseries_group[0].constraints}: {error}"
-            ),
-            extra=error_extra(timeseries_group),
-            exc_info=True,
-        )
-        return True
-
-    except AttributeError:
-        pass
+        except AttributeError:
+            pass
 
     if handle_400_errors(timeseries_group, str(error), error):
         return True
 
     if handle_500_errors(timeseries_group, str(error)):
         return True
-
+    
     logger.error(
         (
             f"Error loading dataset {timeseries_group[0].dataset.name} "

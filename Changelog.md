@@ -8,6 +8,12 @@ Changes:
 
 Fixes:
 
+## 0.7.1 - 11/19/2024
+
+Fixes:
+
+- Encode extrema values better so that they can be more reliably serialized to JSON. [#1253](https://github.com/gulfofmaine/buoy_barn/pull/1253)
+
 ## 0.7.0 - 11/19/2024
 
 Additions:

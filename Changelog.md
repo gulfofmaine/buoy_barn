@@ -8,6 +8,33 @@ Changes:
 
 Fixes:
 
+## 0.7.0 - 11/19/2024
+
+Additions:
+
+- Timeseries types and extrema in [#1251](https://github.com/gulfofmaine/buoy_barn/pull/1251)
+  - Timeseries can now be classified into different types (observation, forecast, prediction) which will alter how we fetch data for them. For observations we will continue to use the last 24 hours and the latest value from that, while forecasts and predictions we will fetch the next 7 days and use the first value.
+  - We're calculating the min and max of each timeseries, and for tidal timeseries we are calculating the high and low tides over the fetched data.
+
+Changes:
+
+- Added 'Overland Flood' as a platform type  in [#1251]
+
+Fixes:
+
+- Take care of some N+1 queries in `refresh_dataset` [#1245](https://github.com/gulfofmaine/buoy_barn/pull/1245)
+- Adjusteda few commands that needed `uv run` to be prefixed.
+
+Dependency Updates:
+
+- Pre-commit
+  - Pyproject Format from 2.4.3 to 2.5.0
+  - Ruff from 0.7.1 to 0.7.4
+- Dockerfile from 1.10 to 1.11
+- Python
+  - Sentry SDK from 2.17.0 to 2.18.0
+  - Py.test Coverage from 5.0 to 6.0
+
 ## 0.6.8 - 10/28/2024
 
 Changes:

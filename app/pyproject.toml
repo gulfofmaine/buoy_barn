@@ -1,6 +1,6 @@
 [project]
 name = "buoy-barn"
-version = "0.6.8"
+version = "0.7.0"
 description = "NERACOOS lightweight API sitting in front of ERDDAP"
 authors = [ { name = "Alex Kerney", email = "<akerney@gmri.org>" } ]
 requires-python = ">=3.11"

@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 import pandas as pd
+from scipy.signal import find_peaks
 
 from deployments import standard_names
 from deployments.models import TimeSeries
@@ -43,8 +44,6 @@ def tidal_extrema(
     time_col: str = "time (UTC)",
 ) -> pd.DataFrame:
     """Calculate the high and low tides for a timeseries"""
-    from scipy.signal import find_peaks
-
     # Hannah suggested a minimum distance of ten hours between tides,
     # but we need to specifiy the number of values
     # pandas <2 doesn't allow .diff() on index

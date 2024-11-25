@@ -42,6 +42,7 @@ def setup_variables(  # noqa: PLR0913
         constraints["time<="] = datetime.now(UTC) + timedelta(days=7)
     else:
         constraints["time>="] = datetime.now(UTC) - timedelta(hours=24)
+        constraints["time<="] = datetime.now(UTC)
 
     server.constraints = constraints
 

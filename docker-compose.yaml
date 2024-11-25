@@ -23,19 +23,19 @@ services:
     # command: "uwsgi --module=buoy_barn.wsgi:application --master --pidfile=/tmp/project-master.pid --http :8080 --uid=1000 --gid=2000 --max-requests=5000 --vacuum --processes 4"
     # # command: "gunicorn --bind 0.0.0.0:8080 buoy_barn.wsgi:application"
     restart: always
-    # volumes:
-    # #   - ./app:/app:cached
-    # #   - /app/.venv
-    #   - ./docker-data/django-static:/static:cached
-    develop:
-      watch:
-        - action: sync
-          path: ./app
-          target: /app
-          ignore:
-            - ./app/.venv
-        - action: rebuild
-          path: ./app/pyproject.toml
+    volumes:
+    #   - ./app:/app:cached
+    #   - /app/.venv
+      - ./docker-data/django-static:/static:cached
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./app
+    #       target: /app
+    #       ignore:
+    #         - ./app/.venv
+    #     - action: rebuild
+    #       path: ./app/pyproject.toml
     ports:
       - "8080:8080"
     environment:

@@ -2,15 +2,9 @@ import logging
 from datetime import timedelta
 from http import HTTPStatus
 
-import requests
-from django.conf import settings
+import pandas as pd
 from django.utils import timezone
-from requests import HTTPError
-
-try:
-    from pandas.core.indexes.period import DateParseError, parse_time_string
-except ImportError:
-    from pandas._libs.tslibs.parsing import DateParseError, parse_time_string
+from httpx import HTTPError, HTTPStatusError
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +51,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
     """
     if "is outside of the variable" in compare_text:
         try:
-            times_str = compare_text.rpartition("actual_range:")[-1].rpartition(")")[0]
+            times_str = compare_text.rpartition("actual_range: ")[-1].rpartition(")")[0]
         except (AttributeError, IndexError) as e:
             logger.error(
                 (
@@ -70,11 +64,11 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
             return False
 
         times = []
-        for potential_time in times_str.split(" "):
+        for potential_time in times_str.split(" to "):
             try:
-                time = parse_time_string(potential_time)
-                times.append(time[0])
-            except (DateParseError, ValueError):
+                time = pd.to_datetime(potential_time)
+                times.append(time)
+            except ValueError:
                 pass
         times.sort(reverse=True)
 
@@ -157,6 +151,9 @@ def handle_500_errors(timeseries_group, compare_text: str) -> bool:
         return True
 
     if handle_500_variable_actual_range_error(timeseries_group, compare_text):
+        return True
+
+    if handle_400_unrecognized_variable(timeseries_group, compare_text):
         return True
 
     return handle_500_unrecognized_constraint(timeseries_group, compare_text)
@@ -292,64 +289,57 @@ def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> bo
 
 def handle_http_errors(timeseries_group, error: HTTPError) -> bool:  # noqa: PLR0911
     """Handle various types of HTTPErrors. Returns True if handled"""
-    try:
-        if error.response.status_code == HTTPStatus.FORBIDDEN:
-            logger.error(
-                (
-                    f"403 error loading dataset {timeseries_group[0].dataset.name}. "
-                    "NOAA Coastwatch most likely blacklisted us. "
-                    "Try running the request manually from the worker pod to "
-                    f"replicate the error and access the returned text. {error}"
-                ),
-                extra=error_extra(timeseries_group),
-                exc_info=True,
-            )
-            return True
+    if isinstance(error.__cause__, HTTPStatusError):
+        try:
+            if error.__cause__.response.status_code == HTTPStatus.FORBIDDEN:
+                logger.error(
+                    (
+                        f"403 error loading dataset {timeseries_group[0].dataset.name}. "
+                        "NOAA Coastwatch most likely blacklisted us. "
+                        "Try running the request manually from the worker pod to "
+                        f"replicate the error and access the returned text. {error}"
+                    ),
+                    extra=error_extra(timeseries_group),
+                    exc_info=True,
+                )
+                return True
 
-        if error.response.status_code == HTTPStatus.NOT_FOUND:
-            logger.error(
-                (
-                    f"No rows found for {timeseries_group[0].dataset.name} "
-                    f"with constraint {timeseries_group[0].constraints}: {error}"
-                ),
-                extra=error_extra(timeseries_group),
-                exc_info=True,
-            )
-            return True
+            if error.__cause__.response.status_code == HTTPStatus.NOT_FOUND and handle_404_errors(
+                timeseries_group,
+                error.__cause__.response.text,
+            ):
+                return True
 
-        if error.response.status_code == HTTPStatus.REQUEST_TIMEOUT:
-            raise BackoffError("408 Backoff encountered") from error
+            if error.__cause__.response.status_code == HTTPStatus.REQUEST_TIMEOUT:
+                raise BackoffError("408 Backoff encountered") from error
 
-        if error.response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
-            url = error.request.url
+            if error.__cause__.response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
+                if handle_500_errors(timeseries_group, error.__cause__.response.text):
+                    return True
 
-            response_500 = requests.get(url, timeout=settings.ERDDAP_TIMEOUT_SECONDS)
-
-            if handle_500_errors(timeseries_group, response_500.text):
+                logger.error(
+                    (
+                        f"500 error loading dataset {timeseries_group[0].dataset.name} "
+                        f"with constraint {timeseries_group[0].constraints}: {error} "
+                    ),
+                    extra=error_extra(timeseries_group, error.__cause__.response.text),
+                    exc_info=True,
+                )
                 return True
 
             logger.error(
                 (
-                    f"500 error loading dataset {timeseries_group[0].dataset.name} "
-                    f"with constraint {timeseries_group[0].constraints}: {error} "
+                    f"{error.response.status_code} error loading dataset "
+                    + timeseries_group[0].dataset.name
+                    + f" with constraint {timeseries_group[0].constraints}: {error}"
                 ),
-                extra=error_extra(timeseries_group, response_500.text),
+                extra=error_extra(timeseries_group),
                 exc_info=True,
             )
             return True
 
-        logger.error(
-            (
-                f"{error.response.status_code} error loading dataset {timeseries_group[0].dataset.name}"
-                f" with constraint {timeseries_group[0].constraints}: {error}"
-            ),
-            extra=error_extra(timeseries_group),
-            exc_info=True,
-        )
-        return True
-
-    except AttributeError:
-        pass
+        except AttributeError:
+            pass
 
     if handle_400_errors(timeseries_group, str(error), error):
         return True

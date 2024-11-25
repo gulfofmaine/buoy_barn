@@ -1,16 +1,13 @@
 import logging
 import time
 
+import pandas as pd
 from celery import shared_task
 from django.utils import timezone
-from pandas import Timedelta
-from requests import HTTPError, Timeout
-from sentry_sdk import push_scope
+from httpx import HTTPError, TimeoutException
 
-try:
-    from pandas.core.indexes.period import parse_time_string
-except ImportError:
-    from pandas._libs.tslibs.parsing import parse_time_string
+# from requests import HTTPError, Timeout
+from sentry_sdk import push_scope
 
 from deployments.models import ErddapDataset, ErddapServer, TimeSeries
 from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
@@ -37,15 +34,15 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                 timeseries,
             )
 
-        except HTTPError as error:
-            if handle_http_errors(timeseries, error):
-                return
-
-        except Timeout as error:
+        except TimeoutException as error:
             raise BackoffError(
                 f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
                 f"with constraint {timeseries[0].constraints}: {error}",
             ) from error
+
+        except HTTPError as error:
+            if handle_http_errors(timeseries, error):
+                return
 
         except OSError as error:
             logger.error(
@@ -92,7 +89,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                 extra_context["variable"] = series.variable
                 extra_context["value"] = value
 
-                if isinstance(value, Timedelta):
+                if isinstance(value, pd.Timedelta):
                     logger.info("Converting from Timedelta to seconds")
                     value = value.seconds
 
@@ -101,7 +98,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                 time = row["time (UTC)"]
                 extra_context["time"] = time
 
-                series.value_time = parse_time_string(time)[0]
+                series.value_time = pd.to_datetime(time)
                 series.save()
 
                 try:
@@ -113,6 +110,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                         extra=extra_context,
                         exc_info=True,
                     )
+                    continue
             except TypeError as error:
                 logger.error(
                     f"Could not save {series.variable} from {row}: {error}",

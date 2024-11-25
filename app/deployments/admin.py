@@ -1,8 +1,12 @@
 from datetime import datetime, timedelta
+from typing import Any
 
-from django.contrib.admin import BooleanFieldListFilter
+from django.contrib.admin import BooleanFieldListFilter, SimpleListFilter
 from django.contrib.gis import admin
+from django.db.models.query import QuerySet
+from django.http.request import HttpRequest
 from django.utils import timezone
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from .models import (
@@ -49,7 +53,7 @@ class TimeSeriesInline(admin.StackedInline):
     model = TimeSeries
     extra = 0
 
-    autocomplete_fields = ["dataset", "data_type", "buffer_type"]
+    autocomplete_fields = ["platform", "dataset", "data_type", "buffer_type"]
     readonly_fields = ["test_timeseries"]
 
     show_change_link = True
@@ -59,7 +63,7 @@ class TimeSeriesInline(admin.StackedInline):
             None,
             {
                 "fields": [
-                    ("dataset", "variable"),
+                    ("dataset", "platform", "variable"),
                     ("data_type", "active"),
                     ("value_time", "end_time"),
                     ("value", "test_timeseries"),
@@ -112,6 +116,96 @@ class TimeseriesActiveFilter(BooleanFieldListFilter):
         self.title = "Timeseries Active"
 
 
+@admin.display(description="Timeseries status")
+def timeseries_status(obj: ErddapDataset | Platform):
+    """Shows an inline display of timeseries status on a dataset or platform admin"""
+    now = timezone.now()
+    hour_ago = now - timedelta(hours=24)
+    day_ago = now - timedelta(days=1)
+
+    active_timeseries = []
+    inactive_timeseries = []
+
+    for ts in obj.timeseries_set.all():
+        if ts.active and ts.value_time is not None:
+            try:
+                if ts.end_time < now:
+                    inactive_timeseries.append(ts)
+                    continue
+            except TypeError:
+                pass
+            active_timeseries.append(ts)
+        else:
+            inactive_timeseries.append(ts)
+
+    hour_delayed = [ts for ts in active_timeseries if ts.value_time < hour_ago]
+    day_delayed = [ts for ts in active_timeseries if ts.value_time < day_ago]
+
+    inactive_color = "gray" if len(inactive_timeseries) == 0 else "black"
+
+    active_title = "\n".join(
+        f"{ts} ({ts.value} @ {ts.value_time:%Y-%m-%d %H:%M})"
+        if ts.value_time
+        else f"{ts} (Not refreshed)"
+        for ts in active_timeseries
+    )
+    inactive_title = "\n".join(
+        f"{ts} ({ts.value} @ {ts.value_time:%Y-%m-%d %H:%M})"
+        if ts.value_time
+        else f"{ts} (Not refreshed)"
+        for ts in inactive_timeseries
+    )
+
+    if len(day_delayed) > 0:
+        return format_html(
+            (
+                "<span style='color: {};' title='{}'>{}</span>"
+                " {} / {} "
+                "<span style='color: {};' title='{}'>({} inactive)</span>"
+            ),
+            "red",
+            active_title,
+            "Delayed by at least a day",
+            len(day_delayed),
+            len(active_timeseries),
+            inactive_color,
+            inactive_title,
+            len(inactive_timeseries),
+        )
+    elif len(hour_delayed) > 0:
+        return format_html(
+            (
+                "<span style='color: {};' title='{}'>"
+                "{} / {} "
+                "<span style='color: {};' title='{}'>({} inactive)</span>"
+            ),
+            "yellow",
+            active_title,
+            "Delayed by at least an hour",
+            len(hour_delayed),
+            len(active_timeseries),
+            inactive_color,
+            inactive_title,
+            len(inactive_timeseries),
+        )
+
+    return format_html(
+        (
+            "<span style='color: {};' title='{}'>{}</span>"
+            " {} / {} "
+            "<span style='color: {};' title='{}'>({} inactive)</span>"
+        ),
+        "green",
+        active_title,
+        "Active",
+        len(active_timeseries),
+        len(active_timeseries),
+        inactive_color,
+        inactive_title,
+        len(inactive_timeseries),
+    )
+
+
 @admin.register(Platform)
 class PlatformAdmin(admin.GISModelAdmin):
     ordering = ["name", "mooring_site_desc", "ndbc_site_id"]
@@ -143,13 +237,19 @@ class PlatformAdmin(admin.GISModelAdmin):
         "timeseries__data_type__units",
     ]
 
-    list_display = ["name", "mooring_site_desc", "ndbc_site_id"]
+    list_display = ["name", "platform_type", timeseries_status, "mooring_site_desc", "ndbc_site_id"]
     list_filter = [
+        "platform_type",
         "timeseries__dataset__server__name",
         ("timeseries__active", TimeseriesActiveFilter),
         "timeseries__data_type__standard_name",
         "timeseries__dataset__name",
     ]
+
+    def get_queryset(self, request: HttpRequest):
+        queryset = super().get_queryset(request)
+        queryset = queryset.prefetch_related("timeseries_set", "timeseries_set__data_type")
+        return queryset
 
     @admin.action(description="Disable timeseries that are more than a week out of date")
     def disable_old_timeseries(self, request, queryset):
@@ -314,12 +414,88 @@ class ErddapServerAdmin(admin.ModelAdmin):
         )
 
 
+class RefreshStatusListFilter(SimpleListFilter):
+    title = "Refresh status"
+    parameter_name = "refresh_status"
+
+    def lookups(self, request: Any, model_admin: Any) -> list[tuple[Any, str]]:
+        return [
+            ("last_hour", "Within the last hour"),
+            ("last_day", "Within the last day"),
+            ("more_than_day", "More than a day ago"),
+            ("never", "Never"),
+        ]
+
+    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+        if self.value() == "last_hour":
+            return queryset.filter(refresh_attempted__gte=timezone.now() - timedelta(hours=1))
+        elif self.value() == "last_day":
+            return queryset.filter(
+                refresh_attempted__gte=timezone.now() - timedelta(days=1),
+                refresh_attempted__lt=timezone.now() - timedelta(hours=1),
+            )
+        elif self.value() == "more_than_day":
+            return queryset.filter(refresh_attempted__lt=timezone.now() - timedelta(days=1))
+        elif self.value() == "never":
+            return queryset.filter(refresh_attempted__isnull=True)
+        else:
+            return queryset
+
+
 @admin.register(ErddapDataset)
 class ErddapDatasetAdmin(admin.ModelAdmin):
     ordering = ["name"]
     search_fields = ["name", "server__name", "server__base_url"]
+    list_display = ["name", timeseries_status, "server", "refresh_status"]
+    list_filter = ["server__name", RefreshStatusListFilter]
+    inlines = [TimeSeriesInline]
 
     actions = ["disable_timeseries", "enable_timeseries", "refresh_dataset"]
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet:
+        queryset = super().get_queryset(request)
+        queryset = queryset.prefetch_related(
+            "timeseries_set",
+            "timeseries_set__data_type",
+            "timeseries_set__platform",
+        )
+        return queryset
+
+    @admin.display(description="Refresh attempted")
+    def refresh_status(self, obj: ErddapDataset):
+        now = timezone.now()
+        hour_ago = now - timedelta(hours=24)
+        day_ago = now - timedelta(days=1)
+
+        last_refreshed = f"Last refreshed at: {obj.refresh_attempted:%Y-%m-%d %H:%M}"
+
+        if obj.refresh_attempted is None:
+            return format_html(
+                "<span style='color: {};'>{}</span>",
+                "gray",
+                "Never refreshed",
+            )
+        if obj.refresh_attempted < day_ago:
+            return format_html(
+                "<span style='color: {};' title='{}'>{} ({})</span>",
+                "red",
+                last_refreshed,
+                "More than 24 hours ago",
+            )
+        elif obj.refresh_attempted < hour_ago:
+            return format_html(
+                "<span style='color: {};' title='{}'>{} ({})</span>",
+                "yellow",
+                last_refreshed,
+                "More than 1 hour ago",
+            )
+        else:
+            return format_html(
+                "<span style='color: {};' title='{}'>{}</span>",
+                "green",
+                last_refreshed,
+                "Less than 1 hour ago",
+            )
 
     @admin.action(description="Refresh timeseries associated with datasets")
     def refresh_dataset(self, request, queryset):

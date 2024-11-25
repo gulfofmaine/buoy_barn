@@ -26,10 +26,10 @@ def more_thank_a_week_old():
 
     if platforms:
         message = "Timeseries that are more than a week out of date in Buoy Barn:\n"
-        for platform in platforms:
+        for platform, series in platforms.items():
             message += f"- *{platform}*\n"
 
-            for ts in platforms[platform]:
+            for ts in series:
                 message += f"    - {ts}\n"
 
         message += (

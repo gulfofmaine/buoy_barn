@@ -34,7 +34,7 @@ dependencies = [
   "uwsgi~=2.0.26",
   "vcrpy~=6.0",
   "whitenoise~=6.7",
-  "xarray~=2024.3.0",
+  "xarray~=2024.11.0",
 ]
 
 [tool.uv]

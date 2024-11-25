@@ -8,6 +8,24 @@ Changes:
 
 Fixes:
 
+## 0.7.2 - 11/25/2024
+
+Changes
+- Adds timeseries and dataset refresh status to the admin list pages, to hopefully help with debugging when data is delayed. [#1258](https://github.com/gulfofmaine/buoy_barn/pull/1258)
+
+Fixes:
+- Adds a healtcheck for periodic refreshes, so we have an idea if they end up delayed or not running. [#1257](https://github.com/gulfofmaine/buoy_barn/pull/1257)
+
+Dependency updates:
+- Github Actions
+  - Ubuntu from 22.04 to 24.04
+- Pre-commit
+  - Ruff from 0.7.4 to 0.8.0
+- Python
+  - ERDDAPY from 1.2.1 to >2.0
+  - Pandas from 1.5.3 to >2.0
+  - Sentry SDK from 2.18.0 to 2.19.0
+  - Xarray from 2024.3.0 to 2024.11.0
 ## 0.7.1 - 11/19/2024
 
 Fixes:

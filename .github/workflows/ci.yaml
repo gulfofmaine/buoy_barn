@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
@@ -55,7 +55,7 @@ jobs:
 
   test:
     name: Unit Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     needs: build
 
@@ -89,7 +89,7 @@ jobs:
 
   deploy:
     name: Build and Push tagged image to Docker Hub, and update Argo config
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: test
     environment:
       name: Buoy Barn via Argo CD

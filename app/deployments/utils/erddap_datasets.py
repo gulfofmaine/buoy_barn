@@ -1,19 +1,28 @@
 from datetime import UTC, datetime, timedelta
 from logging import getLogger
 
+import pandas as pd
 from erddapy import ERDDAP
-from pandas import DataFrame
 
 from ..models import ErddapServer, TimeSeries
 
 logger = getLogger(__name__)
 
 
-def filter_dataframe(df_to_filter: DataFrame, column: str) -> DataFrame:
-    """Remove invalid times and for the specified column"""
-    filtered_df = df_to_filter[df_to_filter["time (UTC)"].notna()]
+ERDDAP_TIME_COLUMN = "time (UTC)"
+TIME_COLUMN = "time"
+VALUE_COLUMN = "value"
+
+
+def filter_dataframe(df_to_filter: pd.DataFrame, column: str) -> pd.DataFrame:
+    """Remove invalid times and for the specified column, and renames time and value columns"""
+    filtered_df = df_to_filter[df_to_filter[ERDDAP_TIME_COLUMN].notna()]
     column_name = [col for col in filtered_df.columns if col.split(" ")[0] == column][0]
-    return filtered_df[filtered_df[column_name].notna()]
+    filtered_df = filtered_df[filtered_df[column_name].notna()]
+    filtered_df = filtered_df[[ERDDAP_TIME_COLUMN, column_name]]
+    filtered_df = filtered_df.rename(columns={column_name: VALUE_COLUMN, ERDDAP_TIME_COLUMN: "time"})
+    filtered_df[TIME_COLUMN] = pd.to_datetime(filtered_df[TIME_COLUMN])
+    return filtered_df
 
 
 def setup_variables(  # noqa: PLR0913
@@ -56,7 +65,7 @@ def retrieve_dataframe(
     dataset: str,
     constraints,
     timeseries: list[TimeSeries],
-) -> DataFrame:
+) -> pd.DataFrame:
     """Returns a dataframe from ERDDAP for a given dataset
 
     Attempts to sort the dataframe by time

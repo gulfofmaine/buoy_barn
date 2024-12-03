@@ -6,6 +6,7 @@ from scipy.signal import find_peaks
 
 from deployments import standard_names
 from deployments.models import TimeSeries
+from deployments.utils.erddap_datasets import TIME_COLUMN, VALUE_COLUMN
 
 
 def encode_value(value):  # noqa: PLR0911
@@ -35,10 +36,9 @@ def extrema_for_timeseries(ts: TimeSeries, df: pd.DataFrame) -> dict:
     Calculate the extrema for a timeseries
     """
     extrema_df = df
-    extrema_df["time (UTC)"] = pd.to_datetime(extrema_df["time (UTC)"])
-    extrema_df = df.set_index("time (UTC)")
+    extrema_df = df.set_index(TIME_COLUMN)
 
-    column_name = extrema_df.columns[0]
+    column_name = VALUE_COLUMN
 
     try:
         extrema = {
@@ -64,7 +64,7 @@ def extrema_for_timeseries(ts: TimeSeries, df: pd.DataFrame) -> dict:
 def tidal_extrema(
     df: pd.DataFrame,
     water_level_column: str,
-    time_col: str = "time (UTC)",
+    time_col: str = TIME_COLUMN,
 ) -> pd.DataFrame:
     """Calculate the high and low tides for a timeseries"""
     # Hannah suggested a minimum distance of ten hours between tides,
@@ -85,6 +85,6 @@ def tidal_extrema(
     tides_df = tides_df.sort_index().reset_index()
 
     tides_df[time_col] = tides_df[time_col].map(lambda x: x.isoformat())
-    tides_df = tides_df.rename(columns={water_level_column: "value", time_col: "time"})
+    tides_df = tides_df[["time", "value", "tide"]]
 
     return tides_df

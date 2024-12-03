@@ -8,6 +8,29 @@ Changes:
 
 Fixes:
 
+## 0.7.3 - 2024-12-03
+
+Changes
+
+* Updated the timeseries admin to be easier to sort, filter, and otherwise manage by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1266
+
+Fixes
+
+* Filter dataframes better by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1267
+
+Dependency updates:
+* Github Actions
+  * Bump docker/build-push-action from 6.9.0 to 6.10.0 by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1263
+* Pre Commit
+  * Update pre-commit hook astral-sh/ruff-pre-commit to v0.8.1 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1265
+  * Update pre-commit hook adamchainz/django-upgrade to v1.22.2 - autoclosed by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1264
+  * Update pre-commit hook PyCQA/bandit to v1.8.0 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1269
+* Docker
+  * Update docker/dockerfile Docker tag to v1.12 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1268
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.7.2...v0.7.3
+
+
 ## 0.7.2 - 11/25/2024
 
 Changes

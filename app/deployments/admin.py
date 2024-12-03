@@ -32,6 +32,34 @@ class FloodLevelInline(admin.StackedInline):
     extra = 0
 
 
+class TimesiersStatusListFilter(SimpleListFilter):
+    title = "Timeseries status"
+    parameter_name = "timeseries_status"
+
+    def lookups(self, request: Any, model_admin: Any) -> list[tuple[Any, str]]:
+        return [
+            ("last_hour", "Within the last hour"),
+            ("last_day", "Within the last day"),
+            ("more_than_day", "More than a day ago"),
+            ("never", "Never"),
+        ]
+
+    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+        if self.value() == "last_hour":
+            return queryset.filter(value_time__gte=timezone.now() - timedelta(hours=1))
+        elif self.value() == "last_day":
+            return queryset.filter(
+                value_time__gte=timezone.now() - timedelta(days=1),
+                value_time__lt=timezone.now() - timedelta(hours=1),
+            )
+        elif self.value() == "more_than_day":
+            return queryset.filter(value_time__lt=timezone.now() - timedelta(days=1))
+        elif self.value() == "never":
+            return queryset.filter(value_time__isnull=True)
+        else:
+            return queryset
+
+
 @admin.register(TimeSeries)
 class TimeSeriesAdmin(admin.ModelAdmin):
     model = TimeSeries
@@ -40,6 +68,32 @@ class TimeSeriesAdmin(admin.ModelAdmin):
     autocomplete_fields = ["dataset", "data_type", "buffer_type"]
     readonly_fields = ["test_timeseries"]
 
+    actions = ["refresh_timeseries"]
+
+    list_display = ["platform", "value", "timeseries_status", "data_type"]
+    list_filter = [TimesiersStatusListFilter, "active", "platform", "data_type"]
+    search_fields = [
+        "platform__name",
+        "data_type__standard_name",
+        "data_type__short_name",
+        "data_type__long_name",
+        "data_type__units",
+    ]
+
+    @admin.display(description="Timeseries status")
+    def timeseries_status(self, instance: TimeSeries):
+        now = timezone.now()
+        hour_ago = now - timedelta(hours=24)
+        day_ago = now - timedelta(days=1)
+
+        if instance.value_time is None:
+            return format_html("<span style='color: gray;'>No data</span>")
+        if instance.value_time < day_ago:
+            return format_html("<span style='color: red;'>{}</span>", instance.value_time)
+        if instance.value_time < hour_ago:
+            return format_html("<span style='color: yellow;'>{}</span>", instance.value_time)
+        return format_html("<span style='color: green;'>{}</span>", instance.value_time)
+
     @admin.display(
         description="Test if a timeseries is formatted correctly to connect to ERDDAP",
     )
@@ -47,6 +101,26 @@ class TimeSeriesAdmin(admin.ModelAdmin):
         dataset_url = instance.dataset_url("htmlTable")
 
         return mark_safe(f"<a href='{dataset_url}'>Test ERDDAP Timeseries</a>")  # nosec
+
+    @admin.action(description="Refresh datasets for selected timeseries")
+    def refresh_timeseries(self, request, queryset):
+        datasets_to_queue = set()
+
+        for ts in queryset.iterator(chunk_size=100):
+            datasets_to_queue.add(ts.dataset.id)
+
+        for dataset_id in datasets_to_queue:
+            refresh.refresh_dataset.delay(dataset_id)
+
+        self.message_user(
+            request,
+            f"Queued {len(datasets_to_queue)} datasets for refresh.",
+        )
+
+    def get_queryset(self, request: HttpRequest):
+        queryset = super().get_queryset(request)
+        queryset = queryset.prefetch_related("data_type", "platform")
+        return queryset
 
 
 class TimeSeriesInline(admin.StackedInline):
@@ -253,7 +327,7 @@ class PlatformAdmin(admin.GISModelAdmin):
 
     @admin.action(description="Disable timeseries that are more than a week out of date")
     def disable_old_timeseries(self, request, queryset):
-        platforms_ids = [platform.id for platform in queryset.iterator()]
+        platforms_ids = [platform.id for platform in queryset.iterator(chunk_size=100)]
         timeseries_to_update = []
 
         week_ago = datetime.now() - timedelta(days=7)

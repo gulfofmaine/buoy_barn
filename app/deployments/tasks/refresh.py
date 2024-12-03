@@ -10,7 +10,12 @@ from httpx import HTTPError, TimeoutException
 from sentry_sdk import push_scope
 
 from deployments.models import ErddapDataset, ErddapServer, TimeSeries
-from deployments.utils.erddap_datasets import filter_dataframe, retrieve_dataframe
+from deployments.utils.erddap_datasets import (
+    TIME_COLUMN,
+    VALUE_COLUMN,
+    filter_dataframe,
+    retrieve_dataframe,
+)
 
 from .error_handling import BackoffError, handle_http_errors
 from .extrema import extrema_for_timeseries
@@ -82,12 +87,11 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                 continue
 
             try:
-                variable_name = [key for key in row.keys() if key.split(" ")[0] == series.variable]  # noqa: SIM118
-                value = row[variable_name]
+                value = row[VALUE_COLUMN]
 
                 extra_context["series"] = series
                 extra_context["variable"] = series.variable
-                extra_context["value"] = value
+                extra_context[VALUE_COLUMN] = value
 
                 if isinstance(value, pd.Timedelta):
                     logger.info("Converting from Timedelta to seconds")
@@ -95,7 +99,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
 
                 series.value = value
 
-                time = row["time (UTC)"]
+                time = row[TIME_COLUMN]
                 extra_context["time"] = time
 
                 series.value_time = pd.to_datetime(time)

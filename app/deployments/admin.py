@@ -520,7 +520,12 @@ class RefreshStatusListFilter(SimpleListFilter):
 class ErddapDatasetAdmin(admin.ModelAdmin):
     ordering = ["name"]
     search_fields = ["name", "server__name", "server__base_url"]
-    list_display = ["name", timeseries_status, "server", "refresh_status"]
+    list_display = [
+        "name",
+        timeseries_status,
+        "server",
+        "refresh_status",
+    ]
     list_filter = ["server__name", RefreshStatusListFilter]
     inlines = [TimeSeriesInline]
 
@@ -551,14 +556,14 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
             )
         if obj.refresh_attempted < day_ago:
             return format_html(
-                "<span style='color: {};' title='{}'>{} ({})</span>",
+                "<span style='color: {};' title='{}'>{}</span>",
                 "red",
                 last_refreshed,
                 "More than 24 hours ago",
             )
         elif obj.refresh_attempted < hour_ago:
             return format_html(
-                "<span style='color: {};' title='{}'>{} ({})</span>",
+                "<span style='color: {};' title='{}'>{}</span>",
                 "yellow",
                 last_refreshed,
                 "More than 1 hour ago",

@@ -222,6 +222,12 @@ class ErddapDataset(models.Model):
         max_length=256,
         help_text="Or as ERDDAP knows it as the Dataset ID. EX: 'Dataset ID: A01_accelerometer_all'",
     )
+    public_name = models.CharField(
+        max_length=256,
+        blank=True,
+        null=True,
+        help_text="The name of the dataset as it should be displayed in the UI",
+    )
     server = models.ForeignKey(ErddapServer, on_delete=models.CASCADE)
 
     healthcheck_url = models.URLField(

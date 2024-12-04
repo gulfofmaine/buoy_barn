@@ -66,6 +66,7 @@ class PlatformSerializer(GeoFeatureModelSerializer):
                         "variable": series.variable,
                         "constraints": series.constraints,
                         "dataset": series.dataset.name,
+                        "dataset_public_name": series.dataset.public_name,
                         "start_time": series.start_time,
                         "cors_proxy_url": reverse(
                             "server-proxy",

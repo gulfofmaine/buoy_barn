@@ -8,6 +8,14 @@ Changes:
 
 Fixes:
 
+## O.7.4 - 2024-12-04
+
+Changes:
+
+* Add public names to datasets by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1271
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.7.3...v0.7.4
+
 ## 0.7.3 - 2024-12-03
 
 Changes

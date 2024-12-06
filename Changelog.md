@@ -8,6 +8,19 @@ Changes:
 
 Fixes:
 
+## 0.7.6 - 2024-12-06
+
+Changes:
+
+* Match the default time range for forecast and prediction window by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1274
+
+Dependency Updates:
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.8.2 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1273
+* Bump Django for security by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1275
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.7.4...v0.7.5
+
 ## O.7.4 - 2024-12-04
 
 Changes:

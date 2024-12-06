@@ -48,7 +48,7 @@ def setup_variables(  # noqa: PLR0913
         constraints["time>="] = time
     elif forecast:
         constraints["time>="] = datetime.now(UTC)
-        constraints["time<="] = datetime.now(UTC) + timedelta(days=7)
+        constraints["time<="] = datetime.now(UTC) + timedelta(days=3)
     else:
         constraints["time>="] = datetime.now(UTC) - timedelta(hours=24)
         constraints["time<="] = datetime.now(UTC)

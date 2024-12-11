@@ -18,7 +18,7 @@ def more_thank_a_week_old():
 
     platforms = {}
 
-    for ts in ts_week_ago.iterator():
+    for ts in ts_week_ago.iterator(chunk_size=100):
         platform = platforms.get(ts.platform.name, [])
 
         platform.append(f"{ts} @ {ts.value_time.strftime('%Y-%m-%d %H:%M')}")

@@ -338,7 +338,7 @@ class PlatformAdmin(admin.GISModelAdmin):
             platform_id__in=platforms_ids,
         )
 
-        for ts in ts_week_ago.iterator():
+        for ts in ts_week_ago.iterator(chunk_size=100):
             ts.active = False
             timeseries_to_update.append(ts)
 
@@ -354,7 +354,7 @@ class PlatformAdmin(admin.GISModelAdmin):
     def refresh_timeseries(self, request, queryset):
         datasets_to_queue = set()
 
-        for platform in queryset.iterator():
+        for platform in queryset.iterator(chunk_size=100):
             for ts in platform.timeseries_set.all():
                 datasets_to_queue.add(ts.dataset_id)
 
@@ -377,7 +377,7 @@ class PlatformAdmin(admin.GISModelAdmin):
 
         year_ago = timezone.now() - year
 
-        for platform in queryset.iterator():
+        for platform in queryset.iterator(chunk_size=100):
             platforms.append(platform)
             for ts in platform.timeseries_set.filter(end_time__gte=year_ago):
                 ts.end_time = None
@@ -398,7 +398,7 @@ class PlatformAdmin(admin.GISModelAdmin):
         platforms = []
         timeseries = []
 
-        for platform in queryset.iterator():
+        for platform in queryset.iterator(chunk_size=100):
             platforms.append(platform)
             for ts in platform.timeseries_set.all():
                 ts.active = False
@@ -416,7 +416,7 @@ class PlatformAdmin(admin.GISModelAdmin):
         platforms = []
         timeseries = []
 
-        for platform in queryset.iterator():
+        for platform in queryset.iterator(chunk_size=100):
             platforms.append(platform)
             for ts in platform.timeseries_set.all():
                 ts.active = True
@@ -440,7 +440,7 @@ class ErddapServerAdmin(admin.ModelAdmin):
     def refresh_server(self, request, queryset):
         queued_servers = []
 
-        for server in queryset.iterator():
+        for server in queryset.iterator(chunk_size=100):
             refresh.refresh_server.delay(server.id, healthcheck=False)
             queued_servers.append(server)
 
@@ -454,7 +454,7 @@ class ErddapServerAdmin(admin.ModelAdmin):
         datasets = []
         timeseries = []
 
-        for server in queryset.iterator():
+        for server in queryset.iterator(chunk_size=100):
             for dataset in server.erddapdataset_set.all():
                 datasets.append(dataset)
                 for ts in dataset.timeseries_set.all():
@@ -473,7 +473,7 @@ class ErddapServerAdmin(admin.ModelAdmin):
         datasets = []
         timeseries = []
 
-        for server in queryset.iterator():
+        for server in queryset.iterator(chunk_size=100):
             for dataset in server.erddapdataset_set.all():
                 datasets.append(dataset)
                 for ts in dataset.timeseries_set.all():
@@ -580,7 +580,7 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
     def refresh_dataset(self, request, queryset):
         queued_datasets = []
 
-        for dataset in queryset.iterator():
+        for dataset in queryset.iterator(chunk_size=100):
             refresh.refresh_dataset.delay(dataset.id, healthcheck=False)
             queued_datasets.append(dataset)
 
@@ -594,7 +594,7 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
         datasets = []
         timeseries = []
 
-        for dataset in queryset.iterator():
+        for dataset in queryset.iterator(chunk_size=100):
             datasets.append(dataset)
             for ts in dataset.timeseries_set.all():
                 ts.active = False
@@ -612,7 +612,7 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
         datasets = []
         timeseries = []
 
-        for dataset in queryset.iterator():
+        for dataset in queryset.iterator(chunk_size=100):
             datasets.append(dataset)
             for ts in dataset.timeseries_set.all():
                 ts.active = True

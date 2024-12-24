@@ -23,7 +23,7 @@ dependencies = [
   "erddapy>1.2.1",
   "flower~=2.0.1",
   "freezegun~=1.5.1",
-  "geojson~=3.1.0",
+  "geojson~=3.2.0",
   "netcdf4~=1.7.1",
   "pandas>1.5.3",
   "psycopg2-binary~=2.9.9",

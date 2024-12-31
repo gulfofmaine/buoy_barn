@@ -33,7 +33,7 @@ dependencies = [
   "sentry-sdk~=2.19.0",
   "slack-sdk~=3.33.0",
   "uwsgi~=2.0.26",
-  "vcrpy~=6.0",
+  "vcrpy~=7.0",
   "whitenoise~=6.7",
   "xarray~=2024.11.0",
 ]

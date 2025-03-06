@@ -37,6 +37,7 @@ lint.select = [
   "W",   # pycodestyle
 ]
 lint.ignore = [
+  "DJ001",
   "EXE003",
 ]
 lint.extend-per-file-ignores."**/migrations/*.py" = [ "E501" ]

@@ -367,29 +367,26 @@ class PlatformAdmin(admin.GISModelAdmin):
         )
 
     @admin.action(
-        description="Remove end time for timeseries that have an end time in the last year",
+        description="Remove end time for timeseries",
     )
     def remove_end_time(self, request, queryset):
         platforms = []
         timeseries = []
 
-        year = timedelta(days=365)
-
-        year_ago = timezone.now() - year
-
         for platform in queryset.iterator(chunk_size=100):
             platforms.append(platform)
-            for ts in platform.timeseries_set.filter(end_time__gte=year_ago):
+            for ts in platform.timeseries_set.filter(end_time__isnull=False):
                 ts.end_time = None
                 timeseries.append(ts)
 
-        TimeSeries.objects.bulk_update(timeseries, ["end_time"])
+        if timeseries:
+            TimeSeries.objects.bulk_update(timeseries, ["end_time"])
 
         self.message_user(
             request,
             (
-                f"Removed end time for {len(timeseries)} timeseries with an end time "
-                f"since {year_ago} from {len(platforms)} platform"
+                f"Removed end time for {len(timeseries)} timeseries with an end time from "
+                f"{len(platforms)} platform"
             ),
         )
 

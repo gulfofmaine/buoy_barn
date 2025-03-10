@@ -27,6 +27,20 @@ logger = logging.getLogger(__name__)
 
 DEBUG = os.environ.get("DJANGO_ENV", "").lower() == "dev"
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}
+
 
 def before_send(event, hint):
     """Don't report "OSError: write error" to Sentry.

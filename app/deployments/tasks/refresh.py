@@ -78,11 +78,14 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                     row = filtered_df.iloc[-1]
                 extra_context["row"] = row
             except IndexError:
-                logger.error(
+                msg = (
                     f"Unable to find position in dataframe for {series.platform.name} - "
-                    f"{series.variable}",
-                    extra=extra_context,
-                    exc_info=True,
+                    f"{series.variable}"
+                )
+                logger.warning(
+                    msg,
+                    #    extra=extra_context,
+                    #    exc_info=True
                 )
                 continue
 
@@ -182,7 +185,7 @@ def single_refresh_dataset(dataset_id: int, healthcheck: bool = False):
 
         if already_queued:
             logger.error(
-                f"refresh_dataset is already queued for {dataset_id}. " "Not going to schedule another.",
+                f"refresh_dataset is already queued for {dataset_id}. Not going to schedule another.",
                 exc_info=True,
             )
         else:
@@ -223,7 +226,7 @@ def single_refresh_server(server_id: int, healthcheck: bool = False):
 
         if already_queued:
             logger.error(
-                f"refresh_server is already queued for {server_id}. " "Not going to schedule another.",
+                f"refresh_server is already queued for {server_id}. Not going to schedule another.",
                 exc_info=True,
             )
         else:

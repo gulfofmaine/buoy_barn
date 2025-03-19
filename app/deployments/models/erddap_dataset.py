@@ -97,7 +97,7 @@ class ErddapDataset(models.Model):
         ):
             try:
                 groups[(tuple((ts.constraints or {}).items()), ts.timeseries_type)].append(ts)
-            except AttributeError as e:
+            except AttributeError as e:  # noqa: PERF203
                 logger.error(f"Unable to set constraints for timeseries {ts} due to {e}")
 
         return groups

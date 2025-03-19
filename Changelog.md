@@ -8,7 +8,38 @@ Changes:
 
 Fixes:
 
-## 0.7.6 - 2024-12-06
+## 0.7.6 - 2025-03-19
+
+## What's Changed
+
+Changes:
+* Break apart deployment models into individual files by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1326
+
+Fixes:
+* Set chunk_size for queryset.iterator by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1277
+* Adjust the end_time action by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1328
+* Tweak logging by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1330
+
+Dependency updates:
+* Enable UV updating with Dependabot by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1317
+* Bump actions/checkout from 3.6.0 to 3.6.1 by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1286
+* Update pre-commit hook zricethezav/gitleaks/ to v8.22.1 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1285
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.8.5 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1279
+* Bump getsentry/action-release from 1.7.0 to 1.9.0 by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1294
+* Bump docker/build-push-action from 6.10.0 to 6.12.0 by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1295
+* Update pre-commit hook PyCQA/bandit to v1.8.3 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1296
+* Update docker/build-push-action action to v6.13.0 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1309
+* Bump getsentry/action-release from 1.9.0 to 3.1.0 by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1327
+* Tweak logging by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1330
+* Bump docker/login-action from 3.3.0 to 3.4.0 by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1334
+* Update docker/build-push-action action to v6.15.0 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1314
+* Update pre-commit hook tox-dev/pyproject-fmt to v2.5.1 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1313
+* Bump docker/setup-buildx-action from 3.7.1 to 3.10.0 by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1316
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.7.5...v0.7.6
+
+## 0.7.5 - 2024-12-06
 
 Changes:
 

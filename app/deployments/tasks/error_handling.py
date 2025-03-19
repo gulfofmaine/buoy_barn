@@ -68,7 +68,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> bool:
             try:
                 time = pd.to_datetime(potential_time)
                 times.append(time)
-            except ValueError:
+            except ValueError:  # noqa: PERF203
                 pass
         times.sort(reverse=True)
 

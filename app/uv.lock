@@ -142,11 +142,11 @@ requires-dist = [
     { name = "netcdf4", specifier = "==1.7.2" },
     { name = "pandas", specifier = "==2.2.3" },
     { name = "psycopg2-binary", specifier = "==2.9.10" },
-    { name = "pystac", specifier = "==1.11.0" },
+    { name = "pystac", specifier = "~=1.12.2" },
     { name = "requests", specifier = "==2.32.3" },
     { name = "scipy", specifier = "==1.14.1" },
     { name = "sentry-sdk", specifier = "==2.24.0" },
-    { name = "slack-sdk", specifier = "~=3.35.0" },
+    { name = "slack-sdk", specifier = "==3.35.0" },
     { name = "uwsgi", specifier = "==2.0.28" },
     { name = "vcrpy", specifier = "==6.0.2" },
     { name = "whitenoise", specifier = "==6.9.0" },
@@ -1299,14 +1299,14 @@ wheels = [
 
 [[package]]
 name = "pystac"
-version = "1.11.0"
+version = "1.12.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "python-dateutil" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/90/4f/f6f89956aabffd1211fa9c9130293ac67f774c66fab7944bfe33dc317f18/pystac-1.11.0.tar.gz", hash = "sha256:acb1e04be398a0cda2d8870ab5e90457783a8014a206590233171d8b2ae0d9e7", size = 141392 }
+sdist = { url = "https://files.pythonhosted.org/packages/1b/da/50f63a3e86c95915f28dfee7f08eb1780baeb122f4aa98e37049ed6b0849/pystac-1.12.2.tar.gz", hash = "sha256:13a9926fdc6f5a0c81a6bcf5748d3e46fd8814b888936b94fd6d8ca6caf0c20d", size = 149989 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/71/5b/60dc94cbf6af2fd3a3d3fae52de7e294819af2dfe7a1bea4d246beb7e0b6/pystac-1.11.0-py3-none-any.whl", hash = "sha256:10ac7c7b4ea6c5ec8333829a09ec1a33b596f02d1a97ffbbd72cd1b6c10598c1", size = 183925 },
+    { url = "https://files.pythonhosted.org/packages/08/94/6f93e55886cae4076dfe1c5c0a768963f6faca34d7cd27a2ee6800e29387/pystac-1.12.2-py3-none-any.whl", hash = "sha256:7ab6d3d191013727d789f803869789a26e546543a27da3bf2b8abf96b8264d3f", size = 194207 },
 ]
 
 [[package]]

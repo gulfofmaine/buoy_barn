@@ -126,31 +126,31 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "celery", specifier = "==5.4.0" },
-    { name = "django", specifier = "==5.1.4" },
-    { name = "django-cors-headers", specifier = "==4.6.0" },
-    { name = "django-debug-toolbar", specifier = "==5.1.0" },
-    { name = "django-health-check", specifier = "==3.18.3" },
-    { name = "django-memoize", specifier = "==2.3.1" },
-    { name = "django-redis", specifier = "==5.4.0" },
-    { name = "djangorestframework", specifier = "==3.15.2" },
-    { name = "djangorestframework-gis", specifier = "==1.1" },
-    { name = "erddapy", specifier = "==2.2.3" },
-    { name = "flower", specifier = "==2.0.1" },
-    { name = "freezegun", specifier = "==1.5.1" },
+    { name = "celery", specifier = "~=5.4" },
+    { name = "django", specifier = "~=5.0" },
+    { name = "django-cors-headers", specifier = "~=4.4" },
+    { name = "django-debug-toolbar", specifier = "~=5.1" },
+    { name = "django-health-check", specifier = "~=3.18.3" },
+    { name = "django-memoize", specifier = "~=2.3.1" },
+    { name = "django-redis", specifier = "~=5.4" },
+    { name = "djangorestframework", specifier = "~=3.15" },
+    { name = "djangorestframework-gis", specifier = "~=1.0" },
+    { name = "erddapy", specifier = ">1.2.1" },
+    { name = "flower", specifier = "~=2.0.1" },
+    { name = "freezegun", specifier = "~=1.5.1" },
     { name = "geojson", specifier = "~=3.2.0" },
-    { name = "netcdf4", specifier = "==1.7.2" },
-    { name = "pandas", specifier = "==2.2.3" },
-    { name = "psycopg2-binary", specifier = "==2.9.10" },
-    { name = "pystac", specifier = "==1.11.0" },
-    { name = "requests", specifier = "==2.32.3" },
-    { name = "scipy", specifier = "==1.14.1" },
+    { name = "netcdf4", specifier = "~=1.7.1" },
+    { name = "pandas", specifier = ">1.5.3" },
+    { name = "psycopg2-binary", specifier = "~=2.9.9" },
+    { name = "pystac", specifier = "~=1.11.0" },
+    { name = "requests", specifier = ">=2.32.3" },
+    { name = "scipy", specifier = ">=1.14.1" },
     { name = "sentry-sdk", specifier = "~=2.24.0" },
-    { name = "slack-sdk", specifier = "==3.33.5" },
-    { name = "uwsgi", specifier = "==2.0.28" },
-    { name = "vcrpy", specifier = "==6.0.2" },
+    { name = "slack-sdk", specifier = "~=3.35.0" },
+    { name = "uwsgi", specifier = "~=2.0.26" },
+    { name = "vcrpy", specifier = "~=6.0" },
     { name = "whitenoise", specifier = "~=6.7" },
-    { name = "xarray", specifier = "==2024.11.0" },
+    { name = "xarray", specifier = "~=2024.11.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -1523,11 +1523,11 @@ wheels = [
 
 [[package]]
 name = "slack-sdk"
-version = "3.33.5"
+version = "3.35.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/48/06/2b567dbd5869b4a27e0612bf0cd5a8b852a94a2fc877a4488f420b8506ed/slack_sdk-3.33.5.tar.gz", hash = "sha256:a5e74c00c99dc844ad93e501ab764a20d86fa8184bbc9432af217496f632c4ee", size = 233265 }
+sdist = { url = "https://files.pythonhosted.org/packages/32/a5/13077a5696ded22cc955ff6314028b7e6140b1c989b19ca27a6b26590e6e/slack_sdk-3.35.0.tar.gz", hash = "sha256:8183b6cbf26a0c1e2441478cd9c0dc4eef08d60c1394cfdc9a769e309a9b6459", size = 232887 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fc/1c/b8e4bc3c26ebcdf360fd70c58a7bc01552f440fd119523204fa005681a40/slack_sdk-3.33.5-py2.py3-none-any.whl", hash = "sha256:b8cccadfa3d4005a5e6529f52000d25c583f46173fda8e9136fdd2bc58923ff6", size = 292279 },
+    { url = "https://files.pythonhosted.org/packages/32/8e/eed71dc79a187ba32681f12a104786ab89355bc474082211d92e1fba6bcf/slack_sdk-3.35.0-py2.py3-none-any.whl", hash = "sha256:00933d171fbd8a068b321ebb5f89612cc781d3183d8e3447c85499eca9d865be", size = 293272 },
 ]
 
 [[package]]

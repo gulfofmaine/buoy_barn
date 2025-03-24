@@ -109,7 +109,7 @@ class PlatformSerializer(GeoFeatureModelSerializer):
 
     class Meta:
         model = Platform
-        exclude = ["geom"]
+        exclude = ["geom", "visible_climatology", "visible_dev", "visible_mariners"]
         id_field = "name"
         geo_field = "location_point"
 

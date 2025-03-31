@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version < '3.12' and platform_python_implementation == 'PyPy'",
@@ -115,30 +116,30 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "celery", specifier = "~=5.4" },
-    { name = "django", specifier = "~=5.0" },
-    { name = "django-cors-headers", specifier = "~=4.4" },
-    { name = "django-debug-toolbar", specifier = "~=5.1" },
-    { name = "django-health-check", specifier = "~=3.18.3" },
-    { name = "django-memoize", specifier = "~=2.3.1" },
-    { name = "django-redis", specifier = "~=5.4" },
-    { name = "djangorestframework", specifier = "~=3.15" },
-    { name = "djangorestframework-gis", specifier = "~=1.0" },
-    { name = "erddapy", specifier = ">1.2.1" },
-    { name = "flower", specifier = "~=2.0.1" },
-    { name = "freezegun", specifier = "~=1.5.1" },
-    { name = "geojson", specifier = "~=3.2.0" },
-    { name = "netcdf4", specifier = "~=1.7.1" },
-    { name = "pandas", specifier = ">1.5.3" },
-    { name = "psycopg2-binary", specifier = "~=2.9.9" },
-    { name = "pystac", specifier = "~=1.12.2" },
-    { name = "requests", specifier = ">=2.32.3" },
-    { name = "scipy", specifier = ">=1.14.1" },
-    { name = "sentry-sdk", specifier = "~=2.24.0" },
-    { name = "slack-sdk", specifier = "~=3.35.0" },
-    { name = "uwsgi", specifier = "~=2.0.26" },
-    { name = "vcrpy", specifier = "~=7.0" },
-    { name = "whitenoise", specifier = "~=6.7" },
+    { name = "celery", specifier = "==5.4.0" },
+    { name = "django", specifier = "==5.1.4" },
+    { name = "django-cors-headers", specifier = "==4.7.0" },
+    { name = "django-debug-toolbar", specifier = "==5.1.0" },
+    { name = "django-health-check", specifier = "==3.18.3" },
+    { name = "django-memoize", specifier = "==2.3.1" },
+    { name = "django-redis", specifier = "==5.4.0" },
+    { name = "djangorestframework", specifier = "==3.15.2" },
+    { name = "djangorestframework-gis", specifier = "==1.1" },
+    { name = "erddapy", specifier = "==2.2.3" },
+    { name = "flower", specifier = "==2.0.1" },
+    { name = "freezegun", specifier = "==1.5.1" },
+    { name = "geojson", specifier = "==3.2.0" },
+    { name = "netcdf4", specifier = "==1.7.2" },
+    { name = "pandas", specifier = "==2.2.3" },
+    { name = "psycopg2-binary", specifier = "==2.9.10" },
+    { name = "pystac", specifier = "==1.12.2" },
+    { name = "requests", specifier = "==2.32.3" },
+    { name = "scipy", specifier = "==1.15.2" },
+    { name = "sentry-sdk", specifier = "==2.24.1" },
+    { name = "slack-sdk", specifier = "==3.35.0" },
+    { name = "uwsgi", specifier = "==2.0.28" },
+    { name = "vcrpy", specifier = "==7.0.0" },
+    { name = "whitenoise", specifier = "==6.9.0" },
     { name = "xarray", specifier = "~=2025.3.0" },
 ]
 
@@ -1444,16 +1445,16 @@ wheels = [
 
 [[package]]
 name = "xarray"
-version = "2025.3.0"
+version = "2025.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
     { name = "packaging" },
     { name = "pandas" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8a/8c/e56820a2c682834d8fb4a940956cd41b9f2532fee9692bfaf43b14f33c6e/xarray-2025.3.0.tar.gz", hash = "sha256:531cf6d64e6ab54c19239930a840654f1a79d2140e9f0d11d1e8d69dcc581d0f", size = 3292399 }
+sdist = { url = "https://files.pythonhosted.org/packages/7c/c4/6931c37cd418658d596e78794bdd1bcb67efec0aac3cdb720e37e03c1ea1/xarray-2025.3.1.tar.gz", hash = "sha256:0252c96a73528b29d1ed7f0ab28d928d2ec00ad809e47369803b184dece1e447", size = 3300778 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/91/19/5dbac77ca82f009f8267d0e7cca4fd3be2a435d83ed98f6f8b9c5cb1747e/xarray-2025.3.0-py3-none-any.whl", hash = "sha256:022b7eac5ebc26d70d34211de732ec1a15127a40455f9492acdde7fbe5bbf091", size = 1270849 },
+    { url = "https://files.pythonhosted.org/packages/91/fd/973deafd9f87085136a58573600646b408ae7af47859f35151f0d83d5090/xarray-2025.3.1-py3-none-any.whl", hash = "sha256:3404e313930c226db70a945377441ea3c957225d8ba2d429e764c099bb91a546", size = 1279327 },
 ]
 
 [[package]]

@@ -31,7 +31,13 @@ from .serializers import (  # TimeSeriesUpdateResponseSerializer,
 
 @method_decorator(cache_page(60), name="list")
 class PlatformViewset(viewsets.ReadOnlyModelViewSet):
-    """A viewset for viewing Platforms"""
+    """A viewset for viewing Platforms
+
+    For a list queries, the platforms will be filtered by visibility.
+
+    By default, only those where `visible_mariners=True` will be shown,
+    but `visibility` can be set to `dev` or `climatology.
+    """
 
     queryset = Platform.objects.filter(active=True).prefetch_related(
         "programattribution_set",
@@ -52,6 +58,17 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
         ),
     )
     serializer_class = PlatformSerializer
+
+    def list(self, request, *args, **kwargs):  # pylint: disable=unused-argument
+        visibility_key = request.query_params.get("visibility", "mariners").lower()
+        if visibility_key not in {"mariners", "dev", "climatology"}:
+            visibility_key = "mariners"
+        filter_kwargs = {f"visible_{visibility_key}": True}
+        queryset = self.filter_queryset(self.get_queryset()).filter(**filter_kwargs)
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(serializer.data)
+        # return super().list(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         pk = kwargs["pk"]

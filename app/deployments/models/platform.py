@@ -11,6 +11,10 @@ class Platform(models.Model):
     mooring_site_desc = models.TextField("Mooring Site Description")
     active = models.BooleanField(default=True)
 
+    visible_mariners = models.BooleanField("Visible on Mariner's Dashboard", default=True)
+    visible_dev = models.BooleanField("Visible on dev Mariner's Dashboard", default=True)
+    visible_climatology = models.BooleanField("Visible on Climatology tool", default=True)
+
     class PlatformTypes(models.TextChoices):
         BUOY = "Buoy"
         TIDE_STATION = "Tide Station"

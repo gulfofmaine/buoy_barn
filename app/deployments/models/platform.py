@@ -19,6 +19,7 @@ class Platform(models.Model):
         BUOY = "Buoy"
         TIDE_STATION = "Tide Station"
         OVERLAND_FLOOD = "Overland Flood"
+        VIRTUAL = "Virtual"
 
     platform_type = models.CharField(
         max_length=50,

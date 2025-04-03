@@ -8,6 +8,38 @@ Changes:
 
 Fixes:
 
+## 0.8.0 - 2025-04-03
+
+Changes:
+
+* Let users manually configure which services (Mariners/dev/Climatology) platforms are visible to by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1345
+* A new platform type (Virtual) for platforms. This gives a designated type for datasets where there may not be a single physical location, but we are aggregating as if there was one (eMOLT) by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1354
+
+Dependency updates:
+
+* Bump getsentry/action-release from 3.1.0 to 3.1.1 by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1342
+* Bump django-debug-toolbar from 4.4.6 to 5.1.0 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1341
+* Bump sentry-sdk from 2.19.2 to 2.23.1 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1336
+* Bump whitenoise from 6.8.2 to 6.9.0 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1331
+* Update geojson requirement from ~=3.1.0 to ~=3.2.0 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1322
+* Bump slack-sdk from 3.33.5 to 3.35.0 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1337
+* Update pystac requirement from ~=1.11.0 to ~=1.12.2 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1319
+* Update vcrpy requirement from ~=6.0 to ~=7.0 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1323
+* Bump xarray from 2024.11.0 to 2025.3.0 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1339
+* Bump scipy from 1.14.1 to 1.15.2 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1333
+* Bump django-cors-headers from 4.6.0 to 4.7.0 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1343
+* Bump sentry-sdk from 2.24.0 to 2.24.1 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1344
+* Remove prospector by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1346
+* Bump xarray from 2025.3.0 to 2025.3.1 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1349
+* Update pre-commit hook adamchainz/django-upgrade to v1.24.0 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1352
+* Bump sentry-sdk from 2.24.1 to 2.25.0 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1353
+* Update docker/dockerfile Docker tag to v1.14 by @renovate in https://github.com/gulfofmaine/buoy_barn/pull/1348
+* Bump Django to 5.1.8 by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1355
+* Bump sentry-sdk from 2.25.0 to 2.25.1 in /app by @dependabot in https://github.com/gulfofmaine/buoy_barn/pull/1356
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.7.6...v0.8.0
+
 ## 0.7.6 - 2025-03-19
 
 ## What's Changed

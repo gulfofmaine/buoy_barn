@@ -1,5 +1,4 @@
 version = 1
-revision = 1
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version < '3.12' and platform_python_implementation == 'PyPy'",
@@ -75,7 +74,7 @@ wheels = [
 
 [[package]]
 name = "buoy-barn"
-version = "0.7.6"
+version = "0.8.0"
 source = { virtual = "." }
 dependencies = [
     { name = "celery" },
@@ -116,31 +115,31 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "celery", specifier = "==5.4.0" },
-    { name = "django", specifier = "==5.1.8" },
-    { name = "django-cors-headers", specifier = "==4.7.0" },
-    { name = "django-debug-toolbar", specifier = "==5.1.0" },
-    { name = "django-health-check", specifier = "==3.18.3" },
-    { name = "django-memoize", specifier = "==2.3.1" },
-    { name = "django-redis", specifier = "==5.4.0" },
-    { name = "djangorestframework", specifier = "==3.15.2" },
-    { name = "djangorestframework-gis", specifier = "==1.1" },
-    { name = "erddapy", specifier = "==2.2.3" },
-    { name = "flower", specifier = "==2.0.1" },
-    { name = "freezegun", specifier = "==1.5.1" },
-    { name = "geojson", specifier = "==3.2.0" },
-    { name = "netcdf4", specifier = "==1.7.2" },
-    { name = "pandas", specifier = "==2.2.3" },
-    { name = "psycopg2-binary", specifier = "==2.9.10" },
-    { name = "pystac", specifier = "==1.12.2" },
-    { name = "requests", specifier = "==2.32.3" },
-    { name = "scipy", specifier = "==1.15.2" },
+    { name = "celery", specifier = "~=5.4" },
+    { name = "django", specifier = "<5.2" },
+    { name = "django-cors-headers", specifier = "~=4.4" },
+    { name = "django-debug-toolbar", specifier = "~=5.1" },
+    { name = "django-health-check", specifier = "~=3.18.3" },
+    { name = "django-memoize", specifier = "~=2.3.1" },
+    { name = "django-redis", specifier = "~=5.4" },
+    { name = "djangorestframework", specifier = "~=3.15" },
+    { name = "djangorestframework-gis", specifier = "~=1.0" },
+    { name = "erddapy", specifier = ">1.2.1" },
+    { name = "flower", specifier = "~=2.0.1" },
+    { name = "freezegun", specifier = "~=1.5.1" },
+    { name = "geojson", specifier = "~=3.2.0" },
+    { name = "netcdf4", specifier = "~=1.7.1" },
+    { name = "pandas", specifier = ">1.5.3" },
+    { name = "psycopg2-binary", specifier = "~=2.9.9" },
+    { name = "pystac", specifier = "~=1.12.2" },
+    { name = "requests", specifier = ">=2.32.3" },
+    { name = "scipy", specifier = ">=1.14.1" },
     { name = "sentry-sdk", specifier = "~=2.25.0" },
-    { name = "slack-sdk", specifier = "==3.35.0" },
-    { name = "uwsgi", specifier = "==2.0.28" },
-    { name = "vcrpy", specifier = "==7.0.0" },
-    { name = "whitenoise", specifier = "==6.9.0" },
-    { name = "xarray", specifier = "==2025.3.1" },
+    { name = "slack-sdk", specifier = "~=3.35.0" },
+    { name = "uwsgi", specifier = "~=2.0.26" },
+    { name = "vcrpy", specifier = "~=7.0" },
+    { name = "whitenoise", specifier = "~=6.7" },
+    { name = "xarray", specifier = "~=2025.3.0" },
 ]
 
 [package.metadata.requires-dev]

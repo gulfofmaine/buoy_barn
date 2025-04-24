@@ -135,7 +135,7 @@ requires-dist = [
     { name = "pystac", specifier = "~=1.12.2" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "scipy", specifier = ">=1.14.1" },
-    { name = "sentry-sdk", specifier = "~=2.26.0" },
+    { name = "sentry-sdk", specifier = "~=2.27.0" },
     { name = "slack-sdk", specifier = "~=3.35.0" },
     { name = "uwsgi", specifier = "~=2.0.26" },
     { name = "vcrpy", specifier = "~=7.0" },
@@ -1196,15 +1196,15 @@ wheels = [
 
 [[package]]
 name = "sentry-sdk"
-version = "2.26.0"
+version = "2.27.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f0/e2/f8ebb2086046d89cb692f12cc7f9d84e02669d19e263f9b0347553ac6e8c/sentry_sdk-2.26.0.tar.gz", hash = "sha256:88643459716dd0c6e412e5141fcc94ce3b5725e4b6b312210b91332b3b46a0e2", size = 322738 }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/b6/a92ae6fa6d7e6e536bc586776b1669b84fb724dfe21b8ff08297f2d7c969/sentry_sdk-2.27.0.tar.gz", hash = "sha256:90f4f883f9eff294aff59af3d58c2d1b64e3927b28d5ada2b9b41f5aeda47daf", size = 323556 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dd/da/195136b1113e5bc34f31ba04a345bc15c1e66a4eacfc1b317de111abe8c5/sentry_sdk-2.26.0-py2.py3-none-any.whl", hash = "sha256:82496fc359296dac57ec923300b18cc1f14a1279c1e7108d46d35dbb4cf8f5f8", size = 340184 },
+    { url = "https://files.pythonhosted.org/packages/dd/8b/fb496a45854e37930b57564a20fb8e90dd0f8b6add0491527c00f2163b00/sentry_sdk-2.27.0-py2.py3-none-any.whl", hash = "sha256:c58935bfff8af6a0856d37e8adebdbc7b3281c2b632ec823ef03cd108d216ff0", size = 340786 },
 ]
 
 [[package]]

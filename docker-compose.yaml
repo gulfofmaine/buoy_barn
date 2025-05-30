@@ -12,7 +12,7 @@ services:
       - "5432:5432"
 
   cache:
-    image: redis:7.2.5-alpine@sha256:52feec9e3be7fd87b86ff8ffd4eeec4c7b8f4243bc09ff173ecef6c77b78b33a
+    image: redis:7.4.4-alpine@sha256:ee9e8748ace004102a267f7b8265dab2c618317df22507b89d16a8add7154273
     restart: always
 
   web:

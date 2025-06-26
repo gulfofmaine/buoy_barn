@@ -120,7 +120,7 @@ requires-dist = [
     { name = "django", specifier = "<5.2" },
     { name = "django-cors-headers", specifier = "~=4.4" },
     { name = "django-debug-toolbar", specifier = "~=5.1" },
-    { name = "django-health-check", specifier = "~=3.18.3" },
+    { name = "django-health-check", specifier = "~=3.20.0" },
     { name = "django-memoize", specifier = "~=2.3.1" },
     { name = "django-redis", specifier = "~=5.4" },
     { name = "djangorestframework", specifier = "~=3.15" },
@@ -438,14 +438,14 @@ wheels = [
 
 [[package]]
 name = "django-health-check"
-version = "3.18.3"
+version = "3.20.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/66/e9/0699ea3debfda75e5960ff99f56974136380e6f8202d453de7357e1f67fc/django_health_check-3.18.3.tar.gz", hash = "sha256:18b75daca4551c69a43f804f9e41e23f5f5fb9efd06cf6a313b3d5031bb87bd0", size = 20919, upload-time = "2024-06-22T14:34:32.627Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1e/a5/5c33c7dc834df3351f9acf448e8fec97b096db32c94265885a1062841199/django_health_check-3.20.0.tar.gz", hash = "sha256:cd69ac5facf73fe7241d9492d939b57bd20e24f46c4edea91e6a900bf22c2d8e", size = 20641, upload-time = "2025-06-16T09:22:35.015Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e2/1e/3b23b580762cca7456427731de9b90718d15eec02ebe096437469d767dfe/django_health_check-3.18.3-py2.py3-none-any.whl", hash = "sha256:f5f58762b80bdf7b12fad724761993d6e83540f97e2c95c42978f187e452fa07", size = 30331, upload-time = "2024-06-22T14:34:30.184Z" },
+    { url = "https://files.pythonhosted.org/packages/e1/7f/49ba63f078015b0a52e09651b94ba16b41154ac7079c83153edd14e15ca0/django_health_check-3.20.0-py3-none-any.whl", hash = "sha256:bcb2b8f36f463cead0564a028345c5b17e2a2d18e9cc88ecd611b13a26521926", size = 31788, upload-time = "2025-06-16T09:22:32.069Z" },
 ]
 
 [[package]]

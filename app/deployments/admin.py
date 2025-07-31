@@ -70,14 +70,22 @@ class TimeSeriesAdmin(admin.ModelAdmin):
 
     actions = ["refresh_timeseries"]
 
-    list_display = ["platform", "value", "timeseries_status", "data_type"]
-    list_filter = [TimesiersStatusListFilter, "active", "platform", "data_type"]
+    list_display = ["platform", "value", "timeseries_status", "data_type", "dataset"]
+    list_filter = [
+        TimesiersStatusListFilter,
+        "active",
+        "platform",
+        "data_type",
+        "dataset",
+        "dataset__server",
+    ]
     search_fields = [
         "platform__name",
         "data_type__standard_name",
         "data_type__short_name",
         "data_type__long_name",
         "data_type__units",
+        "dataset__name",
     ]
 
     @admin.display(description="Timeseries status")

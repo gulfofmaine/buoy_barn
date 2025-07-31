@@ -498,16 +498,16 @@ wheels = [
 
 [[package]]
 name = "erddapy"
-version = "2.2.3"
+version = "2.2.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
     { name = "pandas" },
     { name = "pytz" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4a/99/c0c2f84c4e33345e05c179db8e1a72f6129f5e76fc0ca96fbb91bb94c568/erddapy-2.2.3.tar.gz", hash = "sha256:0206dcba3954340281a9e283d9bc3925581205492531d98775c65a61cb23bb90", size = 21610, upload-time = "2024-09-19T17:26:11.944Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fa/0f/b031a4ea74156f118355455a4c40dde56788accb089e78cc633f0aeba726/erddapy-2.2.4.tar.gz", hash = "sha256:dbb9bcb7335a52d73e3a23e7cdd976e8ef84452f1d1ee3e9f99c974ff7dcd57b", size = 21936, upload-time = "2025-04-14T17:41:46.809Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/f3/0488a55f657c47a6fc84f1772362c76266b8acde3a0bdc842f7893941656/erddapy-2.2.3-py3-none-any.whl", hash = "sha256:ebd601820106166b0752f08ce2192599b7940f19170ccf9c009d8ba6703a601a", size = 24518, upload-time = "2024-09-19T17:26:10.857Z" },
+    { url = "https://files.pythonhosted.org/packages/94/ee/05fa45a5b8839702c7cd4199cb1bbcd3d31906eeafcf4b43a91ed8c362db/erddapy-2.2.4-py3-none-any.whl", hash = "sha256:277b512f1c907aaae5baf5d75105987fa02432b7e393f7ee5c9bb5e8cc35c229", size = 24843, upload-time = "2025-04-14T17:41:45.869Z" },
 ]
 
 [[package]]

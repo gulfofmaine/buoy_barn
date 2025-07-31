@@ -98,7 +98,7 @@ class BaseERDDAPForecast(BaseForecast):
         """
         sentry_sdk.set_tag("forecast_dataset_id", self.dataset)
         url = self.dataset_url(lat, lon)
-        timeout = float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60))
+        timeout = float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60))  # noqa: PLW1508
         response = requests.get(url, timeout=timeout)
         try:
             return response.json()["table"]

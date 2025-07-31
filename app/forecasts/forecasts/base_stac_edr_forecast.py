@@ -11,10 +11,10 @@ from pystac import Collection, Item, Link
 from forecasts.forecasts.base_forecast import BaseForecast
 
 RETRIEVE_FORECAST_CACHE_SECONDS = float(
-    os.environ.get("RETRIEVE_FORECAST_CACHE_SECONDS", 15 * 60),
+    os.environ.get("RETRIEVE_FORECAST_CACHE_SECONDS", 15 * 60),  # noqa: PLW1508
 )
 RETRIEVE_FORECAST_TIMEOUT_SECONDS = float(
-    os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60),
+    os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60),  # noqa: PLW1508
 )
 
 

@@ -4,6 +4,7 @@ import time
 import pandas as pd
 from celery import shared_task
 from django.utils import timezone
+from httpcore import ConnectError
 from httpx import HTTPError, TimeoutException
 
 # from requests import HTTPError, Timeout
@@ -39,7 +40,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                 timeseries,
             )
 
-        except TimeoutException as error:
+        except (ConnectError, TimeoutException) as error:
             raise BackoffError(
                 f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
                 f"with constraint {timeseries[0].constraints}: {error}",
@@ -118,13 +119,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                         exc_info=True,
                     )
                     continue
-            except TypeError as error:
-                logger.error(
-                    f"Could not save {series.variable} from {row}: {error}",
-                    extra=extra_context,
-                    exc_info=True,
-                )
-            except ValueError as error:
+            except (TypeError, ValueError) as error:
                 logger.error(
                     f"Could not save {series.variable} from {row}: {error}",
                     extra=extra_context,

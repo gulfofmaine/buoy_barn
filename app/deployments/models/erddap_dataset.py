@@ -61,7 +61,7 @@ class ErddapDataset(models.Model):
         hc_url = self.healthcheck_url
 
         if hc_url:
-            import requests
+            import requests  # noqa: PLC0415
 
             try:
                 requests.get(hc_url + "/start", timeout=5)
@@ -76,7 +76,7 @@ class ErddapDataset(models.Model):
         hc_url = self.healthcheck_url
 
         if hc_url:
-            import requests
+            import requests  # noqa: PLC0415
 
             try:
                 requests.get(hc_url, timeout=5)

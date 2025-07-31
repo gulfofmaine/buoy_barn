@@ -51,7 +51,7 @@ class ErddapServer(models.Model):
         return self.base_url
 
     def connection(self):
-        from erddapy import ERDDAP
+        from erddapy import ERDDAP  # noqa: PLC0415
 
         return ERDDAP(self.base_url)
 
@@ -60,7 +60,7 @@ class ErddapServer(models.Model):
         hc_url = self.healthcheck_url
 
         if hc_url:
-            import requests
+            import requests  # noqa: PLC0415
 
             try:
                 requests.get(hc_url + "/start", timeout=5)
@@ -75,7 +75,7 @@ class ErddapServer(models.Model):
         hc_url = self.healthcheck_url
 
         if hc_url:
-            import requests
+            import requests  # noqa: PLC0415
 
             try:
                 requests.get(hc_url, timeout=5)

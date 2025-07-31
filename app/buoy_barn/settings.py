@@ -53,7 +53,7 @@ def before_send(event, hint):
     return event
 
 
-SENTRY_TRACES_SAMPLE_RATE = float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", 0))
+SENTRY_TRACES_SAMPLE_RATE = float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", 0))  # noqa: PLW1508
 SENTRY_IGNORE_PATHS = {"/ht/"}
 
 
@@ -184,14 +184,14 @@ CACHES = {
 }
 
 # How many seconds should CORS proxied data from ERDDAP servers be cached
-PROXY_CACHE_SECONDS = int(os.environ.get("PROXY_CACHE_SECONDS", 60))
+PROXY_CACHE_SECONDS = int(os.environ.get("PROXY_CACHE_SECONDS", 60))  # noqa: PLW1508
 
 # How many seconds should requests wait before timing out connecting to a proxy
-PROXY_TIMEOUT_SECONDS = int(os.environ.get("PROXY_TIMEOUT_SECONDS", 30))
+PROXY_TIMEOUT_SECONDS = int(os.environ.get("PROXY_TIMEOUT_SECONDS", 30))  # noqa: PLW1508
 
 # How many seconds should requests wait before timing out connecting to an ERDDAP server
 # When it isn't already defined by a model
-ERDDAP_TIMEOUT_SECONDS = int(os.environ.get("ERDDAP_TIMEOUT_SECONDS", 30))
+ERDDAP_TIMEOUT_SECONDS = int(os.environ.get("ERDDAP_TIMEOUT_SECONDS", 30))  # noqa: PLW1508
 
 WSGI_APPLICATION = "buoy_barn.wsgi.application"
 
@@ -206,7 +206,7 @@ DATABASES = {
         "USER": os.environ.get("POSTGRES_USER"),
         "HOST": os.environ.get("POSTGRES_HOST"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "PORT": int(os.environ.get("POSTGRES_PORT", 5432)),
+        "PORT": int(os.environ.get("POSTGRES_PORT", 5432)),  # noqa: PLW1508
         "OPTIONS": {"sslmode": "prefer"},
     },
 }

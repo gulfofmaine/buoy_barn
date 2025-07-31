@@ -8,6 +8,81 @@ Changes:
 
 Fixes:
 
+## 0.8.1 - 2025-07-31
+
+Changes:
+
+* Timeseries admin dataset display, filter, and search by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1441
+* Bump max upload fields by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1438
+
+Fixes:
+
+* Connect Error should trigger backoff by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1440
+
+Dependency updates:
+
+* UV Pre-commit by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1358
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.6.14 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1359
+* Update dependency sentry-sdk to ~=2.26.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1363
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.7.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1373
+* Update dependency sentry-sdk to ~=2.27.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1374
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.7.2 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1377
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.7.4 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1382
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.7.6 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1384
+* Update docker/dockerfile Docker tag to v1.16 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1369
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.7.8 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1386
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.7.12 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1390
+* Bump docker/setup-buildx-action from 3.10.0 to 3.11.1 by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1399
+* Bump getsentry/action-release from 3.1.1 to 3.1.2 by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1400
+* Bump getsentry/action-release from 3.1.2 to 3.2.0 by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1402
+* Bump sentry-sdk from 2.27.0 to 2.31.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1403
+* Bump docker/build-push-action from 6.15.0 to 6.18.0 by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1388
+* Bump scipy from 1.15.2 to 1.16.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1401
+* Bump uwsgi from 2.0.28 to 2.0.30 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1391
+* Bump django-debug-toolbar from 5.1.0 to 5.2.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1375
+* Bump pystac from 1.12.2 to 1.13.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1366
+* Bump requests from 2.32.3 to 2.32.4 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1408
+* Bump pandas from 2.2.3 to 2.3.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1407
+* Bump django-health-check from 3.18.3 to 3.20.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1406
+* Bump freezegun from 1.5.1 to 1.5.2 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1404
+* Bump sentry-sdk from 2.31.0 to 2.32.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1409
+* Bump djangorestframework-gis from 1.1 to 1.2.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1410
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.7.17 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1411
+* Update pre-commit hook PyCQA/bandit to v1.8.5 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1412
+* Update pre-commit hook PyCQA/bandit to v1.8.6 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1416
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.7.19 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1415
+* Bump pandas from 2.3.0 to 2.3.1 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1417
+* Bump xarray from 2025.3.1 to 2025.7.1 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1419
+* Bump slack-sdk from 3.35.0 to 3.36.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1418
+* Bump freezegun from 1.5.2 to 1.5.3 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1420
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.8.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1421
+* Bump sentry-sdk from 2.32.0 to 2.33.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1425
+* Update dependency django to <5.3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1360
+* Update pre-commit hook zricethezav/gitleaks/ to v8.28.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1427
+* Update pre-commit hook tox-dev/pyproject-fmt to v2.6.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1426
+* Bump sentry-sdk from 2.33.0 to 2.33.2 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1428
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.8.3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1430
+* Bump scipy from 1.16.0 to 1.16.1 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1433
+* Bump sentry-sdk from 2.33.2 to 2.34.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1434
+* Bump django-debug-toolbar from 5.2.0 to 6.0.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1432
+* Dependabot - remove reviewers by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1442
+* Update pre-commit hook asottile/add-trailing-comma to v3.2.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1424
+* Update pre-commit hook adamchainz/django-upgrade to v1.25.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1423
+* Update docker/dockerfile Docker tag to v1.17 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1422
+* Bump sentry-sdk from 2.34.0 to 2.34.1 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1436
+* Bump freezegun from 1.5.3 to 1.5.4 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1435
+* Bump celery from 5.4.0 to 5.5.3 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1389
+* Bump django-redis from 5.4.0 to 6.0.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1405
+* Bump erddapy from 2.2.3 to 2.2.4 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1365
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.8.4 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1443
+* Bump djangorestframework from 3.15.2 to 3.16.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1350
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.12.7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1364
+* Update dependency python to 3.13 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1347
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1429
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.8.0...v0.8.1
+
 ## 0.8.0 - 2025-04-03
 
 Changes:

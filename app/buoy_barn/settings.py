@@ -279,3 +279,8 @@ if SLACK_API_TOKEN and SLACK_API_CHANNEL:
         "task": "deployments.tasks.old_timeseries.more_thank_a_week_old",
         "schedule": crontab(day_of_week=1, hour=15, minute=0),  # Mondays at 10-ish
     }
+
+# Bumping the maximum number of fields to allow editing platforms
+# with many timeseries in the admin
+# https://docs.djangoproject.com/en/5.2/ref/settings/#data-upload-max-number-fields
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000

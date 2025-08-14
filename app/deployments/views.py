@@ -36,43 +36,54 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
     For a list queries, the platforms will be filtered by visibility.
 
     By default, only those where `visible_mariners=True` will be shown,
-    but `visibility` can be set to `dev` or `climatology.
+    but `visibility` can be set to `dev`, `graph_download` or `climatology`.
     """
 
-    queryset = Platform.objects.filter(active=True).prefetch_related(
-        "programattribution_set",
-        "programattribution_set__program",
-        "alerts",
-        "programs",
-        "links",
-        Prefetch(
-            "timeseries_set",
-            queryset=TimeSeries.objects.filter(active=True).prefetch_related(
-                "dataset",
-                "dataset__server",
-                "data_type",
-                "buffer_type",
-                "flood_levels",
+    def get_platform_queryset(self, ts_active: bool = True):
+        """Return the queryset for platforms with active timeseries"""
+        ts_queryset = TimeSeries.objects.prefetch_related(
+            "dataset",
+            "dataset__server",
+            "data_type",
+            "buffer_type",
+            "flood_levels",
+        )
+
+        if ts_active:
+            ts_queryset = ts_queryset.filter(active=True)
+
+        return Platform.objects.prefetch_related(
+            "programattribution_set",
+            "programattribution_set__program",
+            "alerts",
+            "programs",
+            "links",
+            Prefetch(
+                "timeseries_set",
+                queryset=ts_queryset,
+                to_attr="timeseries_active",
             ),
-            to_attr="timeseries_active",
-        ),
-    )
+        )
+
     serializer_class = PlatformSerializer
 
     def list(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         visibility_key = request.query_params.get("visibility", "mariners").lower()
-        if visibility_key not in {"mariners", "dev", "climatology"}:
+        if visibility_key not in {"mariners", "dev", "climatology", "graph_download"}:
             visibility_key = "mariners"
         filter_kwargs = {f"visible_{visibility_key}": True}
-        queryset = self.filter_queryset(self.get_queryset()).filter(**filter_kwargs)
+
+        ts_active = visibility_key != "graph_download"
+
+        queryset = self.get_platform_queryset(ts_active=ts_active)
+        queryset = self.filter_queryset(queryset).filter(**filter_kwargs)
         serializer = self.get_serializer(queryset, many=True)
 
         return Response(serializer.data)
-        # return super().list(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):  # pylint: disable=unused-argument
         pk = kwargs["pk"]
-        platform = get_object_or_404(self.queryset, name=pk)
+        platform = get_object_or_404(self.get_platform_queryset(), name=pk)
         serializer = self.serializer_class(platform)
         return Response(serializer.data)
 
@@ -117,7 +128,7 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
         dataset = self.dataset(**kwargs)
 
         qs = (
-            Platform.objects.filter(active=True, timeseries__dataset=dataset)
+            Platform.objects.filter(timeseries__dataset=dataset)
             .prefetch_related(
                 "programattribution_set",
                 "programattribution_set__program",
@@ -168,7 +179,7 @@ class ServerViewSet(viewsets.ReadOnlyModelViewSet):
         server, dataset = pk.split("-")
 
         qs = (
-            Platform.objects.filter(active=True, timeseries__dataset__server=pk)
+            Platform.objects.filter(timeseries__dataset__server=pk)
             .prefetch_related(
                 "programattribution_set",
                 "programattribution_set__program",

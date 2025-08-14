@@ -1,316 +1,316 @@
 - model: deployments.platform
   pk: 86
-  fields: {name: EXRX, mooring_site_desc: Execution Rocks Long Island Sound, active: true,
+  fields: {name: EXRX, mooring_site_desc: Execution Rocks Long Island Sound,
     ndbc_site_id: '44022', uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-73.73 40.88)}
 - model: deployments.platform
   pk: 87
-  fields: {name: NAXR1, mooring_site_desc: 'Naragansett Bay Reserve, RI', active: true,
+  fields: {name: NAXR1, mooring_site_desc: 'Naragansett Bay Reserve, RI',
     ndbc_site_id: NAXR1, uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-71.3394 41.6389)}
 - model: deployments.platform
   pk: 88
   fields: {name: SMATL-HFX-01, mooring_site_desc: 'Herring Cove - Halifax NS, CA',
-    active: true, ndbc_site_id: null, uscg_light_letter: null, uscg_light_num: null,
+    ndbc_site_id: null, uscg_light_letter: null, uscg_light_num: null,
     watch_circle_radius: null, geom: SRID=4326;POINT (-63.5456 44.5584)}
 - model: deployments.platform
   pk: 89
-  fields: {name: MDRM1, mooring_site_desc: Mt Desert Rock, active: true, ndbc_site_id: MDRM1,
+  fields: {name: MDRM1, mooring_site_desc: Mt Desert Rock, ndbc_site_id: MDRM1,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-68.13 43.97)}
 - model: deployments.platform
   pk: 90
-  fields: {name: CDIP154, mooring_site_desc: 'Block Island, RI', active: true, ndbc_site_id: '     ',
+  fields: {name: CDIP154, mooring_site_desc: 'Block Island, RI', ndbc_site_id: '     ',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-71.1217 40.981)}
 - model: deployments.platform
   pk: 91
-  fields: {name: WEXM1, mooring_site_desc: 'Wells Reserve, ME', active: true, ndbc_site_id: WEXM1,
+  fields: {name: WEXM1, mooring_site_desc: 'Wells Reserve, ME', ndbc_site_id: WEXM1,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.55 43.3374)}
 - model: deployments.platform
   pk: 92
-  fields: {name: '44008', mooring_site_desc: Nantucket, active: true, ndbc_site_id: '44008',
+  fields: {name: '44008', mooring_site_desc: Nantucket, ndbc_site_id: '44008',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-69.248 40.5)}
 - model: deployments.platform
   pk: 93
-  fields: {name: B01, mooring_site_desc: Western Maine Shelf, active: true, ndbc_site_id: '44030',
+  fields: {name: B01, mooring_site_desc: Western Maine Shelf, ndbc_site_id: '44030',
     uscg_light_letter: B, uscg_light_num: '113', watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.4278 43.1807)}
 - model: deployments.platform
   pk: 94
-  fields: {name: GREAT_BAY, mooring_site_desc: 'Great Bay, NH', active: true, ndbc_site_id: '44074',
+  fields: {name: GREAT_BAY, mooring_site_desc: 'Great Bay, NH', ndbc_site_id: '44074',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.8678 43.0715)}
 - model: deployments.platform
   pk: 95
-  fields: {name: J02, mooring_site_desc: Cobscook Bay, active: true, ndbc_site_id: '44035',
+  fields: {name: J02, mooring_site_desc: Cobscook Bay, ndbc_site_id: '44035',
     uscg_light_letter: J, uscg_light_num: '1002', watch_circle_radius: null, geom: SRID=4326;POINT
       (-67.012258 44.889291)}
 - model: deployments.platform
   pk: 96
-  fields: {name: '44060', mooring_site_desc: Eastern Long Island Sound, active: true,
+  fields: {name: '44060', mooring_site_desc: Eastern Long Island Sound,
     ndbc_site_id: '44060', uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-72.06699999999999 41.263)}
 - model: deployments.platform
   pk: 97
-  fields: {name: MDS01, mooring_site_desc: 'South of Block Island, RI', active: true,
+  fields: {name: MDS01, mooring_site_desc: 'South of Block Island, RI',
     ndbc_site_id: '0    ', uscg_light_letter: '-', uscg_light_num: '', watch_circle_radius: null,
     geom: SRID=4326;POINT (-71.5672 41.1012)}
 - model: deployments.platform
   pk: 98
-  fields: {name: M01, mooring_site_desc: Jordan Basin, active: true, ndbc_site_id: '44037',
+  fields: {name: M01, mooring_site_desc: Jordan Basin, ndbc_site_id: '44037',
     uscg_light_letter: M, uscg_light_num: '6', watch_circle_radius: null, geom: SRID=4326;POINT
       (-67.8798 43.4907)}
 - model: deployments.platform
   pk: 99
   fields: {name: SMB-MO-01, mooring_site_desc: 'Mouth of Placentia Bay, NL, Canada',
-    active: true, ndbc_site_id: null, uscg_light_letter: null, uscg_light_num: null,
+    ndbc_site_id: null, uscg_light_letter: null, uscg_light_num: null,
     watch_circle_radius: null, geom: SRID=4326;POINT (-54.688 46.9813)}
 - model: deployments.platform
   pk: 100
-  fields: {name: CDIP207, mooring_site_desc: 'Fire Island, NY', active: true, ndbc_site_id: '44094',
+  fields: {name: CDIP207, mooring_site_desc: 'Fire Island, NY', ndbc_site_id: '44094',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-73.1067 40.5845)}
 - model: deployments.platform
   pk: 102
-  fields: {name: K01, mooring_site_desc: St. John, active: true, ndbc_site_id: null,
+  fields: {name: K01, mooring_site_desc: St. John, ndbc_site_id: null,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-66.02079999999999 45.2058)}
 - model: deployments.platform
   pk: 103
-  fields: {name: E01, mooring_site_desc: Central Maine Shelf, active: true, ndbc_site_id: '44032',
+  fields: {name: E01, mooring_site_desc: Central Maine Shelf, ndbc_site_id: '44032',
     uscg_light_letter: E, uscg_light_num: 30 (4935), watch_circle_radius: null, geom: SRID=4326;POINT
       (-69.3578 43.7148)}
 - model: deployments.platform
   pk: 104
-  fields: {name: '44258', mooring_site_desc: Halifax Harbor, active: true, ndbc_site_id: '44258',
+  fields: {name: '44258', mooring_site_desc: Halifax Harbor, ndbc_site_id: '44258',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-63.4 44.5)}
 - model: deployments.platform
   pk: 106
-  fields: {name: 169-QP, mooring_site_desc: Narragansett Bay - Quonset Point, active: true,
+  fields: {name: 169-QP, mooring_site_desc: Narragansett Bay - Quonset Point,
     ndbc_site_id: '     ', uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-71.37990000000001 41.5875)}
 - model: deployments.platform
   pk: 107
-  fields: {name: MISM1, mooring_site_desc: Matinicus Rock, active: true, ndbc_site_id: MISM1,
+  fields: {name: MISM1, mooring_site_desc: Matinicus Rock, ndbc_site_id: MISM1,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-68.86 43.78)}
 - model: deployments.platform
   pk: 108
-  fields: {name: '44013', mooring_site_desc: Boston Harbor, active: true, ndbc_site_id: '44013',
+  fields: {name: '44013', mooring_site_desc: Boston Harbor, ndbc_site_id: '44013',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.69 42.35)}
 - model: deployments.platform
   pk: 109
-  fields: {name: SB04, mooring_site_desc: 'Placentia Bay, NL, Canada', active: true,
+  fields: {name: SB04, mooring_site_desc: 'Placentia Bay, NL, Canada',
     ndbc_site_id: 'SB04 ', uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-54.1316 47.3256)}
 - model: deployments.platform
   pk: 111
   fields: {name: '44017', mooring_site_desc: '23 Nautical Miles Southwest of Montauk
-      Point, NY', active: true, ndbc_site_id: '44017', uscg_light_letter: null, uscg_light_num: null,
+      Point, NY', ndbc_site_id: '44017', uscg_light_letter: null, uscg_light_num: null,
     watch_circle_radius: null, geom: SRID=4326;POINT (-72.04600000000001 40.691)}
 - model: deployments.platform
   pk: 112
-  fields: {name: '44098', mooring_site_desc: Jeffrey's Ledge, active: true, ndbc_site_id: '44098',
+  fields: {name: '44098', mooring_site_desc: Jeffrey's Ledge, ndbc_site_id: '44098',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.169 42.801)}
 - model: deployments.platform
   pk: 113
-  fields: {name: I01, mooring_site_desc: Eastern Maine Shelf, active: true, ndbc_site_id: '44034',
+  fields: {name: I01, mooring_site_desc: Eastern Maine Shelf, ndbc_site_id: '44034',
     uscg_light_letter: I, uscg_light_num: '2296', watch_circle_radius: null, geom: SRID=4326;POINT
       (-68.1121 44.1028)}
 - model: deployments.platform
   pk: 114
-  fields: {name: LDLC3, mooring_site_desc: New London Ledge Light, active: true, ndbc_site_id: LDLC3,
+  fields: {name: LDLC3, mooring_site_desc: New London Ledge Light, ndbc_site_id: LDLC3,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-72.077 41.305)}
 - model: deployments.platform
   pk: 115
-  fields: {name: CDIP221, mooring_site_desc: 'Cape Cod Bay, MA', active: true, ndbc_site_id: '     ',
+  fields: {name: CDIP221, mooring_site_desc: 'Cape Cod Bay, MA', ndbc_site_id: '     ',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.32899999999999 41.8397)}
 - model: deployments.platform
   pk: 116
-  fields: {name: C02, mooring_site_desc: Casco Bay, active: true, ndbc_site_id: '44031',
+  fields: {name: C02, mooring_site_desc: Casco Bay, ndbc_site_id: '44031',
     uscg_light_letter: C, uscg_light_num: 48 (7483), watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.05835399999999 43.567705)}
 - model: deployments.platform
   pk: 117
-  fields: {name: '44142', mooring_site_desc: La Have Bank, active: true, ndbc_site_id: '44142',
+  fields: {name: '44142', mooring_site_desc: La Have Bank, ndbc_site_id: '44142',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-64.02 42.5)}
 - model: deployments.platform
   pk: 118
   fields: {name: SMB-MO-04, mooring_site_desc: 'Pilot Boarding Station, Red Island
-      Shoal, Placentia Bay, NL, CA', active: true, ndbc_site_id: null, uscg_light_letter: null,
+      Shoal, Placentia Bay, NL, CA', ndbc_site_id: null, uscg_light_letter: null,
     uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT (-54.1317
       47.3255)}
 - model: deployments.platform
   pk: 119
-  fields: {name: '44020', mooring_site_desc: NANTUCKET SOUND, active: true, ndbc_site_id: '44020',
+  fields: {name: '44020', mooring_site_desc: NANTUCKET SOUND, ndbc_site_id: '44020',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.18600000000001 41.443)}
 - model: deployments.platform
   pk: 120
-  fields: {name: F01, mooring_site_desc: Penobscot Bay, active: true, ndbc_site_id: '44033',
+  fields: {name: F01, mooring_site_desc: Penobscot Bay, ndbc_site_id: '44033',
     uscg_light_letter: F, uscg_light_num: '4052', watch_circle_radius: null, geom: SRID=4326;POINT
       (-68.9982 44.0555)}
 - model: deployments.platform
   pk: 122
-  fields: {name: '44027', mooring_site_desc: 'Jonesport, ME', active: true, ndbc_site_id: '44027',
+  fields: {name: '44027', mooring_site_desc: 'Jonesport, ME', ndbc_site_id: '44027',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-67.31 44.27)}
 - model: deployments.platform
   pk: 123
-  fields: {name: 168-MV, mooring_site_desc: Narragansett Bay - Mount View, active: true,
+  fields: {name: 168-MV, mooring_site_desc: Narragansett Bay - Mount View,
     ndbc_site_id: '     ', uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-71.38379999999999 41.6383)}
 - model: deployments.platform
   pk: 124
-  fields: {name: SB01, mooring_site_desc: 'Mouth of Placentia Bay, NL, Canada', active: true,
+  fields: {name: SB01, mooring_site_desc: 'Mouth of Placentia Bay, NL, Canada',
     ndbc_site_id: 'SB01 ', uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-54.6867 46.9811)}
 - model: deployments.platform
   pk: 126
-  fields: {name: D01, mooring_site_desc: New Meadows River, active: false, ndbc_site_id: '44021',
+  fields: {name: D01, mooring_site_desc: New Meadows River, visible_mariners: false, ndbc_site_id: '44021',
     uscg_light_letter: D, uscg_light_num: '6559', watch_circle_radius: null, geom: SRID=4326;POINT
       (-69.8891 43.7813)}
 - model: deployments.platform
   pk: 127
-  fields: {name: N01, mooring_site_desc: Northeast Channel, active: true, ndbc_site_id: '44024',
+  fields: {name: N01, mooring_site_desc: Northeast Channel, ndbc_site_id: '44024',
     uscg_light_letter: '-', uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-65.907 42.3303)}
 - model: deployments.platform
   pk: 128
-  fields: {name: ARTG, mooring_site_desc: North of Smithtown Bay, active: true, ndbc_site_id: '     ',
+  fields: {name: ARTG, mooring_site_desc: North of Smithtown Bay, ndbc_site_id: '     ',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-73.22799999999999 41.01)}
 - model: deployments.platform
   pk: 130
-  fields: {name: '44007', mooring_site_desc: Casco Bay, active: true, ndbc_site_id: '44007',
+  fields: {name: '44007', mooring_site_desc: Casco Bay, ndbc_site_id: '44007',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.14 43.53)}
 - model: deployments.platform
   pk: 131
-  fields: {name: F02, mooring_site_desc: DeepCwind Castine Test Site, active: true,
+  fields: {name: F02, mooring_site_desc: DeepCwind Castine Test Site,
     ndbc_site_id: '0    ', uscg_light_letter: L, uscg_light_num: '', watch_circle_radius: null,
     geom: SRID=4326;POINT (-68.824962 44.387154)}
 - model: deployments.platform
   pk: 132
-  fields: {name: '44137', mooring_site_desc: East Scotia Slope, active: true, ndbc_site_id: '44137',
+  fields: {name: '44137', mooring_site_desc: East Scotia Slope, ndbc_site_id: '44137',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-62 42.26)}
 - model: deployments.platform
   pk: 133
-  fields: {name: IOSN3, mooring_site_desc: Isle of Shoals, active: true, ndbc_site_id: IOSN3,
+  fields: {name: IOSN3, mooring_site_desc: Isle of Shoals, ndbc_site_id: IOSN3,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.62 42.97)}
 - model: deployments.platform
   pk: 134
-  fields: {name: '44018', mooring_site_desc: Cape Cod, active: true, ndbc_site_id: '44018',
+  fields: {name: '44018', mooring_site_desc: Cape Cod, ndbc_site_id: '44018',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.143 42.206)}
 - model: deployments.platform
   pk: 135
-  fields: {name: D02, mooring_site_desc: Lower Harpswell Sound, active: false, ndbc_site_id: null,
+  fields: {name: D02, mooring_site_desc: Lower Harpswell Sound, visible_mariners: false, ndbc_site_id: null,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-69.9877 43.7628)}
 - model: deployments.platform
   pk: 136
-  fields: {name: CML, mooring_site_desc: UNH Coastal Marine Lab Field Station, active: true,
+  fields: {name: CML, mooring_site_desc: UNH Coastal Marine Lab Field Station,
     ndbc_site_id: CMLN3, uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-70.709346 43.072001)}
 - model: deployments.platform
   pk: 137
-  fields: {name: '44150', mooring_site_desc: La Have Bank, active: true, ndbc_site_id: '44150',
+  fields: {name: '44150', mooring_site_desc: La Have Bank, ndbc_site_id: '44150',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-64.02 42.5)}
 - model: deployments.platform
   pk: 138
-  fields: {name: WAXM3, mooring_site_desc: 'Waquoit Bay Reserve, MA', active: true,
+  fields: {name: WAXM3, mooring_site_desc: 'Waquoit Bay Reserve, MA',
     ndbc_site_id: WAXM3, uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-70.52509999999999 41.5817)}
 - model: deployments.platform
   pk: 139
-  fields: {name: '44005', mooring_site_desc: Cashes Ledge, active: true, ndbc_site_id: '44005',
+  fields: {name: '44005', mooring_site_desc: Cashes Ledge, ndbc_site_id: '44005',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-69.22 43.17)}
 - model: deployments.platform
   pk: 140
-  fields: {name: CDIP176, mooring_site_desc: 'Halifax Harbor, CA', active: true, ndbc_site_id: '     ',
+  fields: {name: CDIP176, mooring_site_desc: 'Halifax Harbor, CA', ndbc_site_id: '     ',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-63.4082 44.5001)}
 - model: deployments.platform
   pk: 141
   fields: {name: SMB-MO-05, mooring_site_desc: 'Come By Chance Point, Placentia Bay,
-      NL, CA', active: true, ndbc_site_id: null, uscg_light_letter: null, uscg_light_num: null,
+      NL, CA', ndbc_site_id: null, uscg_light_letter: null, uscg_light_num: null,
     watch_circle_radius: null, geom: SRID=4326;POINT (-54.0488 47.7893)}
 - model: deployments.platform
   pk: 142
-  fields: {name: '44039', mooring_site_desc: Central Long Island Sound, active: true,
+  fields: {name: '44039', mooring_site_desc: Central Long Island Sound,
     ndbc_site_id: '44024', uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-72.655 41.138)}
 - model: deployments.platform
   pk: 143
-  fields: {name: A01, mooring_site_desc: Massachusetts Bay, active: true, ndbc_site_id: '44029',
+  fields: {name: A01, mooring_site_desc: Massachusetts Bay, ndbc_site_id: '44029',
     uscg_light_letter: A, uscg_light_num: '367', watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.566186 42.523156)}
 - model: deployments.platform
   pk: 144
-  fields: {name: BGXN3, mooring_site_desc: 'Great Bay Reserve, NH', active: true,
+  fields: {name: BGXN3, mooring_site_desc: 'Great Bay Reserve, NH',
     ndbc_site_id: BGXN3, uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-70.83286699999999 43.065303)}
 - model: deployments.platform
   pk: 145
-  fields: {name: MDS02, mooring_site_desc: SAMP MD S, active: true, ndbc_site_id: '0    ',
+  fields: {name: MDS02, mooring_site_desc: SAMP MD S, ndbc_site_id: '0    ',
     uscg_light_letter: '-', uscg_light_num: '', watch_circle_radius: null, geom: SRID=4326;POINT
       (-71.573331 41.099307)}
 - model: deployments.platform
   pk: 146
-  fields: {name: BUZM3, mooring_site_desc: Buzzards Bay, active: true, ndbc_site_id: BUZM3,
+  fields: {name: BUZM3, mooring_site_desc: Buzzards Bay, ndbc_site_id: BUZM3,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-71.03 41.4)}
 - model: deployments.platform
   pk: 147
-  fields: {name: L01, mooring_site_desc: Scotian Shelf, active: false, ndbc_site_id: '44038',
+  fields: {name: L01, mooring_site_desc: Scotian Shelf, visible_mariners: false, ndbc_site_id: '44038',
     uscg_light_letter: '-', uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-66.553665 43.627399)}
 - model: deployments.platform
   pk: 149
-  fields: {name: '44011', mooring_site_desc: Georges Bank, active: true, ndbc_site_id: '44011',
+  fields: {name: '44011', mooring_site_desc: Georges Bank, ndbc_site_id: '44011',
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-66.59 41.09)}
 - model: deployments.platform
   pk: 150
-  fields: {name: E02, mooring_site_desc: DeepCwind Test Site, active: true, ndbc_site_id: '     ',
+  fields: {name: E02, mooring_site_desc: DeepCwind Test Site, ndbc_site_id: '     ',
     uscg_light_letter: G, uscg_light_num: '4941.00', watch_circle_radius: null, geom: SRID=4326;POINT
       (-69.31958 43.706348)}
 - model: deployments.platform
   pk: 151
-  fields: {name: C01, mooring_site_desc: Casco Bay, active: true, ndbc_site_id: null,
+  fields: {name: C01, mooring_site_desc: Casco Bay, ndbc_site_id: null,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-70.07689999999999 43.5539)}
 - model: deployments.platform
   pk: 152
-  fields: {name: WLIS, mooring_site_desc: Western Long Island Sound, active: true,
+  fields: {name: WLIS, mooring_site_desc: Western Long Island Sound,
     ndbc_site_id: '44040', uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null,
     geom: SRID=4326;POINT (-73.58 40.956)}
 - model: deployments.platform
   pk: 153
-  fields: {name: J01, mooring_site_desc: Cobscook Bay, active: true, ndbc_site_id: null,
+  fields: {name: J01, mooring_site_desc: Cobscook Bay, ndbc_site_id: null,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-66.997 44.8868)}
 - model: deployments.platform
   pk: 154
-  fields: {name: J03, mooring_site_desc: Cobscook Bay, active: true, ndbc_site_id: null,
+  fields: {name: J03, mooring_site_desc: Cobscook Bay, ndbc_site_id: null,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-67.018833160399 44.888763427734)}
 - model: deployments.platform
   pk: 155
-  fields: {name: J04, mooring_site_desc: Machias Bay, active: true, ndbc_site_id: null,
+  fields: {name: J04, mooring_site_desc: Machias Bay, ndbc_site_id: null,
     uscg_light_letter: null, uscg_light_num: null, watch_circle_radius: null, geom: SRID=4326;POINT
       (-67.368850708008 44.608955383301)}

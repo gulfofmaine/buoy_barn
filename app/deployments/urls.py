@@ -12,7 +12,7 @@ from .views import (
 )
 
 router = routers.DefaultRouter()
-router.register("platforms", PlatformViewset)
+router.register("platforms", PlatformViewset, basename="platforms")
 router.register("datasets", DatasetViewSet)
 router.register("servers", ServerViewSet)
 router.register("forecasts", ForecastViewSet, basename="forecast")

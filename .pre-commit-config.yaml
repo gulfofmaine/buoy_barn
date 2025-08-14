@@ -14,7 +14,7 @@ repos:
       - id: no-commit-to-branch
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.4
+    rev: 0.8.10
     hooks:
       # Update the uv lockfile
       - id: uv-lock

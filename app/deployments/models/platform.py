@@ -9,11 +9,11 @@ class Platform(models.Model):
     name = models.CharField("Platform slug/station_id", max_length=50)
     station_name = models.CharField("Platform name", max_length=100, default="", blank=True)
     mooring_site_desc = models.TextField("Mooring Site Description")
-    active = models.BooleanField(default=True)
 
     visible_mariners = models.BooleanField("Visible on Mariner's Dashboard", default=True)
     visible_dev = models.BooleanField("Visible on dev Mariner's Dashboard", default=True)
-    visible_climatology = models.BooleanField("Visible on Climatology tool", default=True)
+    visible_climatology = models.BooleanField("Visible on Climatology tool", default=False)
+    visible_graph_download = models.BooleanField("Visible on Graph Download tool", default=True)
 
     class PlatformTypes(models.TextChoices):
         BUOY = "Buoy"

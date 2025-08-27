@@ -8,6 +8,36 @@ Changes:
 
 Fixes:
 
+## 0.8.2 - 2025-08-27
+
+Fixes:
+
+* Finetune per-website visibility by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1454
+
+Dependency updates:
+
+* Update docker/login-action action to v3.5.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1445
+* Bump django from 5.2.4 to 5.2.5 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1447
+* Bump djangorestframework from 3.16.0 to 3.16.1 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1448
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1449
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.12.8 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1450
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.8.10 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1451
+* Bump sentry-sdk from 2.34.1 to 2.35.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1456
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1457
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.8.11 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1459
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.12.9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1458
+* Bump pandas from 2.3.1 to 2.3.2 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1461
+* Bump requests from 2.32.4 to 2.32.5 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1460
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1462
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.8.13 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1464
+* Bump xarray from 2025.7.1 to 2025.8.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1455
+* Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1452
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.12.10 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1463
+* Bump sentry-sdk from 2.35.0 to 2.35.1 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1465
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.8.1...v0.8.2
+
 ## 0.8.1 - 2025-07-31
 
 Changes:

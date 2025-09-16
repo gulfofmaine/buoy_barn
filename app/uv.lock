@@ -132,7 +132,7 @@ requires-dist = [
     { name = "netcdf4", specifier = "~=1.7.1" },
     { name = "pandas", specifier = ">1.5.3" },
     { name = "psycopg2-binary", specifier = "~=2.9.9" },
-    { name = "pystac", specifier = "~=1.13.0" },
+    { name = "pystac", specifier = "~=1.14.0" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "scipy", specifier = ">=1.14.1" },
     { name = "sentry-sdk", specifier = "~=2.38.0" },
@@ -1084,14 +1084,14 @@ wheels = [
 
 [[package]]
 name = "pystac"
-version = "1.13.0"
+version = "1.14.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "python-dateutil" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/52/a2f882be13f3947f4e3330d59926d844f3a9c2eb07e1391c3f90ab4653eb/pystac-1.13.0.tar.gz", hash = "sha256:9e5d908a390eed800228a956d7f3577c8f0cbac49806aaa0b14b7c4e06520b8c", size = 162558, upload-time = "2025-04-15T18:14:09.713Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/77/f1/a990e9959021f524ce9b4bc8585337d380ee8b0bc5c58b41cb1ee8e84942/pystac-1.14.0.tar.gz", hash = "sha256:a237941599e1ab89db33993e06d8399d7c9a25f08bfcb82f14cb5bbf0f52ffc0", size = 163408, upload-time = "2025-09-11T19:38:56.585Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0f/7c/1b361a24d3087cd922ec1f6dfe02f230507d800ada3f922532f1f906a09e/pystac-1.13.0-py3-none-any.whl", hash = "sha256:fa22cc04e58bbbc22c8d049e715a37ab803802d8d1334afc48e6eab64c5946e4", size = 206821, upload-time = "2025-04-15T18:14:07.855Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/f7/a145132927a4c8e9fc85a3b55a4a875d0be6b8afc58d8bbe0f0a4ce28464/pystac-1.14.0-py3-none-any.whl", hash = "sha256:af82a2b4eb4458b47fc6305d58fa2dabfc2c1f99ff87e62f8a70a6e2e3fd67ff", size = 207700, upload-time = "2025-09-11T19:38:54.848Z" },
 ]
 
 [[package]]

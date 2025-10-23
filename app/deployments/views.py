@@ -50,7 +50,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
         )
 
         if ts_active:
-            ts_queryset = ts_queryset.filter(active=True)
+            ts_queryset = ts_queryset.filter(active=True, end_time__isnull=True)
 
         return Platform.objects.prefetch_related(
             "programattribution_set",
@@ -73,7 +73,7 @@ class PlatformViewset(viewsets.ReadOnlyModelViewSet):
             visibility_key = "mariners"
         filter_kwargs = {f"visible_{visibility_key}": True}
 
-        ts_active = visibility_key != "graph_download"
+        ts_active = visibility_key not in {"graph_download", "climatology"}
 
         queryset = self.get_platform_queryset(ts_active=ts_active)
         queryset = self.filter_queryset(queryset).filter(**filter_kwargs)

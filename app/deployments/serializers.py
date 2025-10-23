@@ -40,48 +40,47 @@ class PlatformSerializer(GeoFeatureModelSerializer):
             timeseries: list[TimeSeries] = obj.timeseries_set.filter(active=True)
 
         for series in timeseries:
-            if not series.end_time:
-                datums = {}
-                for datum_name in TimeSeries.DATUMS:
-                    value = getattr(series, datum_name, None)
-                    if value is not None:
-                        datums[datum_name] = value
+            datums = {}
+            for datum_name in TimeSeries.DATUMS:
+                value = getattr(series, datum_name, None)
+                if value is not None:
+                    datums[datum_name] = value
 
-                flood_levels = [
-                    {
-                        "name": fl.level_other if fl.level_other else FloodLevel.Level[fl.level].value,
-                        "min_value": fl.min_value,
-                        "description": fl.description,
-                    }
-                    for fl in series.flood_levels.all()
-                ]
+            flood_levels = [
+                {
+                    "name": fl.level_other if fl.level_other else FloodLevel.Level[fl.level].value,
+                    "min_value": fl.min_value,
+                    "description": fl.description,
+                }
+                for fl in series.flood_levels.all()
+            ]
 
-                readings.append(
-                    {
-                        "value": series.value,
-                        "time": series.value_time,
-                        "depth": series.depth,
-                        "data_type": series.data_type.json,
-                        "server": series.dataset.server.base_url,
-                        "variable": series.variable,
-                        "constraints": series.constraints,
-                        "dataset": series.dataset.name,
-                        "dataset_public_name": series.dataset.public_name,
-                        "start_time": series.start_time,
-                        "cors_proxy_url": reverse(
-                            "server-proxy",
-                            kwargs={"server_id": series.dataset.server.id},
-                        )
-                        if series.dataset.server.proxy_cors
-                        else None,
-                        "datum_offsets": datums,
-                        "flood_levels": flood_levels,
-                        "highlighted": series.highlighted,
-                        "type": series.timeseries_type,
-                        "extrema": series.extrema,
-                        "extrema_values": series.extrema_values,
-                    },
-                )
+            readings.append(
+                {
+                    "value": series.value,
+                    "time": series.value_time,
+                    "depth": series.depth,
+                    "data_type": series.data_type.json,
+                    "server": series.dataset.server.base_url,
+                    "variable": series.variable,
+                    "constraints": series.constraints,
+                    "dataset": series.dataset.name,
+                    "dataset_public_name": series.dataset.public_name,
+                    "start_time": series.start_time,
+                    "cors_proxy_url": reverse(
+                        "server-proxy",
+                        kwargs={"server_id": series.dataset.server.id},
+                    )
+                    if series.dataset.server.proxy_cors
+                    else None,
+                    "datum_offsets": datums,
+                    "flood_levels": flood_levels,
+                    "highlighted": series.highlighted,
+                    "type": series.timeseries_type,
+                    "extrema": series.extrema,
+                    "extrema_values": series.extrema_values,
+                },
+            )
 
         return readings
 

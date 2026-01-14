@@ -1,8 +1,12 @@
+import uuid
+
 import paho.mqtt.client as mqtt
 from django.core.management.base import BaseCommand, CommandError, CommandParser
 
 from deployments.models import ErddapDataset, ErddapServer
 from deployments.tasks import single_refresh_dataset
+
+client_id = f"buoy-barn-mqtt-subscriber-{uuid.getnode()}"
 
 
 class Command(BaseCommand):
@@ -50,11 +54,15 @@ class Command(BaseCommand):
             single_refresh_dataset.delay(dataset.id)
             self.stdout.write(self.style.SUCCESS(f"Scheduled refresh for dataset {dataset}"))
 
-        mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=client_id)
         mqttc.on_connect = on_connect
         mqttc.on_message = on_message
 
         mqttc.username_pw_set(username=erddap_server.mqtt_username, password=erddap_server.mqtt_password)
-        mqttc.connect(erddap_server.mqtt_broker, 1883, 60)
+
+        try:
+            mqttc.connect(erddap_server.mqtt_broker, erddap_server.mqtt_port, 60)
+        except Exception as e:
+            raise CommandError(f"Unable to connect to MQTT broker: {e}") from None
 
         mqttc.loop_forever()

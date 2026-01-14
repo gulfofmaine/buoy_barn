@@ -25,6 +25,7 @@ dependencies = [
   "freezegun~=1.5.1",
   "geojson~=3.2.0",
   "netcdf4~=1.7.1",
+  "paho-mqtt>=2.1",
   "pandas>1.5.3",
   "psycopg2-binary~=2.9.9",
   "pystac~=1.14.1",

@@ -6,11 +6,11 @@ Lightweight ERDDAP frontend API for NERACOOS buoy information, recent readings, 
 
 If you are setting it up for the first time see [Initial Configuration](#initial-configuration) down below.
 
-Otherwise you can use `make up` to start the server, which you can then access the admin at [localhost:8080/admin/](http://localhost:8080/admin/) and api at [localhost:8080/api/](http://localhost:8080/api/).
+Otherwise you can use `make up` to start the server, which you can then access the admin at [localhost:8090/admin/](http://localhost:8090/admin/) and api at [localhost:8090/api/](http://localhost:8090/api/).
 
 You can also launch it quickly in your current Kubernetes cluster. See [Kubernetes](#kubernetes) below
 
-There are two ways to refresh data.
+There are three ways to refresh data.
 
 - First, you can refresh the values for a specific dataset.
   This is designed to work with the ERDDAP subscription service, allowing the ERDDAP server to notify Buoy Barn when there is new data, which is more efficient than refreshing on a schedule.
@@ -24,6 +24,14 @@ There are two ways to refresh data.
 - Second, you can refresh all timeseries from a specific server.
   This is for timeseries that do not use the ERDDAP subscription service.
 
+- For the fastest refreshing of datasets, Buoy Barn can subscribe to the [MQTT](https://erddap.github.io/docs/server-admin/mqtt-integration#use-case-2-publishing-dataset-change-notifications) service for an ERDDAP server.
+
+  - For this, add the MQTT broker, port, user, and password to the ERDDAP server configuration in the admin.
+
+  - Then run `manage.py erddap_mqtt <server_name>`. This will connect to the server, subscribe to `change/#` to get all dataset updates, then for every message check the topic `change/<dataset_id>` and trigger a refresh of that dataset in the background.
+
+  - Not all messages to a dataset topic are necessarily new data, but they generally mean a change to how ERDDAP understands a dataset, so it's worth attempting a refresh. Because this can be a bit noisy, it checks that there isn't another refresh already scheduled to manage the load on the ERDDAP server.
+
 If you `ctrl-c` out of the logs (or close the window), you can get the logs back with `make logs`.
 
 The Docker containers are launched in the background with `make up`, so they won't dissapear if you close the window or logs.
@@ -35,14 +43,14 @@ See [forecasts/Readme.md](app/forecasts/Readme.md) for details about how the for
 
 ### Adding / Editing Platforms
 
-To add or edit a platform (buoy) go to [admin/deployments/platform](http://localhost:8080/admin/deployments/platform/).
+To add or edit a platform (buoy) go to [admin/deployments/platform](http://localhost:8090/admin/deployments/platform/).
 From there you can add or edit a platform.
 
 See below for adding a timeseries to a platform.
 
 ### Adding a Deployment
 
-If you wish to keep track of deployments for particular platforms, you can manage them at [admin/deployments/platform](http://localhost:8080/admin/deployments/platform/).
+If you wish to keep track of deployments for particular platforms, you can manage them at [admin/deployments/platform](http://localhost:8090/admin/deployments/platform/).
 
 ### Adding new TimeSeries
 
@@ -139,7 +147,7 @@ Once the database and server are started, you'll need to run `make migrate` to g
 
 To create an administrator account run `make user` and follow the prompts.
 
-Once you have an account setup, you'll be able to login to the admin at [localhost:8080/admin/](http://localhost:8080/admin/).
+Once you have an account setup, you'll be able to login to the admin at [localhost:8090/admin/](http://localhost:8090/admin/).
 
 ### Bulk Loading and Dumping Data
 
@@ -171,6 +179,7 @@ You can use Django fixtures to quickly save models from the database and reload 
 
 - `build` Builds containers in parallel
 - `up` Builds and starts Docker containers before following the logs.
+- `mqtt` Enables MQTT subscriber for a NERACOOS dev server.
 - `down` Stops and removed Docker containers.
 - `stop` Stops Docker containers.
 - `logs` Follow logs for currently running Docker containers.

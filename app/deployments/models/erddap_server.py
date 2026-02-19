@@ -45,6 +45,29 @@ class ErddapServer(models.Model):
         help_text=("Seconds before requests time out."),
     )
 
+    mqtt_broker = models.CharField(
+        "MQTT broker",
+        null=True,
+        blank=True,
+        max_length=128,
+    )
+    mqtt_port = models.PositiveIntegerField(
+        "MQTT Port",
+        default=1883,
+    )
+    mqtt_username = models.CharField(
+        "MQTT Username",
+        null=True,
+        blank=True,
+        max_length=64,
+    )
+    mqtt_password = models.CharField(
+        "MQTT Password",
+        null=True,
+        blank=True,
+        max_length=64,
+    )
+
     def __str__(self):
         if self.name:
             return self.name

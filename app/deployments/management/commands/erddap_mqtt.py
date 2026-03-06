@@ -64,7 +64,8 @@ class Command(BaseCommand):
                     ),
                 )
                 return
-            single_refresh_dataset.delay(dataset.id)
+            # Clear end_time since MQTT notification indicates new data is available
+            single_refresh_dataset.delay(dataset.id, clear_end_time=True)
             self.stdout.write(self.style.SUCCESS(f"Scheduled refresh for dataset {dataset}"))
 
         return on_message

@@ -124,6 +124,7 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "corsheaders",
     "memoize",
+    "django_object_actions",
     # Health checks to allow Kubernetes to restart the pod if locked up
     "health_check",
     "health_check.db",

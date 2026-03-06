@@ -8,6 +8,7 @@ from django.http.request import HttpRequest
 from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django_object_actions import DjangoObjectActions, action
 
 from .models import (
     Alert,
@@ -289,7 +290,7 @@ def timeseries_status(obj: ErddapDataset | Platform):
 
 
 @admin.register(Platform)
-class PlatformAdmin(admin.GISModelAdmin):
+class PlatformAdmin(DjangoObjectActions, admin.GISModelAdmin):
     ordering = ["name", "mooring_site_desc", "ndbc_site_id"]
     inlines = [
         AlertInline,
@@ -328,10 +329,26 @@ class PlatformAdmin(admin.GISModelAdmin):
         "timeseries__dataset__name",
     ]
 
+    change_actions = ["refresh_platform_datasets"]
+
     def get_queryset(self, request: HttpRequest):
         queryset = super().get_queryset(request)
         queryset = queryset.prefetch_related("timeseries_set", "timeseries_set__data_type")
         return queryset
+
+    @action(description="Refresh all datasets for this platform")
+    def refresh_platform_datasets(self, request, obj):
+        datasets_to_queue = set()
+        for ts in obj.timeseries_set.all():
+            datasets_to_queue.add(ts.dataset_id)
+
+        for dataset_id in datasets_to_queue:
+            refresh.refresh_dataset.delay(dataset_id)
+
+        self.message_user(
+            request,
+            f"Queued {len(datasets_to_queue)} datasets for refresh.",
+        )
 
     @admin.action(description="Disable timeseries that are more than a week out of date")
     def disable_old_timeseries(self, request, queryset):
@@ -436,10 +453,19 @@ class PlatformAdmin(admin.GISModelAdmin):
 
 
 @admin.register(ErddapServer)
-class ErddapServerAdmin(admin.ModelAdmin):
+class ErddapServerAdmin(DjangoObjectActions, admin.ModelAdmin):
     ordering = ["name"]
 
     actions = ["disable_timeseries", "enable_timeseries", "refresh_server"]
+    change_actions = ["refresh_erddap_server"]
+
+    @action(description="Refresh all datasets for this server")
+    def refresh_erddap_server(self, request, obj):
+        refresh.refresh_server.delay(obj.id, healthcheck=False)
+        self.message_user(
+            request,
+            f"Queued all datasets for server '{obj}' to be refreshed.",
+        )
 
     @admin.action(description="Refresh timeseries for servers")
     def refresh_server(self, request, queryset):
@@ -522,7 +548,7 @@ class RefreshStatusListFilter(SimpleListFilter):
 
 
 @admin.register(ErddapDataset)
-class ErddapDatasetAdmin(admin.ModelAdmin):
+class ErddapDatasetAdmin(DjangoObjectActions, admin.ModelAdmin):
     ordering = ["name"]
     search_fields = ["name", "server__name", "server__base_url"]
     list_display = [
@@ -535,6 +561,7 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
     inlines = [TimeSeriesInline]
 
     actions = ["disable_timeseries", "enable_timeseries", "refresh_dataset"]
+    change_actions = ["refresh_erddap_dataset"]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet:
         queryset = super().get_queryset(request)
@@ -580,6 +607,14 @@ class ErddapDatasetAdmin(admin.ModelAdmin):
                 last_refreshed,
                 "Less than 1 hour ago",
             )
+
+    @action(description="Refresh this dataset")
+    def refresh_erddap_dataset(self, request, obj):
+        refresh.refresh_dataset.delay(obj.id, healthcheck=False)
+        self.message_user(
+            request,
+            f"Queued dataset '{obj}' for refresh.",
+        )
 
     @admin.action(description="Refresh timeseries associated with datasets")
     def refresh_dataset(self, request, queryset):

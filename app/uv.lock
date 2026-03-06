@@ -83,6 +83,7 @@ dependencies = [
     { name = "django-debug-toolbar" },
     { name = "django-health-check" },
     { name = "django-memoize" },
+    { name = "django-object-actions" },
     { name = "django-redis" },
     { name = "djangorestframework" },
     { name = "djangorestframework-gis" },
@@ -121,6 +122,7 @@ requires-dist = [
     { name = "django-debug-toolbar", specifier = "~=6.0" },
     { name = "django-health-check", specifier = "~=3.20.0" },
     { name = "django-memoize", specifier = "~=2.3.1" },
+    { name = "django-object-actions", specifier = "~=5.0" },
     { name = "django-redis", specifier = "~=6.0" },
     { name = "djangorestframework", specifier = "~=3.15" },
     { name = "djangorestframework-gis", specifier = "~=1.0" },
@@ -529,6 +531,15 @@ dependencies = [
     { name = "django" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b4/c0/812c5f50957eed4c83017f7c1d9a095a8f8dba1f3c1286d07932eff5b7b2/django-memoize-2.3.1.tar.gz", hash = "sha256:62ac4807710ecf22a7397d008d64d0f798e7230482d4b6072d916cac852a47cd", size = 23178, upload-time = "2020-04-27T06:47:14.921Z" }
+
+[[package]]
+name = "django-object-actions"
+version = "5.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e4/3e/1a6e59a8f751e036b4d23edaa5252111dbcd89396850da7b00cfc0f75d72/django_object_actions-5.0.0.tar.gz", hash = "sha256:ea455f76344316b620f815e4103c0f5151530177d35202682fc1734027bf0116", size = 16364, upload-time = "2025-04-05T06:33:00.206Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a7/27/639dd4f0d933438dd5102bf07242f85581fc5ef78c9e7628d2ed9cd4a34c/django_object_actions-5.0.0-py3-none-any.whl", hash = "sha256:1d5bce0fd38b73544130fae036d208f2811de5b0ca7ccb23486235e915015519", size = 14782, upload-time = "2025-04-05T06:32:58.261Z" },
+]
 
 [[package]]
 name = "django-redis"

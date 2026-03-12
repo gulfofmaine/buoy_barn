@@ -14,354 +14,691 @@ interactions:
     uri: http://www.neracoos.org/erddap/tabledap/M01_met_all.json?time%2Cair_temperature%26air_temperature_qc%3D0%26time%3E%3D%222021-03-01T15%3A25%3A00.000Z%22
   response:
     body:
-      string: !!binary |
-        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
-        dvmlNobZXfdTdf77H7/5j9/8f3/ZEeeG/wEA
+      string: "{\n  \"table\": {\n    \"columnNames\": [\"time\", \"air_temperature\"],\n    \"columnTypes\": [\"String\", \"float\"],\n    \"columnUnits\": [\"UTC\", \"celsius\"],\n    \"rows\": [\n  \
+        \    [\"2021-03-01T15:30:00Z\", 6.254],\n      [\"2021-03-01T15:40:00Z\", 6.355],\n      [\"2021-03-01T15:50:00Z\", 6.512],\n      [\"2021-03-01T16:00:00Z\", 6.601],\n      [\"2021-03-01T16:10:00Z\"\
+        , 6.75],\n      [\"2021-03-01T16:20:00Z\", 6.821],\n      [\"2021-03-01T16:30:00Z\", 6.768],\n      [\"2021-03-01T16:40:00Z\", 6.839],\n      [\"2021-03-01T16:50:00Z\", 6.899],\n      [\"2021-03-01T17:00:00Z\"\
+        , 6.852],\n      [\"2021-03-01T17:10:00Z\", 6.808],\n      [\"2021-03-01T17:20:00Z\", 6.786],\n      [\"2021-03-01T17:30:00Z\", 6.769],\n      [\"2021-03-01T17:40:00Z\", 6.673],\n      [\"2021-03-01T17:50:00Z\"\
+        , 6.63],\n      [\"2021-03-01T18:00:00Z\", 6.679],\n      [\"2021-03-01T18:10:00Z\", 6.76],\n      [\"2021-03-01T18:20:00Z\", 6.744],\n      [\"2021-03-01T18:30:00Z\", 6.847],\n      [\"2021-03-01T18:40:00Z\"\
+        , 6.945],\n      [\"2021-03-01T18:50:00Z\", 6.893],\n      [\"2021-03-01T19:00:00Z\", 6.754],\n      [\"2021-03-01T19:10:00Z\", 6.623],\n      [\"2021-03-01T19:20:00Z\", 6.531],\n      [\"2021-03-01T19:30:00Z\"\
+        , 6.35],\n      [\"2021-03-01T19:40:00Z\", 6.021],\n      [\"2021-03-01T19:50:00Z\", 5.88],\n      [\"2021-03-01T20:00:00Z\", 5.821],\n      [\"2021-03-01T20:10:00Z\", 5.863],\n      [\"2021-03-01T20:20:00Z\"\
+        , 5.917],\n      [\"2021-03-01T20:30:00Z\", 5.977],\n      [\"2021-03-01T20:40:00Z\", 5.933],\n      [\"2021-03-01T20:50:00Z\", 5.825],\n      [\"2021-03-01T21:00:00Z\", 5.795],\n      [\"2021-03-01T21:10:00Z\"\
+        , 5.786],\n      [\"2021-03-01T21:20:00Z\", 5.769],\n      [\"2021-03-01T21:30:00Z\", 5.754],\n      [\"2021-03-01T21:40:00Z\", 5.711],\n      [\"2021-03-01T21:50:00Z\", 5.704],\n      [\"2021-03-01T22:00:00Z\"\
+        , 5.694],\n      [\"2021-03-01T22:10:00Z\", 5.66],\n      [\"2021-03-01T22:20:00Z\", 5.657],\n      [\"2021-03-01T22:30:00Z\", 5.657],\n      [\"2021-03-01T22:40:00Z\", 5.589],\n      [\"2021-03-01T22:50:00Z\"\
+        , 5.536],\n      [\"2021-03-01T23:00:00Z\", 5.462],\n      [\"2021-03-01T23:10:00Z\", 5.437],\n      [\"2021-03-01T23:20:00Z\", 5.442],\n      [\"2021-03-01T23:30:00Z\", 5.473],\n      [\"2021-03-01T23:40:00Z\"\
+        , 5.431],\n      [\"2021-03-01T23:50:00Z\", 5.382],\n      [\"2021-03-02T00:00:00Z\", 5.36],\n      [\"2021-03-02T00:10:00Z\", 5.353],\n      [\"2021-03-02T00:20:00Z\", 5.349],\n      [\"2021-03-02T00:30:00Z\"\
+        , 5.37],\n      [\"2021-03-02T00:40:00Z\", 5.402],\n      [\"2021-03-02T00:50:00Z\", 5.419],\n      [\"2021-03-02T01:00:00Z\", 5.458],\n      [\"2021-03-02T01:10:00Z\", 5.43],\n      [\"2021-03-02T01:20:00Z\"\
+        , 5.37],\n      [\"2021-03-02T01:30:00Z\", 5.259],\n      [\"2021-03-02T01:40:00Z\", 5.08],\n      [\"2021-03-02T01:50:00Z\", 4.873],\n      [\"2021-03-02T02:00:00Z\", 4.705],\n      [\"2021-03-02T02:10:00Z\"\
+        , 4.462],\n      [\"2021-03-02T02:20:00Z\", 4.175],\n      [\"2021-03-02T02:30:00Z\", 4.042],\n      [\"2021-03-02T02:40:00Z\", 3.823],\n      [\"2021-03-02T02:50:00Z\", 3.628],\n      [\"2021-03-02T03:00:00Z\"\
+        , 3.39],\n      [\"2021-03-02T03:10:00Z\", 3.162],\n      [\"2021-03-02T03:20:00Z\", 2.968],\n      [\"2021-03-02T03:30:00Z\", 2.829],\n      [\"2021-03-02T03:40:00Z\", 2.574],\n      [\"2021-03-02T03:50:00Z\"\
+        , 2.473],\n      [\"2021-03-02T04:00:00Z\", 2.194],\n      [\"2021-03-02T04:10:00Z\", 1.931],\n      [\"2021-03-02T04:20:00Z\", 1.628],\n      [\"2021-03-02T04:30:00Z\", 1.641],\n      [\"2021-03-02T04:40:00Z\"\
+        , 1.52],\n      [\"2021-03-02T04:50:00Z\", 1.157],\n      [\"2021-03-02T05:00:00Z\", 0.814],\n      [\"2021-03-02T05:10:00Z\", 0.706],\n      [\"2021-03-02T05:20:00Z\", 0.422],\n      [\"2021-03-02T05:30:00Z\"\
+        , 0.276],\n      [\"2021-03-02T05:40:00Z\", 0.041],\n      [\"2021-03-02T05:50:00Z\", -0.405],\n      [\"2021-03-02T06:00:00Z\", -0.742],\n      [\"2021-03-02T06:10:00Z\", -1.019],\n      [\"2021-03-02T06:20:00Z\"\
+        , -1.358],\n      [\"2021-03-02T06:30:00Z\", -1.736],\n      [\"2021-03-02T06:40:00Z\", -2.423],\n      [\"2021-03-02T06:50:00Z\", -2.806],\n      [\"2021-03-02T07:00:00Z\", -3.67],\n      [\"2021-03-02T07:10:00Z\"\
+        , -3.632],\n      [\"2021-03-02T07:20:00Z\", -4.025],\n      [\"2021-03-02T07:30:00Z\", -4.247],\n      [\"2021-03-02T07:40:00Z\", -4.269],\n      [\"2021-03-02T07:50:00Z\", -4.593],\n      [\"\
+        2021-03-02T08:00:00Z\", -4.877],\n      [\"2021-03-02T08:10:00Z\", -5.108],\n      [\"2021-03-02T08:20:00Z\", -5.336],\n      [\"2021-03-02T08:30:00Z\", -5.51],\n      [\"2021-03-02T08:40:00Z\"\
+        , -5.605],\n      [\"2021-03-02T08:50:00Z\", -5.988],\n      [\"2021-03-02T09:00:00Z\", -6.13],\n      [\"2021-03-02T09:10:00Z\", -6.627],\n      [\"2021-03-02T09:20:00Z\", -7.037],\n      [\"2021-03-02T09:30:00Z\"\
+        , -7.119],\n      [\"2021-03-02T09:40:00Z\", -6.984],\n      [\"2021-03-02T09:50:00Z\", -7.283],\n      [\"2021-03-02T10:00:00Z\", -7.682],\n      [\"2021-03-02T10:10:00Z\", -7.736],\n      [\"\
+        2021-03-02T10:20:00Z\", -7.869],\n      [\"2021-03-02T10:30:00Z\", -7.966],\n      [\"2021-03-02T10:40:00Z\", -8.38],\n      [\"2021-03-02T10:50:00Z\", -8.54],\n      [\"2021-03-02T11:00:00Z\",\
+        \ -8.51],\n      [\"2021-03-02T11:10:00Z\", -8.68],\n      [\"2021-03-02T11:20:00Z\", -8.61],\n      [\"2021-03-02T11:30:00Z\", -8.41],\n      [\"2021-03-02T11:40:00Z\", -8.73],\n      [\"2021-03-02T11:50:00Z\"\
+        , -8.86],\n      [\"2021-03-02T12:00:00Z\", -8.68],\n      [\"2021-03-02T12:10:00Z\", -8.86],\n      [\"2021-03-02T12:20:00Z\", -9.03],\n      [\"2021-03-02T12:30:00Z\", -8.28],\n      [\"2021-03-02T12:40:00Z\"\
+        , -8.6],\n      [\"2021-03-02T12:50:00Z\", -8.81],\n      [\"2021-03-02T13:00:00Z\", -8.93],\n      [\"2021-03-02T13:10:00Z\", -9.1],\n      [\"2021-03-02T13:20:00Z\", -9.41],\n      [\"2021-03-02T13:30:00Z\"\
+        , -9.05],\n      [\"2021-03-02T13:40:00Z\", -9.09],\n      [\"2021-03-02T13:50:00Z\", -8.94],\n      [\"2021-03-02T14:00:00Z\", -9.21],\n      [\"2021-03-02T14:10:00Z\", -8.9],\n      [\"2021-03-02T14:20:00Z\"\
+        , -9.07],\n      [\"2021-03-02T14:30:00Z\", -8.7],\n      [\"2021-03-02T14:40:00Z\", -8.48],\n      [\"2021-03-02T14:50:00Z\", -9.04],\n      [\"2021-03-02T15:00:00Z\", -9.14],\n      [\"2021-03-02T15:10:00Z\"\
+        , -8.7],\n      [\"2021-03-02T15:20:00Z\", -8.92],\n      [\"2021-03-02T15:30:00Z\", -8.7],\n      [\"2021-03-02T15:40:00Z\", -8.51],\n      [\"2021-03-02T15:50:00Z\", -8.73],\n      [\"2021-03-02T16:00:00Z\"\
+        , -8.15],\n      [\"2021-03-02T16:10:00Z\", -7.931],\n      [\"2021-03-02T16:20:00Z\", -7.562],\n      [\"2021-03-02T16:30:00Z\", -7.672],\n      [\"2021-03-02T16:40:00Z\", -7.757],\n      [\"2021-03-02T16:50:00Z\"\
+        , -7.383],\n      [\"2021-03-02T17:00:00Z\", -7.358],\n      [\"2021-03-02T17:10:00Z\", -7.371],\n      [\"2021-03-02T17:20:00Z\", -7.292],\n      [\"2021-03-02T17:30:00Z\", -7.07],\n      [\"2021-03-02T17:40:00Z\"\
+        , -6.982],\n      [\"2021-03-02T17:50:00Z\", -6.692],\n      [\"2021-03-02T18:00:00Z\", -6.537],\n      [\"2021-03-02T18:10:00Z\", -6.432],\n      [\"2021-03-02T18:20:00Z\", -5.515],\n      [\"\
+        2021-03-02T18:30:00Z\", -5.344],\n      [\"2021-03-02T18:40:00Z\", -5.69],\n      [\"2021-03-02T18:50:00Z\", -5.653],\n      [\"2021-03-02T19:00:00Z\", -5.58],\n      [\"2021-03-02T19:10:00Z\",\
+        \ -5.455],\n      [\"2021-03-02T19:20:00Z\", -5.274],\n      [\"2021-03-02T19:30:00Z\", -5.113],\n      [\"2021-03-02T19:40:00Z\", -5.022],\n      [\"2021-03-02T19:50:00Z\", -3.801],\n      [\"\
+        2021-03-02T20:00:00Z\", -4.306],\n      [\"2021-03-02T20:10:00Z\", -4.425],\n      [\"2021-03-02T20:20:00Z\", -4.344],\n      [\"2021-03-02T20:30:00Z\", -4.196],\n      [\"2021-03-02T20:40:00Z\"\
+        , -4.23],\n      [\"2021-03-02T20:50:00Z\", -4.205],\n      [\"2021-03-02T21:00:00Z\", -4.273],\n      [\"2021-03-02T21:10:00Z\", -4.342],\n      [\"2021-03-02T21:20:00Z\", -4.346],\n      [\"2021-03-02T21:30:00Z\"\
+        , -4.449],\n      [\"2021-03-02T21:40:00Z\", -4.42],\n      [\"2021-03-02T21:50:00Z\", -4.389],\n      [\"2021-03-02T22:00:00Z\", -4.402],\n      [\"2021-03-02T22:10:00Z\", -4.564],\n      [\"2021-03-02T22:20:00Z\"\
+        , -4.575],\n      [\"2021-03-02T22:30:00Z\", -4.695],\n      [\"2021-03-02T22:40:00Z\", -4.744],\n      [\"2021-03-02T22:50:00Z\", -4.767],\n      [\"2021-03-02T23:00:00Z\", -4.796],\n      [\"\
+        2021-03-02T23:10:00Z\", -4.77],\n      [\"2021-03-02T23:20:00Z\", -4.79],\n      [\"2021-03-02T23:30:00Z\", -4.712],\n      [\"2021-03-02T23:40:00Z\", -4.812],\n      [\"2021-03-02T23:50:00Z\",\
+        \ -4.906],\n      [\"2021-03-03T00:00:00Z\", -4.636],\n      [\"2021-03-03T00:10:00Z\", -4.61],\n      [\"2021-03-03T00:20:00Z\", -4.54],\n      [\"2021-03-03T00:30:00Z\", -4.611],\n      [\"2021-03-03T00:40:00Z\"\
+        , -4.59],\n      [\"2021-03-03T00:50:00Z\", -4.543],\n      [\"2021-03-03T01:00:00Z\", -4.62],\n      [\"2021-03-03T01:10:00Z\", -4.537],\n      [\"2021-03-03T01:20:00Z\", -4.495],\n      [\"2021-03-03T01:30:00Z\"\
+        , -3.998],\n      [\"2021-03-03T01:40:00Z\", -4.445],\n      [\"2021-03-03T01:50:00Z\", -4.632],\n      [\"2021-03-03T02:00:00Z\", -4.756],\n      [\"2021-03-03T02:10:00Z\", -4.823],\n      [\"\
+        2021-03-03T02:20:00Z\", -4.864],\n      [\"2021-03-03T02:30:00Z\", -4.849],\n      [\"2021-03-03T02:40:00Z\", -4.892],\n      [\"2021-03-03T02:50:00Z\", -4.821],\n      [\"2021-03-03T03:00:00Z\"\
+        , -4.788],\n      [\"2021-03-03T03:10:00Z\", -4.747],\n      [\"2021-03-03T03:20:00Z\", -4.564],\n      [\"2021-03-03T03:30:00Z\", -4.693],\n      [\"2021-03-03T03:40:00Z\", -4.7],\n      [\"2021-03-03T03:50:00Z\"\
+        , -4.568],\n      [\"2021-03-03T04:00:00Z\", -4.307],\n      [\"2021-03-03T04:10:00Z\", -4.107],\n      [\"2021-03-03T04:20:00Z\", -4.051],\n      [\"2021-03-03T04:30:00Z\", -4.05],\n      [\"2021-03-03T04:40:00Z\"\
+        , -4.144],\n      [\"2021-03-03T04:50:00Z\", -3.988],\n      [\"2021-03-03T05:00:00Z\", -3.776],\n      [\"2021-03-03T05:10:00Z\", -3.695],\n      [\"2021-03-03T05:20:00Z\", -3.826],\n      [\"\
+        2021-03-03T05:30:00Z\", -3.916],\n      [\"2021-03-03T05:40:00Z\", -3.69],\n      [\"2021-03-03T05:50:00Z\", -3.874],\n      [\"2021-03-03T06:00:00Z\", -3.837],\n      [\"2021-03-03T06:10:00Z\"\
+        , -3.96],\n      [\"2021-03-03T06:20:00Z\", -3.895],\n      [\"2021-03-03T06:30:00Z\", -3.647],\n      [\"2021-03-03T06:40:00Z\", -3.756],\n      [\"2021-03-03T06:50:00Z\", -3.665],\n      [\"2021-03-03T07:00:00Z\"\
+        , -3.541],\n      [\"2021-03-03T07:10:00Z\", -3.614],\n      [\"2021-03-03T07:20:00Z\", -3.586],\n      [\"2021-03-03T07:30:00Z\", -3.536],\n      [\"2021-03-03T07:40:00Z\", -3.344],\n      [\"\
+        2021-03-03T07:50:00Z\", -3.427],\n      [\"2021-03-03T08:00:00Z\", -3.027],\n      [\"2021-03-03T08:10:00Z\", -3.016],\n      [\"2021-03-03T08:20:00Z\", -3.004],\n      [\"2021-03-03T08:30:00Z\"\
+        , -3.172],\n      [\"2021-03-03T08:40:00Z\", -3.194],\n      [\"2021-03-03T08:50:00Z\", -3.112],\n      [\"2021-03-03T09:00:00Z\", -3.07],\n      [\"2021-03-03T09:10:00Z\", -2.863],\n      [\"2021-03-03T09:20:00Z\"\
+        , -2.568],\n      [\"2021-03-03T09:30:00Z\", -2.349],\n      [\"2021-03-03T09:40:00Z\", -2.558],\n      [\"2021-03-03T09:50:00Z\", -2.43],\n      [\"2021-03-03T10:00:00Z\", -2.636],\n      [\"2021-03-03T10:10:00Z\"\
+        , -2.359],\n      [\"2021-03-03T10:20:00Z\", -2.348],\n      [\"2021-03-03T10:30:00Z\", -2.444],\n      [\"2021-03-03T10:40:00Z\", -2.481],\n      [\"2021-03-03T10:50:00Z\", -2.097],\n      [\"\
+        2021-03-03T11:00:00Z\", -1.954],\n      [\"2021-03-03T11:10:00Z\", -2.115],\n      [\"2021-03-03T11:20:00Z\", -1.94],\n      [\"2021-03-03T11:30:00Z\", -1.742],\n      [\"2021-03-03T11:40:00Z\"\
+        , -2.028],\n      [\"2021-03-03T11:50:00Z\", -1.975],\n      [\"2021-03-03T12:00:00Z\", -1.826],\n      [\"2021-03-03T12:10:00Z\", -1.363],\n      [\"2021-03-03T12:20:00Z\", -1.155],\n      [\"\
+        2021-03-03T12:30:00Z\", -1.508],\n      [\"2021-03-03T12:40:00Z\", -1.413],\n      [\"2021-03-03T12:50:00Z\", -1.364],\n      [\"2021-03-03T13:00:00Z\", -1.328],\n      [\"2021-03-03T13:10:00Z\"\
+        , -1.329],\n      [\"2021-03-03T13:20:00Z\", -1.387],\n      [\"2021-03-03T13:30:00Z\", -1.419],\n      [\"2021-03-03T13:40:00Z\", -1.204],\n      [\"2021-03-03T13:50:00Z\", -0.788],\n      [\"\
+        2021-03-03T14:00:00Z\", -0.622],\n      [\"2021-03-03T14:10:00Z\", -0.672],\n      [\"2021-03-03T14:20:00Z\", -0.572],\n      [\"2021-03-03T14:30:00Z\", -0.496],\n      [\"2021-03-03T14:40:00Z\"\
+        , -0.455],\n      [\"2021-03-03T14:50:00Z\", -0.386],\n      [\"2021-03-03T15:00:00Z\", -0.337],\n      [\"2021-03-03T15:10:00Z\", -0.278],\n      [\"2021-03-03T15:20:00Z\", 0.007],\n      [\"2021-03-03T15:30:00Z\"\
+        , 0.071],\n      [\"2021-03-03T15:40:00Z\", 0.081],\n      [\"2021-03-03T15:50:00Z\", 0.098],\n      [\"2021-03-03T16:00:00Z\", 0.279],\n      [\"2021-03-03T16:10:00Z\", 0.275],\n      [\"2021-03-03T16:20:00Z\"\
+        , 0.444],\n      [\"2021-03-03T16:30:00Z\", 0.523],\n      [\"2021-03-03T16:40:00Z\", 0.61],\n      [\"2021-03-03T16:50:00Z\", 0.577],\n      [\"2021-03-03T17:00:00Z\", 0.725],\n      [\"2021-03-03T17:10:00Z\"\
+        , 0.622],\n      [\"2021-03-03T17:20:00Z\", 0.791],\n      [\"2021-03-03T17:30:00Z\", 0.823],\n      [\"2021-03-03T17:40:00Z\", 0.831],\n      [\"2021-03-03T17:50:00Z\", 0.898],\n      [\"2021-03-03T18:00:00Z\"\
+        , 0.915],\n      [\"2021-03-03T18:10:00Z\", 0.951],\n      [\"2021-03-03T18:20:00Z\", 1.028],\n      [\"2021-03-03T18:30:00Z\", 1.196],\n      [\"2021-03-03T18:40:00Z\", 1.244],\n      [\"2021-03-03T18:50:00Z\"\
+        , 1.46],\n      [\"2021-03-03T19:00:00Z\", 1.461],\n      [\"2021-03-03T19:10:00Z\", 1.615],\n      [\"2021-03-03T19:20:00Z\", 1.53],\n      [\"2021-03-03T19:30:00Z\", 1.653],\n      [\"2021-03-03T19:40:00Z\"\
+        , 1.714],\n      [\"2021-03-03T19:50:00Z\", 1.774],\n      [\"2021-03-03T20:00:00Z\", 1.918],\n      [\"2021-03-03T20:10:00Z\", 1.845],\n      [\"2021-03-03T20:20:00Z\", 1.893],\n      [\"2021-03-03T20:30:00Z\"\
+        , 1.971],\n      [\"2021-03-03T20:40:00Z\", 2.104],\n      [\"2021-03-03T20:50:00Z\", 2.193],\n      [\"2021-03-03T21:00:00Z\", 2.448],\n      [\"2021-03-03T21:10:00Z\", 2.33],\n      [\"2021-03-03T21:20:00Z\"\
+        , 2.524],\n      [\"2021-03-03T21:30:00Z\", 2.531],\n      [\"2021-03-03T21:40:00Z\", 2.592],\n      [\"2021-03-03T21:50:00Z\", 2.743],\n      [\"2021-03-03T22:00:00Z\", 2.865],\n      [\"2021-03-03T22:10:00Z\"\
+        , 2.911],\n      [\"2021-03-03T22:20:00Z\", 3.005],\n      [\"2021-03-03T22:30:00Z\", 3.035],\n      [\"2021-03-03T22:40:00Z\", 3.139],\n      [\"2021-03-03T22:50:00Z\", 3.163],\n      [\"2021-03-03T23:00:00Z\"\
+        , 3.158],\n      [\"2021-03-03T23:10:00Z\", 3.171],\n      [\"2021-03-03T23:20:00Z\", 3.176],\n      [\"2021-03-03T23:30:00Z\", 3.179],\n      [\"2021-03-03T23:40:00Z\", 3.199],\n      [\"2021-03-03T23:50:00Z\"\
+        , 3.021],\n      [\"2021-03-04T00:00:00Z\", 3.21],\n      [\"2021-03-04T00:10:00Z\", 3.333],\n      [\"2021-03-04T00:20:00Z\", 3.302],\n      [\"2021-03-04T00:30:00Z\", 3.211],\n      [\"2021-03-04T00:40:00Z\"\
+        , 3.234],\n      [\"2021-03-04T00:50:00Z\", 2.935],\n      [\"2021-03-04T01:00:00Z\", 2.75],\n      [\"2021-03-04T01:10:00Z\", 2.854],\n      [\"2021-03-04T01:20:00Z\", 2.851],\n      [\"2021-03-04T01:30:00Z\"\
+        , 2.884],\n      [\"2021-03-04T01:40:00Z\", 2.947],\n      [\"2021-03-04T01:50:00Z\", 2.821],\n      [\"2021-03-04T02:00:00Z\", 2.679],\n      [\"2021-03-04T02:10:00Z\", 2.622],\n      [\"2021-03-04T02:20:00Z\"\
+        , 2.551],\n      [\"2021-03-04T02:30:00Z\", 2.303],\n      [\"2021-03-04T02:40:00Z\", 2.199],\n      [\"2021-03-04T02:50:00Z\", 2.251],\n      [\"2021-03-04T03:00:00Z\", 1.971],\n      [\"2021-03-04T03:10:00Z\"\
+        , 1.994],\n      [\"2021-03-04T03:20:00Z\", 1.971],\n      [\"2021-03-04T03:30:00Z\", 1.853],\n      [\"2021-03-04T03:40:00Z\", 1.678],\n      [\"2021-03-04T03:50:00Z\", 1.758],\n      [\"2021-03-04T04:00:00Z\"\
+        , 1.674],\n      [\"2021-03-04T04:10:00Z\", 1.595],\n      [\"2021-03-04T04:20:00Z\", 1.504],\n      [\"2021-03-04T04:30:00Z\", 1.339],\n      [\"2021-03-04T04:40:00Z\", 1.204],\n      [\"2021-03-04T04:50:00Z\"\
+        , 1.159],\n      [\"2021-03-04T05:00:00Z\", 1.063],\n      [\"2021-03-04T05:10:00Z\", 0.962],\n      [\"2021-03-04T05:20:00Z\", 0.887],\n      [\"2021-03-04T05:30:00Z\", 0.7],\n      [\"2021-03-04T05:40:00Z\"\
+        , 0.718],\n      [\"2021-03-04T05:50:00Z\", 0.697],\n      [\"2021-03-04T06:00:00Z\", 0.568],\n      [\"2021-03-04T06:10:00Z\", 0.622],\n      [\"2021-03-04T06:20:00Z\", 0.658],\n      [\"2021-03-04T06:30:00Z\"\
+        , 0.685],\n      [\"2021-03-04T06:40:00Z\", 0.65],\n      [\"2021-03-04T06:50:00Z\", 0.586],\n      [\"2021-03-04T07:00:00Z\", 0.6],\n      [\"2021-03-04T07:10:00Z\", 0.65],\n      [\"2021-03-04T07:20:00Z\"\
+        , 0.732],\n      [\"2021-03-04T07:30:00Z\", 0.673],\n      [\"2021-03-04T07:40:00Z\", 0.636],\n      [\"2021-03-04T07:50:00Z\", 0.612],\n      [\"2021-03-04T08:00:00Z\", 0.565],\n      [\"2021-03-04T08:10:00Z\"\
+        , 0.57],\n      [\"2021-03-04T08:20:00Z\", 0.618],\n      [\"2021-03-04T08:30:00Z\", 0.563],\n      [\"2021-03-04T08:40:00Z\", 0.695],\n      [\"2021-03-04T08:50:00Z\", 0.684],\n      [\"2021-03-04T09:00:00Z\"\
+        , 0.725],\n      [\"2021-03-04T09:10:00Z\", 0.759],\n      [\"2021-03-04T09:20:00Z\", 0.771],\n      [\"2021-03-04T09:30:00Z\", 0.746],\n      [\"2021-03-04T09:40:00Z\", 0.756],\n      [\"2021-03-04T09:50:00Z\"\
+        , 0.725],\n      [\"2021-03-04T10:00:00Z\", 0.75],\n      [\"2021-03-04T10:10:00Z\", 0.796],\n      [\"2021-03-04T10:20:00Z\", 0.911],\n      [\"2021-03-04T10:30:00Z\", 0.999],\n      [\"2021-03-04T10:40:00Z\"\
+        , 0.977],\n      [\"2021-03-04T10:50:00Z\", 0.962],\n      [\"2021-03-04T11:00:00Z\", 1.062],\n      [\"2021-03-04T11:10:00Z\", 1.052],\n      [\"2021-03-04T11:20:00Z\", 1.046],\n      [\"2021-03-04T11:30:00Z\"\
+        , 0.958],\n      [\"2021-03-04T11:40:00Z\", 1.002],\n      [\"2021-03-04T11:50:00Z\", 1.043],\n      [\"2021-03-04T12:00:00Z\", 1.012],\n      [\"2021-03-04T12:10:00Z\", 0.971],\n      [\"2021-03-04T12:20:00Z\"\
+        , 0.883],\n      [\"2021-03-04T12:30:00Z\", 0.826],\n      [\"2021-03-04T12:40:00Z\", 0.64],\n      [\"2021-03-04T12:50:00Z\", 0.595],\n      [\"2021-03-04T13:00:00Z\", 0.424],\n      [\"2021-03-04T13:10:00Z\"\
+        , 0.534],\n      [\"2021-03-04T13:20:00Z\", 0.487],\n      [\"2021-03-04T13:30:00Z\", 0.399],\n      [\"2021-03-04T13:40:00Z\", 0.447],\n      [\"2021-03-04T13:50:00Z\", 0.284],\n      [\"2021-03-04T14:00:00Z\"\
+        , 0.281],\n      [\"2021-03-04T14:10:00Z\", 0.439],\n      [\"2021-03-04T14:20:00Z\", 0.249],\n      [\"2021-03-04T14:30:00Z\", 0.219],\n      [\"2021-03-04T14:40:00Z\", 0.13],\n      [\"2021-03-04T14:50:00Z\"\
+        , 0.169],\n      [\"2021-03-04T15:00:00Z\", 0.136],\n      [\"2021-03-04T15:10:00Z\", -0.079],\n      [\"2021-03-04T15:20:00Z\", 0.078],\n      [\"2021-03-04T15:30:00Z\", 0.021],\n      [\"2021-03-04T15:40:00Z\"\
+        , 0.071],\n      [\"2021-03-04T15:50:00Z\", 0.214],\n      [\"2021-03-04T16:00:00Z\", 0.344],\n      [\"2021-03-04T16:10:00Z\", 0.502],\n      [\"2021-03-04T16:20:00Z\", 0.748],\n      [\"2021-03-04T16:30:00Z\"\
+        , 0.282],\n      [\"2021-03-04T16:40:00Z\", 0.354],\n      [\"2021-03-04T16:50:00Z\", 0.386],\n      [\"2021-03-04T17:00:00Z\", 0.543],\n      [\"2021-03-04T17:10:00Z\", 0.678],\n      [\"2021-03-04T17:20:00Z\"\
+        , 0.552],\n      [\"2021-03-04T17:30:00Z\", 0.359],\n      [\"2021-03-04T17:40:00Z\", 0.539],\n      [\"2021-03-04T17:50:00Z\", 0.707],\n      [\"2021-03-04T18:00:00Z\", 0.723],\n      [\"2021-03-04T18:10:00Z\"\
+        , 0.833],\n      [\"2021-03-04T18:20:00Z\", 0.856],\n      [\"2021-03-04T18:30:00Z\", 0.904],\n      [\"2021-03-04T18:40:00Z\", 1.138],\n      [\"2021-03-04T18:50:00Z\", 1.198],\n      [\"2021-03-04T19:00:00Z\"\
+        , 1.3],\n      [\"2021-03-04T19:10:00Z\", 1.275],\n      [\"2021-03-04T19:20:00Z\", 1.296],\n      [\"2021-03-04T19:30:00Z\", 1.367],\n      [\"2021-03-04T19:40:00Z\", 1.25],\n      [\"2021-03-04T19:50:00Z\"\
+        , 1.408],\n      [\"2021-03-04T20:00:00Z\", 1.473],\n      [\"2021-03-04T20:10:00Z\", 1.603],\n      [\"2021-03-04T20:20:00Z\", 1.498],\n      [\"2021-03-04T20:30:00Z\", 1.522],\n      [\"2021-03-04T20:40:00Z\"\
+        , 1.605],\n      [\"2021-03-04T20:50:00Z\", 1.499],\n      [\"2021-03-04T21:00:00Z\", 1.73],\n      [\"2021-03-04T21:10:00Z\", 1.669],\n      [\"2021-03-04T21:20:00Z\", 1.661],\n      [\"2021-03-04T21:30:00Z\"\
+        , 1.749],\n      [\"2021-03-04T21:40:00Z\", 1.923],\n      [\"2021-03-04T21:50:00Z\", 1.86],\n      [\"2021-03-04T22:00:00Z\", 1.878],\n      [\"2021-03-04T22:10:00Z\", 1.919],\n      [\"2021-03-04T22:20:00Z\"\
+        , 1.771],\n      [\"2021-03-04T22:30:00Z\", 1.821],\n      [\"2021-03-04T22:40:00Z\", 1.797],\n      [\"2021-03-04T22:50:00Z\", 1.864],\n      [\"2021-03-04T23:00:00Z\", 1.931],\n      [\"2021-03-04T23:10:00Z\"\
+        , 1.982],\n      [\"2021-03-04T23:20:00Z\", 1.903],\n      [\"2021-03-04T23:30:00Z\", 2.025],\n      [\"2021-03-04T23:40:00Z\", 1.925],\n      [\"2021-03-04T23:50:00Z\", 1.775],\n      [\"2021-03-05T00:00:00Z\"\
+        , 1.469],\n      [\"2021-03-05T00:10:00Z\", 1.427],\n      [\"2021-03-05T00:20:00Z\", 1.205],\n      [\"2021-03-05T00:30:00Z\", 1.082],\n      [\"2021-03-05T00:40:00Z\", 0.948],\n      [\"2021-03-05T00:50:00Z\"\
+        , 0.654],\n      [\"2021-03-05T01:00:00Z\", 0.421],\n      [\"2021-03-05T01:10:00Z\", 0.131],\n      [\"2021-03-05T01:20:00Z\", -0.115],\n      [\"2021-03-05T01:30:00Z\", -0.057],\n      [\"2021-03-05T01:40:00Z\"\
+        , -0.103],\n      [\"2021-03-05T01:50:00Z\", -0.455],\n      [\"2021-03-05T02:00:00Z\", -0.668],\n      [\"2021-03-05T02:10:00Z\", -0.896],\n      [\"2021-03-05T02:20:00Z\", -1.393],\n      [\"\
+        2021-03-05T02:30:00Z\", -1.258],\n      [\"2021-03-05T02:40:00Z\", -1.433],\n      [\"2021-03-05T02:50:00Z\", -1.543],\n      [\"2021-03-05T03:00:00Z\", -1.628],\n      [\"2021-03-05T03:10:00Z\"\
+        , -1.662],\n      [\"2021-03-05T03:20:00Z\", -1.793],\n      [\"2021-03-05T03:30:00Z\", -1.859],\n      [\"2021-03-05T03:40:00Z\", -2.005],\n      [\"2021-03-05T03:50:00Z\", -2.064],\n      [\"\
+        2021-03-05T04:00:00Z\", -2.086],\n      [\"2021-03-05T04:10:00Z\", -2.3],\n      [\"2021-03-05T04:20:00Z\", -2.155],\n      [\"2021-03-05T04:30:00Z\", -2.408],\n      [\"2021-03-05T04:40:00Z\",\
+        \ -2.3],\n      [\"2021-03-05T04:50:00Z\", -2.35],\n      [\"2021-03-05T05:00:00Z\", -2.462],\n      [\"2021-03-05T05:10:00Z\", -2.705],\n      [\"2021-03-05T05:20:00Z\", -2.685],\n      [\"2021-03-05T05:30:00Z\"\
+        , -2.594],\n      [\"2021-03-05T05:40:00Z\", -2.75],\n      [\"2021-03-05T05:50:00Z\", -2.678],\n      [\"2021-03-05T06:00:00Z\", -2.765],\n      [\"2021-03-05T06:10:00Z\", -3.024],\n      [\"2021-03-05T06:20:00Z\"\
+        , -3.024],\n      [\"2021-03-05T06:30:00Z\", -3.106],\n      [\"2021-03-05T06:40:00Z\", -3.036],\n      [\"2021-03-05T06:50:00Z\", -3.088],\n      [\"2021-03-05T07:00:00Z\", -3.199],\n      [\"\
+        2021-03-05T07:10:00Z\", -3.226],\n      [\"2021-03-05T07:20:00Z\", -3.338],\n      [\"2021-03-05T07:30:00Z\", -3.241],\n      [\"2021-03-05T07:40:00Z\", -3.386],\n      [\"2021-03-05T07:50:00Z\"\
+        , -3.392],\n      [\"2021-03-05T08:00:00Z\", -3.513],\n      [\"2021-03-05T08:10:00Z\", -3.554],\n      [\"2021-03-05T08:20:00Z\", -3.586],\n      [\"2021-03-05T08:30:00Z\", -3.596],\n      [\"\
+        2021-03-05T08:40:00Z\", -3.763],\n      [\"2021-03-05T08:50:00Z\", -3.943],\n      [\"2021-03-05T09:00:00Z\", -3.731],\n      [\"2021-03-05T09:10:00Z\", -4.001],\n      [\"2021-03-05T09:20:00Z\"\
+        , -3.968],\n      [\"2021-03-05T09:30:00Z\", -4.08],\n      [\"2021-03-05T09:40:00Z\", -4.133],\n      [\"2021-03-05T09:50:00Z\", -4.085],\n      [\"2021-03-05T10:00:00Z\", -4.093],\n      [\"2021-03-05T10:10:00Z\"\
+        , -4.292],\n      [\"2021-03-05T10:20:00Z\", -4.375],\n      [\"2021-03-05T10:30:00Z\", -4.265],\n      [\"2021-03-05T10:40:00Z\", -4.566],\n      [\"2021-03-05T10:50:00Z\", -4.704],\n      [\"\
+        2021-03-05T11:00:00Z\", -4.7],\n      [\"2021-03-05T11:10:00Z\", -4.664],\n      [\"2021-03-05T11:20:00Z\", -4.631],\n      [\"2021-03-05T11:30:00Z\", -4.579],\n      [\"2021-03-05T11:40:00Z\",\
+        \ -4.806],\n      [\"2021-03-05T11:50:00Z\", -4.89],\n      [\"2021-03-05T12:00:00Z\", -5.216],\n      [\"2021-03-05T12:10:00Z\", -5.065],\n      [\"2021-03-05T12:20:00Z\", -5.36],\n      [\"2021-03-05T12:30:00Z\"\
+        , -5.161],\n      [\"2021-03-05T12:40:00Z\", -5.318],\n      [\"2021-03-05T12:50:00Z\", -5.284],\n      [\"2021-03-05T13:00:00Z\", -5.248],\n      [\"2021-03-05T13:10:00Z\", -5.321],\n      [\"\
+        2021-03-05T13:20:00Z\", -5.042],\n      [\"2021-03-05T13:30:00Z\", -5.096],\n      [\"2021-03-05T13:40:00Z\", -5.354],\n      [\"2021-03-05T13:50:00Z\", -5.263],\n      [\"2021-03-05T14:00:00Z\"\
+        , -5.245],\n      [\"2021-03-05T14:10:00Z\", -5.112],\n      [\"2021-03-05T14:20:00Z\", -5.368],\n      [\"2021-03-05T14:30:00Z\", -5.577],\n      [\"2021-03-05T14:40:00Z\", -5.337],\n      [\"\
+        2021-03-05T14:50:00Z\", -5.487],\n      [\"2021-03-05T15:00:00Z\", -5.463],\n      [\"2021-03-05T15:10:00Z\", -5.423],\n      [\"2021-03-05T15:20:00Z\", -5.427],\n      [\"2021-03-05T15:30:00Z\"\
+        , -5.535],\n      [\"2021-03-05T15:40:00Z\", -5.464],\n      [\"2021-03-05T15:50:00Z\", -5.319],\n      [\"2021-03-05T16:00:00Z\", -5.25],\n      [\"2021-03-05T16:10:00Z\", -5.434],\n      [\"2021-03-05T16:20:00Z\"\
+        , -5.242],\n      [\"2021-03-05T16:30:00Z\", -5.239],\n      [\"2021-03-05T16:40:00Z\", -5.22],\n      [\"2021-03-05T16:50:00Z\", -5.377],\n      [\"2021-03-05T17:00:00Z\", -5.332],\n      [\"2021-03-05T17:10:00Z\"\
+        , -5.11],\n      [\"2021-03-05T17:20:00Z\", -5.247],\n      [\"2021-03-05T17:30:00Z\", -5.148],\n      [\"2021-03-05T17:40:00Z\", -5.132],\n      [\"2021-03-05T17:50:00Z\", -5.217],\n      [\"2021-03-05T18:00:00Z\"\
+        , -4.976],\n      [\"2021-03-05T18:10:00Z\", -5.119],\n      [\"2021-03-05T18:20:00Z\", -5.202],\n      [\"2021-03-05T18:30:00Z\", -4.816],\n      [\"2021-03-05T18:40:00Z\", -4.709],\n      [\"\
+        2021-03-05T18:50:00Z\", -4.542],\n      [\"2021-03-05T19:00:00Z\", -4.377],\n      [\"2021-03-05T19:10:00Z\", -4.458],\n      [\"2021-03-05T19:20:00Z\", -4.261],\n      [\"2021-03-05T19:30:00Z\"\
+        , -4.075],\n      [\"2021-03-05T19:40:00Z\", -4.074],\n      [\"2021-03-05T19:50:00Z\", -3.87],\n      [\"2021-03-05T20:00:00Z\", -3.735],\n      [\"2021-03-05T20:10:00Z\", -3.61],\n      [\"2021-03-05T20:20:00Z\"\
+        , -3.475],\n      [\"2021-03-05T20:30:00Z\", -3.468],\n      [\"2021-03-05T20:40:00Z\", -3.424],\n      [\"2021-03-05T20:50:00Z\", -3.446],\n      [\"2021-03-05T21:00:00Z\", -3.209],\n      [\"\
+        2021-03-05T21:10:00Z\", -3.192],\n      [\"2021-03-05T21:20:00Z\", -3.208],\n      [\"2021-03-05T21:30:00Z\", -3.164],\n      [\"2021-03-05T21:40:00Z\", -2.912],\n      [\"2021-03-05T21:50:00Z\"\
+        , -2.777],\n      [\"2021-03-05T22:00:00Z\", -2.836],\n      [\"2021-03-05T22:10:00Z\", -2.839],\n      [\"2021-03-05T22:20:00Z\", -2.809],\n      [\"2021-03-05T22:30:00Z\", -2.844],\n      [\"\
+        2021-03-05T22:40:00Z\", -2.85],\n      [\"2021-03-05T22:50:00Z\", -2.825],\n      [\"2021-03-05T23:00:00Z\", -3.103],\n      [\"2021-03-05T23:10:00Z\", -3.118],\n      [\"2021-03-05T23:20:00Z\"\
+        , -3.148],\n      [\"2021-03-05T23:30:00Z\", -3.205],\n      [\"2021-03-05T23:40:00Z\", -3.219],\n      [\"2021-03-05T23:50:00Z\", -3.257],\n      [\"2021-03-06T00:00:00Z\", -3.225],\n      [\"\
+        2021-03-06T00:10:00Z\", -3.136],\n      [\"2021-03-06T00:20:00Z\", -3.11],\n      [\"2021-03-06T00:30:00Z\", -3.085],\n      [\"2021-03-06T00:40:00Z\", -3.176],\n      [\"2021-03-06T00:50:00Z\"\
+        , -3.368],\n      [\"2021-03-06T01:00:00Z\", -3.471],\n      [\"2021-03-06T01:10:00Z\", -3.524],\n      [\"2021-03-06T01:20:00Z\", -3.748],\n      [\"2021-03-06T01:30:00Z\", -3.851],\n      [\"\
+        2021-03-06T01:40:00Z\", -4.026],\n      [\"2021-03-06T01:50:00Z\", -4.042],\n      [\"2021-03-06T02:00:00Z\", -3.97],\n      [\"2021-03-06T02:10:00Z\", -4.605],\n      [\"2021-03-06T02:20:00Z\"\
+        , -4.765],\n      [\"2021-03-06T02:30:00Z\", -4.95],\n      [\"2021-03-06T02:40:00Z\", -5.129],\n      [\"2021-03-06T02:50:00Z\", -5.213],\n      [\"2021-03-06T03:00:00Z\", -5.526],\n      [\"2021-03-06T03:10:00Z\"\
+        , -5.366],\n      [\"2021-03-06T03:20:00Z\", -5.583],\n      [\"2021-03-06T03:30:00Z\", -5.418],\n      [\"2021-03-06T03:40:00Z\", -5.669],\n      [\"2021-03-06T03:50:00Z\", -5.571],\n      [\"\
+        2021-03-06T04:00:00Z\", -5.668],\n      [\"2021-03-06T04:10:00Z\", -5.756],\n      [\"2021-03-06T04:20:00Z\", -5.726],\n      [\"2021-03-06T04:30:00Z\", -5.79],\n      [\"2021-03-06T04:40:00Z\"\
+        , -5.671],\n      [\"2021-03-06T04:50:00Z\", -5.722],\n      [\"2021-03-06T05:00:00Z\", -5.731],\n      [\"2021-03-06T05:10:00Z\", -5.983],\n      [\"2021-03-06T05:20:00Z\", -6.03],\n      [\"2021-03-06T05:30:00Z\"\
+        , -5.933],\n      [\"2021-03-06T05:40:00Z\", -5.745],\n      [\"2021-03-06T05:50:00Z\", -6.066],\n      [\"2021-03-06T06:00:00Z\", -6.003],\n      [\"2021-03-06T06:10:00Z\", -5.911],\n      [\"\
+        2021-03-06T06:20:00Z\", -6.072],\n      [\"2021-03-06T06:30:00Z\", -6.073],\n      [\"2021-03-06T06:40:00Z\", -5.971],\n      [\"2021-03-06T06:50:00Z\", -6.028],\n      [\"2021-03-06T07:00:00Z\"\
+        , -6.185],\n      [\"2021-03-06T07:10:00Z\", -5.901],\n      [\"2021-03-06T07:20:00Z\", -6.031],\n      [\"2021-03-06T07:30:00Z\", -5.897],\n      [\"2021-03-06T07:40:00Z\", -5.701],\n      [\"\
+        2021-03-06T07:50:00Z\", -5.569],\n      [\"2021-03-06T08:00:00Z\", -5.55],\n      [\"2021-03-06T08:10:00Z\", -5.822],\n      [\"2021-03-06T08:20:00Z\", -5.595],\n      [\"2021-03-06T08:30:00Z\"\
+        , -5.607],\n      [\"2021-03-06T08:40:00Z\", -5.532],\n      [\"2021-03-06T08:50:00Z\", -5.438],\n      [\"2021-03-06T09:00:00Z\", -5.398],\n      [\"2021-03-06T09:10:00Z\", -5.567],\n      [\"\
+        2021-03-06T09:20:00Z\", -5.453],\n      [\"2021-03-06T09:30:00Z\", -5.426],\n      [\"2021-03-06T09:40:00Z\", -5.195],\n      [\"2021-03-06T09:50:00Z\", -5.235],\n      [\"2021-03-06T10:00:00Z\"\
+        , -5.191],\n      [\"2021-03-06T10:10:00Z\", -5.09],\n      [\"2021-03-06T10:20:00Z\", -5.182],\n      [\"2021-03-06T10:30:00Z\", -5.188],\n      [\"2021-03-06T10:40:00Z\", -5.18],\n      [\"2021-03-06T10:50:00Z\"\
+        , -5.132],\n      [\"2021-03-06T11:00:00Z\", -4.984],\n      [\"2021-03-06T11:10:00Z\", -4.98],\n      [\"2021-03-06T11:20:00Z\", -4.947],\n      [\"2021-03-06T11:30:00Z\", -5.031],\n      [\"2021-03-06T11:40:00Z\"\
+        , -4.885],\n      [\"2021-03-06T11:50:00Z\", -5.033],\n      [\"2021-03-06T12:00:00Z\", -4.892],\n      [\"2021-03-06T12:10:00Z\", -4.925],\n      [\"2021-03-06T12:20:00Z\", -4.963],\n      [\"\
+        2021-03-06T12:30:00Z\", -4.974],\n      [\"2021-03-06T12:40:00Z\", -4.707],\n      [\"2021-03-06T12:50:00Z\", -4.711],\n      [\"2021-03-06T13:00:00Z\", -4.978],\n      [\"2021-03-06T13:10:00Z\"\
+        , -4.905],\n      [\"2021-03-06T13:20:00Z\", -4.785],\n      [\"2021-03-06T13:30:00Z\", -4.63],\n      [\"2021-03-06T13:40:00Z\", -4.637],\n      [\"2021-03-06T13:50:00Z\", -4.432],\n      [\"2021-03-06T14:00:00Z\"\
+        , -4.59],\n      [\"2021-03-06T14:10:00Z\", -4.576],\n      [\"2021-03-06T14:20:00Z\", -4.43],\n      [\"2021-03-06T14:30:00Z\", -4.299],\n      [\"2021-03-06T14:40:00Z\", -4.2],\n      [\"2021-03-06T14:50:00Z\"\
+        , -4.22],\n      [\"2021-03-06T15:00:00Z\", -4.073],\n      [\"2021-03-06T15:10:00Z\", -4.048],\n      [\"2021-03-06T15:20:00Z\", -3.962],\n      [\"2021-03-06T15:30:00Z\", -3.9],\n      [\"2021-03-06T15:40:00Z\"\
+        , -3.925],\n      [\"2021-03-06T15:50:00Z\", -3.782],\n      [\"2021-03-06T16:00:00Z\", -3.58],\n      [\"2021-03-06T16:10:00Z\", -3.547],\n      [\"2021-03-06T16:20:00Z\", -3.528],\n      [\"2021-03-06T16:30:00Z\"\
+        , -3.509],\n      [\"2021-03-06T16:40:00Z\", -3.326],\n      [\"2021-03-06T16:50:00Z\", -2.995],\n      [\"2021-03-06T17:00:00Z\", -3.139],\n      [\"2021-03-06T17:10:00Z\", -2.846],\n      [\"\
+        2021-03-06T17:20:00Z\", -2.788],\n      [\"2021-03-06T17:30:00Z\", -2.645],\n      [\"2021-03-06T17:40:00Z\", -2.538],\n      [\"2021-03-06T17:50:00Z\", -2.243],\n      [\"2021-03-06T18:00:00Z\"\
+        , -2.252],\n      [\"2021-03-06T18:10:00Z\", -2.26],\n      [\"2021-03-06T18:20:00Z\", -2.347],\n      [\"2021-03-06T18:30:00Z\", -2.343],\n      [\"2021-03-06T18:40:00Z\", -2.365],\n      [\"2021-03-06T18:50:00Z\"\
+        , -2.383],\n      [\"2021-03-06T19:00:00Z\", -2.131],\n      [\"2021-03-06T19:10:00Z\", -2.071],\n      [\"2021-03-06T19:20:00Z\", -2.02],\n      [\"2021-03-06T19:30:00Z\", -2.06],\n      [\"2021-03-06T19:40:00Z\"\
+        , -1.967],\n      [\"2021-03-06T19:50:00Z\", -1.986],\n      [\"2021-03-06T20:00:00Z\", -1.721],\n      [\"2021-03-06T20:10:00Z\", -1.288],\n      [\"2021-03-06T20:20:00Z\", -1.347],\n      [\"\
+        2021-03-06T20:30:00Z\", -1.076],\n      [\"2021-03-06T20:40:00Z\", -1.216],\n      [\"2021-03-06T20:50:00Z\", -1.312],\n      [\"2021-03-06T21:00:00Z\", -1.148],\n      [\"2021-03-06T21:10:00Z\"\
+        , -1.118],\n      [\"2021-03-06T21:20:00Z\", -1.012],\n      [\"2021-03-06T21:30:00Z\", -1.074],\n      [\"2021-03-06T21:40:00Z\", -0.967],\n      [\"2021-03-06T21:50:00Z\", -0.869],\n      [\"\
+        2021-03-06T22:00:00Z\", -0.851],\n      [\"2021-03-06T22:10:00Z\", -0.883],\n      [\"2021-03-06T22:20:00Z\", -0.706],\n      [\"2021-03-06T22:30:00Z\", -0.787],\n      [\"2021-03-06T22:40:00Z\"\
+        , -0.756],\n      [\"2021-03-06T22:50:00Z\", -0.571],\n      [\"2021-03-06T23:00:00Z\", -0.697],\n      [\"2021-03-06T23:10:00Z\", -0.536],\n      [\"2021-03-06T23:20:00Z\", -0.458],\n      [\"\
+        2021-03-06T23:30:00Z\", -0.293],\n      [\"2021-03-06T23:40:00Z\", -0.291],\n      [\"2021-03-06T23:50:00Z\", -0.112],\n      [\"2021-03-07T00:00:00Z\", -0.024],\n      [\"2021-03-07T00:10:00Z\"\
+        , 0.017],\n      [\"2021-03-07T00:20:00Z\", 0.27],\n      [\"2021-03-07T00:30:00Z\", 0.203],\n      [\"2021-03-07T00:40:00Z\", 0.348],\n      [\"2021-03-07T00:50:00Z\", 0.424],\n      [\"2021-03-07T01:00:00Z\"\
+        , 0.471],\n      [\"2021-03-07T01:10:00Z\", 0.54],\n      [\"2021-03-07T01:20:00Z\", 0.563],\n      [\"2021-03-07T01:30:00Z\", 0.618],\n      [\"2021-03-07T01:40:00Z\", 0.644],\n      [\"2021-03-07T01:50:00Z\"\
+        , 0.71],\n      [\"2021-03-07T02:00:00Z\", 0.753],\n      [\"2021-03-07T02:10:00Z\", 0.676],\n      [\"2021-03-07T02:20:00Z\", 0.672],\n      [\"2021-03-07T02:30:00Z\", 0.826],\n      [\"2021-03-07T02:40:00Z\"\
+        , 0.738],\n      [\"2021-03-07T02:50:00Z\", 0.855],\n      [\"2021-03-07T03:00:00Z\", 0.891],\n      [\"2021-03-07T03:10:00Z\", 0.935],\n      [\"2021-03-07T03:20:00Z\", 0.811],\n      [\"2021-03-07T03:30:00Z\"\
+        , 0.653],\n      [\"2021-03-07T03:40:00Z\", 0.483],\n      [\"2021-03-07T03:50:00Z\", 0.422],\n      [\"2021-03-07T04:00:00Z\", 0.179],\n      [\"2021-03-07T04:10:00Z\", 0.085],\n      [\"2021-03-07T04:20:00Z\"\
+        , -0.056],\n      [\"2021-03-07T04:30:00Z\", -0.234],\n      [\"2021-03-07T04:40:00Z\", -0.316],\n      [\"2021-03-07T04:50:00Z\", -0.781],\n      [\"2021-03-07T05:00:00Z\", -1.019],\n      [\"\
+        2021-03-07T05:10:00Z\", -1.126],\n      [\"2021-03-07T05:20:00Z\", -1.255],\n      [\"2021-03-07T05:30:00Z\", -1.342],\n      [\"2021-03-07T05:40:00Z\", -1.486],\n      [\"2021-03-07T05:50:00Z\"\
+        , -1.755],\n      [\"2021-03-07T06:00:00Z\", -1.944],\n      [\"2021-03-07T06:10:00Z\", -1.932],\n      [\"2021-03-07T06:20:00Z\", -2.015],\n      [\"2021-03-07T06:30:00Z\", -2.407],\n      [\"\
+        2021-03-07T06:40:00Z\", -2.545],\n      [\"2021-03-07T06:50:00Z\", -2.501],\n      [\"2021-03-07T07:00:00Z\", -2.521],\n      [\"2021-03-07T07:10:00Z\", -2.515],\n      [\"2021-03-07T07:20:00Z\"\
+        , -2.659],\n      [\"2021-03-07T07:30:00Z\", -2.629],\n      [\"2021-03-07T07:40:00Z\", -2.743],\n      [\"2021-03-07T07:50:00Z\", -2.897],\n      [\"2021-03-07T08:00:00Z\", -2.811],\n      [\"\
+        2021-03-07T08:10:00Z\", -2.837],\n      [\"2021-03-07T08:20:00Z\", -2.949],\n      [\"2021-03-07T08:30:00Z\", -3.07],\n      [\"2021-03-07T08:40:00Z\", -2.934],\n      [\"2021-03-07T08:50:00Z\"\
+        , -3.027],\n      [\"2021-03-07T09:00:00Z\", -3.005],\n      [\"2021-03-07T09:10:00Z\", -2.995],\n      [\"2021-03-07T09:20:00Z\", -2.915],\n      [\"2021-03-07T09:30:00Z\", -2.968],\n      [\"\
+        2021-03-07T09:40:00Z\", -2.951],\n      [\"2021-03-07T09:50:00Z\", -2.756],\n      [\"2021-03-07T10:00:00Z\", -2.971],\n      [\"2021-03-07T10:10:00Z\", -3.011],\n      [\"2021-03-07T10:20:00Z\"\
+        , -2.759],\n      [\"2021-03-07T10:30:00Z\", -2.946],\n      [\"2021-03-07T10:40:00Z\", -2.946],\n      [\"2021-03-07T10:50:00Z\", -2.969],\n      [\"2021-03-07T11:00:00Z\", -2.985],\n      [\"\
+        2021-03-07T11:10:00Z\", -3.061],\n      [\"2021-03-07T11:20:00Z\", -2.999],\n      [\"2021-03-07T11:30:00Z\", -3.018],\n      [\"2021-03-07T11:40:00Z\", -2.988],\n      [\"2021-03-07T11:50:00Z\"\
+        , -3.054],\n      [\"2021-03-07T12:00:00Z\", -2.941],\n      [\"2021-03-07T12:10:00Z\", -2.984],\n      [\"2021-03-07T12:20:00Z\", -2.986],\n      [\"2021-03-07T12:30:00Z\", -2.936],\n      [\"\
+        2021-03-07T12:40:00Z\", -2.966],\n      [\"2021-03-07T12:50:00Z\", -3.061],\n      [\"2021-03-07T13:00:00Z\", -3.135],\n      [\"2021-03-07T13:10:00Z\", -3.164],\n      [\"2021-03-07T13:20:00Z\"\
+        , -3.132],\n      [\"2021-03-07T13:30:00Z\", -3.102],\n      [\"2021-03-07T13:40:00Z\", -3.172],\n      [\"2021-03-07T13:50:00Z\", -3.183],\n      [\"2021-03-07T14:00:00Z\", -2.863],\n      [\"\
+        2021-03-07T14:10:00Z\", -2.881],\n      [\"2021-03-07T14:20:00Z\", -3.143],\n      [\"2021-03-07T14:30:00Z\", -2.959],\n      [\"2021-03-07T14:40:00Z\", -3.015],\n      [\"2021-03-07T14:50:00Z\"\
+        , -2.985],\n      [\"2021-03-07T15:00:00Z\", -3.16],\n      [\"2021-03-07T15:10:00Z\", -3.093],\n      [\"2021-03-07T15:20:00Z\", -2.95],\n      [\"2021-03-07T15:30:00Z\", -3.046],\n      [\"2021-03-07T15:40:00Z\"\
+        , -2.94],\n      [\"2021-03-07T15:50:00Z\", -2.911],\n      [\"2021-03-07T16:00:00Z\", -2.511],\n      [\"2021-03-07T16:10:00Z\", -2.643],\n      [\"2021-03-07T16:20:00Z\", -2.423],\n      [\"2021-03-07T16:30:00Z\"\
+        , -2.319],\n      [\"2021-03-07T16:40:00Z\", -2.453],\n      [\"2021-03-07T16:50:00Z\", -2.463],\n      [\"2021-03-07T17:00:00Z\", -2.521],\n      [\"2021-03-07T17:10:00Z\", -2.5],\n      [\"2021-03-07T17:20:00Z\"\
+        , -2.409],\n      [\"2021-03-07T17:30:00Z\", -2.49],\n      [\"2021-03-07T17:40:00Z\", -2.469],\n      [\"2021-03-07T17:50:00Z\", -2.405],\n      [\"2021-03-07T18:00:00Z\", -2.428],\n      [\"2021-03-07T18:10:00Z\"\
+        , -2.345],\n      [\"2021-03-07T18:20:00Z\", -2.386],\n      [\"2021-03-07T18:30:00Z\", -2.156],\n      [\"2021-03-07T18:40:00Z\", -2.176],\n      [\"2021-03-07T18:50:00Z\", -2.016],\n      [\"\
+        2021-03-07T19:00:00Z\", -1.978],\n      [\"2021-03-07T19:10:00Z\", -1.968],\n      [\"2021-03-07T19:20:00Z\", -1.927],\n      [\"2021-03-07T19:30:00Z\", -1.555],\n      [\"2021-03-07T19:40:00Z\"\
+        , -1.712],\n      [\"2021-03-07T19:50:00Z\", -1.734],\n      [\"2021-03-07T20:00:00Z\", -1.677],\n      [\"2021-03-07T20:10:00Z\", -1.717],\n      [\"2021-03-07T20:20:00Z\", -1.576],\n      [\"\
+        2021-03-07T20:30:00Z\", -1.6],\n      [\"2021-03-07T20:40:00Z\", -1.594],\n      [\"2021-03-07T20:50:00Z\", -1.698],\n      [\"2021-03-07T21:00:00Z\", -1.522],\n      [\"2021-03-07T21:10:00Z\",\
+        \ -1.325],\n      [\"2021-03-07T21:20:00Z\", -1.36],\n      [\"2021-03-07T21:30:00Z\", -1.263],\n      [\"2021-03-07T21:40:00Z\", -1.187],\n      [\"2021-03-07T21:50:00Z\", -1.238],\n      [\"2021-03-07T22:00:00Z\"\
+        , -1.174],\n      [\"2021-03-07T22:10:00Z\", -1.219],\n      [\"2021-03-07T22:20:00Z\", -1.108],\n      [\"2021-03-07T22:30:00Z\", -0.967],\n      [\"2021-03-07T22:40:00Z\", -0.893],\n      [\"\
+        2021-03-07T22:50:00Z\", -0.799],\n      [\"2021-03-07T23:00:00Z\", -0.615],\n      [\"2021-03-07T23:10:00Z\", -0.617],\n      [\"2021-03-07T23:20:00Z\", -0.373],\n      [\"2021-03-07T23:30:00Z\"\
+        , -0.433],\n      [\"2021-03-07T23:40:00Z\", -0.281],\n      [\"2021-03-07T23:50:00Z\", -0.17],\n      [\"2021-03-08T00:00:00Z\", -0.18],\n      [\"2021-03-08T00:10:00Z\", 0.027],\n      [\"2021-03-08T00:20:00Z\"\
+        , -0.006],\n      [\"2021-03-08T00:30:00Z\", 0.048],\n      [\"2021-03-08T00:40:00Z\", 0.214],\n      [\"2021-03-08T00:50:00Z\", 0.311],\n      [\"2021-03-08T01:00:00Z\", 0.465],\n      [\"2021-03-08T01:10:00Z\"\
+        , 0.392],\n      [\"2021-03-08T01:20:00Z\", 0.575],\n      [\"2021-03-08T01:30:00Z\", 0.585],\n      [\"2021-03-08T01:40:00Z\", 0.769],\n      [\"2021-03-08T01:50:00Z\", 0.676],\n      [\"2021-03-08T02:00:00Z\"\
+        , 0.801],\n      [\"2021-03-08T02:10:00Z\", 0.803],\n      [\"2021-03-08T02:20:00Z\", 0.927],\n      [\"2021-03-08T02:30:00Z\", 0.979],\n      [\"2021-03-08T02:40:00Z\", 0.926],\n      [\"2021-03-08T02:50:00Z\"\
+        , 0.906],\n      [\"2021-03-08T03:00:00Z\", 1.031],\n      [\"2021-03-08T03:10:00Z\", 1.076],\n      [\"2021-03-08T03:20:00Z\", 1.073],\n      [\"2021-03-08T03:30:00Z\", 1.086],\n      [\"2021-03-08T03:40:00Z\"\
+        , 1.093],\n      [\"2021-03-08T03:50:00Z\", 1.171],\n      [\"2021-03-08T04:00:00Z\", 1.141],\n      [\"2021-03-08T04:10:00Z\", 1.174],\n      [\"2021-03-08T04:20:00Z\", 1.203],\n      [\"2021-03-08T04:30:00Z\"\
+        , 1.17],\n      [\"2021-03-08T04:40:00Z\", 1.18],\n      [\"2021-03-08T04:50:00Z\", 1.128],\n      [\"2021-03-08T05:00:00Z\", 1.139],\n      [\"2021-03-08T05:10:00Z\", 1.126],\n      [\"2021-03-08T05:20:00Z\"\
+        , 1.04],\n      [\"2021-03-08T05:30:00Z\", 1.0],\n      [\"2021-03-08T05:40:00Z\", 0.977],\n      [\"2021-03-08T05:50:00Z\", 0.816],\n      [\"2021-03-08T06:00:00Z\", 0.708],\n      [\"2021-03-08T06:10:00Z\"\
+        , 0.616],\n      [\"2021-03-08T06:20:00Z\", 0.545],\n      [\"2021-03-08T06:30:00Z\", 0.463],\n      [\"2021-03-08T06:40:00Z\", 0.365],\n      [\"2021-03-08T06:50:00Z\", 0.19],\n      [\"2021-03-08T07:00:00Z\"\
+        , 0.2],\n      [\"2021-03-08T07:10:00Z\", 0.171],\n      [\"2021-03-08T07:20:00Z\", 0.11],\n      [\"2021-03-08T07:30:00Z\", 0.073],\n      [\"2021-03-08T07:40:00Z\", 0.039],\n      [\"2021-03-08T07:50:00Z\"\
+        , -0.087],\n      [\"2021-03-08T08:00:00Z\", -0.117],\n      [\"2021-03-08T08:10:00Z\", -0.06],\n      [\"2021-03-08T08:20:00Z\", -0.155],\n      [\"2021-03-08T08:30:00Z\", -0.175],\n      [\"2021-03-08T08:40:00Z\"\
+        , -0.354],\n      [\"2021-03-08T08:50:00Z\", -0.402],\n      [\"2021-03-08T09:00:00Z\", -0.311],\n      [\"2021-03-08T09:10:00Z\", -0.336],\n      [\"2021-03-08T09:20:00Z\", -0.346],\n      [\"\
+        2021-03-08T09:30:00Z\", -0.46],\n      [\"2021-03-08T09:40:00Z\", -0.422],\n      [\"2021-03-08T09:50:00Z\", -0.611],\n      [\"2021-03-08T10:00:00Z\", -0.571],\n      [\"2021-03-08T10:10:00Z\"\
+        , -0.697],\n      [\"2021-03-08T10:20:00Z\", -0.695],\n      [\"2021-03-08T10:30:00Z\", -0.779],\n      [\"2021-03-08T10:40:00Z\", -0.858],\n      [\"2021-03-08T10:50:00Z\", -0.839],\n      [\"\
+        2021-03-08T11:00:00Z\", -1.042],\n      [\"2021-03-08T11:10:00Z\", -0.996],\n      [\"2021-03-08T11:20:00Z\", -0.996],\n      [\"2021-03-08T11:30:00Z\", -0.992],\n      [\"2021-03-08T11:40:00Z\"\
+        , -1.081],\n      [\"2021-03-08T11:50:00Z\", -0.954],\n      [\"2021-03-08T12:00:00Z\", -1.039],\n      [\"2021-03-08T12:10:00Z\", -0.935],\n      [\"2021-03-08T12:20:00Z\", -0.916],\n      [\"\
+        2021-03-08T12:30:00Z\", -0.801],\n      [\"2021-03-08T12:40:00Z\", -0.959],\n      [\"2021-03-08T12:50:00Z\", -0.967],\n      [\"2021-03-08T13:00:00Z\", -0.884],\n      [\"2021-03-08T13:10:00Z\"\
+        , -0.979],\n      [\"2021-03-08T13:20:00Z\", -0.979],\n      [\"2021-03-08T13:30:00Z\", -1.158],\n      [\"2021-03-08T13:40:00Z\", -1.135],\n      [\"2021-03-08T13:50:00Z\", -1.276],\n      [\"\
+        2021-03-08T14:00:00Z\", -1.404],\n      [\"2021-03-08T14:10:00Z\", -1.467],\n      [\"2021-03-08T14:20:00Z\", -1.387],\n      [\"2021-03-08T14:30:00Z\", -1.372],\n      [\"2021-03-08T14:40:00Z\"\
+        , -1.501],\n      [\"2021-03-08T14:50:00Z\", -1.586],\n      [\"2021-03-08T15:00:00Z\", -1.608],\n      [\"2021-03-08T15:10:00Z\", -1.631],\n      [\"2021-03-08T15:20:00Z\", -1.659],\n      [\"\
+        2021-03-08T15:30:00Z\", -1.433],\n      [\"2021-03-08T15:40:00Z\", -1.372],\n      [\"2021-03-08T15:50:00Z\", -1.125],\n      [\"2021-03-08T16:00:00Z\", -1.319],\n      [\"2021-03-08T16:10:00Z\"\
+        , -1.374],\n      [\"2021-03-08T16:20:00Z\", -1.371],\n      [\"2021-03-08T16:30:00Z\", -1.304],\n      [\"2021-03-08T16:40:00Z\", -1.327],\n      [\"2021-03-08T16:50:00Z\", -1.242],\n      [\"\
+        2021-03-08T17:00:00Z\", -1.216],\n      [\"2021-03-08T17:10:00Z\", -1.214],\n      [\"2021-03-08T17:20:00Z\", -1.06],\n      [\"2021-03-08T17:30:00Z\", -1.011],\n      [\"2021-03-08T17:40:00Z\"\
+        , -1.15],\n      [\"2021-03-08T17:50:00Z\", -0.971],\n      [\"2021-03-08T18:00:00Z\", -0.797],\n      [\"2021-03-08T18:10:00Z\", -0.739],\n      [\"2021-03-08T18:20:00Z\", -0.559],\n      [\"2021-03-08T18:30:00Z\"\
+        , -0.481],\n      [\"2021-03-08T18:40:00Z\", -0.255],\n      [\"2021-03-08T18:50:00Z\", -0.253],\n      [\"2021-03-08T19:00:00Z\", -0.017],\n      [\"2021-03-08T19:10:00Z\", -0.159],\n      [\"\
+        2021-03-08T19:20:00Z\", -0.003],\n      [\"2021-03-08T19:30:00Z\", 0.043],\n      [\"2021-03-08T19:40:00Z\", 0.042],\n      [\"2021-03-08T19:50:00Z\", 0.055],\n      [\"2021-03-08T20:00:00Z\", -0.076],\n\
+        \      [\"2021-03-08T20:10:00Z\", -0.052],\n      [\"2021-03-08T20:20:00Z\", 0.033],\n      [\"2021-03-08T20:30:00Z\", 0.076],\n      [\"2021-03-08T20:40:00Z\", 0.066],\n      [\"2021-03-08T20:50:00Z\"\
+        , 0.265],\n      [\"2021-03-08T21:00:00Z\", 0.42],\n      [\"2021-03-08T21:10:00Z\", 0.5],\n      [\"2021-03-08T21:20:00Z\", 0.595],\n      [\"2021-03-08T21:30:00Z\", 0.765],\n      [\"2021-03-08T21:40:00Z\"\
+        , 0.897],\n      [\"2021-03-08T21:50:00Z\", 0.849],\n      [\"2021-03-08T22:00:00Z\", 0.902],\n      [\"2021-03-08T22:10:00Z\", 0.951],\n      [\"2021-03-08T22:20:00Z\", 0.989],\n      [\"2021-03-08T22:30:00Z\"\
+        , 0.988],\n      [\"2021-03-08T22:40:00Z\", 1.083],\n      [\"2021-03-08T22:50:00Z\", 1.236],\n      [\"2021-03-08T23:00:00Z\", 1.282],\n      [\"2021-03-08T23:10:00Z\", 1.22],\n      [\"2021-03-08T23:20:00Z\"\
+        , 1.355],\n      [\"2021-03-08T23:30:00Z\", 1.405],\n      [\"2021-03-08T23:40:00Z\", 1.35],\n      [\"2021-03-08T23:50:00Z\", 1.544],\n      [\"2021-03-09T00:00:00Z\", 1.469],\n      [\"2021-03-09T00:10:00Z\"\
+        , 1.581],\n      [\"2021-03-09T00:20:00Z\", 1.622],\n      [\"2021-03-09T00:30:00Z\", 1.716],\n      [\"2021-03-09T00:40:00Z\", 1.826],\n      [\"2021-03-09T00:50:00Z\", 1.879],\n      [\"2021-03-09T01:00:00Z\"\
+        , 1.935],\n      [\"2021-03-09T01:10:00Z\", 2.014],\n      [\"2021-03-09T01:20:00Z\", 2.025],\n      [\"2021-03-09T01:30:00Z\", 2.08],\n      [\"2021-03-09T01:40:00Z\", 2.12],\n      [\"2021-03-09T01:50:00Z\"\
+        , 2.155],\n      [\"2021-03-09T02:00:00Z\", 2.318],\n      [\"2021-03-09T02:10:00Z\", 2.341],\n      [\"2021-03-09T02:20:00Z\", 2.419],\n      [\"2021-03-09T02:30:00Z\", 2.436],\n      [\"2021-03-09T02:40:00Z\"\
+        , 2.43],\n      [\"2021-03-09T02:50:00Z\", 2.524],\n      [\"2021-03-09T03:00:00Z\", 2.502],\n      [\"2021-03-09T03:10:00Z\", 2.521],\n      [\"2021-03-09T03:20:00Z\", 2.621],\n      [\"2021-03-09T03:30:00Z\"\
+        , 2.604],\n      [\"2021-03-09T03:40:00Z\", 2.633],\n      [\"2021-03-09T03:50:00Z\", 2.604],\n      [\"2021-03-09T04:00:00Z\", 2.656],\n      [\"2021-03-09T04:10:00Z\", 2.666],\n      [\"2021-03-09T04:20:00Z\"\
+        , 2.63],\n      [\"2021-03-09T04:30:00Z\", 2.724],\n      [\"2021-03-09T04:40:00Z\", 2.664],\n      [\"2021-03-09T04:50:00Z\", 2.759],\n      [\"2021-03-09T05:00:00Z\", 2.756],\n      [\"2021-03-09T05:10:00Z\"\
+        , 2.858],\n      [\"2021-03-09T05:20:00Z\", 2.862],\n      [\"2021-03-09T05:30:00Z\", 2.843],\n      [\"2021-03-09T05:40:00Z\", 2.771],\n      [\"2021-03-09T05:50:00Z\", 2.804],\n      [\"2021-03-09T06:00:00Z\"\
+        , 2.822],\n      [\"2021-03-09T06:10:00Z\", 2.801],\n      [\"2021-03-09T06:20:00Z\", 2.791],\n      [\"2021-03-09T06:30:00Z\", 2.818],\n      [\"2021-03-09T06:40:00Z\", 2.808],\n      [\"2021-03-09T06:50:00Z\"\
+        , 2.829],\n      [\"2021-03-09T07:00:00Z\", 2.888],\n      [\"2021-03-09T07:10:00Z\", 2.936],\n      [\"2021-03-09T07:20:00Z\", 3.107],\n      [\"2021-03-09T07:30:00Z\", 3.163],\n      [\"2021-03-09T07:40:00Z\"\
+        , 3.169],\n      [\"2021-03-09T07:50:00Z\", 3.147],\n      [\"2021-03-09T08:00:00Z\", 3.21],\n      [\"2021-03-09T08:10:00Z\", 3.188],\n      [\"2021-03-09T08:20:00Z\", 3.135],\n      [\"2021-03-09T08:30:00Z\"\
+        , 3.14],\n      [\"2021-03-09T08:40:00Z\", 3.191],\n      [\"2021-03-09T08:50:00Z\", 3.279],\n      [\"2021-03-09T09:00:00Z\", 3.333],\n      [\"2021-03-09T09:10:00Z\", 3.436],\n      [\"2021-03-09T09:20:00Z\"\
+        , 3.553],\n      [\"2021-03-09T09:30:00Z\", 3.68],\n      [\"2021-03-09T09:40:00Z\", 3.701],\n      [\"2021-03-09T09:50:00Z\", 3.793],\n      [\"2021-03-09T10:00:00Z\", 3.006],\n      [\"2021-03-09T10:10:00Z\"\
+        , 3.055],\n      [\"2021-03-09T10:20:00Z\", 3.054],\n      [\"2021-03-09T10:30:00Z\", 2.796],\n      [\"2021-03-09T10:40:00Z\", 2.674],\n      [\"2021-03-09T10:50:00Z\", 2.354],\n      [\"2021-03-09T11:00:00Z\"\
+        , 2.472],\n      [\"2021-03-09T11:10:00Z\", 2.678],\n      [\"2021-03-09T11:20:00Z\", 2.755],\n      [\"2021-03-09T11:30:00Z\", 2.9],\n      [\"2021-03-09T11:40:00Z\", 3.314],\n      [\"2021-03-09T11:50:00Z\"\
+        , 3.407],\n      [\"2021-03-09T12:00:00Z\", 3.428],\n      [\"2021-03-09T12:10:00Z\", 3.51],\n      [\"2021-03-09T12:20:00Z\", 3.509],\n      [\"2021-03-09T12:30:00Z\", 3.582],\n      [\"2021-03-09T12:40:00Z\"\
+        , 3.731],\n      [\"2021-03-09T12:50:00Z\", 3.938],\n      [\"2021-03-09T13:00:00Z\", 4.226],\n      [\"2021-03-09T13:10:00Z\", 4.513],\n      [\"2021-03-09T13:20:00Z\", 4.535],\n      [\"2021-03-09T13:30:00Z\"\
+        , 4.651],\n      [\"2021-03-09T13:40:00Z\", 4.698],\n      [\"2021-03-09T13:50:00Z\", 4.796],\n      [\"2021-03-09T14:00:00Z\", 4.83],\n      [\"2021-03-09T14:10:00Z\", 4.93],\n      [\"2021-03-09T14:20:00Z\"\
+        , 5.015],\n      [\"2021-03-09T14:30:00Z\", 5.009],\n      [\"2021-03-09T14:40:00Z\", 5.035],\n      [\"2021-03-09T14:50:00Z\", 5.078],\n      [\"2021-03-09T15:00:00Z\", 5.105],\n      [\"2021-03-09T15:10:00Z\"\
+        , 5.024],\n      [\"2021-03-09T15:20:00Z\", 5.013],\n      [\"2021-03-09T15:30:00Z\", 5.056],\n      [\"2021-03-09T15:40:00Z\", 5.053],\n      [\"2021-03-09T15:50:00Z\", 5.058],\n      [\"2021-03-09T16:00:00Z\"\
+        , 5.032],\n      [\"2021-03-09T16:10:00Z\", 5.005],\n      [\"2021-03-09T16:20:00Z\", 4.957],\n      [\"2021-03-09T16:30:00Z\", 4.977],\n      [\"2021-03-09T16:40:00Z\", 5.045],\n      [\"2021-03-09T16:50:00Z\"\
+        , 5.125],\n      [\"2021-03-09T17:00:00Z\", 5.022],\n      [\"2021-03-09T17:10:00Z\", 4.972],\n      [\"2021-03-09T17:20:00Z\", 5.0],\n      [\"2021-03-09T17:30:00Z\", 4.95],\n      [\"2021-03-09T17:40:00Z\"\
+        , 4.942],\n      [\"2021-03-09T17:50:00Z\", 4.969],\n      [\"2021-03-09T18:00:00Z\", 4.994],\n      [\"2021-03-09T18:10:00Z\", 5.01],\n      [\"2021-03-09T18:20:00Z\", 5.049],\n      [\"2021-03-09T18:30:00Z\"\
+        , 5.029],\n      [\"2021-03-09T18:40:00Z\", 5.063],\n      [\"2021-03-09T18:50:00Z\", 5.14],\n      [\"2021-03-09T19:00:00Z\", 5.103],\n      [\"2021-03-09T19:10:00Z\", 5.106],\n      [\"2021-03-09T19:20:00Z\"\
+        , 5.102],\n      [\"2021-03-09T19:30:00Z\", 5.002],\n      [\"2021-03-09T19:40:00Z\", 5.069],\n      [\"2021-03-09T19:50:00Z\", 5.139],\n      [\"2021-03-09T20:00:00Z\", 5.13],\n      [\"2021-03-09T20:10:00Z\"\
+        , 5.157],\n      [\"2021-03-09T20:20:00Z\", 5.344],\n      [\"2021-03-09T20:30:00Z\", 5.408],\n      [\"2021-03-09T20:40:00Z\", 5.433],\n      [\"2021-03-09T20:50:00Z\", 5.578],\n      [\"2021-03-09T21:00:00Z\"\
+        , 5.568],\n      [\"2021-03-09T21:10:00Z\", 5.647],\n      [\"2021-03-09T21:20:00Z\", 5.777],\n      [\"2021-03-09T21:30:00Z\", 5.806],\n      [\"2021-03-09T21:40:00Z\", 5.963],\n      [\"2021-03-09T21:50:00Z\"\
+        , 6.028],\n      [\"2021-03-09T22:00:00Z\", 6.013],\n      [\"2021-03-09T22:10:00Z\", 5.995],\n      [\"2021-03-09T22:20:00Z\", 5.949],\n      [\"2021-03-09T22:30:00Z\", 5.861],\n      [\"2021-03-09T22:40:00Z\"\
+        , 5.755],\n      [\"2021-03-09T22:50:00Z\", 5.673],\n      [\"2021-03-09T23:00:00Z\", 5.554],\n      [\"2021-03-09T23:10:00Z\", 5.474],\n      [\"2021-03-09T23:20:00Z\", 5.402],\n      [\"2021-03-09T23:30:00Z\"\
+        , 5.334],\n      [\"2021-03-09T23:40:00Z\", 5.284],\n      [\"2021-03-09T23:50:00Z\", 5.158],\n      [\"2021-03-10T00:00:00Z\", 5.048],\n      [\"2021-03-10T00:10:00Z\", 4.96],\n      [\"2021-03-10T00:20:00Z\"\
+        , 4.778],\n      [\"2021-03-10T00:30:00Z\", 4.628],\n      [\"2021-03-10T00:40:00Z\", 4.515],\n      [\"2021-03-10T00:50:00Z\", 4.339],\n      [\"2021-03-10T01:00:00Z\", 4.168],\n      [\"2021-03-10T01:10:00Z\"\
+        , 3.972],\n      [\"2021-03-10T01:20:00Z\", 3.794],\n      [\"2021-03-10T01:30:00Z\", 3.652],\n      [\"2021-03-10T01:40:00Z\", 3.548],\n      [\"2021-03-10T01:50:00Z\", 3.496],\n      [\"2021-03-10T02:00:00Z\"\
+        , 3.416],\n      [\"2021-03-10T02:10:00Z\", 3.332],\n      [\"2021-03-10T02:20:00Z\", 3.308],\n      [\"2021-03-10T02:30:00Z\", 3.185],\n      [\"2021-03-10T02:40:00Z\", 3.23],\n      [\"2021-03-10T02:50:00Z\"\
+        , 3.199],\n      [\"2021-03-10T03:00:00Z\", 3.184],\n      [\"2021-03-10T03:10:00Z\", 3.124],\n      [\"2021-03-10T03:20:00Z\", 3.076],\n      [\"2021-03-10T03:30:00Z\", 3.102],\n      [\"2021-03-10T03:40:00Z\"\
+        , 3.032],\n      [\"2021-03-10T03:50:00Z\", 3.028],\n      [\"2021-03-10T04:00:00Z\", 2.975],\n      [\"2021-03-10T04:10:00Z\", 2.954],\n      [\"2021-03-10T04:20:00Z\", 2.973],\n      [\"2021-03-10T04:30:00Z\"\
+        , 2.928],\n      [\"2021-03-10T04:40:00Z\", 2.936],\n      [\"2021-03-10T04:50:00Z\", 2.886],\n      [\"2021-03-10T05:00:00Z\", 2.87],\n      [\"2021-03-10T05:10:00Z\", 2.888],\n      [\"2021-03-10T05:20:00Z\"\
+        , 2.838],\n      [\"2021-03-10T05:30:00Z\", 2.859],\n      [\"2021-03-10T05:40:00Z\", 2.811],\n      [\"2021-03-10T05:50:00Z\", 2.83],\n      [\"2021-03-10T06:00:00Z\", 2.767],\n      [\"2021-03-10T06:10:00Z\"\
+        , 2.726],\n      [\"2021-03-10T06:20:00Z\", 2.813],\n      [\"2021-03-10T06:30:00Z\", 2.675],\n      [\"2021-03-10T06:40:00Z\", 2.703],\n      [\"2021-03-10T06:50:00Z\", 2.685],\n      [\"2021-03-10T07:00:00Z\"\
+        , 2.634],\n      [\"2021-03-10T07:10:00Z\", 2.524],\n      [\"2021-03-10T07:20:00Z\", 2.357],\n      [\"2021-03-10T07:30:00Z\", 2.364],\n      [\"2021-03-10T07:40:00Z\", 2.328],\n      [\"2021-03-10T07:50:00Z\"\
+        , 2.291],\n      [\"2021-03-10T08:00:00Z\", 2.309],\n      [\"2021-03-10T08:10:00Z\", 2.29],\n      [\"2021-03-10T08:20:00Z\", 2.256],\n      [\"2021-03-10T08:30:00Z\", 2.244],\n      [\"2021-03-10T08:40:00Z\"\
+        , 2.253],\n      [\"2021-03-10T08:50:00Z\", 2.138],\n      [\"2021-03-10T09:00:00Z\", 2.108],\n      [\"2021-03-10T09:10:00Z\", 2.082],\n      [\"2021-03-10T09:20:00Z\", 2.081],\n      [\"2021-03-10T09:30:00Z\"\
+        , 2.058],\n      [\"2021-03-10T09:40:00Z\", 2.054],\n      [\"2021-03-10T09:50:00Z\", 2.09],\n      [\"2021-03-10T10:00:00Z\", 2.056],\n      [\"2021-03-10T10:10:00Z\", 2.176],\n      [\"2021-03-10T10:20:00Z\"\
+        , 2.091],\n      [\"2021-03-10T10:30:00Z\", 2.106],\n      [\"2021-03-10T10:40:00Z\", 2.104],\n      [\"2021-03-10T10:50:00Z\", 2.159],\n      [\"2021-03-10T11:00:00Z\", 2.134],\n      [\"2021-03-10T11:10:00Z\"\
+        , 2.093],\n      [\"2021-03-10T11:20:00Z\", 2.154],\n      [\"2021-03-10T11:30:00Z\", 2.261],\n      [\"2021-03-10T11:40:00Z\", 2.328],\n      [\"2021-03-10T11:50:00Z\", 2.355],\n      [\"2021-03-10T12:00:00Z\"\
+        , 2.404],\n      [\"2021-03-10T12:10:00Z\", 2.318],\n      [\"2021-03-10T12:20:00Z\", 2.28],\n      [\"2021-03-10T12:30:00Z\", 2.398],\n      [\"2021-03-10T12:40:00Z\", 2.388],\n      [\"2021-03-10T12:50:00Z\"\
+        , 2.322],\n      [\"2021-03-10T13:00:00Z\", 2.378],\n      [\"2021-03-10T13:10:00Z\", 2.368],\n      [\"2021-03-10T13:20:00Z\", 2.422],\n      [\"2021-03-10T13:30:00Z\", 2.425],\n      [\"2021-03-10T13:40:00Z\"\
+        , 2.406],\n      [\"2021-03-10T13:50:00Z\", 2.413],\n      [\"2021-03-10T14:00:00Z\", 2.533],\n      [\"2021-03-10T14:10:00Z\", 2.584],\n      [\"2021-03-10T14:20:00Z\", 2.432],\n      [\"2021-03-10T14:30:00Z\"\
+        , 2.631],\n      [\"2021-03-10T14:40:00Z\", 2.623],\n      [\"2021-03-10T14:50:00Z\", 2.766],\n      [\"2021-03-10T15:00:00Z\", 2.493],\n      [\"2021-03-10T15:10:00Z\", 2.521],\n      [\"2021-03-10T15:20:00Z\"\
+        , 2.597],\n      [\"2021-03-10T15:30:00Z\", 2.439],\n      [\"2021-03-10T15:40:00Z\", 2.457],\n      [\"2021-03-10T15:50:00Z\", 2.482],\n      [\"2021-03-10T16:00:00Z\", 2.469],\n      [\"2021-03-10T16:10:00Z\"\
+        , 2.431],\n      [\"2021-03-10T16:20:00Z\", 2.426],\n      [\"2021-03-10T16:30:00Z\", 2.374],\n      [\"2021-03-10T16:40:00Z\", 2.358],\n      [\"2021-03-10T16:50:00Z\", 2.48],\n      [\"2021-03-10T17:00:00Z\"\
+        , 2.533],\n      [\"2021-03-10T17:10:00Z\", 2.783],\n      [\"2021-03-10T17:20:00Z\", 2.813],\n      [\"2021-03-10T17:30:00Z\", 3.009],\n      [\"2021-03-10T17:40:00Z\", 3.087],\n      [\"2021-03-10T17:50:00Z\"\
+        , 3.032],\n      [\"2021-03-10T18:00:00Z\", 3.032],\n      [\"2021-03-10T18:10:00Z\", 2.97],\n      [\"2021-03-10T18:20:00Z\", 2.96],\n      [\"2021-03-10T18:30:00Z\", 2.917],\n      [\"2021-03-10T18:40:00Z\"\
+        , 2.978],\n      [\"2021-03-10T18:50:00Z\", 3.107],\n      [\"2021-03-10T19:00:00Z\", 3.022],\n      [\"2021-03-10T19:10:00Z\", 3.051],\n      [\"2021-03-10T19:20:00Z\", 3.339],\n      [\"2021-03-10T19:30:00Z\"\
+        , 3.28],\n      [\"2021-03-10T19:40:00Z\", 3.152],\n      [\"2021-03-10T19:50:00Z\", 3.211],\n      [\"2021-03-10T20:00:00Z\", 3.335],\n      [\"2021-03-10T20:10:00Z\", 3.145],\n      [\"2021-03-10T20:20:00Z\"\
+        , 3.288],\n      [\"2021-03-10T20:30:00Z\", 3.427],\n      [\"2021-03-10T20:40:00Z\", 3.431],\n      [\"2021-03-10T20:50:00Z\", 3.455],\n      [\"2021-03-10T21:00:00Z\", 3.426],\n      [\"2021-03-10T21:10:00Z\"\
+        , 3.442],\n      [\"2021-03-10T21:20:00Z\", 3.469],\n      [\"2021-03-10T21:30:00Z\", 3.586],\n      [\"2021-03-10T21:40:00Z\", 3.571],\n      [\"2021-03-10T21:50:00Z\", 3.551],\n      [\"2021-03-10T22:00:00Z\"\
+        , 3.662],\n      [\"2021-03-10T22:10:00Z\", 3.718],\n      [\"2021-03-10T22:20:00Z\", 3.648],\n      [\"2021-03-10T22:30:00Z\", 3.695],\n      [\"2021-03-10T22:40:00Z\", 3.756],\n      [\"2021-03-10T22:50:00Z\"\
+        , 3.754],\n      [\"2021-03-10T23:00:00Z\", 3.829],\n      [\"2021-03-10T23:10:00Z\", 3.802],\n      [\"2021-03-10T23:20:00Z\", 3.892],\n      [\"2021-03-10T23:30:00Z\", 3.915],\n      [\"2021-03-10T23:40:00Z\"\
+        , 3.962],\n      [\"2021-03-10T23:50:00Z\", 3.991],\n      [\"2021-03-11T00:00:00Z\", 3.988],\n      [\"2021-03-11T00:10:00Z\", 4.051],\n      [\"2021-03-11T00:20:00Z\", 4.072],\n      [\"2021-03-11T00:30:00Z\"\
+        , 4.146],\n      [\"2021-03-11T00:40:00Z\", 4.151],\n      [\"2021-03-11T00:50:00Z\", 4.187],\n      [\"2021-03-11T01:00:00Z\", 4.193],\n      [\"2021-03-11T01:10:00Z\", 4.237],\n      [\"2021-03-11T01:20:00Z\"\
+        , 4.257],\n      [\"2021-03-11T01:30:00Z\", 4.257],\n      [\"2021-03-11T01:40:00Z\", 4.265],\n      [\"2021-03-11T01:50:00Z\", 4.295],\n      [\"2021-03-11T02:00:00Z\", 4.291],\n      [\"2021-03-11T02:10:00Z\"\
+        , 4.351],\n      [\"2021-03-11T02:20:00Z\", 4.369],\n      [\"2021-03-11T02:30:00Z\", 4.435],\n      [\"2021-03-11T02:40:00Z\", 4.455],\n      [\"2021-03-11T02:50:00Z\", 4.514],\n      [\"2021-03-11T03:00:00Z\"\
+        , 4.596],\n      [\"2021-03-11T03:10:00Z\", 4.667],\n      [\"2021-03-11T03:20:00Z\", 4.683],\n      [\"2021-03-11T03:30:00Z\", 4.706],\n      [\"2021-03-11T03:40:00Z\", 4.745],\n      [\"2021-03-11T03:50:00Z\"\
+        , 4.767],\n      [\"2021-03-11T04:00:00Z\", 4.758],\n      [\"2021-03-11T04:10:00Z\", 4.8],\n      [\"2021-03-11T04:20:00Z\", 4.809],\n      [\"2021-03-11T04:30:00Z\", 4.818],\n      [\"2021-03-11T04:40:00Z\"\
+        , 4.868],\n      [\"2021-03-11T04:50:00Z\", 4.87],\n      [\"2021-03-11T05:00:00Z\", 4.912],\n      [\"2021-03-11T05:10:00Z\", 4.923],\n      [\"2021-03-11T05:20:00Z\", 4.948],\n      [\"2021-03-11T05:30:00Z\"\
+        , 4.981],\n      [\"2021-03-11T05:40:00Z\", 5.011],\n      [\"2021-03-11T05:50:00Z\", 5.02],\n      [\"2021-03-11T06:00:00Z\", 5.019],\n      [\"2021-03-11T06:10:00Z\", 5.021],\n      [\"2021-03-11T06:20:00Z\"\
+        , 5.042],\n      [\"2021-03-11T06:30:00Z\", 5.04],\n      [\"2021-03-11T06:40:00Z\", 5.082],\n      [\"2021-03-11T06:50:00Z\", 5.063],\n      [\"2021-03-11T07:00:00Z\", 5.049],\n      [\"2021-03-11T07:10:00Z\"\
+        , 5.086],\n      [\"2021-03-11T07:20:00Z\", 5.096],\n      [\"2021-03-11T07:30:00Z\", 5.113],\n      [\"2021-03-11T07:40:00Z\", 5.124],\n      [\"2021-03-11T07:50:00Z\", 5.151],\n      [\"2021-03-11T08:00:00Z\"\
+        , 5.159],\n      [\"2021-03-11T08:10:00Z\", 5.165],\n      [\"2021-03-11T08:20:00Z\", 5.187],\n      [\"2021-03-11T08:30:00Z\", 5.197],\n      [\"2021-03-11T08:40:00Z\", 5.21],\n      [\"2021-03-11T08:50:00Z\"\
+        , 5.249],\n      [\"2021-03-11T09:00:00Z\", 5.258],\n      [\"2021-03-11T09:10:00Z\", 5.28],\n      [\"2021-03-11T09:20:00Z\", 5.306],\n      [\"2021-03-11T09:30:00Z\", 5.325],\n      [\"2021-03-11T09:40:00Z\"\
+        , 5.344],\n      [\"2021-03-11T09:50:00Z\", 5.365],\n      [\"2021-03-11T10:00:00Z\", 5.387],\n      [\"2021-03-11T10:10:00Z\", 5.414],\n      [\"2021-03-11T10:20:00Z\", 5.452],\n      [\"2021-03-11T10:30:00Z\"\
+        , 5.479],\n      [\"2021-03-11T10:40:00Z\", 5.509],\n      [\"2021-03-11T10:50:00Z\", 5.534],\n      [\"2021-03-11T11:00:00Z\", 5.551],\n      [\"2021-03-11T11:10:00Z\", 5.586],\n      [\"2021-03-11T11:20:00Z\"\
+        , 5.667],\n      [\"2021-03-11T11:30:00Z\", 5.72],\n      [\"2021-03-11T11:40:00Z\", 5.733],\n      [\"2021-03-11T11:50:00Z\", 5.753],\n      [\"2021-03-11T12:00:00Z\", 5.849],\n      [\"2021-03-11T12:10:00Z\"\
+        , 5.904],\n      [\"2021-03-11T12:20:00Z\", 5.891],\n      [\"2021-03-11T12:30:00Z\", 5.971],\n      [\"2021-03-11T12:40:00Z\", 5.968],\n      [\"2021-03-11T12:50:00Z\", 6.029],\n      [\"2021-03-11T13:00:00Z\"\
+        , 6.178],\n      [\"2021-03-11T13:10:00Z\", 6.174],\n      [\"2021-03-11T13:20:00Z\", 6.17],\n      [\"2021-03-11T13:30:00Z\", 6.186],\n      [\"2021-03-11T13:40:00Z\", 6.292],\n      [\"2021-03-11T13:50:00Z\"\
+        , 6.376],\n      [\"2021-03-11T14:00:00Z\", 6.407],\n      [\"2021-03-11T14:10:00Z\", 6.466],\n      [\"2021-03-11T14:20:00Z\", 6.622],\n      [\"2021-03-11T14:30:00Z\", 6.488],\n      [\"2021-03-11T14:40:00Z\"\
+        , 6.622],\n      [\"2021-03-11T14:50:00Z\", 6.524],\n      [\"2021-03-11T15:00:00Z\", 6.544],\n      [\"2021-03-11T15:10:00Z\", 6.676],\n      [\"2021-03-11T15:20:00Z\", 6.763],\n      [\"2021-03-11T15:30:00Z\"\
+        , 6.706],\n      [\"2021-03-11T15:40:00Z\", 6.908],\n      [\"2021-03-11T15:50:00Z\", 6.838],\n      [\"2021-03-11T16:00:00Z\", 6.85],\n      [\"2021-03-11T16:10:00Z\", 7.019],\n      [\"2021-03-11T16:20:00Z\"\
+        , 7.01],\n      [\"2021-03-11T16:30:00Z\", 7.081],\n      [\"2021-03-11T16:40:00Z\", 7.323],\n      [\"2021-03-11T16:50:00Z\", 7.216],\n      [\"2021-03-11T17:00:00Z\", 7.17],\n      [\"2021-03-11T17:10:00Z\"\
+        , 7.178],\n      [\"2021-03-11T17:20:00Z\", 7.2],\n      [\"2021-03-11T17:30:00Z\", 7.273],\n      [\"2021-03-11T17:40:00Z\", 7.26],\n      [\"2021-03-11T17:50:00Z\", 7.281],\n      [\"2021-03-11T18:00:00Z\"\
+        , 7.294],\n      [\"2021-03-11T18:10:00Z\", 7.276],\n      [\"2021-03-11T18:20:00Z\", 7.284],\n      [\"2021-03-11T18:30:00Z\", 7.366],\n      [\"2021-03-11T18:40:00Z\", 7.38],\n      [\"2021-03-11T18:50:00Z\"\
+        , 7.335],\n      [\"2021-03-11T19:00:00Z\", 7.263],\n      [\"2021-03-11T19:10:00Z\", 7.322],\n      [\"2021-03-11T19:20:00Z\", 7.387],\n      [\"2021-03-11T19:30:00Z\", 7.426],\n      [\"2021-03-11T19:40:00Z\"\
+        , 7.427],\n      [\"2021-03-11T19:50:00Z\", 7.538],\n      [\"2021-03-11T20:00:00Z\", 7.596],\n      [\"2021-03-11T20:10:00Z\", 7.623],\n      [\"2021-03-11T20:20:00Z\", 7.832],\n      [\"2021-03-11T20:30:00Z\"\
+        , 7.713],\n      [\"2021-03-11T20:40:00Z\", 7.628],\n      [\"2021-03-11T20:50:00Z\", 7.63],\n      [\"2021-03-11T21:00:00Z\", 7.554],\n      [\"2021-03-11T21:10:00Z\", 7.498],\n      [\"2021-03-11T21:20:00Z\"\
+        , 7.542],\n      [\"2021-03-11T21:30:00Z\", 7.636],\n      [\"2021-03-11T21:40:00Z\", 7.562],\n      [\"2021-03-11T21:50:00Z\", 7.645],\n      [\"2021-03-11T22:00:00Z\", 7.717],\n      [\"2021-03-11T22:10:00Z\"\
+        , 7.705],\n      [\"2021-03-11T22:20:00Z\", 7.689],\n      [\"2021-03-11T22:30:00Z\", 7.773],\n      [\"2021-03-11T22:40:00Z\", 7.583],\n      [\"2021-03-11T22:50:00Z\", 7.65],\n      [\"2021-03-11T23:00:00Z\"\
+        , 7.744],\n      [\"2021-03-11T23:10:00Z\", 8.05],\n      [\"2021-03-11T23:20:00Z\", 7.727],\n      [\"2021-03-11T23:30:00Z\", 7.598],\n      [\"2021-03-11T23:40:00Z\", 7.719],\n      [\"2021-03-11T23:50:00Z\"\
+        , 8.0],\n      [\"2021-03-12T00:00:00Z\", 7.677],\n      [\"2021-03-12T00:10:00Z\", 7.689],\n      [\"2021-03-12T00:20:00Z\", 7.677],\n      [\"2021-03-12T00:30:00Z\", 8.02],\n      [\"2021-03-12T00:40:00Z\"\
+        , 7.824],\n      [\"2021-03-12T00:50:00Z\", 8.39],\n      [\"2021-03-12T01:00:00Z\", 8.07],\n      [\"2021-03-12T01:10:00Z\", 7.854],\n      [\"2021-03-12T01:20:00Z\", 7.726],\n      [\"2021-03-12T01:30:00Z\"\
+        , 8.14],\n      [\"2021-03-12T01:40:00Z\", 8.05],\n      [\"2021-03-12T01:50:00Z\", 8.05],\n      [\"2021-03-12T02:00:00Z\", 8.14],\n      [\"2021-03-12T02:10:00Z\", 8.4],\n      [\"2021-03-12T02:20:00Z\"\
+        , 8.54],\n      [\"2021-03-12T02:30:00Z\", 8.42],\n      [\"2021-03-12T02:40:00Z\", 8.3],\n      [\"2021-03-12T02:50:00Z\", 8.5],\n      [\"2021-03-12T03:00:00Z\", 8.42],\n      [\"2021-03-12T03:10:00Z\"\
+        , 8.37],\n      [\"2021-03-12T03:20:00Z\", 8.3],\n      [\"2021-03-12T03:30:00Z\", 8.11],\n      [\"2021-03-12T03:40:00Z\", 7.977],\n      [\"2021-03-12T03:50:00Z\", 7.975],\n      [\"2021-03-12T04:00:00Z\"\
+        , 8.04],\n      [\"2021-03-12T04:10:00Z\", 8.03],\n      [\"2021-03-12T04:20:00Z\", 8.06],\n      [\"2021-03-12T04:30:00Z\", 7.949],\n      [\"2021-03-12T04:40:00Z\", 7.923],\n      [\"2021-03-12T04:50:00Z\"\
+        , 7.809],\n      [\"2021-03-12T05:00:00Z\", 7.785],\n      [\"2021-03-12T05:10:00Z\", 7.788],\n      [\"2021-03-12T05:20:00Z\", 7.733],\n      [\"2021-03-12T05:30:00Z\", 7.695],\n      [\"2021-03-12T05:40:00Z\"\
+        , 7.66],\n      [\"2021-03-12T05:50:00Z\", 7.665],\n      [\"2021-03-12T06:00:00Z\", 7.701],\n      [\"2021-03-12T06:10:00Z\", 7.682],\n      [\"2021-03-12T06:20:00Z\", 7.646],\n      [\"2021-03-12T06:30:00Z\"\
+        , 7.63],\n      [\"2021-03-12T06:40:00Z\", 7.736],\n      [\"2021-03-12T06:50:00Z\", 7.648],\n      [\"2021-03-12T07:00:00Z\", 7.556],\n      [\"2021-03-12T07:10:00Z\", 7.596],\n      [\"2021-03-12T07:20:00Z\"\
+        , 7.588],\n      [\"2021-03-12T07:30:00Z\", 7.572],\n      [\"2021-03-12T07:40:00Z\", 7.517],\n      [\"2021-03-12T07:50:00Z\", 7.497],\n      [\"2021-03-12T08:00:00Z\", 7.474],\n      [\"2021-03-12T08:10:00Z\"\
+        , 7.627],\n      [\"2021-03-12T08:20:00Z\", 7.618],\n      [\"2021-03-12T08:30:00Z\", 7.964],\n      [\"2021-03-12T08:40:00Z\", 7.893],\n      [\"2021-03-12T08:50:00Z\", 8.03],\n      [\"2021-03-12T09:00:00Z\"\
+        , 8.0],\n      [\"2021-03-12T09:10:00Z\", 7.922],\n      [\"2021-03-12T09:20:00Z\", 7.954],\n      [\"2021-03-12T09:30:00Z\", 7.797],\n      [\"2021-03-12T09:40:00Z\", 7.734],\n      [\"2021-03-12T09:50:00Z\"\
+        , 7.998],\n      [\"2021-03-12T10:00:00Z\", 7.828],\n      [\"2021-03-12T10:10:00Z\", 7.684],\n      [\"2021-03-12T10:20:00Z\", 7.804],\n      [\"2021-03-12T10:30:00Z\", 7.639],\n      [\"2021-03-12T10:40:00Z\"\
+        , 7.772],\n      [\"2021-03-12T10:50:00Z\", 7.57],\n      [\"2021-03-12T11:00:00Z\", 7.641],\n      [\"2021-03-12T11:10:00Z\", 7.563],\n      [\"2021-03-12T11:20:00Z\", 7.947],\n      [\"2021-03-12T11:30:00Z\"\
+        , 7.62],\n      [\"2021-03-12T11:40:00Z\", 7.714],\n      [\"2021-03-12T11:50:00Z\", 7.496],\n      [\"2021-03-12T12:00:00Z\", 7.553],\n      [\"2021-03-12T12:10:00Z\", 7.649],\n      [\"2021-03-12T12:20:00Z\"\
+        , 7.767],\n      [\"2021-03-12T12:30:00Z\", 8.25],\n      [\"2021-03-12T12:40:00Z\", 7.855],\n      [\"2021-03-12T12:50:00Z\", 7.981],\n      [\"2021-03-12T13:00:00Z\", 8.0],\n      [\"2021-03-12T13:10:00Z\"\
+        , 7.977],\n      [\"2021-03-12T13:20:00Z\", 8.27],\n      [\"2021-03-12T13:30:00Z\", 8.26],\n      [\"2021-03-12T13:40:00Z\", 8.23],\n      [\"2021-03-12T13:50:00Z\", 8.13],\n      [\"2021-03-12T14:00:00Z\"\
+        , 8.19],\n      [\"2021-03-12T14:10:00Z\", 8.12],\n      [\"2021-03-12T14:20:00Z\", 8.15],\n      [\"2021-03-12T14:30:00Z\", 8.04],\n      [\"2021-03-12T14:40:00Z\", 8.2],\n      [\"2021-03-12T14:50:00Z\"\
+        , 8.17],\n      [\"2021-03-12T15:00:00Z\", 8.06],\n      [\"2021-03-12T15:10:00Z\", 8.02],\n      [\"2021-03-12T15:20:00Z\", 7.887],\n      [\"2021-03-12T15:30:00Z\", 7.739],\n      [\"2021-03-12T15:40:00Z\"\
+        , 7.67],\n      [\"2021-03-12T15:50:00Z\", 7.594],\n      [\"2021-03-12T16:00:00Z\", 7.503],\n      [\"2021-03-12T16:10:00Z\", 7.32],\n      [\"2021-03-12T16:20:00Z\", 7.218],\n      [\"2021-03-12T16:30:00Z\"\
+        , 7.087],\n      [\"2021-03-12T16:40:00Z\", 7.156],\n      [\"2021-03-12T16:50:00Z\", 7.347],\n      [\"2021-03-12T17:00:00Z\", 7.237],\n      [\"2021-03-12T17:10:00Z\", 7.219],\n      [\"2021-03-12T17:20:00Z\"\
+        , 7.31],\n      [\"2021-03-12T17:30:00Z\", 7.288],\n      [\"2021-03-12T17:40:00Z\", 7.223],\n      [\"2021-03-12T17:50:00Z\", 7.261],\n      [\"2021-03-12T18:00:00Z\", 7.453],\n      [\"2021-03-12T18:10:00Z\"\
+        , 7.377],\n      [\"2021-03-12T18:20:00Z\", 7.371],\n      [\"2021-03-12T18:30:00Z\", 7.359],\n      [\"2021-03-12T18:40:00Z\", 7.4],\n      [\"2021-03-12T18:50:00Z\", 7.465],\n      [\"2021-03-12T19:00:00Z\"\
+        , 7.668],\n      [\"2021-03-12T19:10:00Z\", 7.848],\n      [\"2021-03-12T19:20:00Z\", 7.922],\n      [\"2021-03-12T19:30:00Z\", 7.792],\n      [\"2021-03-12T19:40:00Z\", 7.691],\n      [\"2021-03-12T19:50:00Z\"\
+        , 7.567],\n      [\"2021-03-12T20:00:00Z\", 7.516],\n      [\"2021-03-12T20:10:00Z\", 7.457],\n      [\"2021-03-12T20:20:00Z\", 7.485],\n      [\"2021-03-12T20:30:00Z\", 7.326],\n      [\"2021-03-12T20:40:00Z\"\
+        , 7.358],\n      [\"2021-03-12T20:50:00Z\", 7.355],\n      [\"2021-03-12T21:00:00Z\", 7.308],\n      [\"2021-03-12T21:10:00Z\", 7.302],\n      [\"2021-03-12T21:20:00Z\", 7.267],\n      [\"2021-03-12T21:30:00Z\"\
+        , 7.283],\n      [\"2021-03-12T21:40:00Z\", 7.434],\n      [\"2021-03-12T21:50:00Z\", 7.483],\n      [\"2021-03-12T22:00:00Z\", 7.487],\n      [\"2021-03-12T22:10:00Z\", 7.446],\n      [\"2021-03-12T22:20:00Z\"\
+        , 7.444],\n      [\"2021-03-12T22:30:00Z\", 7.398],\n      [\"2021-03-12T22:40:00Z\", 7.228],\n      [\"2021-03-12T22:50:00Z\", 7.237],\n      [\"2021-03-12T23:00:00Z\", 7.263],\n      [\"2021-03-12T23:10:00Z\"\
+        , 7.491],\n      [\"2021-03-12T23:20:00Z\", 7.783],\n      [\"2021-03-12T23:30:00Z\", 7.857],\n      [\"2021-03-12T23:40:00Z\", 7.62],\n      [\"2021-03-12T23:50:00Z\", 7.299],\n      [\"2021-03-13T00:00:00Z\"\
+        , 7.099],\n      [\"2021-03-13T00:10:00Z\", 7.11],\n      [\"2021-03-13T00:20:00Z\", 7.156],\n      [\"2021-03-13T00:30:00Z\", 7.2],\n      [\"2021-03-13T00:40:00Z\", 7.078],\n      [\"2021-03-13T00:50:00Z\"\
+        , 7.181],\n      [\"2021-03-13T01:00:00Z\", 7.371],\n      [\"2021-03-13T01:10:00Z\", 7.639],\n      [\"2021-03-13T01:20:00Z\", 7.55],\n      [\"2021-03-13T01:30:00Z\", 7.532],\n      [\"2021-03-13T01:40:00Z\"\
+        , 7.512],\n      [\"2021-03-13T01:50:00Z\", 7.564],\n      [\"2021-03-13T02:00:00Z\", 7.571],\n      [\"2021-03-13T02:10:00Z\", 7.426],\n      [\"2021-03-13T02:20:00Z\", 7.54],\n      [\"2021-03-13T02:30:00Z\"\
+        , 7.801],\n      [\"2021-03-13T02:40:00Z\", 7.561],\n      [\"2021-03-13T02:50:00Z\", 7.52],\n      [\"2021-03-13T03:00:00Z\", 7.127],\n      [\"2021-03-13T03:10:00Z\", 6.944],\n      [\"2021-03-13T03:20:00Z\"\
+        , 6.821],\n      [\"2021-03-13T03:30:00Z\", 6.631],\n      [\"2021-03-13T03:40:00Z\", 6.523],\n      [\"2021-03-13T03:50:00Z\", 6.404],\n      [\"2021-03-13T04:00:00Z\", 6.357],\n      [\"2021-03-13T04:10:00Z\"\
+        , 6.539],\n      [\"2021-03-13T04:20:00Z\", 6.533],\n      [\"2021-03-13T04:30:00Z\", 6.57],\n      [\"2021-03-13T04:40:00Z\", 6.541],\n      [\"2021-03-13T04:50:00Z\", 6.458],\n      [\"2021-03-13T05:00:00Z\"\
+        , 6.338],\n      [\"2021-03-13T05:10:00Z\", 6.283],\n      [\"2021-03-13T05:20:00Z\", 6.177],\n      [\"2021-03-13T05:30:00Z\", 6.162],\n      [\"2021-03-13T05:40:00Z\", 5.915],\n      [\"2021-03-13T05:50:00Z\"\
+        , 5.573],\n      [\"2021-03-13T06:00:00Z\", 5.542],\n      [\"2021-03-13T06:10:00Z\", 5.478],\n      [\"2021-03-13T06:20:00Z\", 5.43],\n      [\"2021-03-13T06:30:00Z\", 5.352],\n      [\"2021-03-13T06:40:00Z\"\
+        , 5.297],\n      [\"2021-03-13T06:50:00Z\", 5.189],\n      [\"2021-03-13T07:00:00Z\", 4.693],\n      [\"2021-03-13T07:10:00Z\", 4.113],\n      [\"2021-03-13T07:20:00Z\", 4.417],\n      [\"2021-03-13T07:30:00Z\"\
+        , 4.73],\n      [\"2021-03-13T07:40:00Z\", 4.794],\n      [\"2021-03-13T07:50:00Z\", 4.639],\n      [\"2021-03-13T08:00:00Z\", 4.584],\n      [\"2021-03-13T08:10:00Z\", 4.56],\n      [\"2021-03-13T08:20:00Z\"\
+        , 4.258],\n      [\"2021-03-13T08:30:00Z\", 3.66],\n      [\"2021-03-13T08:40:00Z\", 3.48],\n      [\"2021-03-13T08:50:00Z\", 3.265],\n      [\"2021-03-13T09:00:00Z\", 3.169],\n      [\"2021-03-13T09:10:00Z\"\
+        , 3.608],\n      [\"2021-03-13T09:20:00Z\", 3.41],\n      [\"2021-03-13T09:30:00Z\", 3.184],\n      [\"2021-03-13T09:40:00Z\", 2.413],\n      [\"2021-03-13T09:50:00Z\", 1.956],\n      [\"2021-03-13T10:00:00Z\"\
+        , 2.266],\n      [\"2021-03-13T10:10:00Z\", 1.996],\n      [\"2021-03-13T10:20:00Z\", 1.845],\n      [\"2021-03-13T10:30:00Z\", 2.111],\n      [\"2021-03-13T10:40:00Z\", 2.305],\n      [\"2021-03-13T10:50:00Z\"\
+        , 2.367],\n      [\"2021-03-13T11:00:00Z\", 2.533],\n      [\"2021-03-13T11:10:00Z\", 2.609],\n      [\"2021-03-13T11:20:00Z\", 2.675],\n      [\"2021-03-13T11:30:00Z\", 2.872],\n      [\"2021-03-13T11:40:00Z\"\
+        , 2.799],\n      [\"2021-03-13T11:50:00Z\", 2.798],\n      [\"2021-03-13T12:00:00Z\", 2.699],\n      [\"2021-03-13T12:10:00Z\", 2.775],\n      [\"2021-03-13T12:20:00Z\", 2.617],\n      [\"2021-03-13T12:30:00Z\"\
+        , 2.502],\n      [\"2021-03-13T12:40:00Z\", 2.498],\n      [\"2021-03-13T12:50:00Z\", 2.366],\n      [\"2021-03-13T13:00:00Z\", 2.305],\n      [\"2021-03-13T13:10:00Z\", 2.144],\n      [\"2021-03-13T13:20:00Z\"\
+        , 2.007],\n      [\"2021-03-13T13:30:00Z\", 1.99],\n      [\"2021-03-13T13:40:00Z\", 1.991],\n      [\"2021-03-13T13:50:00Z\", 1.886],\n      [\"2021-03-13T14:00:00Z\", 1.798],\n      [\"2021-03-13T14:10:00Z\"\
+        , 1.855],\n      [\"2021-03-13T14:20:00Z\", 1.842],\n      [\"2021-03-13T14:30:00Z\", 1.752],\n      [\"2021-03-13T14:40:00Z\", 1.641],\n      [\"2021-03-13T14:50:00Z\", 1.435],\n      [\"2021-03-13T15:00:00Z\"\
+        , 1.561],\n      [\"2021-03-13T15:10:00Z\", 1.561],\n      [\"2021-03-13T15:20:00Z\", 1.726],\n      [\"2021-03-13T15:30:00Z\", 1.629],\n      [\"2021-03-13T15:40:00Z\", 1.701],\n      [\"2021-03-13T15:50:00Z\"\
+        , 1.756],\n      [\"2021-03-13T16:00:00Z\", 1.71],\n      [\"2021-03-13T16:10:00Z\", 1.663],\n      [\"2021-03-13T16:20:00Z\", 1.701],\n      [\"2021-03-13T16:30:00Z\", 1.836],\n      [\"2021-03-13T16:40:00Z\"\
+        , 2.045],\n      [\"2021-03-13T16:50:00Z\", 2.138],\n      [\"2021-03-13T17:00:00Z\", 2.254],\n      [\"2021-03-13T17:10:00Z\", 2.132],\n      [\"2021-03-13T17:20:00Z\", 2.31],\n      [\"2021-03-13T17:30:00Z\"\
+        , 2.523],\n      [\"2021-03-13T17:40:00Z\", 2.445],\n      [\"2021-03-13T17:50:00Z\", 2.338],\n      [\"2021-03-13T18:00:00Z\", 2.356],\n      [\"2021-03-13T18:10:00Z\", 2.362],\n      [\"2021-03-13T18:20:00Z\"\
+        , 2.408],\n      [\"2021-03-13T18:30:00Z\", 2.472],\n      [\"2021-03-13T18:40:00Z\", 2.574],\n      [\"2021-03-13T18:50:00Z\", 2.747],\n      [\"2021-03-13T19:00:00Z\", 2.881],\n      [\"2021-03-13T19:10:00Z\"\
+        , 2.939],\n      [\"2021-03-13T19:20:00Z\", 2.986],\n      [\"2021-03-13T19:30:00Z\", 3.07],\n      [\"2021-03-13T19:40:00Z\", 3.075],\n      [\"2021-03-13T19:50:00Z\", 3.192],\n      [\"2021-03-13T20:00:00Z\"\
+        , 3.166],\n      [\"2021-03-13T20:10:00Z\", 3.279],\n      [\"2021-03-13T20:20:00Z\", 3.336],\n      [\"2021-03-13T20:30:00Z\", 3.324],\n      [\"2021-03-13T20:40:00Z\", 3.359],\n      [\"2021-03-13T20:50:00Z\"\
+        , 3.513],\n      [\"2021-03-13T21:00:00Z\", 3.63],\n      [\"2021-03-13T21:10:00Z\", 3.7],\n      [\"2021-03-13T21:20:00Z\", 3.748],\n      [\"2021-03-13T21:30:00Z\", 3.777],\n      [\"2021-03-13T21:40:00Z\"\
+        , 3.731],\n      [\"2021-03-13T21:50:00Z\", 3.777],\n      [\"2021-03-13T22:00:00Z\", 3.71],\n      [\"2021-03-13T22:10:00Z\", 3.764],\n      [\"2021-03-13T22:20:00Z\", 3.697],\n      [\"2021-03-13T22:30:00Z\"\
+        , 3.732],\n      [\"2021-03-13T22:40:00Z\", 3.732],\n      [\"2021-03-13T22:50:00Z\", 3.691],\n      [\"2021-03-13T23:00:00Z\", 3.838],\n      [\"2021-03-13T23:10:00Z\", 3.893],\n      [\"2021-03-13T23:20:00Z\"\
+        , 3.903],\n      [\"2021-03-13T23:30:00Z\", 3.853],\n      [\"2021-03-13T23:40:00Z\", 3.859],\n      [\"2021-03-13T23:50:00Z\", 3.779],\n      [\"2021-03-14T00:00:00Z\", 3.718],\n      [\"2021-03-14T00:10:00Z\"\
+        , 3.598],\n      [\"2021-03-14T00:20:00Z\", 3.517],\n      [\"2021-03-14T00:30:00Z\", 3.544],\n      [\"2021-03-14T00:40:00Z\", 3.505],\n      [\"2021-03-14T00:50:00Z\", 3.504],\n      [\"2021-03-14T01:00:00Z\"\
+        , 3.415],\n      [\"2021-03-14T01:10:00Z\", 3.369],\n      [\"2021-03-14T01:20:00Z\", 3.259],\n      [\"2021-03-14T01:30:00Z\", 3.264],\n      [\"2021-03-14T01:40:00Z\", 3.192],\n      [\"2021-03-14T01:50:00Z\"\
+        , 3.115],\n      [\"2021-03-14T02:00:00Z\", 2.998],\n      [\"2021-03-14T02:10:00Z\", 2.981],\n      [\"2021-03-14T02:20:00Z\", 2.805],\n      [\"2021-03-14T02:30:00Z\", 2.849],\n      [\"2021-03-14T02:40:00Z\"\
+        , 2.845],\n      [\"2021-03-14T02:50:00Z\", 2.797],\n      [\"2021-03-14T03:00:00Z\", 2.69],\n      [\"2021-03-14T03:10:00Z\", 2.593],\n      [\"2021-03-14T03:20:00Z\", 2.543],\n      [\"2021-03-14T03:30:00Z\"\
+        , 2.52],\n      [\"2021-03-14T03:40:00Z\", 2.533],\n      [\"2021-03-14T03:50:00Z\", 2.468],\n      [\"2021-03-14T04:00:00Z\", 2.501],\n      [\"2021-03-14T04:10:00Z\", 2.596],\n      [\"2021-03-14T04:20:00Z\"\
+        , 2.528],\n      [\"2021-03-14T04:30:00Z\", 2.608],\n      [\"2021-03-14T04:40:00Z\", 2.431],\n      [\"2021-03-14T04:50:00Z\", 2.272],\n      [\"2021-03-14T05:00:00Z\", 2.247],\n      [\"2021-03-14T05:10:00Z\"\
+        , 2.126],\n      [\"2021-03-14T05:20:00Z\", 1.866],\n      [\"2021-03-14T05:30:00Z\", 1.715],\n      [\"2021-03-14T05:40:00Z\", 1.625],\n      [\"2021-03-14T05:50:00Z\", 1.525],\n      [\"2021-03-14T06:00:00Z\"\
+        , 1.339],\n      [\"2021-03-14T06:10:00Z\", 1.316],\n      [\"2021-03-14T06:20:00Z\", 1.296],\n      [\"2021-03-14T06:30:00Z\", 1.233],\n      [\"2021-03-14T06:40:00Z\", 1.216],\n      [\"2021-03-14T06:50:00Z\"\
+        , 1.164],\n      [\"2021-03-14T07:00:00Z\", 0.884],\n      [\"2021-03-14T07:10:00Z\", 1.027],\n      [\"2021-03-14T07:20:00Z\", 0.816],\n      [\"2021-03-14T07:30:00Z\", 1.144],\n      [\"2021-03-14T07:40:00Z\"\
+        , 0.938],\n      [\"2021-03-14T07:50:00Z\", 1.035],\n      [\"2021-03-14T08:00:00Z\", 1.178],\n      [\"2021-03-14T08:10:00Z\", 1.153],\n      [\"2021-03-14T08:20:00Z\", 1.007],\n      [\"2021-03-14T08:30:00Z\"\
+        , 0.898],\n      [\"2021-03-14T08:40:00Z\", 0.819],\n      [\"2021-03-14T08:50:00Z\", 0.709],\n      [\"2021-03-14T09:00:00Z\", 0.667],\n      [\"2021-03-14T09:10:00Z\", 0.736],\n      [\"2021-03-14T09:20:00Z\"\
+        , 0.656],\n      [\"2021-03-14T09:30:00Z\", 0.69],\n      [\"2021-03-14T09:40:00Z\", 0.752],\n      [\"2021-03-14T09:50:00Z\", 0.739],\n      [\"2021-03-14T10:00:00Z\", 0.88],\n      [\"2021-03-14T10:10:00Z\"\
+        , 0.713],\n      [\"2021-03-14T10:20:00Z\", 0.693],\n      [\"2021-03-14T10:30:00Z\", 0.683],\n      [\"2021-03-14T10:40:00Z\", 0.771],\n      [\"2021-03-14T10:50:00Z\", 0.772],\n      [\"2021-03-14T11:00:00Z\"\
+        , 0.789],\n      [\"2021-03-14T11:10:00Z\", 0.843],\n      [\"2021-03-14T11:20:00Z\", 0.774],\n      [\"2021-03-14T11:30:00Z\", 0.981],\n      [\"2021-03-14T11:40:00Z\", 0.977],\n      [\"2021-03-14T11:50:00Z\"\
+        , 1.081],\n      [\"2021-03-14T12:00:00Z\", 0.974],\n      [\"2021-03-14T12:10:00Z\", 1.088],\n      [\"2021-03-14T12:20:00Z\", 1.069],\n      [\"2021-03-14T12:30:00Z\", 0.82],\n      [\"2021-03-14T12:40:00Z\"\
+        , 1.035],\n      [\"2021-03-14T12:50:00Z\", 1.067],\n      [\"2021-03-14T13:00:00Z\", 0.996],\n      [\"2021-03-14T13:10:00Z\", 0.981],\n      [\"2021-03-14T13:20:00Z\", 0.838],\n      [\"2021-03-14T13:30:00Z\"\
+        , 0.819],\n      [\"2021-03-14T13:40:00Z\", 0.966],\n      [\"2021-03-14T13:50:00Z\", 0.82],\n      [\"2021-03-14T14:00:00Z\", 0.967],\n      [\"2021-03-14T14:10:00Z\", 0.999],\n      [\"2021-03-14T14:20:00Z\"\
+        , 0.91],\n      [\"2021-03-14T14:30:00Z\", 0.876],\n      [\"2021-03-14T14:40:00Z\", 0.943],\n      [\"2021-03-14T14:50:00Z\", 0.992],\n      [\"2021-03-14T15:00:00Z\", 0.984],\n      [\"2021-03-14T15:10:00Z\"\
+        , 0.935],\n      [\"2021-03-14T15:20:00Z\", 0.918],\n      [\"2021-03-14T15:30:00Z\", 0.997],\n      [\"2021-03-14T15:40:00Z\", 0.985],\n      [\"2021-03-14T15:50:00Z\", 1.08],\n      [\"2021-03-14T16:00:00Z\"\
+        , 1.176],\n      [\"2021-03-14T16:10:00Z\", 1.108],\n      [\"2021-03-14T16:20:00Z\", 0.959],\n      [\"2021-03-14T16:30:00Z\", 1.002],\n      [\"2021-03-14T16:40:00Z\", 1.083],\n      [\"2021-03-14T16:50:00Z\"\
+        , 1.142],\n      [\"2021-03-14T17:00:00Z\", 1.195],\n      [\"2021-03-14T17:10:00Z\", 1.358],\n      [\"2021-03-14T17:20:00Z\", 1.379],\n      [\"2021-03-14T17:30:00Z\", 1.212],\n      [\"2021-03-14T17:40:00Z\"\
+        , 1.231],\n      [\"2021-03-14T17:50:00Z\", 1.034],\n      [\"2021-03-14T18:00:00Z\", 0.879],\n      [\"2021-03-14T18:10:00Z\", 0.725],\n      [\"2021-03-14T18:20:00Z\", 0.834],\n      [\"2021-03-14T18:30:00Z\"\
+        , 1.022],\n      [\"2021-03-14T18:40:00Z\", 0.897],\n      [\"2021-03-14T18:50:00Z\", 0.778],\n      [\"2021-03-14T19:00:00Z\", 0.928],\n      [\"2021-03-14T19:10:00Z\", 0.88],\n      [\"2021-03-14T19:20:00Z\"\
+        , 1.06],\n      [\"2021-03-14T19:30:00Z\", 1.032],\n      [\"2021-03-14T19:40:00Z\", 0.755],\n      [\"2021-03-14T19:50:00Z\", 0.218],\n      [\"2021-03-14T20:00:00Z\", -0.297],\n      [\"2021-03-14T20:10:00Z\"\
+        , -0.22],\n      [\"2021-03-14T20:20:00Z\", -0.304],\n      [\"2021-03-14T20:30:00Z\", -0.618],\n      [\"2021-03-14T20:40:00Z\", -0.889],\n      [\"2021-03-14T20:50:00Z\", -0.559],\n      [\"2021-03-14T21:00:00Z\"\
+        , -0.608],\n      [\"2021-03-14T21:10:00Z\", -0.515],\n      [\"2021-03-14T21:20:00Z\", -0.455],\n      [\"2021-03-14T21:30:00Z\", -0.111],\n      [\"2021-03-14T21:40:00Z\", 0.387],\n      [\"2021-03-14T21:50:00Z\"\
+        , 0.399],\n      [\"2021-03-14T22:00:00Z\", 0.417],\n      [\"2021-03-14T22:10:00Z\", 0.495],\n      [\"2021-03-14T22:20:00Z\", 0.23],\n      [\"2021-03-14T22:30:00Z\", 0.324],\n      [\"2021-03-14T22:40:00Z\"\
+        , 0.223],\n      [\"2021-03-14T22:50:00Z\", 0.286],\n      [\"2021-03-14T23:00:00Z\", 0.107],\n      [\"2021-03-14T23:10:00Z\", 0.056],\n      [\"2021-03-14T23:20:00Z\", -0.07],\n      [\"2021-03-14T23:30:00Z\"\
+        , -0.206],\n      [\"2021-03-14T23:40:00Z\", -0.163],\n      [\"2021-03-14T23:50:00Z\", -0.282],\n      [\"2021-03-15T00:00:00Z\", -0.997],\n      [\"2021-03-15T00:10:00Z\", -1.211],\n      [\"\
+        2021-03-15T00:20:00Z\", -1.087],\n      [\"2021-03-15T00:30:00Z\", -0.984],\n      [\"2021-03-15T00:40:00Z\", -1.061],\n      [\"2021-03-15T00:50:00Z\", -1.527],\n      [\"2021-03-15T01:00:00Z\"\
+        , -2.148],\n      [\"2021-03-15T01:10:00Z\", -2.138],\n      [\"2021-03-15T01:20:00Z\", -2.034],\n      [\"2021-03-15T01:30:00Z\", -1.931],\n      [\"2021-03-15T01:40:00Z\", -1.734],\n      [\"\
+        2021-03-15T01:50:00Z\", -2.383],\n      [\"2021-03-15T02:00:00Z\", -1.944],\n      [\"2021-03-15T02:10:00Z\", -2.393],\n      [\"2021-03-15T02:20:00Z\", -2.871],\n      [\"2021-03-15T02:30:00Z\"\
+        , -2.764],\n      [\"2021-03-15T02:40:00Z\", -2.503],\n      [\"2021-03-15T02:50:00Z\", -2.568],\n      [\"2021-03-15T03:00:00Z\", -2.667],\n      [\"2021-03-15T03:10:00Z\", -3.358],\n      [\"\
+        2021-03-15T03:20:00Z\", -3.228],\n      [\"2021-03-15T03:30:00Z\", -3.305],\n      [\"2021-03-15T03:40:00Z\", -3.494],\n      [\"2021-03-15T03:50:00Z\", -3.4],\n      [\"2021-03-15T04:00:00Z\",\
+        \ -3.962],\n      [\"2021-03-15T04:10:00Z\", -4.097],\n      [\"2021-03-15T04:20:00Z\", -4.035],\n      [\"2021-03-15T04:30:00Z\", -4.367],\n      [\"2021-03-15T04:40:00Z\", -4.228],\n      [\"\
+        2021-03-15T04:50:00Z\", -4.154],\n      [\"2021-03-15T05:00:00Z\", -4.371],\n      [\"2021-03-15T05:10:00Z\", -4.688],\n      [\"2021-03-15T05:20:00Z\", -4.972],\n      [\"2021-03-15T05:30:00Z\"\
+        , -4.834],\n      [\"2021-03-15T05:40:00Z\", -4.851],\n      [\"2021-03-15T05:50:00Z\", -4.834],\n      [\"2021-03-15T06:00:00Z\", -4.786],\n      [\"2021-03-15T06:10:00Z\", -4.844],\n      [\"\
+        2021-03-15T06:20:00Z\", -4.989],\n      [\"2021-03-15T06:30:00Z\", -4.988],\n      [\"2021-03-15T06:40:00Z\", -5.441],\n      [\"2021-03-15T06:50:00Z\", -5.524],\n      [\"2021-03-15T07:00:00Z\"\
+        , -5.532],\n      [\"2021-03-15T07:10:00Z\", -5.544],\n      [\"2021-03-15T07:20:00Z\", -5.541],\n      [\"2021-03-15T07:30:00Z\", -5.665],\n      [\"2021-03-15T07:40:00Z\", -5.907],\n      [\"\
+        2021-03-15T07:50:00Z\", -5.831],\n      [\"2021-03-15T08:00:00Z\", -5.905],\n      [\"2021-03-15T08:10:00Z\", -5.945],\n      [\"2021-03-15T08:20:00Z\", -5.943],\n      [\"2021-03-15T08:30:00Z\"\
+        , -6.059],\n      [\"2021-03-15T08:40:00Z\", -6.048],\n      [\"2021-03-15T08:50:00Z\", -6.216],\n      [\"2021-03-15T09:00:00Z\", -6.125],\n      [\"2021-03-15T09:10:00Z\", -6.329],\n      [\"\
+        2021-03-15T09:20:00Z\", -6.265],\n      [\"2021-03-15T09:30:00Z\", -6.391],\n      [\"2021-03-15T09:40:00Z\", -6.537],\n      [\"2021-03-15T09:50:00Z\", -6.7],\n      [\"2021-03-15T10:00:00Z\",\
+        \ -6.692],\n      [\"2021-03-15T10:10:00Z\", -6.992],\n      [\"2021-03-15T10:20:00Z\", -6.843],\n      [\"2021-03-15T10:30:00Z\", -6.87],\n      [\"2021-03-15T10:40:00Z\", -7.296],\n      [\"2021-03-15T10:50:00Z\"\
+        , -7.263],\n      [\"2021-03-15T11:00:00Z\", -7.289],\n      [\"2021-03-15T11:10:00Z\", -7.446],\n      [\"2021-03-15T11:20:00Z\", -7.553],\n      [\"2021-03-15T11:30:00Z\", -7.782],\n      [\"\
+        2021-03-15T11:40:00Z\", -7.737],\n      [\"2021-03-15T11:50:00Z\", -7.995],\n      [\"2021-03-15T12:00:00Z\", -8.3],\n      [\"2021-03-15T12:10:00Z\", -8.26],\n      [\"2021-03-15T12:20:00Z\", -8.22],\n\
+        \      [\"2021-03-15T12:30:00Z\", -8.23],\n      [\"2021-03-15T12:40:00Z\", -8.57],\n      [\"2021-03-15T12:50:00Z\", -8.58],\n      [\"2021-03-15T13:00:00Z\", -8.38],\n      [\"2021-03-15T13:10:00Z\"\
+        , -8.4],\n      [\"2021-03-15T13:20:00Z\", -8.87],\n      [\"2021-03-15T13:30:00Z\", -8.84],\n      [\"2021-03-15T13:40:00Z\", -8.94],\n      [\"2021-03-15T13:50:00Z\", -8.87],\n      [\"2021-03-15T14:00:00Z\"\
+        , -8.8],\n      [\"2021-03-15T14:10:00Z\", -8.98],\n      [\"2021-03-15T14:20:00Z\", -8.74],\n      [\"2021-03-15T14:30:00Z\", -8.98],\n      [\"2021-03-15T14:40:00Z\", -9.15],\n      [\"2021-03-15T14:50:00Z\"\
+        , -9.22],\n      [\"2021-03-15T15:00:00Z\", -9.06],\n      [\"2021-03-15T15:10:00Z\", -8.99],\n      [\"2021-03-15T15:20:00Z\", -9.38],\n      [\"2021-03-15T15:30:00Z\", -9.16],\n      [\"2021-03-15T15:40:00Z\"\
+        , -9.42],\n      [\"2021-03-15T15:50:00Z\", -9.23],\n      [\"2021-03-15T16:00:00Z\", -9.26],\n      [\"2021-03-15T16:10:00Z\", -9.13],\n      [\"2021-03-15T16:20:00Z\", -9.01],\n      [\"2021-03-15T16:30:00Z\"\
+        , -8.7],\n      [\"2021-03-15T16:40:00Z\", -9.03],\n      [\"2021-03-15T16:50:00Z\", -8.85],\n      [\"2021-03-15T17:00:00Z\", -8.59],\n      [\"2021-03-15T17:10:00Z\", -8.91],\n      [\"2021-03-15T17:20:00Z\"\
+        , -8.71],\n      [\"2021-03-15T17:30:00Z\", -8.86],\n      [\"2021-03-15T17:40:00Z\", -8.79],\n      [\"2021-03-15T17:50:00Z\", -8.64],\n      [\"2021-03-15T18:00:00Z\", -8.46],\n      [\"2021-03-15T18:10:00Z\"\
+        , -8.43],\n      [\"2021-03-15T18:20:00Z\", -8.31],\n      [\"2021-03-15T18:30:00Z\", -8.11],\n      [\"2021-03-15T18:40:00Z\", -7.972],\n      [\"2021-03-15T18:50:00Z\", -7.893],\n      [\"2021-03-15T19:00:00Z\"\
+        , -7.57],\n      [\"2021-03-15T19:10:00Z\", -7.58],\n      [\"2021-03-15T19:20:00Z\", -7.501],\n      [\"2021-03-15T19:30:00Z\", -7.298],\n      [\"2021-03-15T19:40:00Z\", -7.559],\n      [\"2021-03-15T19:50:00Z\"\
+        , -7.156],\n      [\"2021-03-15T20:00:00Z\", -6.98],\n      [\"2021-03-15T20:10:00Z\", -7.014],\n      [\"2021-03-15T20:20:00Z\", -7.073],\n      [\"2021-03-15T20:30:00Z\", -6.618],\n      [\"2021-03-15T20:40:00Z\"\
+        , -6.688],\n      [\"2021-03-15T20:50:00Z\", -6.663],\n      [\"2021-03-15T21:00:00Z\", -6.559],\n      [\"2021-03-15T21:10:00Z\", -6.63],\n      [\"2021-03-15T21:20:00Z\", -6.515],\n      [\"2021-03-15T21:30:00Z\"\
+        , -6.357],\n      [\"2021-03-15T21:40:00Z\", -6.213],\n      [\"2021-03-15T21:50:00Z\", -6.3],\n      [\"2021-03-15T22:00:00Z\", -6.358],\n      [\"2021-03-15T22:10:00Z\", -6.311],\n      [\"2021-03-15T22:20:00Z\"\
+        , -6.341],\n      [\"2021-03-15T22:30:00Z\", -6.159],\n      [\"2021-03-15T22:40:00Z\", -6.182],\n      [\"2021-03-15T22:50:00Z\", -6.161],\n      [\"2021-03-15T23:00:00Z\", -6.022],\n      [\"\
+        2021-03-15T23:10:00Z\", -5.898],\n      [\"2021-03-15T23:20:00Z\", -6.007],\n      [\"2021-03-15T23:30:00Z\", -6.02],\n      [\"2021-03-15T23:40:00Z\", -6.072],\n      [\"2021-03-15T23:50:00Z\"\
+        , -5.963],\n      [\"2021-03-16T00:00:00Z\", -5.929],\n      [\"2021-03-16T00:10:00Z\", -6.146],\n      [\"2021-03-16T00:20:00Z\", -6.051],\n      [\"2021-03-16T00:30:00Z\", -5.832],\n      [\"\
+        2021-03-16T00:40:00Z\", -5.967],\n      [\"2021-03-16T00:50:00Z\", -5.843],\n      [\"2021-03-16T01:00:00Z\", -5.819],\n      [\"2021-03-16T01:10:00Z\", -5.975],\n      [\"2021-03-16T01:20:00Z\"\
+        , -6.111],\n      [\"2021-03-16T01:30:00Z\", -6.288],\n      [\"2021-03-16T01:40:00Z\", -6.446],\n      [\"2021-03-16T01:50:00Z\", -6.342],\n      [\"2021-03-16T02:00:00Z\", -6.446],\n      [\"\
+        2021-03-16T02:10:00Z\", -6.449],\n      [\"2021-03-16T02:20:00Z\", -6.492],\n      [\"2021-03-16T02:30:00Z\", -6.319],\n      [\"2021-03-16T02:40:00Z\", -6.43],\n      [\"2021-03-16T02:50:00Z\"\
+        , -6.397],\n      [\"2021-03-16T03:00:00Z\", -6.434],\n      [\"2021-03-16T03:10:00Z\", -6.522],\n      [\"2021-03-16T03:20:00Z\", -6.361],\n      [\"2021-03-16T03:30:00Z\", -6.474],\n      [\"\
+        2021-03-16T03:40:00Z\", -6.391],\n      [\"2021-03-16T03:50:00Z\", -6.404],\n      [\"2021-03-16T04:00:00Z\", -6.344],\n      [\"2021-03-16T04:10:00Z\", -6.275],\n      [\"2021-03-16T04:20:00Z\"\
+        , -6.255],\n      [\"2021-03-16T04:30:00Z\", -6.425],\n      [\"2021-03-16T04:40:00Z\", -6.511],\n      [\"2021-03-16T04:50:00Z\", -6.217],\n      [\"2021-03-16T05:00:00Z\", -6.545],\n      [\"\
+        2021-03-16T05:10:00Z\", -6.358],\n      [\"2021-03-16T05:20:00Z\", -6.556],\n      [\"2021-03-16T05:30:00Z\", -6.615],\n      [\"2021-03-16T05:40:00Z\", -6.39],\n      [\"2021-03-16T05:50:00Z\"\
+        , -6.555],\n      [\"2021-03-16T06:00:00Z\", -6.218],\n      [\"2021-03-16T06:10:00Z\", -6.292],\n      [\"2021-03-16T06:20:00Z\", -6.332],\n      [\"2021-03-16T06:30:00Z\", -6.321],\n      [\"\
+        2021-03-16T06:40:00Z\", -6.307],\n      [\"2021-03-16T06:50:00Z\", -6.321],\n      [\"2021-03-16T07:00:00Z\", -6.311],\n      [\"2021-03-16T07:10:00Z\", -6.239],\n      [\"2021-03-16T07:20:00Z\"\
+        , -6.299],\n      [\"2021-03-16T07:30:00Z\", -6.089],\n      [\"2021-03-16T07:40:00Z\", -6.224],\n      [\"2021-03-16T07:50:00Z\", -6.35],\n      [\"2021-03-16T08:00:00Z\", -6.319],\n      [\"2021-03-16T08:10:00Z\"\
+        , -6.2],\n      [\"2021-03-16T08:20:00Z\", -6.308],\n      [\"2021-03-16T08:30:00Z\", -6.439],\n      [\"2021-03-16T08:40:00Z\", -6.285],\n      [\"2021-03-16T08:50:00Z\", -6.445],\n      [\"2021-03-16T09:00:00Z\"\
+        , -6.354],\n      [\"2021-03-16T09:10:00Z\", -6.247],\n      [\"2021-03-16T09:20:00Z\", -6.333],\n      [\"2021-03-16T09:30:00Z\", -6.432],\n      [\"2021-03-16T09:40:00Z\", -6.11],\n      [\"2021-03-16T09:50:00Z\"\
+        , -6.475],\n      [\"2021-03-16T10:00:00Z\", -6.622],\n      [\"2021-03-16T10:10:00Z\", -6.486],\n      [\"2021-03-16T10:20:00Z\", -6.277],\n      [\"2021-03-16T10:30:00Z\", -6.227],\n      [\"\
+        2021-03-16T10:40:00Z\", -6.298],\n      [\"2021-03-16T10:50:00Z\", -6.225],\n      [\"2021-03-16T11:00:00Z\", -6.038],\n      [\"2021-03-16T11:10:00Z\", -6.275],\n      [\"2021-03-16T11:20:00Z\"\
+        , -6.035],\n      [\"2021-03-16T11:30:00Z\", -6.077],\n      [\"2021-03-16T11:40:00Z\", -5.982],\n      [\"2021-03-16T11:50:00Z\", -5.857],\n      [\"2021-03-16T12:00:00Z\", -5.803],\n      [\"\
+        2021-03-16T12:10:00Z\", -5.652],\n      [\"2021-03-16T12:20:00Z\", -5.88],\n      [\"2021-03-16T12:30:00Z\", -5.848],\n      [\"2021-03-16T12:40:00Z\", -5.982],\n      [\"2021-03-16T12:50:00Z\"\
+        , -5.718],\n      [\"2021-03-16T13:00:00Z\", -5.765],\n      [\"2021-03-16T13:10:00Z\", -5.763],\n      [\"2021-03-16T13:20:00Z\", -5.93],\n      [\"2021-03-16T13:30:00Z\", -5.652],\n      [\"2021-03-16T13:40:00Z\"\
+        , -5.865],\n      [\"2021-03-16T13:50:00Z\", -5.746],\n      [\"2021-03-16T14:00:00Z\", -5.964],\n      [\"2021-03-16T14:10:00Z\", -6.008],\n      [\"2021-03-16T14:20:00Z\", -5.901],\n      [\"\
+        2021-03-16T14:30:00Z\", -5.697],\n      [\"2021-03-16T14:40:00Z\", -5.844],\n      [\"2021-03-16T14:50:00Z\", -5.6],\n      [\"2021-03-16T15:00:00Z\", -5.746],\n      [\"2021-03-16T15:10:00Z\",\
+        \ -5.679],\n      [\"2021-03-16T15:20:00Z\", -5.551],\n      [\"2021-03-16T15:30:00Z\", -5.624],\n      [\"2021-03-16T15:40:00Z\", -5.5],\n      [\"2021-03-16T15:50:00Z\", -5.39],\n      [\"2021-03-16T16:00:00Z\"\
+        , -5.364],\n      [\"2021-03-16T16:10:00Z\", -5.411],\n      [\"2021-03-16T16:20:00Z\", -5.485],\n      [\"2021-03-16T16:30:00Z\", -5.281],\n      [\"2021-03-16T16:40:00Z\", -5.13],\n      [\"2021-03-16T16:50:00Z\"\
+        , -5.052],\n      [\"2021-03-16T17:00:00Z\", -4.819],\n      [\"2021-03-16T17:10:00Z\", -4.743],\n      [\"2021-03-16T17:20:00Z\", -4.602],\n      [\"2021-03-16T17:30:00Z\", -4.341],\n      [\"\
+        2021-03-16T17:40:00Z\", -4.241],\n      [\"2021-03-16T17:50:00Z\", -4.133],\n      [\"2021-03-16T18:00:00Z\", -4.014],\n      [\"2021-03-16T18:10:00Z\", -3.938],\n      [\"2021-03-16T18:20:00Z\"\
+        , -3.563],\n      [\"2021-03-16T18:30:00Z\", -3.52],\n      [\"2021-03-16T18:40:00Z\", -3.296],\n      [\"2021-03-16T18:50:00Z\", -3.21],\n      [\"2021-03-16T19:00:00Z\", -3.062],\n      [\"2021-03-16T19:10:00Z\"\
+        , -2.952],\n      [\"2021-03-16T19:20:00Z\", -2.696],\n      [\"2021-03-16T19:30:00Z\", -2.646],\n      [\"2021-03-16T19:40:00Z\", -2.617],\n      [\"2021-03-16T19:50:00Z\", -2.421],\n      [\"\
+        2021-03-16T20:00:00Z\", -2.386],\n      [\"2021-03-16T20:10:00Z\", -2.293],\n      [\"2021-03-16T20:20:00Z\", -2.197],\n      [\"2021-03-16T20:30:00Z\", -2.528],\n      [\"2021-03-16T20:40:00Z\"\
+        , -2.463],\n      [\"2021-03-16T20:50:00Z\", -2.586],\n      [\"2021-03-16T21:00:00Z\", -2.423],\n      [\"2021-03-16T21:10:00Z\", -2.158],\n      [\"2021-03-16T21:20:00Z\", -1.885],\n      [\"\
+        2021-03-16T21:30:00Z\", -1.818],\n      [\"2021-03-16T21:40:00Z\", -1.679],\n      [\"2021-03-16T21:50:00Z\", -1.661],\n      [\"2021-03-16T22:00:00Z\", -1.757],\n      [\"2021-03-16T22:10:00Z\"\
+        , -1.764],\n      [\"2021-03-16T22:20:00Z\", -1.78],\n      [\"2021-03-16T22:30:00Z\", -1.64],\n      [\"2021-03-16T22:40:00Z\", -1.529],\n      [\"2021-03-16T22:50:00Z\", -1.385],\n      [\"2021-03-16T23:00:00Z\"\
+        , -1.32],\n      [\"2021-03-16T23:10:00Z\", -1.244],\n      [\"2021-03-16T23:20:00Z\", -1.189],\n      [\"2021-03-16T23:30:00Z\", -1.085],\n      [\"2021-03-16T23:40:00Z\", -0.964],\n      [\"2021-03-16T23:50:00Z\"\
+        , -0.825],\n      [\"2021-03-17T00:00:00Z\", -0.762],\n      [\"2021-03-17T00:10:00Z\", -0.763],\n      [\"2021-03-17T00:20:00Z\", -0.604],\n      [\"2021-03-17T00:30:00Z\", -0.495],\n      [\"\
+        2021-03-17T00:40:00Z\", -0.421],\n      [\"2021-03-17T00:50:00Z\", -0.424],\n      [\"2021-03-17T01:00:00Z\", -0.336],\n      [\"2021-03-17T01:10:00Z\", -0.346],\n      [\"2021-03-17T01:20:00Z\"\
+        , -0.169],\n      [\"2021-03-17T01:30:00Z\", -0.043],\n      [\"2021-03-17T01:40:00Z\", 0.073],\n      [\"2021-03-17T01:50:00Z\", 0.117],\n      [\"2021-03-17T02:00:00Z\", 0.157],\n      [\"2021-03-17T02:10:00Z\"\
+        , 0.224],\n      [\"2021-03-17T02:20:00Z\", 0.266],\n      [\"2021-03-17T02:30:00Z\", 0.374],\n      [\"2021-03-17T02:40:00Z\", 0.421],\n      [\"2021-03-17T02:50:00Z\", 0.297],\n      [\"2021-03-17T03:00:00Z\"\
+        , 0.435],\n      [\"2021-03-17T03:10:00Z\", 0.513],\n      [\"2021-03-17T03:20:00Z\", 0.581],\n      [\"2021-03-17T03:30:00Z\", 0.671],\n      [\"2021-03-17T03:40:00Z\", 0.715],\n      [\"2021-03-17T03:50:00Z\"\
+        , 0.794],\n      [\"2021-03-17T04:00:00Z\", 0.898],\n      [\"2021-03-17T04:10:00Z\", 1.008],\n      [\"2021-03-17T04:20:00Z\", 1.07],\n      [\"2021-03-17T04:30:00Z\", 1.201],\n      [\"2021-03-17T04:40:00Z\"\
+        , 1.321],\n      [\"2021-03-17T04:50:00Z\", 1.371],\n      [\"2021-03-17T05:00:00Z\", 1.485],\n      [\"2021-03-17T05:10:00Z\", 1.601],\n      [\"2021-03-17T05:20:00Z\", 1.834],\n      [\"2021-03-17T05:30:00Z\"\
+        , 1.914],\n      [\"2021-03-17T05:40:00Z\", 2.017],\n      [\"2021-03-17T05:50:00Z\", 2.151],\n      [\"2021-03-17T06:00:00Z\", 2.222],\n      [\"2021-03-17T06:10:00Z\", 2.175],\n      [\"2021-03-17T06:20:00Z\"\
+        , 2.264],\n      [\"2021-03-17T06:30:00Z\", 2.316],\n      [\"2021-03-17T06:40:00Z\", 2.398],\n      [\"2021-03-17T06:50:00Z\", 2.48],\n      [\"2021-03-17T07:00:00Z\", 2.572],\n      [\"2021-03-17T07:10:00Z\"\
+        , 2.59],\n      [\"2021-03-17T07:20:00Z\", 2.646],\n      [\"2021-03-17T07:30:00Z\", 2.659],\n      [\"2021-03-17T07:40:00Z\", 2.712],\n      [\"2021-03-17T07:50:00Z\", 2.775],\n      [\"2021-03-17T08:00:00Z\"\
+        , 2.807],\n      [\"2021-03-17T08:10:00Z\", 2.84],\n      [\"2021-03-17T08:20:00Z\", 2.966],\n      [\"2021-03-17T08:30:00Z\", 2.939],\n      [\"2021-03-17T08:40:00Z\", 2.967],\n      [\"2021-03-17T08:50:00Z\"\
+        , 2.999],\n      [\"2021-03-17T09:00:00Z\", 3.032],\n      [\"2021-03-17T09:10:00Z\", 3.05],\n      [\"2021-03-17T09:20:00Z\", 3.108],\n      [\"2021-03-17T09:30:00Z\", 3.23],\n      [\"2021-03-17T09:40:00Z\"\
+        , 3.266],\n      [\"2021-03-17T09:50:00Z\", 3.355],\n      [\"2021-03-17T10:00:00Z\", 3.479],\n      [\"2021-03-17T10:10:00Z\", 3.585],\n      [\"2021-03-17T10:20:00Z\", 3.681],\n      [\"2021-03-17T10:30:00Z\"\
+        , 3.681],\n      [\"2021-03-17T10:40:00Z\", 3.748],\n      [\"2021-03-17T10:50:00Z\", 3.777],\n      [\"2021-03-17T11:00:00Z\", 3.767],\n      [\"2021-03-17T11:10:00Z\", 3.819],\n      [\"2021-03-17T11:20:00Z\"\
+        , 3.812],\n      [\"2021-03-17T11:30:00Z\", 3.861],\n      [\"2021-03-17T11:40:00Z\", 3.931],\n      [\"2021-03-17T11:50:00Z\", 3.907],\n      [\"2021-03-17T12:00:00Z\", 3.935],\n      [\"2021-03-17T12:10:00Z\"\
+        , 3.977],\n      [\"2021-03-17T12:20:00Z\", 4.034],\n      [\"2021-03-17T12:30:00Z\", 4.077],\n      [\"2021-03-17T12:40:00Z\", 4.056],\n      [\"2021-03-17T12:50:00Z\", 4.044],\n      [\"2021-03-17T13:00:00Z\"\
+        , 4.053],\n      [\"2021-03-17T13:10:00Z\", 4.133],\n      [\"2021-03-17T13:20:00Z\", 4.114],\n      [\"2021-03-17T13:30:00Z\", 4.089],\n      [\"2021-03-17T13:40:00Z\", 4.136],\n      [\"2021-03-17T13:50:00Z\"\
+        , 4.172],\n      [\"2021-03-17T14:00:00Z\", 4.145],\n      [\"2021-03-17T14:10:00Z\", 4.15],\n      [\"2021-03-17T14:20:00Z\", 4.098],\n      [\"2021-03-17T14:30:00Z\", 4.219],\n      [\"2021-03-17T14:40:00Z\"\
+        , 4.237],\n      [\"2021-03-17T14:50:00Z\", 4.185],\n      [\"2021-03-17T15:00:00Z\", 4.238],\n      [\"2021-03-17T15:10:00Z\", 4.232],\n      [\"2021-03-17T15:20:00Z\", 4.241],\n      [\"2021-03-17T15:30:00Z\"\
+        , 4.226],\n      [\"2021-03-17T15:40:00Z\", 4.254],\n      [\"2021-03-17T15:50:00Z\", 4.246],\n      [\"2021-03-17T16:00:00Z\", 4.244],\n      [\"2021-03-17T16:10:00Z\", 4.332],\n      [\"2021-03-17T16:20:00Z\"\
+        , 4.307],\n      [\"2021-03-17T16:30:00Z\", 4.294],\n      [\"2021-03-17T16:40:00Z\", 4.307],\n      [\"2021-03-17T16:50:00Z\", 4.307],\n      [\"2021-03-17T17:00:00Z\", 4.298],\n      [\"2021-03-17T17:10:00Z\"\
+        , 4.287],\n      [\"2021-03-17T17:20:00Z\", 4.28],\n      [\"2021-03-17T17:30:00Z\", 4.278],\n      [\"2021-03-17T17:40:00Z\", 4.364],\n      [\"2021-03-17T17:50:00Z\", 4.324],\n      [\"2021-03-17T18:00:00Z\"\
+        , 4.405],\n      [\"2021-03-17T18:10:00Z\", 4.436],\n      [\"2021-03-17T18:20:00Z\", 4.449],\n      [\"2021-03-17T18:30:00Z\", 4.51],\n      [\"2021-03-17T18:40:00Z\", 4.523],\n      [\"2021-03-17T18:50:00Z\"\
+        , 4.506],\n      [\"2021-03-17T19:00:00Z\", 4.518],\n      [\"2021-03-17T19:10:00Z\", 4.578],\n      [\"2021-03-17T19:20:00Z\", 4.566],\n      [\"2021-03-17T19:30:00Z\", 4.609],\n      [\"2021-03-17T19:40:00Z\"\
+        , 4.649],\n      [\"2021-03-17T19:50:00Z\", 4.605],\n      [\"2021-03-17T20:00:00Z\", 4.548],\n      [\"2021-03-17T20:10:00Z\", 4.722],\n      [\"2021-03-17T20:20:00Z\", 4.703],\n      [\"2021-03-17T20:30:00Z\"\
+        , 4.615],\n      [\"2021-03-17T20:40:00Z\", 4.741],\n      [\"2021-03-17T20:50:00Z\", 4.752],\n      [\"2021-03-17T21:00:00Z\", 4.74],\n      [\"2021-03-17T21:10:00Z\", 4.657],\n      [\"2021-03-17T21:20:00Z\"\
+        , 4.578],\n      [\"2021-03-17T21:30:00Z\", 4.578],\n      [\"2021-03-17T21:40:00Z\", 4.569],\n      [\"2021-03-17T21:50:00Z\", 4.572],\n      [\"2021-03-17T22:00:00Z\", 4.559],\n      [\"2021-03-17T22:10:00Z\"\
+        , 4.486],\n      [\"2021-03-17T22:20:00Z\", 4.446],\n      [\"2021-03-17T22:30:00Z\", 4.459],\n      [\"2021-03-17T22:40:00Z\", 4.473],\n      [\"2021-03-17T22:50:00Z\", 4.461],\n      [\"2021-03-17T23:00:00Z\"\
+        , 4.485],\n      [\"2021-03-17T23:10:00Z\", 4.534],\n      [\"2021-03-17T23:20:00Z\", 4.552],\n      [\"2021-03-17T23:30:00Z\", 4.59],\n      [\"2021-03-17T23:40:00Z\", 4.623],\n      [\"2021-03-17T23:50:00Z\"\
+        , 4.662],\n      [\"2021-03-18T00:00:00Z\", 4.61],\n      [\"2021-03-18T00:10:00Z\", 4.645],\n      [\"2021-03-18T00:20:00Z\", 4.68],\n      [\"2021-03-18T00:30:00Z\", 4.688],\n      [\"2021-03-18T00:40:00Z\"\
+        , 4.712],\n      [\"2021-03-18T00:50:00Z\", 4.749],\n      [\"2021-03-18T01:00:00Z\", 4.754],\n      [\"2021-03-18T01:10:00Z\", 4.804],\n      [\"2021-03-18T01:20:00Z\", 4.838],\n      [\"2021-03-18T01:30:00Z\"\
+        , 4.859],\n      [\"2021-03-18T01:40:00Z\", 4.884],\n      [\"2021-03-18T01:50:00Z\", 4.861],\n      [\"2021-03-18T02:00:00Z\", 4.845],\n      [\"2021-03-18T02:10:00Z\", 4.845],\n      [\"2021-03-18T02:20:00Z\"\
+        , 4.82],\n      [\"2021-03-18T02:30:00Z\", 4.808],\n      [\"2021-03-18T02:40:00Z\", 4.859],\n      [\"2021-03-18T02:50:00Z\", 4.848],\n      [\"2021-03-18T03:00:00Z\", 4.883],\n      [\"2021-03-18T03:10:00Z\"\
+        , 4.9],\n      [\"2021-03-18T03:20:00Z\", 4.947],\n      [\"2021-03-18T03:30:00Z\", 4.951],\n      [\"2021-03-18T03:40:00Z\", 4.987],\n      [\"2021-03-18T03:50:00Z\", 5.029],\n      [\"2021-03-18T04:00:00Z\"\
+        , 5.079],\n      [\"2021-03-18T04:10:00Z\", 5.069],\n      [\"2021-03-18T04:20:00Z\", 5.046],\n      [\"2021-03-18T04:30:00Z\", 5.049],\n      [\"2021-03-18T04:40:00Z\", 5.066],\n      [\"2021-03-18T04:50:00Z\"\
+        , 5.057],\n      [\"2021-03-18T05:00:00Z\", 5.083],\n      [\"2021-03-18T05:10:00Z\", 5.105],\n      [\"2021-03-18T05:20:00Z\", 5.115],\n      [\"2021-03-18T05:30:00Z\", 5.14],\n      [\"2021-03-18T05:40:00Z\"\
+        , 5.167],\n      [\"2021-03-18T05:50:00Z\", 5.169],\n      [\"2021-03-18T06:00:00Z\", 5.148],\n      [\"2021-03-18T06:10:00Z\", 5.176],\n      [\"2021-03-18T06:20:00Z\", 5.207],\n      [\"2021-03-18T06:30:00Z\"\
+        , 5.265],\n      [\"2021-03-18T06:40:00Z\", 5.286],\n      [\"2021-03-18T06:50:00Z\", 5.261],\n      [\"2021-03-18T07:00:00Z\", 5.277],\n      [\"2021-03-18T07:10:00Z\", 5.297],\n      [\"2021-03-18T07:20:00Z\"\
+        , 5.331],\n      [\"2021-03-18T07:30:00Z\", 5.351],\n      [\"2021-03-18T07:40:00Z\", 5.362],\n      [\"2021-03-18T07:50:00Z\", 5.383],\n      [\"2021-03-18T08:00:00Z\", 5.404],\n      [\"2021-03-18T08:10:00Z\"\
+        , 5.435],\n      [\"2021-03-18T08:20:00Z\", 5.443],\n      [\"2021-03-18T08:30:00Z\", 5.449],\n      [\"2021-03-18T08:40:00Z\", 5.444],\n      [\"2021-03-18T08:50:00Z\", 5.453],\n      [\"2021-03-18T09:00:00Z\"\
+        , 5.459],\n      [\"2021-03-18T09:10:00Z\", 5.459],\n      [\"2021-03-18T09:20:00Z\", 5.451],\n      [\"2021-03-18T09:30:00Z\", 5.442],\n      [\"2021-03-18T09:40:00Z\", 5.46],\n      [\"2021-03-18T09:50:00Z\"\
+        , 5.456],\n      [\"2021-03-18T10:00:00Z\", 5.418],\n      [\"2021-03-18T10:10:00Z\", 5.419],\n      [\"2021-03-18T10:20:00Z\", 5.404],\n      [\"2021-03-18T10:30:00Z\", 5.38],\n      [\"2021-03-18T10:40:00Z\"\
+        , 5.391],\n      [\"2021-03-18T10:50:00Z\", 5.411],\n      [\"2021-03-18T11:00:00Z\", 5.456],\n      [\"2021-03-18T11:10:00Z\", 5.511],\n      [\"2021-03-18T11:20:00Z\", 5.513],\n      [\"2021-03-18T11:30:00Z\"\
+        , 5.507],\n      [\"2021-03-18T11:40:00Z\", 5.527],\n      [\"2021-03-18T11:50:00Z\", 5.518],\n      [\"2021-03-18T12:00:00Z\", 5.548],\n      [\"2021-03-18T12:10:00Z\", 5.582],\n      [\"2021-03-18T12:20:00Z\"\
+        , 5.585],\n      [\"2021-03-18T12:30:00Z\", 5.576],\n      [\"2021-03-18T12:40:00Z\", 5.587],\n      [\"2021-03-18T12:50:00Z\", 5.584],\n      [\"2021-03-18T13:00:00Z\", 5.599],\n      [\"2021-03-18T13:10:00Z\"\
+        , 5.609],\n      [\"2021-03-18T13:20:00Z\", 5.615],\n      [\"2021-03-18T13:30:00Z\", 5.653],\n      [\"2021-03-18T13:40:00Z\", 5.625],\n      [\"2021-03-18T13:50:00Z\", 5.622],\n      [\"2021-03-18T14:00:00Z\"\
+        , 5.631],\n      [\"2021-03-18T14:10:00Z\", 5.681],\n      [\"2021-03-18T14:20:00Z\", 5.664],\n      [\"2021-03-18T14:30:00Z\", 5.657],\n      [\"2021-03-18T14:40:00Z\", 5.697],\n      [\"2021-03-18T14:50:00Z\"\
+        , 5.696],\n      [\"2021-03-18T15:00:00Z\", 5.69],\n      [\"2021-03-18T15:10:00Z\", 5.665],\n      [\"2021-03-18T15:20:00Z\", 5.654],\n      [\"2021-03-18T15:30:00Z\", 5.667],\n      [\"2021-03-18T15:40:00Z\"\
+        , 5.663],\n      [\"2021-03-18T15:50:00Z\", 5.696],\n      [\"2021-03-18T16:00:00Z\", 5.646],\n      [\"2021-03-18T16:10:00Z\", 5.634],\n      [\"2021-03-18T16:20:00Z\", 5.623],\n      [\"2021-03-18T16:30:00Z\"\
+        , 5.578],\n      [\"2021-03-18T16:40:00Z\", 5.58],\n      [\"2021-03-18T16:50:00Z\", 5.589],\n      [\"2021-03-18T17:00:00Z\", 5.561],\n      [\"2021-03-18T17:10:00Z\", 5.541],\n      [\"2021-03-18T17:20:00Z\"\
+        , 5.53],\n      [\"2021-03-18T17:30:00Z\", 5.504],\n      [\"2021-03-18T17:40:00Z\", 5.445],\n      [\"2021-03-18T17:50:00Z\", 5.423],\n      [\"2021-03-18T18:00:00Z\", 5.359],\n      [\"2021-03-18T18:10:00Z\"\
+        , 5.341],\n      [\"2021-03-18T18:20:00Z\", 5.34],\n      [\"2021-03-18T18:30:00Z\", 5.299],\n      [\"2021-03-18T18:40:00Z\", 5.324],\n      [\"2021-03-18T18:50:00Z\", 5.259],\n      [\"2021-03-18T19:00:00Z\"\
+        , 5.22],\n      [\"2021-03-18T19:10:00Z\", 5.234],\n      [\"2021-03-18T19:20:00Z\", 5.217],\n      [\"2021-03-18T19:30:00Z\", 5.165],\n      [\"2021-03-18T19:40:00Z\", 5.169],\n      [\"2021-03-18T19:50:00Z\"\
+        , 5.154],\n      [\"2021-03-18T20:00:00Z\", 5.168],\n      [\"2021-03-18T20:10:00Z\", 5.165],\n      [\"2021-03-18T20:20:00Z\", 5.177],\n      [\"2021-03-18T20:30:00Z\", 5.143],\n      [\"2021-03-18T20:40:00Z\"\
+        , 5.125],\n      [\"2021-03-18T20:50:00Z\", 5.151],\n      [\"2021-03-18T21:00:00Z\", 5.155],\n      [\"2021-03-18T21:10:00Z\", 5.155],\n      [\"2021-03-18T21:20:00Z\", 5.116],\n      [\"2021-03-18T21:30:00Z\"\
+        , 5.1],\n      [\"2021-03-18T21:40:00Z\", 5.076],\n      [\"2021-03-18T21:50:00Z\", 5.096],\n      [\"2021-03-18T22:00:00Z\", 5.112],\n      [\"2021-03-18T22:10:00Z\", 5.112],\n      [\"2021-03-18T22:20:00Z\"\
+        , 5.124],\n      [\"2021-03-18T22:30:00Z\", 5.123],\n      [\"2021-03-18T22:40:00Z\", 5.124],\n      [\"2021-03-18T22:50:00Z\", 5.138],\n      [\"2021-03-18T23:00:00Z\", 5.154],\n      [\"2021-03-18T23:10:00Z\"\
+        , 5.141],\n      [\"2021-03-18T23:20:00Z\", 5.161],\n      [\"2021-03-18T23:30:00Z\", 5.133],\n      [\"2021-03-18T23:40:00Z\", 5.118],\n      [\"2021-03-18T23:50:00Z\", 5.129],\n      [\"2021-03-19T00:00:00Z\"\
+        , 5.161],\n      [\"2021-03-19T00:10:00Z\", 5.119],\n      [\"2021-03-19T00:20:00Z\", 5.11],\n      [\"2021-03-19T00:30:00Z\", 5.104],\n      [\"2021-03-19T00:40:00Z\", 5.115],\n      [\"2021-03-19T00:50:00Z\"\
+        , 5.124],\n      [\"2021-03-19T01:00:00Z\", 5.131],\n      [\"2021-03-19T01:10:00Z\", 5.142],\n      [\"2021-03-19T01:20:00Z\", 5.171],\n      [\"2021-03-19T01:30:00Z\", 5.124],\n      [\"2021-03-19T01:40:00Z\"\
+        , 5.149],\n      [\"2021-03-19T01:50:00Z\", 5.158],\n      [\"2021-03-19T02:00:00Z\", 5.192],\n      [\"2021-03-19T02:10:00Z\", 4.753],\n      [\"2021-03-19T02:20:00Z\", 4.848],\n      [\"2021-03-19T02:30:00Z\"\
+        , 4.798],\n      [\"2021-03-19T02:40:00Z\", 4.845],\n      [\"2021-03-19T02:50:00Z\", 4.854],\n      [\"2021-03-19T03:00:00Z\", 4.566],\n      [\"2021-03-19T03:10:00Z\", 4.191],\n      [\"2021-03-19T03:20:00Z\"\
+        , 4.008],\n      [\"2021-03-19T03:30:00Z\", 3.918],\n      [\"2021-03-19T03:40:00Z\", 3.703],\n      [\"2021-03-19T03:50:00Z\", 3.584],\n      [\"2021-03-19T04:00:00Z\", 3.323],\n      [\"2021-03-19T04:10:00Z\"\
+        , 3.272],\n      [\"2021-03-19T04:20:00Z\", 3.237],\n      [\"2021-03-19T04:30:00Z\", 3.108],\n      [\"2021-03-19T04:40:00Z\", 2.975],\n      [\"2021-03-19T04:50:00Z\", 2.819],\n      [\"2021-03-19T05:00:00Z\"\
+        , 2.72],\n      [\"2021-03-19T05:10:00Z\", 2.274],\n      [\"2021-03-19T05:20:00Z\", 2.142],\n      [\"2021-03-19T05:30:00Z\", 2.082],\n      [\"2021-03-19T05:40:00Z\", 2.131],\n      [\"2021-03-19T05:50:00Z\"\
+        , 2.323],\n      [\"2021-03-19T06:00:00Z\", 2.454],\n      [\"2021-03-19T06:10:00Z\", 1.998],\n      [\"2021-03-19T06:20:00Z\", 1.372],\n      [\"2021-03-19T06:30:00Z\", 1.226],\n      [\"2021-03-19T06:40:00Z\"\
+        , 1.038],\n      [\"2021-03-19T06:50:00Z\", 0.965],\n      [\"2021-03-19T07:00:00Z\", 1.103],\n      [\"2021-03-19T07:10:00Z\", 1.176],\n      [\"2021-03-19T07:20:00Z\", 1.391],\n      [\"2021-03-19T07:30:00Z\"\
+        , 1.743],\n      [\"2021-03-19T07:40:00Z\", 1.766],\n      [\"2021-03-19T07:50:00Z\", 1.687],\n      [\"2021-03-19T08:00:00Z\", 1.578],\n      [\"2021-03-19T08:10:00Z\", 1.156],\n      [\"2021-03-19T08:20:00Z\"\
+        , 0.429],\n      [\"2021-03-19T08:30:00Z\", 0.543],\n      [\"2021-03-19T08:40:00Z\", 0.57],\n      [\"2021-03-19T08:50:00Z\", 0.192],\n      [\"2021-03-19T09:00:00Z\", 0.005],\n      [\"2021-03-19T09:10:00Z\"\
+        , -0.174],\n      [\"2021-03-19T09:20:00Z\", -0.384],\n      [\"2021-03-19T09:30:00Z\", -0.726],\n      [\"2021-03-19T09:40:00Z\", -0.947],\n      [\"2021-03-19T09:50:00Z\", -1.128],\n      [\"\
+        2021-03-19T10:00:00Z\", -1.442],\n      [\"2021-03-19T10:10:00Z\", -1.735],\n      [\"2021-03-19T10:20:00Z\", -1.849],\n      [\"2021-03-19T10:30:00Z\", -2.125],\n      [\"2021-03-19T10:40:00Z\"\
+        , -2.139],\n      [\"2021-03-19T10:50:00Z\", -2.459],\n      [\"2021-03-19T11:00:00Z\", -2.574],\n      [\"2021-03-19T11:10:00Z\", -2.644],\n      [\"2021-03-19T11:20:00Z\", -2.846],\n      [\"\
+        2021-03-19T11:30:00Z\", -2.899],\n      [\"2021-03-19T11:40:00Z\", -2.983],\n      [\"2021-03-19T11:50:00Z\", -3.024],\n      [\"2021-03-19T12:00:00Z\", -3.032],\n      [\"2021-03-19T12:10:00Z\"\
+        , -3.109],\n      [\"2021-03-19T12:20:00Z\", -3.393],\n      [\"2021-03-19T12:30:00Z\", -3.297],\n      [\"2021-03-19T12:40:00Z\", -3.4],\n      [\"2021-03-19T12:50:00Z\", -3.373],\n      [\"2021-03-19T13:00:00Z\"\
+        , -3.519],\n      [\"2021-03-19T13:10:00Z\", -3.551],\n      [\"2021-03-19T13:20:00Z\", -3.866],\n      [\"2021-03-19T13:30:00Z\", -4.028],\n      [\"2021-03-19T13:40:00Z\", -3.863],\n      [\"\
+        2021-03-19T13:50:00Z\", -3.821],\n      [\"2021-03-19T14:00:00Z\", -4.014],\n      [\"2021-03-19T14:10:00Z\", -4.088],\n      [\"2021-03-19T14:20:00Z\", -4.135],\n      [\"2021-03-19T14:30:00Z\"\
+        , -3.866],\n      [\"2021-03-19T14:40:00Z\", -4.002],\n      [\"2021-03-19T14:50:00Z\", -3.69],\n      [\"2021-03-19T15:00:00Z\", -3.733],\n      [\"2021-03-19T15:10:00Z\", -3.753],\n      [\"2021-03-19T15:20:00Z\"\
+        , -3.476],\n      [\"2021-03-19T15:30:00Z\", -3.438],\n      [\"2021-03-19T15:40:00Z\", -3.246],\n      [\"2021-03-19T15:50:00Z\", -3.015],\n      [\"2021-03-19T16:00:00Z\", -3.402],\n      [\"\
+        2021-03-19T16:10:00Z\", -3.264],\n      [\"2021-03-19T16:20:00Z\", -2.861],\n      [\"2021-03-19T16:30:00Z\", -2.703],\n      [\"2021-03-19T16:40:00Z\", -2.837],\n      [\"2021-03-19T16:50:00Z\"\
+        , -2.383],\n      [\"2021-03-19T17:00:00Z\", -2.321],\n      [\"2021-03-19T17:10:00Z\", -2.411],\n      [\"2021-03-19T17:20:00Z\", -2.314],\n      [\"2021-03-19T17:30:00Z\", -2.039],\n      [\"\
+        2021-03-19T17:40:00Z\", -1.855],\n      [\"2021-03-19T17:50:00Z\", -1.944],\n      [\"2021-03-19T18:00:00Z\", -1.847],\n      [\"2021-03-19T18:10:00Z\", -1.788],\n      [\"2021-03-19T18:20:00Z\"\
+        , -1.54],\n      [\"2021-03-19T18:30:00Z\", -1.358],\n      [\"2021-03-19T18:40:00Z\", -1.238],\n      [\"2021-03-19T18:50:00Z\", -1.024],\n      [\"2021-03-19T19:00:00Z\", -0.956],\n      [\"2021-03-19T19:10:00Z\"\
+        , -0.901],\n      [\"2021-03-19T19:20:00Z\", -0.743],\n      [\"2021-03-19T19:30:00Z\", -0.713],\n      [\"2021-03-19T19:40:00Z\", -0.459],\n      [\"2021-03-19T19:50:00Z\", -0.266],\n      [\"\
+        2021-03-19T20:00:00Z\", -0.119],\n      [\"2021-03-19T20:10:00Z\", -0.033],\n      [\"2021-03-19T20:20:00Z\", 0.034],\n      [\"2021-03-19T20:30:00Z\", 0.283],\n      [\"2021-03-19T20:40:00Z\",\
+        \ 0.24],\n      [\"2021-03-19T20:50:00Z\", 0.499],\n      [\"2021-03-19T21:00:00Z\", 0.484],\n      [\"2021-03-19T21:10:00Z\", 0.444],\n      [\"2021-03-19T21:20:00Z\", 0.622],\n      [\"2021-03-19T21:30:00Z\"\
+        , 0.853],\n      [\"2021-03-19T21:40:00Z\", 0.81],\n      [\"2021-03-19T21:50:00Z\", 0.868],\n      [\"2021-03-19T22:00:00Z\", 0.952],\n      [\"2021-03-19T22:10:00Z\", 0.944],\n      [\"2021-03-19T22:20:00Z\"\
+        , 1.144],\n      [\"2021-03-19T22:30:00Z\", 1.228],\n      [\"2021-03-19T22:40:00Z\", 1.283],\n      [\"2021-03-19T22:50:00Z\", 1.327],\n      [\"2021-03-19T23:00:00Z\", 1.561],\n      [\"2021-03-19T23:10:00Z\"\
+        , 1.559],\n      [\"2021-03-19T23:20:00Z\", 1.607],\n      [\"2021-03-19T23:30:00Z\", 1.749],\n      [\"2021-03-19T23:40:00Z\", 1.771],\n      [\"2021-03-19T23:50:00Z\", 1.769],\n      [\"2021-03-20T00:00:00Z\"\
+        , 1.82],\n      [\"2021-03-20T00:10:00Z\", 1.892],\n      [\"2021-03-20T00:20:00Z\", 1.844],\n      [\"2021-03-20T00:30:00Z\", 1.922],\n      [\"2021-03-20T00:40:00Z\", 1.926],\n      [\"2021-03-20T00:50:00Z\"\
+        , 1.872],\n      [\"2021-03-20T01:00:00Z\", 1.933],\n      [\"2021-03-20T01:10:00Z\", 1.942],\n      [\"2021-03-20T01:20:00Z\", 1.837],\n      [\"2021-03-20T01:30:00Z\", 1.779],\n      [\"2021-03-20T01:40:00Z\"\
+        , 1.714],\n      [\"2021-03-20T01:50:00Z\", 1.646],\n      [\"2021-03-20T02:00:00Z\", 1.423],\n      [\"2021-03-20T02:10:00Z\", 1.561],\n      [\"2021-03-20T02:20:00Z\", 1.471],\n      [\"2021-03-20T02:30:00Z\"\
+        , 1.5],\n      [\"2021-03-20T02:40:00Z\", 1.49],\n      [\"2021-03-20T02:50:00Z\", 1.47],\n      [\"2021-03-20T03:00:00Z\", 1.423],\n      [\"2021-03-20T03:10:00Z\", 1.439],\n      [\"2021-03-20T03:20:00Z\"\
+        , 1.344],\n      [\"2021-03-20T03:30:00Z\", 1.345],\n      [\"2021-03-20T03:40:00Z\", 1.284],\n      [\"2021-03-20T03:50:00Z\", 1.294],\n      [\"2021-03-20T04:00:00Z\", 1.264],\n      [\"2021-03-20T04:10:00Z\"\
+        , 1.273],\n      [\"2021-03-20T04:20:00Z\", 1.306],\n      [\"2021-03-20T04:30:00Z\", 1.297],\n      [\"2021-03-20T04:40:00Z\", 1.263],\n      [\"2021-03-20T04:50:00Z\", 1.237],\n      [\"2021-03-20T05:00:00Z\"\
+        , 1.192],\n      [\"2021-03-20T05:10:00Z\", 1.202],\n      [\"2021-03-20T05:20:00Z\", 1.193],\n      [\"2021-03-20T05:30:00Z\", 1.232],\n      [\"2021-03-20T05:40:00Z\", 1.36],\n      [\"2021-03-20T05:50:00Z\"\
+        , 1.292],\n      [\"2021-03-20T06:00:00Z\", 1.225],\n      [\"2021-03-20T06:10:00Z\", 1.181],\n      [\"2021-03-20T06:20:00Z\", 1.218],\n      [\"2021-03-20T06:30:00Z\", 1.146],\n      [\"2021-03-20T06:40:00Z\"\
+        , 1.289],\n      [\"2021-03-20T06:50:00Z\", 1.31],\n      [\"2021-03-20T07:00:00Z\", 1.352],\n      [\"2021-03-20T07:10:00Z\", 1.444],\n      [\"2021-03-20T07:20:00Z\", 1.493],\n      [\"2021-03-20T07:30:00Z\"\
+        , 1.551],\n      [\"2021-03-20T07:40:00Z\", 1.524],\n      [\"2021-03-20T07:50:00Z\", 1.618],\n      [\"2021-03-20T08:00:00Z\", 1.625],\n      [\"2021-03-20T08:10:00Z\", 1.608],\n      [\"2021-03-20T08:20:00Z\"\
+        , 1.592],\n      [\"2021-03-20T08:30:00Z\", 1.584],\n      [\"2021-03-20T08:40:00Z\", 1.565],\n      [\"2021-03-20T08:50:00Z\", 1.648],\n      [\"2021-03-20T09:00:00Z\", 1.678],\n      [\"2021-03-20T09:10:00Z\"\
+        , 1.754],\n      [\"2021-03-20T09:20:00Z\", 1.757],\n      [\"2021-03-20T09:30:00Z\", 1.815],\n      [\"2021-03-20T09:40:00Z\", 1.857],\n      [\"2021-03-20T09:50:00Z\", 1.884],\n      [\"2021-03-20T10:00:00Z\"\
+        , 1.941],\n      [\"2021-03-20T10:10:00Z\", 1.971],\n      [\"2021-03-20T10:20:00Z\", 2.024],\n      [\"2021-03-20T10:30:00Z\", 2.034],\n      [\"2021-03-20T10:40:00Z\", 2.158],\n      [\"2021-03-20T10:50:00Z\"\
+        , 2.332],\n      [\"2021-03-20T11:00:00Z\", 2.604],\n      [\"2021-03-20T11:10:00Z\", 2.612],\n      [\"2021-03-20T11:20:00Z\", 2.792],\n      [\"2021-03-20T11:30:00Z\", 2.798],\n      [\"2021-03-20T11:40:00Z\"\
+        , 2.677],\n      [\"2021-03-20T11:50:00Z\", 2.684],\n      [\"2021-03-20T12:00:00Z\", 2.736],\n      [\"2021-03-20T12:10:00Z\", 2.653],\n      [\"2021-03-20T12:20:00Z\", 2.741],\n      [\"2021-03-20T12:30:00Z\"\
+        , 2.845],\n      [\"2021-03-20T12:40:00Z\", 2.959],\n      [\"2021-03-20T12:50:00Z\", 2.991],\n      [\"2021-03-20T13:00:00Z\", 2.969],\n      [\"2021-03-20T13:10:00Z\", 3.233],\n      [\"2021-03-20T13:20:00Z\"\
+        , 3.293],\n      [\"2021-03-20T13:30:00Z\", 3.277],\n      [\"2021-03-20T13:40:00Z\", 3.451],\n      [\"2021-03-20T13:50:00Z\", 3.549],\n      [\"2021-03-20T14:00:00Z\", 3.639],\n      [\"2021-03-20T14:10:00Z\"\
+        , 3.825],\n      [\"2021-03-20T14:20:00Z\", 3.883],\n      [\"2021-03-20T14:30:00Z\", 3.842],\n      [\"2021-03-20T14:40:00Z\", 3.916],\n      [\"2021-03-20T14:50:00Z\", 3.95],\n      [\"2021-03-20T15:00:00Z\"\
+        , 4.046],\n      [\"2021-03-20T15:10:00Z\", 4.066],\n      [\"2021-03-20T15:20:00Z\", 4.151],\n      [\"2021-03-20T15:30:00Z\", 4.207],\n      [\"2021-03-20T15:40:00Z\", 4.282],\n      [\"2021-03-20T15:50:00Z\"\
+        , 4.365],\n      [\"2021-03-20T16:00:00Z\", 4.361],\n      [\"2021-03-20T16:10:00Z\", 4.443],\n      [\"2021-03-20T16:20:00Z\", 4.501],\n      [\"2021-03-20T16:30:00Z\", 4.531],\n      [\"2021-03-20T16:40:00Z\"\
+        , 4.51],\n      [\"2021-03-20T16:50:00Z\", 4.554],\n      [\"2021-03-20T17:00:00Z\", 4.635],\n      [\"2021-03-20T17:10:00Z\", 4.689],\n      [\"2021-03-20T17:20:00Z\", 4.764],\n      [\"2021-03-20T17:30:00Z\"\
+        , 4.745],\n      [\"2021-03-20T17:40:00Z\", 4.897],\n      [\"2021-03-20T17:50:00Z\", 5.001],\n      [\"2021-03-20T18:00:00Z\", 5.042],\n      [\"2021-03-20T18:10:00Z\", 5.046],\n      [\"2021-03-20T18:20:00Z\"\
+        , 5.013],\n      [\"2021-03-20T18:30:00Z\", 4.942],\n      [\"2021-03-20T18:40:00Z\", 4.941],\n      [\"2021-03-20T18:50:00Z\", 4.877],\n      [\"2021-03-20T19:00:00Z\", 4.842],\n      [\"2021-03-20T19:10:00Z\"\
+        , 4.825],\n      [\"2021-03-20T19:20:00Z\", 4.842],\n      [\"2021-03-20T19:30:00Z\", 4.891],\n      [\"2021-03-20T19:40:00Z\", 4.959],\n      [\"2021-03-20T19:50:00Z\", 4.989],\n      [\"2021-03-20T20:00:00Z\"\
+        , 4.985],\n      [\"2021-03-20T20:10:00Z\", 5.019],\n      [\"2021-03-20T20:20:00Z\", 5.072],\n      [\"2021-03-20T20:30:00Z\", 5.208],\n      [\"2021-03-20T20:40:00Z\", 5.281],\n      [\"2021-03-20T20:50:00Z\"\
+        , 5.346],\n      [\"2021-03-20T21:00:00Z\", 5.402],\n      [\"2021-03-20T21:10:00Z\", 5.439],\n      [\"2021-03-20T21:20:00Z\", 5.469],\n      [\"2021-03-20T21:30:00Z\", 5.554],\n      [\"2021-03-20T21:40:00Z\"\
+        , 5.526],\n      [\"2021-03-20T21:50:00Z\", 5.536],\n      [\"2021-03-20T22:00:00Z\", 5.582],\n      [\"2021-03-20T22:10:00Z\", 5.599],\n      [\"2021-03-20T22:20:00Z\", 5.63],\n      [\"2021-03-20T22:30:00Z\"\
+        , 5.616],\n      [\"2021-03-20T22:40:00Z\", 5.657],\n      [\"2021-03-20T22:50:00Z\", 5.699],\n      [\"2021-03-20T23:00:00Z\", 5.758],\n      [\"2021-03-20T23:10:00Z\", 5.813],\n      [\"2021-03-20T23:20:00Z\"\
+        , 5.87],\n      [\"2021-03-20T23:30:00Z\", 5.916],\n      [\"2021-03-20T23:40:00Z\", 5.918],\n      [\"2021-03-20T23:50:00Z\", 5.903],\n      [\"2021-03-21T00:00:00Z\", 5.939],\n      [\"2021-03-21T00:10:00Z\"\
+        , 5.925],\n      [\"2021-03-21T00:20:00Z\", 5.967],\n      [\"2021-03-21T00:30:00Z\", 6.004],\n      [\"2021-03-21T00:40:00Z\", 5.976],\n      [\"2021-03-21T00:50:00Z\", 5.981],\n      [\"2021-03-21T01:00:00Z\"\
+        , 6.0],\n      [\"2021-03-21T01:10:00Z\", 5.963],\n      [\"2021-03-21T01:20:00Z\", 6.011],\n      [\"2021-03-21T01:30:00Z\", 6.009],\n      [\"2021-03-21T01:40:00Z\", 6.029],\n      [\"2021-03-21T01:50:00Z\"\
+        , 6.029],\n      [\"2021-03-21T02:00:00Z\", 5.971],\n      [\"2021-03-21T02:10:00Z\", 5.948],\n      [\"2021-03-21T02:20:00Z\", 5.94],\n      [\"2021-03-21T02:30:00Z\", 5.972],\n      [\"2021-03-21T02:40:00Z\"\
+        , 5.991],\n      [\"2021-03-21T02:50:00Z\", 6.004],\n      [\"2021-03-21T03:00:00Z\", 5.993],\n      [\"2021-03-21T03:10:00Z\", 5.963],\n      [\"2021-03-21T03:20:00Z\", 5.955],\n      [\"2021-03-21T03:30:00Z\"\
+        , 5.957],\n      [\"2021-03-21T03:40:00Z\", 5.96],\n      [\"2021-03-21T03:50:00Z\", 5.951],\n      [\"2021-03-21T04:00:00Z\", 5.956],\n      [\"2021-03-21T04:10:00Z\", 5.958],\n      [\"2021-03-21T04:20:00Z\"\
+        , 5.919],\n      [\"2021-03-21T04:30:00Z\", 5.919],\n      [\"2021-03-21T04:40:00Z\", 5.924],\n      [\"2021-03-21T04:50:00Z\", 5.876],\n      [\"2021-03-21T05:00:00Z\", 5.853],\n      [\"2021-03-21T05:10:00Z\"\
+        , 5.88],\n      [\"2021-03-21T05:20:00Z\", 5.87],\n      [\"2021-03-21T05:30:00Z\", 5.884],\n      [\"2021-03-21T05:40:00Z\", 5.893],\n      [\"2021-03-21T05:50:00Z\", 5.876],\n      [\"2021-03-21T06:00:00Z\"\
+        , 5.851],\n      [\"2021-03-21T06:10:00Z\", 5.823],\n      [\"2021-03-21T06:20:00Z\", 5.861],\n      [\"2021-03-21T06:30:00Z\", 5.844],\n      [\"2021-03-21T06:40:00Z\", 5.817],\n      [\"2021-03-21T06:50:00Z\"\
+        , 5.784],\n      [\"2021-03-21T07:00:00Z\", 5.767],\n      [\"2021-03-21T07:10:00Z\", 5.767],\n      [\"2021-03-21T07:20:00Z\", 5.736],\n      [\"2021-03-21T07:30:00Z\", 5.745],\n      [\"2021-03-21T07:40:00Z\"\
+        , 5.687],\n      [\"2021-03-21T07:50:00Z\", 5.705],\n      [\"2021-03-21T08:00:00Z\", 5.683],\n      [\"2021-03-21T08:10:00Z\", 5.679],\n      [\"2021-03-21T08:20:00Z\", 5.683],\n      [\"2021-03-21T08:30:00Z\"\
+        , 5.669],\n      [\"2021-03-21T08:40:00Z\", 5.653],\n      [\"2021-03-21T08:50:00Z\", 5.632],\n      [\"2021-03-21T09:00:00Z\", 5.608],\n      [\"2021-03-21T09:10:00Z\", 5.663],\n      [\"2021-03-21T09:20:00Z\"\
+        , 5.604],\n      [\"2021-03-21T09:30:00Z\", 5.593],\n      [\"2021-03-21T09:40:00Z\", 5.632],\n      [\"2021-03-21T09:50:00Z\", 5.634],\n      [\"2021-03-21T10:00:00Z\", 5.658],\n      [\"2021-03-21T10:10:00Z\"\
+        , 5.686],\n      [\"2021-03-21T10:20:00Z\", 5.646],\n      [\"2021-03-21T10:30:00Z\", 5.648],\n      [\"2021-03-21T10:40:00Z\", 5.684],\n      [\"2021-03-21T10:50:00Z\", 5.752],\n      [\"2021-03-21T11:00:00Z\"\
+        , 5.825],\n      [\"2021-03-21T11:10:00Z\", 5.902],\n      [\"2021-03-21T11:20:00Z\", 5.96],\n      [\"2021-03-21T11:30:00Z\", 6.105],\n      [\"2021-03-21T11:40:00Z\", 6.19],\n      [\"2021-03-21T11:50:00Z\"\
+        , 6.142],\n      [\"2021-03-21T12:00:00Z\", 6.163],\n      [\"2021-03-21T12:10:00Z\", 6.166],\n      [\"2021-03-21T12:20:00Z\", 6.174],\n      [\"2021-03-21T12:30:00Z\", 6.189],\n      [\"2021-03-21T12:40:00Z\"\
+        , 6.259],\n      [\"2021-03-21T12:50:00Z\", 6.251],\n      [\"2021-03-21T13:00:00Z\", 6.259],\n      [\"2021-03-21T13:10:00Z\", 6.34],\n      [\"2021-03-21T13:20:00Z\", 6.262],\n      [\"2021-03-21T13:30:00Z\"\
+        , 6.182],\n      [\"2021-03-21T13:40:00Z\", 6.23],\n      [\"2021-03-21T13:50:00Z\", 6.403],\n      [\"2021-03-21T14:00:00Z\", 7.077],\n      [\"2021-03-21T14:10:00Z\", 6.906],\n      [\"2021-03-21T14:20:00Z\"\
+        , 6.641],\n      [\"2021-03-21T14:30:00Z\", 6.566],\n      [\"2021-03-21T14:40:00Z\", 6.628],\n      [\"2021-03-21T14:50:00Z\", 6.531],\n      [\"2021-03-21T15:00:00Z\", 6.694],\n      [\"2021-03-21T15:10:00Z\"\
+        , 6.591],\n      [\"2021-03-21T15:20:00Z\", 6.549],\n      [\"2021-03-21T15:30:00Z\", 6.657],\n      [\"2021-03-21T15:40:00Z\", 6.514],\n      [\"2021-03-21T15:50:00Z\", 6.525],\n      [\"2021-03-21T16:00:00Z\"\
+        , 6.571],\n      [\"2021-03-21T16:10:00Z\", 6.63],\n      [\"2021-03-21T16:20:00Z\", 6.573],\n      [\"2021-03-21T16:30:00Z\", 6.573],\n      [\"2021-03-21T16:40:00Z\", 6.576],\n      [\"2021-03-21T16:50:00Z\"\
+        , 6.619],\n      [\"2021-03-21T17:00:00Z\", 6.657],\n      [\"2021-03-21T17:10:00Z\", 6.537],\n      [\"2021-03-21T17:20:00Z\", 6.679],\n      [\"2021-03-21T17:30:00Z\", 6.738],\n      [\"2021-03-21T17:40:00Z\"\
+        , 6.757],\n      [\"2021-03-21T17:50:00Z\", 6.742],\n      [\"2021-03-21T18:00:00Z\", 6.861],\n      [\"2021-03-21T18:10:00Z\", 6.924],\n      [\"2021-03-21T18:20:00Z\", 6.956],\n      [\"2021-03-21T18:30:00Z\"\
+        , 7.028],\n      [\"2021-03-21T18:40:00Z\", 6.993],\n      [\"2021-03-21T18:50:00Z\", 6.934],\n      [\"2021-03-21T19:00:00Z\", 6.859],\n      [\"2021-03-21T19:10:00Z\", 6.947],\n      [\"2021-03-21T19:20:00Z\"\
+        , 6.86],\n      [\"2021-03-21T19:30:00Z\", 6.885],\n      [\"2021-03-21T19:40:00Z\", 7.025],\n      [\"2021-03-21T19:50:00Z\", 7.096],\n      [\"2021-03-21T20:00:00Z\", 7.09],\n      [\"2021-03-21T20:10:00Z\"\
+        , 7.061],\n      [\"2021-03-21T20:20:00Z\", 7.24],\n      [\"2021-03-21T20:30:00Z\", 7.255],\n      [\"2021-03-21T20:40:00Z\", 7.087],\n      [\"2021-03-21T20:50:00Z\", 7.174],\n      [\"2021-03-21T21:00:00Z\"\
+        , 7.356],\n      [\"2021-03-21T21:10:00Z\", 7.445],\n      [\"2021-03-21T21:20:00Z\", 7.345],\n      [\"2021-03-21T21:30:00Z\", 7.142],\n      [\"2021-03-21T21:40:00Z\", 7.009],\n      [\"2021-03-21T21:50:00Z\"\
+        , 6.994],\n      [\"2021-03-21T22:00:00Z\", 6.896],\n      [\"2021-03-21T22:10:00Z\", 6.816],\n      [\"2021-03-21T22:20:00Z\", 6.753],\n      [\"2021-03-21T22:30:00Z\", 6.63],\n      [\"2021-03-21T22:40:00Z\"\
+        , 6.501],\n      [\"2021-03-21T22:50:00Z\", 6.416],\n      [\"2021-03-21T23:00:00Z\", 6.361],\n      [\"2021-03-21T23:10:00Z\", 6.316],\n      [\"2021-03-21T23:20:00Z\", 6.288],\n      [\"2021-03-21T23:30:00Z\"\
+        , 6.25],\n      [\"2021-03-21T23:40:00Z\", 6.229],\n      [\"2021-03-21T23:50:00Z\", 6.219],\n      [\"2021-03-22T00:00:00Z\", 6.202],\n      [\"2021-03-22T00:10:00Z\", 6.162],\n      [\"2021-03-22T00:20:00Z\"\
+        , 6.128],\n      [\"2021-03-22T00:30:00Z\", 6.105],\n      [\"2021-03-22T00:40:00Z\", 6.081],\n      [\"2021-03-22T00:50:00Z\", 6.065],\n      [\"2021-03-22T01:00:00Z\", 6.057],\n      [\"2021-03-22T01:10:00Z\"\
+        , 6.055],\n      [\"2021-03-22T01:20:00Z\", 6.075],\n      [\"2021-03-22T01:30:00Z\", 6.062],\n      [\"2021-03-22T01:40:00Z\", 6.046],\n      [\"2021-03-22T01:50:00Z\", 6.029],\n      [\"2021-03-22T02:00:00Z\"\
+        , 6.015],\n      [\"2021-03-22T02:10:00Z\", 6.005],\n      [\"2021-03-22T02:20:00Z\", 5.983],\n      [\"2021-03-22T02:30:00Z\", 5.963],\n      [\"2021-03-22T02:40:00Z\", 5.938],\n      [\"2021-03-22T02:50:00Z\"\
+        , 5.914],\n      [\"2021-03-22T03:00:00Z\", 5.896],\n      [\"2021-03-22T03:10:00Z\", 5.902],\n      [\"2021-03-22T03:20:00Z\", 5.907],\n      [\"2021-03-22T03:30:00Z\", 5.888],\n      [\"2021-03-22T03:40:00Z\"\
+        , 5.876],\n      [\"2021-03-22T03:50:00Z\", 5.894],\n      [\"2021-03-22T04:00:00Z\", 5.903],\n      [\"2021-03-22T04:10:00Z\", 5.88],\n      [\"2021-03-22T04:20:00Z\", 5.847],\n      [\"2021-03-22T04:30:00Z\"\
+        , 5.818],\n      [\"2021-03-22T04:40:00Z\", 5.813],\n      [\"2021-03-22T04:50:00Z\", 5.827],\n      [\"2021-03-22T05:00:00Z\", 5.834],\n      [\"2021-03-22T05:10:00Z\", 5.829],\n      [\"2021-03-22T05:20:00Z\"\
+        , 5.815],\n      [\"2021-03-22T05:30:00Z\", 5.822],\n      [\"2021-03-22T05:40:00Z\", 5.801],\n      [\"2021-03-22T05:50:00Z\", 5.806],\n      [\"2021-03-22T06:00:00Z\", 5.783],\n      [\"2021-03-22T06:10:00Z\"\
+        , 5.76],\n      [\"2021-03-22T06:20:00Z\", 5.734],\n      [\"2021-03-22T06:30:00Z\", 5.728],\n      [\"2021-03-22T06:40:00Z\", 5.72],\n      [\"2021-03-22T06:50:00Z\", 5.703],\n      [\"2021-03-22T07:00:00Z\"\
+        , 5.68],\n      [\"2021-03-22T07:10:00Z\", 5.684],\n      [\"2021-03-22T07:20:00Z\", 5.704],\n      [\"2021-03-22T07:30:00Z\", 5.679],\n      [\"2021-03-22T07:40:00Z\", 5.668],\n      [\"2021-03-22T07:50:00Z\"\
+        , 5.651],\n      [\"2021-03-22T08:00:00Z\", 5.658],\n      [\"2021-03-22T08:10:00Z\", 5.655],\n      [\"2021-03-22T08:20:00Z\", 5.66],\n      [\"2021-03-22T08:30:00Z\", 5.661],\n      [\"2021-03-22T08:40:00Z\"\
+        , 5.68],\n      [\"2021-03-22T08:50:00Z\", 5.708],\n      [\"2021-03-22T09:00:00Z\", 5.724],\n      [\"2021-03-22T09:10:00Z\", 5.747],\n      [\"2021-03-22T09:20:00Z\", 5.759],\n      [\"2021-03-22T09:30:00Z\"\
+        , 5.753],\n      [\"2021-03-22T09:40:00Z\", 5.732],\n      [\"2021-03-22T09:50:00Z\", 5.73],\n      [\"2021-03-22T10:00:00Z\", 5.737],\n      [\"2021-03-22T10:10:00Z\", 5.755],\n      [\"2021-03-22T10:20:00Z\"\
+        , 5.785],\n      [\"2021-03-22T10:30:00Z\", 5.788],\n      [\"2021-03-22T10:40:00Z\", 5.839],\n      [\"2021-03-22T10:50:00Z\", 5.902],\n      [\"2021-03-22T11:00:00Z\", 5.967],\n      [\"2021-03-22T11:10:00Z\"\
+        , 5.982],\n      [\"2021-03-22T11:20:00Z\", 6.031],\n      [\"2021-03-22T11:30:00Z\", 6.063],\n      [\"2021-03-22T11:40:00Z\", 6.087],\n      [\"2021-03-22T11:50:00Z\", 6.124],\n      [\"2021-03-22T12:00:00Z\"\
+        , 6.101],\n      [\"2021-03-22T12:10:00Z\", 6.094],\n      [\"2021-03-22T12:20:00Z\", 6.173],\n      [\"2021-03-22T12:30:00Z\", 6.16],\n      [\"2021-03-22T12:40:00Z\", 6.176],\n      [\"2021-03-22T12:50:00Z\"\
+        , 6.272],\n      [\"2021-03-22T13:00:00Z\", 6.28],\n      [\"2021-03-22T13:10:00Z\", 6.216],\n      [\"2021-03-22T13:20:00Z\", 6.234],\n      [\"2021-03-22T13:30:00Z\", 6.256],\n      [\"2021-03-22T13:40:00Z\"\
+        , 6.216],\n      [\"2021-03-22T13:50:00Z\", 6.236],\n      [\"2021-03-22T14:00:00Z\", 6.223],\n      [\"2021-03-22T14:10:00Z\", 6.242],\n      [\"2021-03-22T14:20:00Z\", 6.228],\n      [\"2021-03-22T14:30:00Z\"\
+        , 6.163],\n      [\"2021-03-22T14:40:00Z\", 6.22],\n      [\"2021-03-22T14:50:00Z\", 6.277],\n      [\"2021-03-22T15:00:00Z\", 6.319],\n      [\"2021-03-22T15:10:00Z\", 6.325],\n      [\"2021-03-22T15:20:00Z\"\
+        , 6.325],\n      [\"2021-03-22T15:30:00Z\", 6.169],\n      [\"2021-03-22T15:40:00Z\", 6.187],\n      [\"2021-03-22T15:50:00Z\", 6.217],\n      [\"2021-03-22T16:00:00Z\", 6.205],\n      [\"2021-03-22T16:10:00Z\"\
+        , 6.196],\n      [\"2021-03-22T16:20:00Z\", 6.264],\n      [\"2021-03-22T16:30:00Z\", 6.282],\n      [\"2021-03-22T16:40:00Z\", 6.348],\n      [\"2021-03-22T16:50:00Z\", 6.278],\n      [\"2021-03-22T17:00:00Z\"\
+        , 6.314],\n      [\"2021-03-22T17:10:00Z\", 6.296],\n      [\"2021-03-22T17:20:00Z\", 6.278],\n      [\"2021-03-22T17:30:00Z\", 6.308],\n      [\"2021-03-22T17:40:00Z\", 6.303],\n      [\"2021-03-22T17:50:00Z\"\
+        , 6.199],\n      [\"2021-03-22T18:00:00Z\", 6.272],\n      [\"2021-03-22T18:10:00Z\", 6.277],\n      [\"2021-03-22T18:20:00Z\", 6.197],\n      [\"2021-03-22T18:30:00Z\", 6.234],\n      [\"2021-03-22T18:40:00Z\"\
+        , 6.199],\n      [\"2021-03-22T18:50:00Z\", 6.213],\n      [\"2021-03-22T19:00:00Z\", 6.266],\n      [\"2021-03-22T19:10:00Z\", 6.274],\n      [\"2021-03-22T19:20:00Z\", 6.31],\n      [\"2021-03-22T19:30:00Z\"\
+        , 6.292],\n      [\"2021-03-22T19:40:00Z\", 6.31],\n      [\"2021-03-22T19:50:00Z\", 6.312],\n      [\"2021-03-22T20:00:00Z\", 6.337],\n      [\"2021-03-22T20:10:00Z\", 6.375],\n      [\"2021-03-22T20:20:00Z\"\
+        , 6.459],\n      [\"2021-03-22T20:30:00Z\", 6.418],\n      [\"2021-03-22T20:40:00Z\", 6.491],\n      [\"2021-03-22T20:50:00Z\", 6.556],\n      [\"2021-03-22T21:00:00Z\", 6.554],\n      [\"2021-03-22T21:10:00Z\"\
+        , 6.565],\n      [\"2021-03-22T21:20:00Z\", 6.472],\n      [\"2021-03-22T21:30:00Z\", 6.457],\n      [\"2021-03-22T21:40:00Z\", 6.437],\n      [\"2021-03-22T21:50:00Z\", 6.457],\n      [\"2021-03-22T22:00:00Z\"\
+        , 6.36],\n      [\"2021-03-22T22:10:00Z\", 6.365],\n      [\"2021-03-22T22:20:00Z\", 6.241],\n      [\"2021-03-22T22:30:00Z\", 6.105],\n      [\"2021-03-22T22:40:00Z\", 6.005],\n      [\"2021-03-22T22:50:00Z\"\
+        , 5.913],\n      [\"2021-03-22T23:00:00Z\", 5.869],\n      [\"2021-03-22T23:10:00Z\", 5.812],\n      [\"2021-03-22T23:20:00Z\", 5.789],\n      [\"2021-03-22T23:30:00Z\", 5.774],\n      [\"2021-03-22T23:40:00Z\"\
+        , 5.785],\n      [\"2021-03-22T23:50:00Z\", 5.783],\n      [\"2021-03-23T00:00:00Z\", 5.764],\n      [\"2021-03-23T00:10:00Z\", 5.749],\n      [\"2021-03-23T00:20:00Z\", 5.744],\n      [\"2021-03-23T00:30:00Z\"\
+        , 5.767],\n      [\"2021-03-23T00:40:00Z\", 5.734],\n      [\"2021-03-23T00:50:00Z\", 5.727],\n      [\"2021-03-23T01:00:00Z\", 5.712],\n      [\"2021-03-23T01:10:00Z\", 5.693],\n      [\"2021-03-23T01:20:00Z\"\
+        , 5.72],\n      [\"2021-03-23T01:30:00Z\", 5.721],\n      [\"2021-03-23T01:40:00Z\", 5.728],\n      [\"2021-03-23T01:50:00Z\", 5.697],\n      [\"2021-03-23T02:00:00Z\", 5.708],\n      [\"2021-03-23T02:10:00Z\"\
+        , 5.707],\n      [\"2021-03-23T02:20:00Z\", 5.734],\n      [\"2021-03-23T02:30:00Z\", 5.752],\n      [\"2021-03-23T02:40:00Z\", 5.781],\n      [\"2021-03-23T02:50:00Z\", 5.814],\n      [\"2021-03-23T03:00:00Z\"\
+        , 5.842],\n      [\"2021-03-23T03:10:00Z\", 5.855],\n      [\"2021-03-23T03:20:00Z\", 5.885],\n      [\"2021-03-23T03:30:00Z\", 5.9],\n      [\"2021-03-23T03:40:00Z\", 5.929],\n      [\"2021-03-23T03:50:00Z\"\
+        , 5.932],\n      [\"2021-03-23T04:00:00Z\", 5.935],\n      [\"2021-03-23T04:10:00Z\", 5.961],\n      [\"2021-03-23T04:20:00Z\", 5.981],\n      [\"2021-03-23T04:30:00Z\", 5.984],\n      [\"2021-03-23T04:40:00Z\"\
+        , 5.97],\n      [\"2021-03-23T04:50:00Z\", 5.964],\n      [\"2021-03-23T05:00:00Z\", 5.935],\n      [\"2021-03-23T05:10:00Z\", 5.912],\n      [\"2021-03-23T05:20:00Z\", 5.895],\n      [\"2021-03-23T05:30:00Z\"\
+        , 5.885],\n      [\"2021-03-23T05:40:00Z\", 5.847],\n      [\"2021-03-23T05:50:00Z\", 5.805],\n      [\"2021-03-23T06:00:00Z\", 5.755],\n      [\"2021-03-23T06:10:00Z\", 5.738],\n      [\"2021-03-23T06:20:00Z\"\
+        , 5.685],\n      [\"2021-03-23T06:30:00Z\", 5.642],\n      [\"2021-03-23T06:40:00Z\", 5.637],\n      [\"2021-03-23T06:50:00Z\", 5.604],\n      [\"2021-03-23T07:00:00Z\", 5.545],\n      [\"2021-03-23T07:10:00Z\"\
+        , 5.526],\n      [\"2021-03-23T07:20:00Z\", 5.528],\n      [\"2021-03-23T07:30:00Z\", 5.474],\n      [\"2021-03-23T07:40:00Z\", 5.495],\n      [\"2021-03-23T07:50:00Z\", 5.541],\n      [\"2021-03-23T08:00:00Z\"\
+        , 5.524],\n      [\"2021-03-23T08:10:00Z\", 5.507],\n      [\"2021-03-23T08:20:00Z\", 5.54],\n      [\"2021-03-23T08:30:00Z\", 5.575],\n      [\"2021-03-23T08:40:00Z\", 5.629],\n      [\"2021-03-23T08:50:00Z\"\
+        , 5.639],\n      [\"2021-03-23T09:00:00Z\", 5.59],\n      [\"2021-03-23T09:10:00Z\", 5.556],\n      [\"2021-03-23T09:20:00Z\", 5.594],\n      [\"2021-03-23T09:30:00Z\", 5.588],\n      [\"2021-03-23T09:40:00Z\"\
+        , 5.637],\n      [\"2021-03-23T09:50:00Z\", 5.672],\n      [\"2021-03-23T10:00:00Z\", 5.663],\n      [\"2021-03-23T10:10:00Z\", 5.686],\n      [\"2021-03-23T10:20:00Z\", 5.723],\n      [\"2021-03-23T10:30:00Z\"\
+        , 5.761],\n      [\"2021-03-23T10:40:00Z\", 5.709],\n      [\"2021-03-23T10:50:00Z\", 5.694],\n      [\"2021-03-23T11:00:00Z\", 5.721],\n      [\"2021-03-23T11:10:00Z\", 5.753],\n      [\"2021-03-23T11:20:00Z\"\
+        , 6.066],\n      [\"2021-03-23T11:30:00Z\", 6.234],\n      [\"2021-03-23T11:40:00Z\", 6.173],\n      [\"2021-03-23T11:50:00Z\", 6.359],\n      [\"2021-03-23T12:00:00Z\", 6.363],\n      [\"2021-03-23T12:10:00Z\"\
+        , 6.281],\n      [\"2021-03-23T12:20:00Z\", 6.331],\n      [\"2021-03-23T12:30:00Z\", 6.34],\n      [\"2021-03-23T12:40:00Z\", 6.366],\n      [\"2021-03-23T12:50:00Z\", 6.407],\n      [\"2021-03-23T13:00:00Z\"\
+        , 6.445],\n      [\"2021-03-23T13:10:00Z\", 6.48],\n      [\"2021-03-23T13:20:00Z\", 6.484],\n      [\"2021-03-23T13:30:00Z\", 6.482],\n      [\"2021-03-23T13:40:00Z\", 6.524],\n      [\"2021-03-23T13:50:00Z\"\
+        , 6.557],\n      [\"2021-03-23T14:00:00Z\", 6.626],\n      [\"2021-03-23T14:10:00Z\", 6.677],\n      [\"2021-03-23T14:20:00Z\", 6.753],\n      [\"2021-03-23T14:30:00Z\", 6.741],\n      [\"2021-03-23T14:40:00Z\"\
+        , 6.759],\n      [\"2021-03-23T14:50:00Z\", 6.804],\n      [\"2021-03-23T15:00:00Z\", 6.822],\n      [\"2021-03-23T15:10:00Z\", 6.861],\n      [\"2021-03-23T15:20:00Z\", 6.809],\n      [\"2021-03-23T15:30:00Z\"\
+        , 6.836],\n      [\"2021-03-23T15:40:00Z\", 6.867],\n      [\"2021-03-23T15:50:00Z\", 6.843],\n      [\"2021-03-23T16:00:00Z\", 6.886],\n      [\"2021-03-23T16:10:00Z\", 6.9],\n      [\"2021-03-23T16:20:00Z\"\
+        , 6.948],\n      [\"2021-03-23T16:30:00Z\", 7.007],\n      [\"2021-03-23T16:40:00Z\", 7.027],\n      [\"2021-03-23T16:50:00Z\", 7.12],\n      [\"2021-03-23T17:00:00Z\", 7.25],\n      [\"2021-03-23T17:10:00Z\"\
+        , 7.259],\n      [\"2021-03-23T17:20:00Z\", 7.289],\n      [\"2021-03-23T17:30:00Z\", 7.284],\n      [\"2021-03-23T17:40:00Z\", 7.297],\n      [\"2021-03-23T17:50:00Z\", 7.31],\n      [\"2021-03-23T18:00:00Z\"\
+        , 7.387],\n      [\"2021-03-23T18:10:00Z\", 7.435],\n      [\"2021-03-23T18:20:00Z\", 7.382],\n      [\"2021-03-23T18:30:00Z\", 7.391],\n      [\"2021-03-23T18:40:00Z\", 7.411],\n      [\"2021-03-23T18:50:00Z\"\
+        , 7.483],\n      [\"2021-03-23T19:00:00Z\", 7.498],\n      [\"2021-03-23T19:10:00Z\", 7.504],\n      [\"2021-03-23T19:20:00Z\", 7.521],\n      [\"2021-03-23T19:30:00Z\", 7.513],\n      [\"2021-03-23T19:40:00Z\"\
+        , 7.524],\n      [\"2021-03-23T19:50:00Z\", 7.57],\n      [\"2021-03-23T20:00:00Z\", 7.588],\n      [\"2021-03-23T20:10:00Z\", 7.821],\n      [\"2021-03-23T20:20:00Z\", 7.94],\n      [\"2021-03-23T20:30:00Z\"\
+        , 8.02],\n      [\"2021-03-23T20:40:00Z\", 7.93],\n      [\"2021-03-23T20:50:00Z\", 8.21],\n      [\"2021-03-23T21:00:00Z\", 8.44],\n      [\"2021-03-23T21:10:00Z\", 8.59],\n      [\"2021-03-23T21:20:00Z\"\
+        , 8.31],\n      [\"2021-03-23T21:30:00Z\", 8.26],\n      [\"2021-03-23T21:40:00Z\", 8.44],\n      [\"2021-03-23T21:50:00Z\", 8.44],\n      [\"2021-03-23T22:00:00Z\", 8.29],\n      [\"2021-03-23T22:10:00Z\"\
+        , 7.897],\n      [\"2021-03-23T22:20:00Z\", 7.442],\n      [\"2021-03-23T22:30:00Z\", 7.463],\n      [\"2021-03-23T22:40:00Z\", 7.102],\n      [\"2021-03-23T22:50:00Z\", 6.959],\n      [\"2021-03-23T23:00:00Z\"\
+        , 6.877],\n      [\"2021-03-23T23:10:00Z\", 6.866],\n      [\"2021-03-23T23:20:00Z\", 6.982],\n      [\"2021-03-23T23:30:00Z\", 7.001],\n      [\"2021-03-23T23:40:00Z\", 6.938],\n      [\"2021-03-23T23:50:00Z\"\
+        , 6.879],\n      [\"2021-03-24T00:00:00Z\", 6.834],\n      [\"2021-03-24T00:10:00Z\", 6.973],\n      [\"2021-03-24T00:20:00Z\", 6.95],\n      [\"2021-03-24T00:30:00Z\", 6.907],\n      [\"2021-03-24T00:40:00Z\"\
+        , 6.874],\n      [\"2021-03-24T00:50:00Z\", 6.835],\n      [\"2021-03-24T01:00:00Z\", 6.811],\n      [\"2021-03-24T01:10:00Z\", 6.78],\n      [\"2021-03-24T01:20:00Z\", 6.744],\n      [\"2021-03-24T01:30:00Z\"\
+        , 6.756],\n      [\"2021-03-24T01:40:00Z\", 6.708],\n      [\"2021-03-24T01:50:00Z\", 6.585],\n      [\"2021-03-24T02:00:00Z\", 6.47],\n      [\"2021-03-24T02:10:00Z\", 6.491],\n      [\"2021-03-24T02:20:00Z\"\
+        , 6.539],\n      [\"2021-03-24T02:30:00Z\", 6.546],\n      [\"2021-03-24T02:40:00Z\", 6.55],\n      [\"2021-03-24T02:50:00Z\", 6.511],\n      [\"2021-03-24T03:00:00Z\", 6.544],\n      [\"2021-03-24T03:10:00Z\"\
+        , 6.504],\n      [\"2021-03-24T03:20:00Z\", 6.472],\n      [\"2021-03-24T03:30:00Z\", 6.474],\n      [\"2021-03-24T03:40:00Z\", 6.494],\n      [\"2021-03-24T03:50:00Z\", 6.489],\n      [\"2021-03-24T04:00:00Z\"\
+        , 6.47],\n      [\"2021-03-24T04:10:00Z\", 6.494],\n      [\"2021-03-24T04:20:00Z\", 6.475],\n      [\"2021-03-24T04:30:00Z\", 6.471],\n      [\"2021-03-24T04:40:00Z\", 6.436],\n      [\"2021-03-24T04:50:00Z\"\
+        , 6.35],\n      [\"2021-03-24T05:00:00Z\", 6.335],\n      [\"2021-03-24T05:10:00Z\", 6.345],\n      [\"2021-03-24T05:20:00Z\", 6.347],\n      [\"2021-03-24T05:30:00Z\", 6.338],\n      [\"2021-03-24T05:40:00Z\"\
+        , 6.32],\n      [\"2021-03-24T05:50:00Z\", 6.302],\n      [\"2021-03-24T06:00:00Z\", 6.268],\n      [\"2021-03-24T06:10:00Z\", 6.276],\n      [\"2021-03-24T06:20:00Z\", 6.262],\n      [\"2021-03-24T06:30:00Z\"\
+        , 6.259],\n      [\"2021-03-24T06:40:00Z\", 6.233],\n      [\"2021-03-24T06:50:00Z\", 6.19],\n      [\"2021-03-24T07:00:00Z\", 6.192],\n      [\"2021-03-24T07:10:00Z\", 6.216],\n      [\"2021-03-24T07:20:00Z\"\
+        , 6.171],\n      [\"2021-03-24T07:30:00Z\", 6.134],\n      [\"2021-03-24T07:40:00Z\", 6.111],\n      [\"2021-03-24T07:50:00Z\", 6.135],\n      [\"2021-03-24T08:00:00Z\", 6.112],\n      [\"2021-03-24T08:10:00Z\"\
+        , 6.068],\n      [\"2021-03-24T08:20:00Z\", 6.037],\n      [\"2021-03-24T08:30:00Z\", 5.989],\n      [\"2021-03-24T08:40:00Z\", 5.96],\n      [\"2021-03-24T08:50:00Z\", 5.939],\n      [\"2021-03-24T09:00:00Z\"\
+        , 5.923],\n      [\"2021-03-24T09:10:00Z\", 5.933],\n      [\"2021-03-24T09:20:00Z\", 5.92],\n      [\"2021-03-24T09:30:00Z\", 5.909],\n      [\"2021-03-24T09:40:00Z\", 5.941],\n      [\"2021-03-24T09:50:00Z\"\
+        , 5.891],\n      [\"2021-03-24T10:00:00Z\", 5.831],\n      [\"2021-03-24T10:10:00Z\", 5.841],\n      [\"2021-03-24T10:20:00Z\", 5.872],\n      [\"2021-03-24T10:30:00Z\", 5.872],\n      [\"2021-03-24T10:40:00Z\"\
+        , 5.903],\n      [\"2021-03-24T10:50:00Z\", 6.032],\n      [\"2021-03-24T11:00:00Z\", 6.123],\n      [\"2021-03-24T11:10:00Z\", 6.341],\n      [\"2021-03-24T11:20:00Z\", 6.486],\n      [\"2021-03-24T11:30:00Z\"\
+        , 6.611],\n      [\"2021-03-24T11:40:00Z\", 6.748],\n      [\"2021-03-24T11:50:00Z\", 6.676],\n      [\"2021-03-24T12:00:00Z\", 6.836],\n      [\"2021-03-24T12:10:00Z\", 6.682],\n      [\"2021-03-24T12:20:00Z\"\
+        , 6.671],\n      [\"2021-03-24T12:30:00Z\", 6.663],\n      [\"2021-03-24T12:40:00Z\", 6.809],\n      [\"2021-03-24T12:50:00Z\", 6.839],\n      [\"2021-03-24T13:00:00Z\", 6.905],\n      [\"2021-03-24T13:10:00Z\"\
+        , 7.014],\n      [\"2021-03-24T13:20:00Z\", 7.135],\n      [\"2021-03-24T13:30:00Z\", 7.38],\n      [\"2021-03-24T13:40:00Z\", 7.283],\n      [\"2021-03-24T13:50:00Z\", 7.233],\n      [\"2021-03-24T14:00:00Z\"\
+        , 7.068],\n      [\"2021-03-24T14:10:00Z\", 7.111],\n      [\"2021-03-24T14:20:00Z\", 7.158],\n      [\"2021-03-24T14:30:00Z\", 7.161],\n      [\"2021-03-24T14:40:00Z\", 7.189],\n      [\"2021-03-24T14:50:00Z\"\
+        , 7.275],\n      [\"2021-03-24T15:00:00Z\", 7.36],\n      [\"2021-03-24T15:10:00Z\", 7.257],\n      [\"2021-03-24T15:20:00Z\", 7.247],\n      [\"2021-03-24T15:30:00Z\", 7.262],\n      [\"2021-03-24T15:40:00Z\"\
+        , 7.228],\n      [\"2021-03-24T15:50:00Z\", 7.188],\n      [\"2021-03-24T16:00:00Z\", 7.097],\n      [\"2021-03-24T16:10:00Z\", 7.103],\n      [\"2021-03-24T16:20:00Z\", 7.089],\n      [\"2021-03-24T16:30:00Z\"\
+        , 6.986],\n      [\"2021-03-24T16:40:00Z\", 6.948],\n      [\"2021-03-24T16:50:00Z\", 6.971],\n      [\"2021-03-24T17:00:00Z\", 7.0],\n      [\"2021-03-24T17:10:00Z\", 6.949],\n      [\"2021-03-24T17:20:00Z\"\
+        , 6.757],\n      [\"2021-03-24T17:30:00Z\", 6.539],\n      [\"2021-03-24T17:40:00Z\", 6.595],\n      [\"2021-03-24T17:50:00Z\", 6.444],\n      [\"2021-03-24T18:00:00Z\", 6.074],\n      [\"2021-03-24T18:10:00Z\"\
+        , 5.892],\n      [\"2021-03-24T18:20:00Z\", 5.969],\n      [\"2021-03-24T18:30:00Z\", 6.072],\n      [\"2021-03-24T18:40:00Z\", 6.023],\n      [\"2021-03-24T18:50:00Z\", 6.074],\n      [\"2021-03-24T19:00:00Z\"\
+        , 6.159],\n      [\"2021-03-24T19:10:00Z\", 6.22],\n      [\"2021-03-24T19:20:00Z\", 6.188],\n      [\"2021-03-24T19:30:00Z\", 6.199],\n      [\"2021-03-24T19:40:00Z\", 6.312],\n      [\"2021-03-24T19:50:00Z\"\
+        , 6.371]\n    ]\n  }\n}\n"
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -369,8 +706,6 @@ interactions:
       - Keep-Alive
       Content-Disposition:
       - attachment;filename=M01_met_all_ba47_b4cc_cfac.json
-      Content-Encoding:
-      - gzip
       Content-Type:
       - application/json;charset=UTF-8
       Date:
@@ -379,8 +714,6 @@ interactions:
       - timeout=5, max=100
       Last-Modified:
       - Wed, 21 Apr 2021 17:35:14 GMT
-      Transfer-Encoding:
-      - chunked
       erddap-server:
       - '1.82'
       xdods-server:

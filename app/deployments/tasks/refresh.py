@@ -25,8 +25,13 @@ from .queue import task_queued
 logger = logging.getLogger(__name__)
 
 
-def update_values_for_timeseries(timeseries: list[TimeSeries]):
-    """Update values and most recent times for a group of timeseries that have the same constraints"""
+def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: bool = False):  # noqa: PLR0912 PLR0915
+    """Update values and most recent times for a group of timeseries that have the same constraints
+
+    Args:
+        timeseries: List of timeseries to update
+        clear_end_time: If True, clear the end_time field when data is successfully retrieved
+    """
     with push_scope() as scope:
         scope.set_tag("erddap-server", timeseries[0].dataset.server)
         scope.set_tag("erddap-dataset", timeseries[0].dataset.name)
@@ -106,7 +111,19 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
                 time = row[TIME_COLUMN]
                 extra_context["time"] = time
 
-                series.value_time = pd.to_datetime(time)
+                new_value_time = pd.to_datetime(time)
+
+                # Clear end_time if requested AND we have fresh data
+                # Only clear if the new data is more recent than the end_time
+                # This prevents clearing end_time on dataset reloads without new data
+                if clear_end_time and series.end_time is not None and (new_value_time > series.end_time):
+                    logger.info(
+                        f"Clearing end_time for {series} - new data at {new_value_time} is after "
+                        f"end_time {series.end_time}",
+                    )
+                    series.end_time = None
+
+                series.value_time = new_value_time
                 series.save()
 
                 try:
@@ -128,12 +145,14 @@ def update_values_for_timeseries(timeseries: list[TimeSeries]):
 
 
 @shared_task
-def refresh_dataset(dataset_id: int, healthcheck: bool = False):
+def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: bool = False):
     """Refresh the values for all timeseries associated with a specific dataset
 
     Params:
         dataset_id (int): Primary key of ErddapDataset to refresh all timeseries for
         healthcheck (bool): Should Healthchecks.io be signaled when the dataset has completed updating?
+        clear_end_time (bool): If True, clear the end_time field for timeseries
+            when data is successfully retrieved
     """
     dataset = ErddapDataset.objects.get(pk=dataset_id)
     dataset.refresh_attempted = timezone.now()
@@ -150,13 +169,13 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False):
         time.sleep(request_refresh_time_seconds)
 
         try:
-            update_values_for_timeseries(timeseries)
+            update_values_for_timeseries(timeseries, clear_end_time=clear_end_time)
         except BackoffError:
             new_request_refresh_time_seconds = max(request_refresh_time_seconds, 1) * 2
             logger.error(
                 f"Some form of timeout encountered while refreshing dataset {dataset_id}"
                 f"Increasing backoff from {request_refresh_time_seconds} to "
-                "{new_request_refresh_time_seconds}",
+                f"{new_request_refresh_time_seconds}",
                 extra={"timeseries": timeseries, "constraints": constraints},
                 exc_info=True,
             )
@@ -167,15 +186,22 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False):
 
 
 @shared_task
-def single_refresh_dataset(dataset_id: int, healthcheck: bool = False):
-    """Schedule dataset refresh, only if it does not already exist"""
+def single_refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: bool = False):
+    """Schedule dataset refresh, only if it does not already exist
+
+    Args:
+        dataset_id: Primary key of ErddapDataset to refresh
+        healthcheck: Should Healthchecks.io be signaled when complete
+        clear_end_time: If True, clear the end_time field for timeseries
+            when data is successfully retrieved
+    """
     with push_scope() as scope:
         scope.set_tag("dataset_id", dataset_id)
 
         already_queued = task_queued(
             "deployments.tasks.refresh_dataset",
             [dataset_id],
-            {"healthcheck": healthcheck},
+            {"healthcheck": healthcheck, "clear_end_time": clear_end_time},
         )
 
         if already_queued:
@@ -184,7 +210,7 @@ def single_refresh_dataset(dataset_id: int, healthcheck: bool = False):
                 exc_info=True,
             )
         else:
-            refresh_dataset.delay(dataset_id, healthcheck=healthcheck)
+            refresh_dataset.delay(dataset_id, healthcheck=healthcheck, clear_end_time=clear_end_time)
 
 
 @shared_task

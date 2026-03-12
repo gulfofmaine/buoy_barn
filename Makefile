@@ -3,10 +3,13 @@ build:
 
 up: down build
 	# docker compose up --watch
-	docker compose up
+	docker compose up web celery-worker celery-beat
 
 down:
 	docker compose -f docker-compose.test.yaml -f docker-compose.yaml down
+
+mqtt:
+	docker compose up mqtt
 
 stop:
 	docker compose stop

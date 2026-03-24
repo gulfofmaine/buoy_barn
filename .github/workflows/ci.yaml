@@ -2,6 +2,9 @@ name: CI
 
 on: [push]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build
@@ -11,6 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
@@ -35,8 +40,8 @@ jobs:
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         continue-on-error: true
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }} # zizmor: ignore[secrets-outside-env]
+          password: ${{ secrets.DOCKER_PASSWORD }} # zizmor: ignore[secrets-outside-env]
 
       - name: Build Buoy Barn
         uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
@@ -60,8 +65,10 @@ jobs:
     needs: build
 
     steps:
-      - name: "Checkout"
+      - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Cache Docker image
         uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
@@ -84,13 +91,16 @@ jobs:
           pip install --user codacy-coverage
           ~/.local/bin/python-codacy-coverage -r app/coverage.xml
         env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }} # zizmor: ignore[secrets-outside-env]
         if: env.CODACY_PROJECT_TOKEN != null
 
   deploy:
     name: Build and Push tagged image to Docker Hub, and update Argo config
     runs-on: ubuntu-24.04
     needs: test
+    permissions:
+      contents: read
+      deployments: write
     environment:
       name: Buoy Barn via Argo CD
       url: https://buoy-barn.neracoos.org/admin/
@@ -99,8 +109,10 @@ jobs:
       && contains(github.ref, 'refs/tags/v')
 
     steps:
-      - name: "Checkout"
+      - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Cache Docker image
         uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
@@ -126,10 +138,14 @@ jobs:
         id: tagName
 
       - name: Tag Docker image
-        run: docker tag gmri/neracoos-buoy-barn gmri/neracoos-buoy-barn:${{ steps.tagName.outputs.tag }}
+        env:
+          SHORT_TAG: ${{ steps.tagName.outputs.tag }}
+        run: docker tag gmri/neracoos-buoy-barn gmri/neracoos-buoy-barn:${SHORT_TAG}
 
       - name: Push Docker image
-        run: docker push gmri/neracoos-buoy-barn:${{ steps.tagName.outputs.tag }}
+        env:
+          SHORT_TAG: ${{ steps.tagName.outputs.tag }}
+        run: docker push gmri/neracoos-buoy-barn:${SHORT_TAG}
 
       - name: Make GitOps directory
         run: mkdir gitops
@@ -142,12 +158,14 @@ jobs:
 
       - name: Update GitOps config repo
         working-directory: ./gitops/neracoos-aws-cd
+        env:
+          SHORT_TAG: ${{ steps.tagName.outputs.tag }}
         run: |
-          sed -i 's/?ref=.\+/?ref=${{ steps.tagName.outputs.tag }}/' overlays/buoy-barn/kustomization.yaml
-          sed -i 's/newTag: .\+/newTag: ${{ steps.tagName.outputs.tag }}/' overlays/buoy-barn/kustomization.yaml
+          sed -i 's/?ref=.\+/?ref=${SHORT_TAG}/' overlays/buoy-barn/kustomization.yaml
+          sed -i 's/newTag: .\+/newTag: ${SHORT_TAG}/' overlays/buoy-barn/kustomization.yaml
           git config --global user.email 'neracoos-buoy-barn-ci@gmri.org'
           git config --global user.name 'NERACOOS Buoy Barn CI'
-          git diff --exit-code && echo 'Already Deployed' || (git commit -am 'Upgrade Buoy Barn to ${{ steps.tagName.outputs.tag }}' && git push)
+          git diff --exit-code && echo 'Already Deployed' || (git commit -am 'Upgrade Buoy Barn to ${SHORT_TAG}' && git push)
 
       - name: Create Sentry Release
         uses: getsentry/action-release@dab6548b3c03c4717878099e43782cf5be654289 # v3.5.0

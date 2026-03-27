@@ -331,6 +331,14 @@ class PlatformAdmin(DjangoObjectActions, admin.GISModelAdmin):
 
     change_actions = ["refresh_platform_datasets"]
 
+    gis_widget_kwargs = {
+        "attrs": {
+            "default_zoom": 6.5,
+            "default_lon": -70.0,
+            "default_lat": 43.0,
+        },
+    }
+
     def get_queryset(self, request: HttpRequest):
         queryset = super().get_queryset(request)
         queryset = queryset.prefetch_related("timeseries_set", "timeseries_set__data_type")

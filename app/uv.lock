@@ -129,7 +129,7 @@ requires-dist = [
     { name = "freezegun", specifier = "~=1.5.1" },
     { name = "geojson", specifier = "~=3.2.0" },
     { name = "netcdf4", specifier = "~=1.7.1" },
-    { name = "paho-mqtt", specifier = ">=2.1.0" },
+    { name = "paho-mqtt", specifier = ">=2.1" },
     { name = "pandas", specifier = ">1.5.3" },
     { name = "psycopg2-binary", specifier = "~=2.9.9" },
     { name = "pystac", specifier = "~=1.14.1" },

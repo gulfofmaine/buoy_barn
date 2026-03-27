@@ -40,7 +40,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "ipython~=8.26",
+  "ipython~=9.11",
   "pytest~=9.0",
   "pytest-cov~=7.0",
   "pytest-django~=4.8",

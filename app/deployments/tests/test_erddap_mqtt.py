@@ -223,7 +223,7 @@ class TestOnMessageCallback:
 
         on_message(None, None, mock_msg)
 
-        mock_refresh.delay.assert_called_once_with(erddap_dataset.id)
+        mock_refresh.delay.assert_called_once_with(erddap_dataset.id, clear_end_time=True)
 
     @patch("deployments.management.commands.erddap_mqtt.single_refresh_dataset")
     def test_on_message_ignores_unknown_dataset(self, mock_refresh, erddap_server):
@@ -278,7 +278,7 @@ class TestOnMessageCallback:
 
         on_message(None, None, mock_msg)
 
-        mock_refresh.delay.assert_called_once_with(erddap_dataset.id)
+        mock_refresh.delay.assert_called_once_with(erddap_dataset.id, clear_end_time=True)
 
 
 @pytest.mark.django_db

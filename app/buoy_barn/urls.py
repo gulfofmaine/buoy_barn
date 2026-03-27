@@ -20,12 +20,29 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+from health_check.views import HealthCheckView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("deployments.urls")),
     path("api-auth/", include("rest_framework.urls")),
-    path("ht/", include("health_check.urls")),
+    path(
+        "ht/",
+        HealthCheckView.as_view(
+            checks=[
+                "health_check.Cache",
+                "health_check.Database",
+                # "health_check.Mail",
+                "health_check.Storage",
+                # 3rd party checks
+                # "health_check.contrib.psutil.Disk",
+                # "health_check.contrib.psutil.Memory",
+                # "health_check.contrib.celery.Ping",
+                # "health_check.contrib.rabbitmq.RabbitMQ",
+                # "health_check.contrib.redis.Redis",
+            ],
+        ),
+    ),
 ]
 
 

@@ -127,8 +127,6 @@ INSTALLED_APPS = [
     "django_object_actions",
     # Health checks to allow Kubernetes to restart the pod if locked up
     "health_check",
-    "health_check.db",
-    "health_check.cache",
     # "health_check.contrib.celery_ping",
     # User management
     "account.apps.AccountConfig",

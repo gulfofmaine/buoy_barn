@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1.22
 # Use a Python image with uv pre-installed
-FROM ghcr.io/astral-sh/uv:python3.11-bookworm-slim
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim@sha256:a554594ed855eef823e91d7cb390eca2bc516634d1ecb621fcade63ac335d72d
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1
@@ -14,10 +14,10 @@ ENV UV_LINK_MODE=copy
 # geodjango spatial requirements
 RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update && apt-get install -y --no-install-recommends \
-    binutils=2.40-2 \
-    libproj-dev=9.1.1-1+b1 \
-    gdal-bin=3.6.2+dfsg-1+b2 \
-    build-essential=12.9
+    binutils=2.44-3 \
+    libproj-dev=9.6.0-1 \
+    gdal-bin=3.10.3+dfsg-1 \
+    build-essential=12.12
 
 RUN groupadd uwsgi && useradd -g uwsgi uwsgi
 

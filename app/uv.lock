@@ -8,9 +8,6 @@ resolution-markers = [
     "python_full_version < '3.12' and platform_python_implementation != 'PyPy'",
 ]
 
-[manifest]
-constraints = [{ name = "numpy", specifier = "<2" }]
-
 [[package]]
 name = "amqp"
 version = "5.3.1"

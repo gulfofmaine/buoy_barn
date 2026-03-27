@@ -161,11 +161,11 @@ jobs:
         env:
           SHORT_TAG: ${{ steps.tagName.outputs.tag }}
         run: |
-          sed -i 's/?ref=.\+/?ref=${SHORT_TAG}/' overlays/buoy-barn/kustomization.yaml
-          sed -i 's/newTag: .\+/newTag: ${SHORT_TAG}/' overlays/buoy-barn/kustomization.yaml
+          sed -i "s/?ref=.\+/?ref=${SHORT_TAG}/" overlays/buoy-barn/kustomization.yaml
+          sed -i "s/newTag: .\+/newTag: ${SHORT_TAG}/" overlays/buoy-barn/kustomization.yaml
           git config --global user.email 'neracoos-buoy-barn-ci@gmri.org'
           git config --global user.name 'NERACOOS Buoy Barn CI'
-          git diff --exit-code && echo 'Already Deployed' || (git commit -am 'Upgrade Buoy Barn to ${SHORT_TAG}' && git push)
+          git diff --exit-code && echo 'Already Deployed' || (git commit -am "Upgrade Buoy Barn to ${SHORT_TAG}" && git push)
 
       - name: Create Sentry Release
         uses: getsentry/action-release@dab6548b3c03c4717878099e43782cf5be654289 # v3.5.0

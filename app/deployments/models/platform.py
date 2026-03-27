@@ -34,7 +34,7 @@ class Platform(models.Model):
     uscg_light_num = models.CharField(max_length=16, null=True, blank=True)
     watch_circle_radius = models.IntegerField(null=True, blank=True)
 
-    geom = models.PointField("Location", null=True, blank=True)
+    geom = models.PointField("Location", null=True)
 
     def __str__(self):
         return self.name

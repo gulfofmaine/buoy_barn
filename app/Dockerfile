@@ -1,6 +1,6 @@
 #syntax=docker/dockerfile:1.22
 # Use a Python image with uv pre-installed
-FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim@sha256:565e9c60215a02d1d00aff164efbf5605ceb26a1bde5022ed8cbd0cd98920bda
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim@sha256:37ec7fe8c82064a87c1c3d57e8ef5ff108b64bc34b17f64a4c00094b64928330
 
 # Output logging faster
 ENV PYTHONUNBUFFERED 1

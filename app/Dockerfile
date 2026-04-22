@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/var/cache/apt \
     gdal-bin=3.10.3+dfsg-1 \
     build-essential=12.12
 
-RUN groupadd uwsgi && useradd -g uwsgi uwsgi
+RUN groupadd granian && useradd -g granian granian
 
 # Working directory
 RUN mkdir /app
@@ -36,8 +36,8 @@ ENV PATH="/app/.venv/bin:$PATH"
 # Copy app to working directory
 COPY ./ /app/
 
-RUN chown -R uwsgi:uwsgi /app
+RUN chown -R granian:granian /app
 
 ENTRYPOINT ["/app/utils/entrypoint.sh"]
 
-CMD ["uv", "run", "uwsgi", "--http", ":8080", "--wsgi-file", "buoy_barn/wsgi.py", "--master", "--processes", "4", "--threads", "2", "--uid", "uwsgi", "--gid", "uwsgi"]
+CMD ["uv", "run", "granian", "--interface", "asgi", "--host", "0.0.0.0", "--port", "8080", "--workers", "4", "buoy_barn.asgi:application"]

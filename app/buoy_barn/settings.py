@@ -60,7 +60,11 @@ SENTRY_IGNORE_PATHS = {"/ht/"}
 def trace_filter(trace: dict) -> float:
     """Filter out unwanted sentry transactions"""
     try:
-        path: str = trace["wsgi_environ"]["PATH_INFO"]
+        # Support both WSGI (wsgi_environ) and ASGI (asgi_scope) environments
+        if "wsgi_environ" in trace:
+            path: str = trace["wsgi_environ"]["PATH_INFO"]
+        else:
+            path = trace["asgi_scope"]["path"]
 
         if path in SENTRY_IGNORE_PATHS:
             return 0  # don't trace
@@ -192,7 +196,7 @@ PROXY_TIMEOUT_SECONDS = int(os.environ.get("PROXY_TIMEOUT_SECONDS", 30))  # noqa
 # When it isn't already defined by a model
 ERDDAP_TIMEOUT_SECONDS = int(os.environ.get("ERDDAP_TIMEOUT_SECONDS", 30))  # noqa: PLW1508
 
-WSGI_APPLICATION = "buoy_barn.wsgi.application"
+ASGI_APPLICATION = "buoy_barn.asgi.application"
 
 
 # Database

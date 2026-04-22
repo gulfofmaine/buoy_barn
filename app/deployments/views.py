@@ -1,6 +1,6 @@
 from urllib.parse import urljoin
 
-import requests
+import httpx
 from django.conf import settings
 from django.db.models import Prefetch
 from django.http import HttpRequest, HttpResponse, StreamingHttpResponse
@@ -290,24 +290,23 @@ class ProxyTimeout(APIException):
 
 
 @cache_page(settings.PROXY_CACHE_SECONDS)
-def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
-    server = ErddapServer.objects.get(id=server_id)
+async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
+    server = await ErddapServer.objects.aget(id=server_id)
     path = request.get_full_path().split("proxy/")[1]
 
     request_url = urljoin(server.base_url + "/", path)
 
     try:
-        response = requests.get(
-            request_url,
-            stream=True,
-            timeout=settings.PROXY_TIMEOUT_SECONDS,
-        )
-    except requests.Timeout as e:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                request_url,
+                timeout=settings.PROXY_TIMEOUT_SECONDS,
+            )
+    except httpx.TimeoutException as e:
         raise ProxyTimeout from e
 
     return StreamingHttpResponse(
-        response.raw,
+        response.iter_bytes(),
         content_type=response.headers.get("content-type"),
         status=response.status_code,
-        reason=response.reason,
     )

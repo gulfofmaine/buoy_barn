@@ -290,7 +290,8 @@ class ProxyTimeout(APIException):
 
 
 # Shared async HTTP client — one instance per worker process, reused across requests.
-_proxy_http_client = httpx.AsyncClient()
+# Timeout defaults match PROXY_TIMEOUT_SECONDS; individual calls may override if needed.
+_proxy_http_client = httpx.AsyncClient(timeout=settings.PROXY_TIMEOUT_SECONDS)
 
 
 @cache_page(settings.PROXY_CACHE_SECONDS)
@@ -306,13 +307,16 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
 
     request_url = urljoin(server.base_url + "/", path)
 
+    # Defence-in-depth: confirm the resolved URL still targets the trusted server.
+    if not request_url.startswith(server.base_url):
+        raise ParseError(detail="Invalid proxy path.")
+
     try:
-        response = await _proxy_http_client.get(
-            request_url,
-            timeout=settings.PROXY_TIMEOUT_SECONDS,
-        )
+        response = await _proxy_http_client.get(request_url)
     except httpx.TimeoutException as e:
         raise ProxyTimeout from e
+    except httpx.RequestError as e:
+        raise APIException(detail="Error connecting to upstream ERDDAP server.") from e
 
     return StreamingHttpResponse(
         response.iter_bytes(),

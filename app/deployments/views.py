@@ -291,6 +291,9 @@ class ProxyTimeout(APIException):
 
 # Shared async HTTP client — one instance per worker process, reused across requests.
 # Timeout defaults match PROXY_TIMEOUT_SECONDS; individual calls may override if needed.
+# Lifecycle: Granian spawns workers as separate processes, so each process owns its own
+# client. Connections are released by the OS/Python runtime on process exit. No explicit
+# close is required under Granian's spawn model.
 _proxy_http_client = httpx.AsyncClient(timeout=settings.PROXY_TIMEOUT_SECONDS)
 
 
@@ -316,7 +319,7 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
     except httpx.TimeoutException as e:
         raise ProxyTimeout from e
     except httpx.RequestError as e:
-        raise APIException(detail="Error connecting to upstream ERDDAP server.") from e
+        raise APIException(detail=f"Error connecting to upstream ERDDAP server: {type(e).__name__}.") from e
 
     return StreamingHttpResponse(
         response.iter_bytes(),

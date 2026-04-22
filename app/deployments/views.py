@@ -1,4 +1,4 @@
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 import httpx
 from django.conf import settings
@@ -289,19 +289,28 @@ class ProxyTimeout(APIException):
     default_code = "erddap_timeout"
 
 
+# Shared async HTTP client — one instance per worker process, reused across requests.
+_proxy_http_client = httpx.AsyncClient()
+
+
 @cache_page(settings.PROXY_CACHE_SECONDS)
 async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
     server = await ErddapServer.objects.aget(id=server_id)
     path = request.get_full_path().split("proxy/")[1]
 
+    # Reject paths that carry their own scheme or authority, which would cause
+    # urljoin to override the trusted server base URL (SSRF guard).
+    parsed_path = urlparse(path)
+    if parsed_path.scheme or parsed_path.netloc:
+        raise ParseError(detail="Invalid proxy path.")
+
     request_url = urljoin(server.base_url + "/", path)
 
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(
-                request_url,
-                timeout=settings.PROXY_TIMEOUT_SECONDS,
-            )
+        response = await _proxy_http_client.get(
+            request_url,
+            timeout=settings.PROXY_TIMEOUT_SECONDS,
+        )
     except httpx.TimeoutException as e:
         raise ProxyTimeout from e
 

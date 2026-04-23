@@ -8,6 +8,50 @@ Changes:
 
 Fixes:
 
+## 0.10.0 - 2026-04-23
+
+Changes:
+
+* feat: convert server_proxy to async, switch to Granian/ASGI, handle other proxy-ing issues by @abkfenris and @Copilot in https://github.com/gulfofmaine/buoy_barn/pull/1687
+* Added Django Control Room for better monitoring in the admin of supporting services by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1689
+
+Fixes:
+
+* Migrate to Sentry 2.x by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1688
+* Allow variable interpertation in Github Actions by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1664
+
+Dependency updates:
+
+* Update j178/prek-action digest to 53276d8 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1666
+* Update github/codeql-action digest to c10b806 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1665
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.8 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1668
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.2 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1670
+* Update dependency sentry-sdk to ~=2.56.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1669
+* Bump pygments from 2.19.2 to 2.20.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1671
+* Update ghcr.io/astral-sh/uv:python3.14-trixie-slim Docker digest to 565e9c6 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1667
+* Update dependency pytest to v9.0.3 [SECURITY] by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1675
+* Bump django from 6.0.3 to 6.0.4 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1677
+* Update actions/cache digest to 27d5ce7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1673
+* Update ghcr.io/astral-sh/uv:python3.14-trixie-slim Docker digest to 37ec7fe by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1674
+* Bump pytest from 9.0.2 to 9.0.3 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1676
+* Update github/codeql-action digest to 95e58e9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1679
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.10 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1681
+* Update redis Docker tag to v7.4.7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1184
+* Update pre-commit hook tox-dev/pyproject-fmt to v2.21.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1685
+* Update pre-commit hook zizmorcore/zizmor-pre-commit to v1.24.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1686
+* Update getsentry/action-release action to v3.6 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1693
+* Update docker/dockerfile Docker tag to v1.23 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1691
+* Update docker/build-push-action action to v7.1.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1690
+* Update docker/login-action action to v4.1.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1692
+* Update dependency sentry-sdk to ~=2.58.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1683
+* Update dependency xarray to ~=2026.4.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1684
+* Update dependency django-health-check to ~=4.3.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1682
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1694
+* Bump requests from 2.32.5 to 2.33.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1695
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.9.0...v0.10.0
+
 ## 0.9.0 - 2026-03-27
 
 Additions:
@@ -16,6 +60,7 @@ Additions:
 
 Changes:
 
+* Require the platform location by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1651
 * Add per-object refresh actions to Django admin via django-object-actions by @Copilot in https://github.com/gulfofmaine/buoy_barn/pull/1629
 
 Fixes:
@@ -126,7 +171,6 @@ Dependency updates:
 * Update pre-commit hook astral-sh/uv-pre-commit to v0.10.11 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1616
 * Bump requests from 2.32.5 to 2.33.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1650
 * Update pre-commit hook tox-dev/pyproject-fmt to v2.20.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1643
-* Require the platform location by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1651
 * Bump djangorestframework from 3.16.1 to 3.17.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1639
 * Update pre-commit hook zricethezav/gitleaks/ to v8.30.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1655
 * Update pre-commit hook zizmorcore/zizmor-pre-commit to v1.23.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1654

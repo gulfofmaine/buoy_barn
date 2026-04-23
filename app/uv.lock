@@ -9,7 +9,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-04-16T18:30:56.653781765Z"
+exclude-newer = "2026-04-16T19:08:47.160827677Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -65,7 +65,7 @@ wheels = [
 
 [[package]]
 name = "buoy-barn"
-version = "0.9.0"
+version = "0.10.0"
 source = { virtual = "." }
 dependencies = [
     { name = "celery" },
@@ -111,7 +111,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "celery", specifier = "~=5.4" },
-    { name = "dj-control-room", extras = ["all"], specifier = ">=1.2.0" },
+    { name = "dj-control-room", extras = ["all"], specifier = ">=1.2" },
     { name = "django", specifier = "~=6.0" },
     { name = "django-cors-headers", specifier = "~=4.4" },
     { name = "django-debug-toolbar", specifier = "~=6.0" },
@@ -132,7 +132,7 @@ requires-dist = [
     { name = "pandas", specifier = ">1.5.3" },
     { name = "psycopg2-binary", specifier = "~=2.9.9" },
     { name = "pystac", specifier = "~=1.14.1" },
-    { name = "requests", specifier = ">=2.33.0" },
+    { name = "requests", specifier = ">=2.33" },
     { name = "scipy", specifier = ">=1.14.1" },
     { name = "sentry-sdk", specifier = "~=2.58.0" },
     { name = "slack-sdk", specifier = "~=3.41.0" },

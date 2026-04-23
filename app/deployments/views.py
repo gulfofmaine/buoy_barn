@@ -319,7 +319,9 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
     except httpx.TimeoutException as e:
         raise ProxyTimeout from e
     except httpx.RequestError as e:
-        raise APIException(detail=f"Error connecting to upstream ERDDAP server: {type(e).__name__}.") from e
+        raise APIException(
+            detail=f"Error connecting to upstream ERDDAP server: {type(e).__name__}.",
+        ) from e
 
     return StreamingHttpResponse(
         response.iter_bytes(),

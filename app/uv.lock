@@ -9,7 +9,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-04-16T16:52:42.968239015Z"
+exclude-newer = "2026-04-16T18:14:46.049150612Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -113,7 +113,7 @@ requires-dist = [
     { name = "django", specifier = "~=6.0" },
     { name = "django-cors-headers", specifier = "~=4.4" },
     { name = "django-debug-toolbar", specifier = "~=6.0" },
-    { name = "django-health-check", specifier = "~=4.2.1" },
+    { name = "django-health-check", specifier = "~=4.3.0" },
     { name = "django-memoize", specifier = "~=2.3.1" },
     { name = "django-object-actions", specifier = "~=5.0" },
     { name = "django-redis", specifier = "~=6.0" },
@@ -390,15 +390,15 @@ wheels = [
 
 [[package]]
 name = "django-health-check"
-version = "4.2.1"
+version = "4.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "dnspython" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/85/fb/fd4f1122c7be1ca28eb9c279b6098432b49565d55041dbe96ebcf815d5c2/django_health_check-4.2.1.tar.gz", hash = "sha256:aa05f57d6b01fe502842273aaa944e988b85d1f58e3ea67b6f98c5f9808a530a", size = 21391, upload-time = "2026-03-20T13:38:01.724Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/67/83/c84fda118c436d0f4a702fff05014f1807adcec441456153d743031aa467/django_health_check-4.3.0.tar.gz", hash = "sha256:6c33abe4fd401b951f51adbd494eb0cdc34ebc379d99db93b440c765483b2a99", size = 21537, upload-time = "2026-04-15T17:11:57.141Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/93/05/d30df07b08194f1d89de44ecba867c467e9cc8e047a4cd7682a994a9468b/django_health_check-4.2.1-py3-none-any.whl", hash = "sha256:7216ba208f82f7587dc0ac0fe4c8f8a1c4d0cebbbae46cff6bd89779b378daf3", size = 26435, upload-time = "2026-03-20T13:38:00.557Z" },
+    { url = "https://files.pythonhosted.org/packages/21/39/efbb9da9a4b0f593e73eaa8b848477cc88fb04ede16356a4ec013535ba4f/django_health_check-4.3.0-py3-none-any.whl", hash = "sha256:6717f772afdab809df19c5e58bcde5e5dc6834dc6a99237dad519187ddd3e3df", size = 26612, upload-time = "2026-04-15T17:11:55.793Z" },
 ]
 
 [[package]]

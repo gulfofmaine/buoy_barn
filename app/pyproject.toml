@@ -10,6 +10,7 @@ classifiers = [
 ]
 dependencies = [
   "celery~=5.4",
+  "dj-control-room[all]>=1.2",
   "django~=6.0",
   "django-cors-headers~=4.4",
   "django-debug-toolbar~=6.0",

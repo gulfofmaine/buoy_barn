@@ -69,6 +69,7 @@ version = "0.9.0"
 source = { virtual = "." }
 dependencies = [
     { name = "celery" },
+    { name = "dj-control-room", extra = ["all"] },
     { name = "django" },
     { name = "django-cors-headers" },
     { name = "django-debug-toolbar" },
@@ -110,6 +111,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "celery", specifier = "~=5.4" },
+    { name = "dj-control-room", extras = ["all"], specifier = ">=1.2.0" },
     { name = "django", specifier = "~=6.0" },
     { name = "django-cors-headers", specifier = "~=4.4" },
     { name = "django-debug-toolbar", specifier = "~=6.0" },
@@ -346,6 +348,89 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/43/fa/6d96a0978d19e17b68d634497769987b16c8f4cd0a7a05048bec693caa6b/decorator-5.2.1.tar.gz", hash = "sha256:65f266143752f734b0a7cc83c46f4618af75b8c5911b00ccb61d0ac9b6da0360", size = 56711, upload-time = "2025-02-24T04:41:34.073Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4e/8c/f3147f5c4b73e7550fe5f9352eaa956ae838d5c51eb58e7a25b9f3e2643b/decorator-5.2.1-py3-none-any.whl", hash = "sha256:d316bb415a2d9e2d2b3abcc4084c6502fc09240e292cd76a76afc106a1c8e04a", size = 9190, upload-time = "2025-02-24T04:41:32.565Z" },
+]
+
+[[package]]
+name = "dj-cache-panel"
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e0/ef/b03a9eede668f95a50698160721b0ec86381de873534628d62f291449f04/dj_cache_panel-0.4.0.tar.gz", hash = "sha256:7760b12045abfecebbd8552459e2ab6fd5580ad49f936e0d2dbe44d85888c655", size = 35084, upload-time = "2026-03-23T21:38:49.749Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/c5/c5daf17625eaead35027a4e37cf4f5074dee6e955beefa8b78f664de5f83/dj_cache_panel-0.4.0-py3-none-any.whl", hash = "sha256:d0afd5f3c68e568093f49eb49bccf28e2c04ae23e8269cf917e8fdbc7989f353", size = 29675, upload-time = "2026-03-23T21:38:48.221Z" },
+]
+
+[[package]]
+name = "dj-celery-panel"
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bb/2d/e34a7fda4dc0e57d1e27121572942fb72c498f93149e0f807e45063ed27f/dj_celery_panel-0.4.0.tar.gz", hash = "sha256:f89397b5d7d8432fca721b92ac9fc8e5c4f72b3226609fd6cd36e3ab8a9fa0e5", size = 46629, upload-time = "2026-03-03T17:32:58.554Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/85/a8/1d87a3f307e935bf8be3079b477cf3121433930851edd99cd2010208386c/dj_celery_panel-0.4.0-py3-none-any.whl", hash = "sha256:8a573d04c54db18cefeda407ccdfa2f5e2da8f0e22639c11e62e8e21399ac166", size = 47118, upload-time = "2026-03-03T17:32:57.026Z" },
+]
+
+[[package]]
+name = "dj-control-room"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/db/76/a3f6769d4ec51fa785edc743d615a3e29a8d052b1bc4b57445fcc78374c9/dj_control_room-1.2.0.tar.gz", hash = "sha256:af356e57b1957af1a6068b4954a758584ee645d36c073b8ee86a48042f96fd29", size = 1441995, upload-time = "2026-04-05T04:25:44.266Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/92/ab/c54a8cc7d45559271fad9afaf952b3cddd9f4aa1b87397b9a042960de041/dj_control_room-1.2.0-py3-none-any.whl", hash = "sha256:110567bee7eddfea559809e2af33eb57eacfe8bfbaf8ba4ef7fc13a12773d063", size = 1436225, upload-time = "2026-04-05T04:25:42.318Z" },
+]
+
+[package.optional-dependencies]
+all = [
+    { name = "dj-cache-panel" },
+    { name = "dj-celery-panel" },
+    { name = "dj-redis-panel" },
+    { name = "dj-signals-panel" },
+    { name = "dj-urls-panel" },
+]
+
+[[package]]
+name = "dj-redis-panel"
+version = "0.8.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "redis" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/12/03/d34c69d9118234d8907254ed5c4da5516e39eabfac6b1882c20d90c65c61/dj_redis_panel-0.8.2.tar.gz", hash = "sha256:025e65292c4866476fa2d8cb5d8d8b0c18820a656eed0982ffc2336d26604c8f", size = 64664, upload-time = "2026-03-07T00:44:23.304Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d6/48/31c85c1267e16b560cf808e23786edc2f662a6e6c3605087ed209050d25f/dj_redis_panel-0.8.2-py3-none-any.whl", hash = "sha256:ffc0a564fc1afbf8a48cee03c58a234b718d8e344c01e35ecfe971352a8a4390", size = 47792, upload-time = "2026-03-07T00:44:21.002Z" },
+]
+
+[[package]]
+name = "dj-signals-panel"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/32/2f/ce73968eb58e675d3ae5fbd7181d4c89e9a5aa5456936bbd8808a77e1cb2/dj_signals_panel-0.2.0.tar.gz", hash = "sha256:d02509e86c1aeefcf8c5ee37462ca25d2fb536c2e4ec471c1ebf1417a29c127f", size = 70069, upload-time = "2026-04-03T14:30:32.837Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/16/30/24e73e27d9c126f4ed9b070975faa3ea233a1157c8910e5fb45caee4ed99/dj_signals_panel-0.2.0-py3-none-any.whl", hash = "sha256:bb39316736e25d9b7ae6da33ad5c1745927c714f3ea7326c52ae2c7e6d6cc608", size = 65317, upload-time = "2026-04-03T14:30:31.499Z" },
+]
+
+[[package]]
+name = "dj-urls-panel"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/af/fc/040676c9ec37e735f89ba5c26745f187717402b18bf748385b546ce6e7b7/dj_urls_panel-0.3.0.tar.gz", hash = "sha256:d5a940e03d1a7308c3d9d2f84fd5cc826bc520416c171f7980d2563a125c7505", size = 40051, upload-time = "2026-03-03T17:38:38.478Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/52/9a/65de6c506c961914e5e54ff7138cd2f61f01a43febc302a383589664afec/dj_urls_panel-0.3.0-py3-none-any.whl", hash = "sha256:4d9fe09d765575b720d22b0e24ecfda28d68d0012195ea5bd78aadb0e282b699", size = 35884, upload-time = "2026-03-03T17:38:37.29Z" },
 ]
 
 [[package]]

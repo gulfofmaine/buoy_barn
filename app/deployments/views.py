@@ -308,10 +308,26 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
     if parsed_path.scheme or parsed_path.netloc:
         raise ParseError(detail="Invalid proxy path.")
 
-    request_url = urljoin(server.base_url + "/", path)
+    base_url = server.base_url.rstrip("/")
+    parsed_base = urlparse(base_url)
+    if parsed_base.scheme not in {"http", "https"} or not parsed_base.hostname:
+        raise APIException(detail="Configured upstream ERDDAP server URL is invalid.")
 
-    # Defence-in-depth: confirm the resolved URL still targets the trusted server.
-    if not request_url.startswith(server.base_url):
+    request_url = urljoin(base_url + "/", path)
+    parsed_request_url = urlparse(request_url)
+
+    # Defence-in-depth: confirm the resolved URL still targets the trusted server
+    # by matching exact origin (scheme + hostname + effective port).
+    base_port = parsed_base.port or (443 if parsed_base.scheme == "https" else 80)
+    req_port = parsed_request_url.port or (
+        443 if parsed_request_url.scheme == "https" else 80
+    )
+    if (
+        parsed_request_url.scheme not in {"http", "https"}
+        or parsed_request_url.scheme != parsed_base.scheme
+        or parsed_request_url.hostname != parsed_base.hostname
+        or req_port != base_port
+    ):
         raise ParseError(detail="Invalid proxy path.")
 
     try:

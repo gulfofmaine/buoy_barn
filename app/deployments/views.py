@@ -298,7 +298,7 @@ _proxy_http_client = httpx.AsyncClient(timeout=settings.PROXY_TIMEOUT_SECONDS)
 
 
 @cache_page(settings.PROXY_CACHE_SECONDS)
-async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
+async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse | StreamingHttpResponse:
     server = await ErddapServer.objects.aget(id=server_id)
     path = request.get_full_path().split("proxy/")[1]
 
@@ -319,9 +319,7 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
     # Defence-in-depth: confirm the resolved URL still targets the trusted server
     # by matching exact origin (scheme + hostname + effective port).
     base_port = parsed_base.port or (443 if parsed_base.scheme == "https" else 80)
-    req_port = parsed_request_url.port or (
-        443 if parsed_request_url.scheme == "https" else 80
-    )
+    req_port = parsed_request_url.port or (443 if parsed_request_url.scheme == "https" else 80)
     if (
         parsed_request_url.scheme not in {"http", "https"}
         or parsed_request_url.scheme != parsed_base.scheme
@@ -339,8 +337,16 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
             detail=f"Error connecting to upstream ERDDAP server: {type(e).__name__}.",
         ) from e
 
+    # Cache small responses, stream large ones
+    if response.headers.get("content-length", 0) < settings.PROXY_STREAM_THRESHOLD_BYTES:
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get("content-type"),
+            status=response.status_code,
+        )
+
     return StreamingHttpResponse(
-        response.iter_bytes(),
+        response.aiter_bytes(),
         content_type=response.headers.get("content-type"),
         status=response.status_code,
     )

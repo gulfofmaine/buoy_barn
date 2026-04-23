@@ -36,7 +36,7 @@ dependencies = [
   "slack-sdk~=3.41.0",
   "vcrpy~=8.0",
   "whitenoise~=6.7",
-  "xarray~=2026.2.0",
+  "xarray~=2026.4.0",
 ]
 
 [dependency-groups]

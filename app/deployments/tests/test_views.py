@@ -20,7 +20,7 @@ class ProxyViewTestCase(APITestCase):
             ),
             format="json",
         )
-        data = json.loads(b"".join(response.streaming_content))
+        data = json.loads(response.content)
 
         assert "table" in data
 

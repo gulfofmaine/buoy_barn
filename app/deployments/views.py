@@ -1,6 +1,6 @@
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
-import requests
+import httpx
 from django.conf import settings
 from django.db.models import Prefetch
 from django.http import HttpRequest, HttpResponse, StreamingHttpResponse
@@ -289,25 +289,64 @@ class ProxyTimeout(APIException):
     default_code = "erddap_timeout"
 
 
+# Shared async HTTP client — one instance per worker process, reused across requests.
+# Timeout defaults match PROXY_TIMEOUT_SECONDS; individual calls may override if needed.
+# Lifecycle: Granian spawns workers as separate processes, so each process owns its own
+# client. Connections are released by the OS/Python runtime on process exit. No explicit
+# close is required under Granian's spawn model.
+_proxy_http_client = httpx.AsyncClient(timeout=settings.PROXY_TIMEOUT_SECONDS)
+
+
 @cache_page(settings.PROXY_CACHE_SECONDS)
-def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse:
-    server = ErddapServer.objects.get(id=server_id)
+async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse | StreamingHttpResponse:
+    server = await ErddapServer.objects.aget(id=server_id)
     path = request.get_full_path().split("proxy/")[1]
 
-    request_url = urljoin(server.base_url + "/", path)
+    # Reject paths that carry their own scheme or authority, which would cause
+    # urljoin to override the trusted server base URL (SSRF guard).
+    parsed_path = urlparse(path)
+    if parsed_path.scheme or parsed_path.netloc:
+        raise ParseError(detail="Invalid proxy path.")
+
+    base_url = server.base_url.rstrip("/")
+    parsed_base = urlparse(base_url)
+    if parsed_base.scheme not in {"http", "https"} or not parsed_base.hostname:
+        raise APIException(detail="Configured upstream ERDDAP server URL is invalid.")
+
+    request_url = urljoin(base_url + "/", path)
+    parsed_request_url = urlparse(request_url)
+
+    # Defence-in-depth: confirm the resolved URL still targets the trusted server
+    # by matching exact origin (scheme + hostname + effective port).
+    base_port = parsed_base.port or (443 if parsed_base.scheme == "https" else 80)
+    req_port = parsed_request_url.port or (443 if parsed_request_url.scheme == "https" else 80)
+    if (
+        parsed_request_url.scheme not in {"http", "https"}
+        or parsed_request_url.scheme != parsed_base.scheme
+        or parsed_request_url.hostname != parsed_base.hostname
+        or req_port != base_port
+    ):
+        raise ParseError(detail="Invalid proxy path.")
 
     try:
-        response = requests.get(
-            request_url,
-            stream=True,
-            timeout=settings.PROXY_TIMEOUT_SECONDS,
-        )
-    except requests.Timeout as e:
+        response = await _proxy_http_client.get(request_url)
+    except httpx.TimeoutException as e:
         raise ProxyTimeout from e
+    except httpx.RequestError as e:
+        raise APIException(
+            detail=f"Error connecting to upstream ERDDAP server: {type(e).__name__}.",
+        ) from e
+
+    # Cache small responses, stream large ones
+    if response.headers.get("content-length", 0) < settings.PROXY_STREAM_THRESHOLD_BYTES:
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get("content-type"),
+            status=response.status_code,
+        )
 
     return StreamingHttpResponse(
-        response.raw,
+        response.aiter_bytes(),
         content_type=response.headers.get("content-type"),
         status=response.status_code,
-        reason=response.reason,
     )

@@ -60,7 +60,11 @@ SENTRY_IGNORE_PATHS = {"/ht/"}
 def trace_filter(trace: dict) -> float:
     """Filter out unwanted sentry transactions"""
     try:
-        path: str = trace["wsgi_environ"]["PATH_INFO"]
+        # Support both WSGI (wsgi_environ) and ASGI (asgi_scope) environments
+        if "wsgi_environ" in trace:
+            path: str = trace["wsgi_environ"]["PATH_INFO"]
+        else:
+            path = trace["asgi_scope"]["path"]
 
         if path in SENTRY_IGNORE_PATHS:
             return 0  # don't trace
@@ -183,7 +187,10 @@ CACHES = {
 }
 
 # How many seconds should CORS proxied data from ERDDAP servers be cached
-PROXY_CACHE_SECONDS = int(os.environ.get("PROXY_CACHE_SECONDS", 60))  # noqa: PLW1508
+PROXY_CACHE_SECONDS = int(os.environ.get("PROXY_CACHE_SECONDS", 5 * 60))  # noqa: PLW1508
+
+# How big of a response (in bytes) should be streamed rather than cached in memory
+PROXY_STREAM_THRESHOLD_BYTES = int(os.environ.get("PROXY_STREAM_THRESHOLD_BYTES", 1_000_000))  # noqa: PLW1508
 
 # How many seconds should requests wait before timing out connecting to a proxy
 PROXY_TIMEOUT_SECONDS = int(os.environ.get("PROXY_TIMEOUT_SECONDS", 30))  # noqa: PLW1508
@@ -192,7 +199,7 @@ PROXY_TIMEOUT_SECONDS = int(os.environ.get("PROXY_TIMEOUT_SECONDS", 30))  # noqa
 # When it isn't already defined by a model
 ERDDAP_TIMEOUT_SECONDS = int(os.environ.get("ERDDAP_TIMEOUT_SECONDS", 30))  # noqa: PLW1508
 
-WSGI_APPLICATION = "buoy_barn.wsgi.application"
+ASGI_APPLICATION = "buoy_barn.asgi.application"
 
 
 # Database

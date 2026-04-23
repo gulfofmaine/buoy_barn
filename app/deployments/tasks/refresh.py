@@ -2,13 +2,11 @@ import logging
 import time
 
 import pandas as pd
+import sentry_sdk
 from celery import shared_task
 from django.utils import timezone
 from httpcore import ConnectError
 from httpx import HTTPError, TimeoutException
-
-# from requests import HTTPError, Timeout
-from sentry_sdk import push_scope
 
 from deployments.models import ErddapDataset, ErddapServer, TimeSeries
 from deployments.utils.erddap_datasets import (
@@ -32,7 +30,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
         timeseries: List of timeseries to update
         clear_end_time: If True, clear the end_time field when data is successfully retrieved
     """
-    with push_scope() as scope:
+    with sentry_sdk.new_scope() as scope:
         scope.set_tag("erddap-server", timeseries[0].dataset.server)
         scope.set_tag("erddap-dataset", timeseries[0].dataset.name)
 
@@ -195,7 +193,7 @@ def single_refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end
         clear_end_time: If True, clear the end_time field for timeseries
             when data is successfully retrieved
     """
-    with push_scope() as scope:
+    with sentry_sdk.new_scope() as scope:
         scope.set_tag("dataset_id", dataset_id)
 
         already_queued = task_queued(
@@ -236,7 +234,7 @@ def refresh_server(server_id: int, healthcheck: bool = False):
 @shared_task
 def single_refresh_server(server_id: int, healthcheck: bool = False):
     """Schedule dataset refresh, only if it does not already exist"""
-    with push_scope() as scope:
+    with sentry_sdk.new_scope() as scope:
         scope.set_tag("server_id", server_id)
 
         already_queued = task_queued(

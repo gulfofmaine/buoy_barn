@@ -137,6 +137,13 @@ INSTALLED_APPS = [
     # Dataset and forecast management
     "deployments.apps.DeploymentsConfig",
     "forecasts.apps.ForecastsConfig",
+    # Django control room needs to list the panels first
+    "dj_cache_panel",
+    "dj_celery_panel",
+    "dj_redis_panel",
+    "dj_signals_panel",
+    "dj_urls_panel",
+    "dj_control_room",
 ]
 
 AUTH_USER_MODEL = "account.User"
@@ -183,6 +190,28 @@ CACHES = {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": os.environ.get("REDIS_CACHE", "redis://cache:6379/0"),
         "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient"},
+    },
+}
+
+DJ_REDIS_PANEL_SETTINGS = {
+    "ALLOW_KEY_DELETE": False,
+    "ALLOW_KEY_EDIT": False,
+    "ALLOW_TTL_UPDATE": False,
+    "CURSOR_PAGINATED_SCAN": False,
+    "CURSOR_PAGINATED_COLLECTIONS": False,
+    "socket_timeout": 5.0,
+    "socket_connect_timeout": 5.0,
+    "INSTANCES": {
+        "cache": {
+            "description": "Redis Cache Instance",
+            "url": CACHES["default"]["LOCATION"],
+            "features": {
+                "ALLOW_KEY_DELETE": True,
+                "ALLOW_TTL_UPDATE": True,
+                "CURSOR_PAGINATED_SCAN": True,
+                "CURSOR_PAGINATED_COLLECTIONS": True,
+            },
+        },
     },
 }
 

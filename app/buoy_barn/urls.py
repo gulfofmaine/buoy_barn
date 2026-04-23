@@ -23,6 +23,13 @@ from django.urls import include, path
 from health_check.views import HealthCheckView
 
 urlpatterns = [
+    # Control room URLs go before admin URLs
+    path("admin/dj-cache-panel/", include("dj_cache_panel.urls")),
+    path("admin/dj-signals-panel/", include("dj_signals_panel.urls")),
+    path("admin/dj-urls-panel/", include("dj_urls_panel.urls")),
+    path("admin/dj-redis-panel/", include("dj_redis_panel.urls")),
+    path("admin/dj-celery-panel/", include("dj_celery_panel.urls")),
+    path("admin/dj-control-room/", include("dj_control_room.urls")),
     path("admin/", admin.site.urls),
     path("api/", include("deployments.urls")),
     path("api-auth/", include("rest_framework.urls")),

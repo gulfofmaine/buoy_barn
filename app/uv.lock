@@ -9,7 +9,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-04-16T19:08:47.160827677Z"
+exclude-newer = "0001-01-01T00:00:00Z" # This has no effect and is included for backwards compatibility when using relative exclude-newer values.
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -95,6 +95,7 @@ dependencies = [
     { name = "sentry-sdk" },
     { name = "slack-sdk" },
     { name = "vcrpy" },
+    { name = "verbose-csrf-middleware" },
     { name = "whitenoise" },
     { name = "xarray" },
 ]
@@ -137,6 +138,7 @@ requires-dist = [
     { name = "sentry-sdk", specifier = "~=2.58.0" },
     { name = "slack-sdk", specifier = "~=3.41.0" },
     { name = "vcrpy", specifier = "~=8.0" },
+    { name = "verbose-csrf-middleware", specifier = ">=6.0.0" },
     { name = "whitenoise", specifier = "~=6.7" },
     { name = "xarray", specifier = "~=2026.4.0" },
 ]
@@ -1254,6 +1256,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b3/07/bcfd5ebd7cb308026ab78a353e091bd699593358be49197d39d004e5ad83/vcrpy-8.1.1.tar.gz", hash = "sha256:58e3053e33b423f3594031cb758c3f4d1df931307f1e67928e30cf352df7709f", size = 85770, upload-time = "2026-01-04T19:22:03.886Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3a/d7/f79b05a5d728f8786876a7d75dfb0c5cae27e428081b2d60152fb52f155f/vcrpy-8.1.1-py3-none-any.whl", hash = "sha256:2d16f31ad56493efb6165182dd99767207031b0da3f68b18f975545ede8ac4b9", size = 42445, upload-time = "2026-01-04T19:22:02.532Z" },
+]
+
+[[package]]
+name = "verbose-csrf-middleware"
+version = "6.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a4/44/3e535cc7d58664d68cb7e341317f5d3e1f7ecdee17079ef3e8e267e963b5/verbose_csrf_middleware-6.0.0.tar.gz", hash = "sha256:9bd4fee530137cf1005416d8fac4e843df69eb665e95d446b62458d0f421504d", size = 17348, upload-time = "2025-12-06T21:04:11.319Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/cd/b1c691629f8d80be4997d464331bce198374158f6a1385f6d8dd7e469fa2/verbose_csrf_middleware-6.0.0-py3-none-any.whl", hash = "sha256:900a8dbfd6e67bf533aab8b3e6ae1d0c7c77e8797ea29a6649873e31b104a7f9", size = 13914, upload-time = "2025-12-06T21:04:10.304Z" },
 ]
 
 [[package]]

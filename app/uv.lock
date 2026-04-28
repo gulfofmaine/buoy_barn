@@ -116,7 +116,7 @@ requires-dist = [
     { name = "django", specifier = "~=6.0" },
     { name = "django-cors-headers", specifier = "~=4.4" },
     { name = "django-debug-toolbar", specifier = "~=6.0" },
-    { name = "django-health-check", specifier = "~=4.3.0" },
+    { name = "django-health-check", specifier = "~=4.4.0" },
     { name = "django-memoize", specifier = "~=2.3.1" },
     { name = "django-object-actions", specifier = "~=5.0" },
     { name = "django-redis", specifier = "~=6.0" },
@@ -138,7 +138,7 @@ requires-dist = [
     { name = "sentry-sdk", specifier = "~=2.58.0" },
     { name = "slack-sdk", specifier = "~=3.41.0" },
     { name = "vcrpy", specifier = "~=8.0" },
-    { name = "verbose-csrf-middleware", specifier = ">=6.0.0" },
+    { name = "verbose-csrf-middleware", specifier = ">=6" },
     { name = "whitenoise", specifier = "~=6.7" },
     { name = "xarray", specifier = "~=2026.4.0" },
 ]
@@ -477,15 +477,15 @@ wheels = [
 
 [[package]]
 name = "django-health-check"
-version = "4.3.0"
+version = "4.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "dnspython" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/67/83/c84fda118c436d0f4a702fff05014f1807adcec441456153d743031aa467/django_health_check-4.3.0.tar.gz", hash = "sha256:6c33abe4fd401b951f51adbd494eb0cdc34ebc379d99db93b440c765483b2a99", size = 21537, upload-time = "2026-04-15T17:11:57.141Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/91/604e73b1c74da15af9a249a76c78b76f715f79e67d6937682957ae8cd407/django_health_check-4.4.0.tar.gz", hash = "sha256:1529886e49c8b443454e129e36fd024a09d025268ae8fb2e60816482c64530bb", size = 21713, upload-time = "2026-04-19T17:46:40.44Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/21/39/efbb9da9a4b0f593e73eaa8b848477cc88fb04ede16356a4ec013535ba4f/django_health_check-4.3.0-py3-none-any.whl", hash = "sha256:6717f772afdab809df19c5e58bcde5e5dc6834dc6a99237dad519187ddd3e3df", size = 26612, upload-time = "2026-04-15T17:11:55.793Z" },
+    { url = "https://files.pythonhosted.org/packages/1e/f8/dfa721f8c25e5e1d7cad7742b4daf0eeafb29f8d8c19e005289c74dd53a5/django_health_check-4.4.0-py3-none-any.whl", hash = "sha256:23595410569c4987c60bd44cd7e5a59a0f2826c838499ffe887a976905314753", size = 26824, upload-time = "2026-04-19T17:46:39.226Z" },
 ]
 
 [[package]]

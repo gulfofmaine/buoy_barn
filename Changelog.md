@@ -8,6 +8,22 @@ Changes:
 
 Fixes:
 
+## 0.10.1 - 2026-04-28
+
+Fixes:
+
+* Explicitly set CSRF origins and add more logging for issues. by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1703
+
+Dependency Updates:
+
+* Update ghcr.io/astral-sh/uv:python3.14-trixie-slim Docker digest to b3b7ad9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1678
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.11 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1700
+* Update redis Docker tag to v7.4.8 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1701
+* Update dependency django-health-check to ~=4.4.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1704
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.10.0...v0.10.1
+
 ## 0.10.0 - 2026-04-23
 
 Changes:

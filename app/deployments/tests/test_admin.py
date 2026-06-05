@@ -1,9 +1,11 @@
+from datetime import timedelta
 from unittest.mock import patch
 
 import pytest
 from django.contrib.admin.sites import AdminSite
 from django.contrib.messages.storage.fallback import FallbackStorage
 from django.test import RequestFactory, TestCase
+from django.utils import timezone
 
 from deployments.admin import ErddapDatasetAdmin, ErddapServerAdmin, PlatformAdmin
 from deployments.models import (
@@ -115,6 +117,30 @@ class ErddapDatasetAdminObjectActionsTestCase(TestCase):
         self.admin.refresh_erddap_dataset(request, self.dataset)
 
         mock_delay.assert_called_once_with(self.dataset.id, healthcheck=False)
+
+    def test_refresh_status_never_refreshed(self):
+        """Regression: refresh_attempted=None must not raise TypeError."""
+        self.dataset.refresh_attempted = None
+        result = self.admin.refresh_status(self.dataset)
+        self.assertIn("Never refreshed", result)
+
+    def test_refresh_status_recent(self):
+        self.dataset.refresh_attempted = timezone.now() - timedelta(minutes=30)
+        result = self.admin.refresh_status(self.dataset)
+        self.assertIn("green", result)
+        self.assertIn("Less than 1 hour ago", result)
+
+    def test_refresh_status_more_than_one_hour(self):
+        self.dataset.refresh_attempted = timezone.now() - timedelta(hours=2)
+        result = self.admin.refresh_status(self.dataset)
+        self.assertIn("yellow", result)
+        self.assertIn("More than 1 hour ago", result)
+
+    def test_refresh_status_more_than_one_day(self):
+        self.dataset.refresh_attempted = timezone.now() - timedelta(days=2)
+        result = self.admin.refresh_status(self.dataset)
+        self.assertIn("red", result)
+        self.assertIn("More than 24 hours ago", result)
 
 
 @pytest.mark.django_db

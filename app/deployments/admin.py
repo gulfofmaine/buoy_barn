@@ -582,18 +582,18 @@ class ErddapDatasetAdmin(DjangoObjectActions, admin.ModelAdmin):
 
     @admin.display(description="Refresh attempted")
     def refresh_status(self, obj: ErddapDataset):
-        now = timezone.now()
-        hour_ago = now - timedelta(hours=24)
-        day_ago = now - timedelta(days=1)
-
-        last_refreshed = f"Last refreshed at: {obj.refresh_attempted:%Y-%m-%d %H:%M}"
-
         if obj.refresh_attempted is None:
             return format_html(
                 "<span style='color: {};'>{}</span>",
                 "gray",
                 "Never refreshed",
             )
+
+        now = timezone.now()
+        hour_ago = now - timedelta(hours=1)
+        day_ago = now - timedelta(days=1)
+
+        last_refreshed = f"Last refreshed at: {obj.refresh_attempted:%Y-%m-%d %H:%M}"
         if obj.refresh_attempted < day_ago:
             return format_html(
                 "<span style='color: {};' title='{}'>{}</span>",

@@ -105,6 +105,41 @@ Tests coverage can be run with `make coverage`.
 After the tests are run, and the report displayed in the command line, it will also generate an html report.
 This report can be viewed by opening `app/htmlcov/index.html` which will also attempt to automatically open in the default browser.
 
+## Dev Container / GitHub Codespaces
+
+For a one-click, batteries-included environment there is a
+[dev container](https://containers.dev/) under `.devcontainer/`. It works with
+VS Code (Dev Containers extension), GitHub Codespaces, and other editors that
+support the spec, and comes with the GDAL/GeoDjango toolchain, PostGIS, Redis,
+`uv`, and [Claude Code](https://code.claude.com/docs/en/devcontainer)
+preinstalled.
+
+- **VS Code:** open the repo and run **Dev Containers: Reopen in Container**.
+- **Codespaces:** *Code → Codespaces → Create codespace* on GitHub.
+
+On first creation `.devcontainer/post-create.sh` runs `uv sync`, applies
+migrations, loads the `deployments` fixtures, and creates a default superuser
+(`admin` / `admin`). It is idempotent — if the database already has data (the
+PostGIS data is persisted to the `docker-data/devcontainer-db/` directory) the
+fixture load and superuser creation are skipped.
+
+Once the container is ready, start the server from a terminal inside it:
+
+```bash
+cd app
+uv run manage.py runserver 0:8090
+```
+
+The admin is then at [localhost:8090/admin/](http://localhost:8090/admin/)
+(log in with `admin` / `admin`) and the API at
+[localhost:8090/api/](http://localhost:8090/api/). Redis is available at
+`cache:6379`, so a Celery worker can be started manually with
+`cd app && uv run celery -A buoy_barn worker -l info` if needed.
+
+The dev container reuses the same images and build as the main stack via the
+shared `docker-compose.base.yaml`; it does not need `docker-data/secret.env`
+(its development settings are supplied inline in `.devcontainer/docker-compose.yml`).
+
 ## Initial Configuration for Development
 
 ### Settings

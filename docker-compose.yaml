@@ -1,23 +1,24 @@
 services:
   db:
-    image: postgis/postgis:15-3.3@sha256:a2fc46b52819d25add4ed93d3da83e106e17ea3ace6883cce3791631c9820bb2
+    extends:
+      file: docker-compose.base.yaml
+      service: db
     restart: always
     env_file:
       - ./docker-data/secret.env
-    environment:
-      PGDATA: /var/lib/postgresql/data/PGDATA
     volumes:
       - ./docker-data/postgres:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
   cache:
-    image: redis:7.4.8-alpine@sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6
+    extends:
+      file: docker-compose.base.yaml
+      service: cache
     restart: always
 
   web:
-    build: ./app
-    image: gmri/neracoos-buoy-barn
+    extends:
+      file: docker-compose.base.yaml
+      service: app
     command: uv run manage.py runserver 0:8090
     # command: "uv run granian --interface asgi --host 0.0.0.0 --port 8090 --workers 4 buoy_barn.asgi:application"
     restart: always
@@ -46,8 +47,9 @@ services:
       - cache
 
   mqtt:
-    build: ./app
-    image: gmri/neracoos-buoy-barn
+    extends:
+      file: docker-compose.base.yaml
+      service: app
     command: uv run manage.py erddap_mqtt NERACOOS_SEA_EAGLE
     volumes:
       - ./app:/app:cached
@@ -65,8 +67,9 @@ services:
       - erddap_mqtt_network
 
   celery-worker:
-    build: ./app
-    image: gmri/neracoos-buoy-barn
+    extends:
+      file: docker-compose.base.yaml
+      service: app
     command: celery -A buoy_barn worker -l info
     restart: always
     env_file:
@@ -76,8 +79,9 @@ services:
       - cache
 
   celery-beat:
-    build: ./app
-    image: gmri/neracoos-buoy-barn
+    extends:
+      file: docker-compose.base.yaml
+      service: app
     command: celery -A buoy_barn beat -l info
     restart: always
     env_file:
@@ -87,8 +91,9 @@ services:
       - cache
 
   celery-flower:
-    build: ./app
-    image: gmri/neracoos-buoy-barn
+    extends:
+      file: docker-compose.base.yaml
+      service: app
     command: celery -A buoy_barn flower -l info
     restart: always
     env_file:

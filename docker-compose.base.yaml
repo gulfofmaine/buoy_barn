@@ -1,0 +1,23 @@
+# Shared service definitions extended by both docker-compose.yaml (the main
+# stack) and .devcontainer/docker-compose.yml via the compose `extends:` keyword.
+# Keep this file free of env_file / restart / command / per-environment volumes -
+# those belong in the consumers so each environment can differ.
+services:
+  db:
+    image: postgis/postgis:15-3.3@sha256:a2fc46b52819d25add4ed93d3da83e106e17ea3ace6883cce3791631c9820bb2
+    environment:
+      PGDATA: /var/lib/postgresql/data/PGDATA
+    ports:
+      - "5432:5432"
+
+  cache:
+    image: redis:7.4.8-alpine@sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6
+
+  # Shared Django build, reused by web / mqtt / celery-* and the devcontainer.
+  # `target: production` keeps the main stack on the production image; the
+  # devcontainer overrides the target to `devcontainer`.
+  app:
+    build:
+      context: ./app
+      target: production
+    image: gmri/neracoos-buoy-barn

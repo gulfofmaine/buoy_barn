@@ -1,0 +1,42 @@
+{
+  "name": "Buoy Barn",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/buoy_barn",
+  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+  },
+  "forwardPorts": [8090, 5432, 5555],
+  "portsAttributes": {
+    "8090": {
+      "label": "Django (web)",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "PostGIS"
+    },
+    "5555": {
+      "label": "Celery Flower"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "batisteo.vscode-django",
+        "tamasfe.even-better-toml",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspaces/buoy_barn/app/.venv/bin/python",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  }
+}

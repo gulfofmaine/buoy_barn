@@ -1,0 +1,57 @@
+# Dev Container stack. Reuses the shared service definitions from
+# ../docker-compose.base.yaml via `extends:` so images/build stay in one place.
+# Unlike the main stack this file supplies its own inline dev environment (no
+# ./docker-data/secret.env needed) and starts only db, cache, and the app shell.
+services:
+  db:
+    extends:
+      file: ../docker-compose.base.yaml
+      service: db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: buoy_barn
+      POSTGRES_PASSWORD: buoy_barn
+      POSTGRES_DB: buoy_barn
+    # Directory bind mount (not a named volume) so the database persists on the
+    # host across rebuilds. Separate dir from the main stack's docker-data/postgres
+    # so these fixed dev credentials can't clash with a real secret.env.
+    volumes:
+      - ../docker-data/devcontainer-db:/var/lib/postgresql/data
+
+  cache:
+    extends:
+      file: ../docker-compose.base.yaml
+      service: cache
+    restart: unless-stopped
+
+  app:
+    extends:
+      file: ../docker-compose.base.yaml
+      service: app
+    build:
+      target: devcontainer
+    image: buoy_barn_devcontainer
+    command: sleep infinity
+    user: vscode
+    volumes:
+      - ..:/workspaces/buoy_barn:cached
+      # Persist Claude Code auth/settings/history across container rebuilds.
+      - claude-code-config:/home/vscode/.claude
+    environment:
+      DJANGO_ENV: dev
+      SECRET_KEY: dev-only-insecure-secret-key-change-me
+      POSTGRES_HOST: db
+      POSTGRES_NAME: buoy_barn
+      POSTGRES_USER: buoy_barn
+      POSTGRES_PASSWORD: buoy_barn
+      POSTGRES_PORT: "5432"
+      REDIS_CACHE: redis://cache:6379/0
+      CELERY_BROKER_URL: redis://cache:6379/1
+      SENTRY_TRACES_SAMPLE_RATE: "0"
+      DJANGO_MANAGEPY_MIGRATE: "off"
+    depends_on:
+      - db
+      - cache
+
+volumes:
+  claude-code-config:

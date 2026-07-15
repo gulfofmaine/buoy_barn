@@ -9,6 +9,8 @@ updates:
   open-pull-requests-limit: 0
   cooldown:
       default-days: 7
+  labels:
+    - dependencies
 - package-ecosystem: docker
   directory: "/app"
   schedule:
@@ -17,6 +19,8 @@ updates:
   open-pull-requests-limit: 0
   cooldown:
       default-days: 7
+  labels:
+    - dependencies
 # Maintain dependencies for GitHub Actions
 - package-ecosystem: "github-actions"
   directory: "/"
@@ -26,3 +30,5 @@ updates:
     time: '10:00'
   cooldown:
       default-days: 7
+  labels:
+    - dependencies

@@ -65,7 +65,7 @@ wheels = [
 
 [[package]]
 name = "buoy-barn"
-version = "0.10.1"
+version = "0.10.2"
 source = { virtual = "." }
 dependencies = [
     { name = "celery" },

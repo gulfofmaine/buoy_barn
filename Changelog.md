@@ -8,6 +8,64 @@ Changes:
 
 Fixes:
 
+## 0.10.2 - 2026-07-15
+
+### Bug Fixes
+* Fixes 500 & TypeError when a new dataset hasn't been refreshed by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1721
+### Other Changes
+* Configure ODP Releaser by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1760
+### Dependency Updates
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.12 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1707
+* Bump granian from 2.7.3 to 2.7.4 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1708
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1711
+* Update dependency django to v6.0.5 [SECURITY] by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1712
+* Update pre-commit hook tox-dev/pyproject-fmt to v2.21.2 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1714
+* Bump idna from 3.11 to 3.15 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1715
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.14 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1713
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.15 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1717
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.13 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1716
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.14 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1719
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.15 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1723
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.19 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1727
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.16 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1726
+* Bump urllib3 from 2.6.3 to 2.7.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1725
+* Bump tornado from 6.5.5 to 6.5.6 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1724
+* Bump tornado from 6.5.6 to 6.5.7 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1728
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.17 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1729
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.21 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1730
+* Bump vcrpy from 8.1.1 to 8.2.1 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1731
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.19 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1734
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.27 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1738
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.15.20 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1737
+* Bump django from 6.0.5 to 6.0.6 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1735
+* Update ghcr.io/astral-sh/uv:python3.14-trixie-slim Docker digest to b6e3a88 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1710
+* Update actions/cache digest to caa2961 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1733
+* Update j178/prek-action digest to e98a699 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1680
+* Update github/codeql-action digest to 99df26d by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1706
+* Update getsentry/action-release digest to f71adb4 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1718
+* Update actions/checkout digest to df4cb1c by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1722
+* Update actions/checkout action to v7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1755
+* Update actions/cache action to v6 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1754
+* Update pre-commit hook zizmorcore/zizmor-pre-commit to v1.26.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1753
+* Update pre-commit hook tox-dev/pyproject-fmt to v2.25.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1752
+* Update pre-commit hook adamchainz/django-upgrade to v1.31.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1751
+* Update getsentry/action-release action to v3.7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1750
+* Update docker/setup-buildx-action action to v4.2.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1749
+* Update docker/login-action action to v4.4.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1748
+* Update docker/dockerfile Docker tag to v1.25 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1747
+* Update docker/build-push-action action to v7.3.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1746
+* Update dependency slack-sdk to ~=3.43.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1745
+* Update dependency pystac to ~=1.15.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1743
+* Update dependency geojson to ~=3.3.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1742
+* Update redis Docker tag to v7.4.9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1741
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.28 - autoclosed by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1740
+* Update dependency sentry-sdk to ~=2.64.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1744
+* Update dependency django-debug-toolbar to v7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1756
+* Update dependency django-redis to v7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1757
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.10.1...v0.10.2
+
 ## 0.10.1 - 2026-04-28
 
 Fixes:

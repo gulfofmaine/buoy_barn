@@ -1,6 +1,9 @@
 name: CI
 
-on: [push]
+on:
+  push:
+  release:
+    types: [published]
 
 permissions:
   contents: read
@@ -21,20 +24,13 @@ jobs:
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
       - name: Cache Docker layers
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6  | # zizmor: ignore[cache-poisoning] Disabled by if on releases
+        if: github.event_name != 'release'
         with:
           path: /tmp/.buildx-cache
           key: buoy-barn-buildx-${{ github.sha }}
           restore-keys: |
             buoy-barn-buildx-
-
-      - name: Cache Docker image
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
-        with:
-          path: /tmp/myimage.tar
-          key: buoy-barn-image-${{ github.sha }}
-          restore-keys: |
-            buoy-barn-image-
 
       - name: Login to Docker Hub
         uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
@@ -49,14 +45,22 @@ jobs:
           context: ./app
           push: false
           tags: gmri/neracoos-buoy-barn:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
+          cache-from: ${{ github.event_name != 'release' && 'type=local,src=/tmp/.buildx-cache' || '' }}
+          cache-to: ${{ github.event_name != 'release' && 'type=local,dest=/tmp/.buildx-cache-new' || '' }}
           outputs: type=docker,dest=/tmp/myimage.tar
 
       - name: Move Docker Cache
+        if: github.event_name != 'release'
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      - name: Upload Docker image
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: buoy-barn-image
+          path: /tmp/myimage.tar
+          retention-days: 1
 
   test:
     name: Unit Tests
@@ -70,13 +74,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Cache Docker image
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+      - name: Download Docker image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          path: /tmp/myimage.tar
-          key: buoy-barn-image-${{ github.sha }}
-          restore-keys: |
-            buoy-barn-image-
+          name: buoy-barn-image
+          path: /tmp
 
       - name: Load Docker image
         run: |
@@ -94,19 +96,23 @@ jobs:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }} # zizmor: ignore[secrets-outside-env]
         if: env.CODACY_PROJECT_TOKEN != null
 
-  deploy:
-    name: Build and Push tagged image to Docker Hub, and update Argo config
+  push_image:
+    name: Build and Push tagged image to Docker Hub
     runs-on: ubuntu-24.04
     needs: test
     permissions:
       contents: read
       deployments: write
     environment:
+      # Despite changing deploy method, secrets are tied to the existing environment
       name: Buoy Barn via Argo CD
       url: https://buoy-barn.neracoos.org/admin/
+    outputs:
+      tag: ${{ steps.push.outputs.tag }}
+      image_digest: ${{ steps.push.outputs.image_digest }}
     if: |
       github.repository == 'gulfofmaine/buoy_barn'
-      && contains(github.ref, 'refs/tags/v')
+      && github.event_name == 'release'
 
     steps:
       - name: Checkout
@@ -114,13 +120,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Cache Docker image
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+      - name: Download Docker image
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          path: /tmp/myimage.tar
-          key: buoy-barn-image-${{ github.sha }}
-          restore-keys: |
-            buoy-barn-image-
+          name: buoy-barn-image
+          path: /tmp
 
       - name: Load Docker image
         run: |
@@ -133,39 +137,19 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Get tag name
-        uses: olegtarasov/get-tag@53af8e1e538a0ffab949cdde3e332d8e58e8630f # v2.1
-        id: tagName
-
       - name: Tag Docker image
         env:
-          SHORT_TAG: ${{ steps.tagName.outputs.tag }}
+          SHORT_TAG: ${{ github.event.release.tag_name }}
         run: docker tag gmri/neracoos-buoy-barn gmri/neracoos-buoy-barn:${SHORT_TAG}
 
       - name: Push Docker image
+        id: push
         env:
-          SHORT_TAG: ${{ steps.tagName.outputs.tag }}
-        run: docker push gmri/neracoos-buoy-barn:${SHORT_TAG}
-
-      - name: Make GitOps directory
-        run: mkdir gitops
-
-      - name: Clone GitOps config repo
-        run: git clone "https://$GITOPS_TOKEN@github.com/gulfofmaine/neracoos-aws-cd.git"
-        working-directory: ./gitops
-        env:
-          GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
-
-      - name: Update GitOps config repo
-        working-directory: ./gitops/neracoos-aws-cd
-        env:
-          SHORT_TAG: ${{ steps.tagName.outputs.tag }}
+          SHORT_TAG: ${{ github.event.release.tag_name }}
         run: |
-          sed -i "s/?ref=.\+/?ref=${SHORT_TAG}/" overlays/buoy-barn/kustomization.yaml
-          sed -i "s/newTag: .\+/newTag: ${SHORT_TAG}/" overlays/buoy-barn/kustomization.yaml
-          git config --global user.email 'neracoos-buoy-barn-ci@gmri.org'
-          git config --global user.name 'NERACOOS Buoy Barn CI'
-          git diff --exit-code && echo 'Already Deployed' || (git commit -am "Upgrade Buoy Barn to ${SHORT_TAG}" && git push)
+          docker push gmri/neracoos-buoy-barn:${SHORT_TAG}
+          echo "tag=${SHORT_TAG}" >> $GITHUB_OUTPUT
+          echo "image_digest=$(docker inspect --format='{{index .RepoDigests 0}}' gmri/neracoos-buoy-barn:${SHORT_TAG} | cut -d@ -f2)" >> $GITHUB_OUTPUT
 
       - name: Create Sentry Release
         uses: getsentry/action-release@ff07929a6537bac57790c3451cf4d364aca38528 # v3.7
@@ -175,4 +159,26 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: prod
-          version: ${{ steps.tagName.outputs.tag }}
+          release: ${{ github.event.release.tag_name }}
+
+
+  notify:
+    name: Notify deployment repos of new image
+    needs: [push_image]
+    uses: gulfofmaine/odp-releaser/.github/workflows/notify.yml@52b11709c1fb73c142b24b62ce7a11ecb37f7da3
+    permissions:
+      contents: read
+      pull-requests: read # ODP Releaser wants to figure out who made a PR
+    if: |
+      github.repository == 'gulfofmaine/buoy_barn'
+      && github.event_name == 'release'
+    with:
+      image_name: gmri/neracoos-buoy-barn
+      tag: ${{ needs.push_image.outputs.tag }}
+      digest: ${{ needs.push_image.outputs.image_digest }}
+      environment: notify # optional gate
+      # deploy_targets_path: .github/deploy_targets.yaml  # optional
+      verbosity: 3 # optional, default
+    secrets:
+      dispatch_app_id: ${{ secrets.GULFOFMAINE_ODP_DISPATCH_APP_ID }}
+      dispatch_app_private_key: ${{ secrets.GULFOFMAINE_ODP_DISPATCH_PRIVATE_KEY }}

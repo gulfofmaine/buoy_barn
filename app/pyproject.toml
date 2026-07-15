@@ -30,7 +30,7 @@ dependencies = [
   "paho-mqtt>=2.1",
   "pandas>1.5.3",
   "psycopg2-binary~=2.9.9",
-  "pystac~=1.14.1",
+  "pystac~=1.15.1",
   "requests>=2.33",
   "scipy>=1.14.1",
   "sentry-sdk~=2.58.0",

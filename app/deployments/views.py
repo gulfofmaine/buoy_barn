@@ -338,7 +338,8 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse | S
         ) from e
 
     # Cache small responses, stream large ones
-    if response.headers.get("content-length", 0) < settings.PROXY_STREAM_THRESHOLD_BYTES:
+    content_length = int(response.headers.get("content-length", 0))
+    if content_length < settings.PROXY_STREAM_THRESHOLD_BYTES:
         return HttpResponse(
             response.content,
             content_type=response.headers.get("content-type"),

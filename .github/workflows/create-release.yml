@@ -1,0 +1,42 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Bump type (patch/minor/major) or explicit version (e.g. 1.2.3)"
+        required: true
+        default: "patch"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    environment:
+      name: create-release
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7 | # zizmor: ignore[artipacked] Credentials are needed to push the release branch below
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - run: uv run --script noxfile.py -s release -- "$RELEASE_VERSION" --yes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+
+      - run: |
+          git push -u origin HEAD
+          gh pr create --draft --base main \
+            --title "$(git log -1 --pretty=%s)" \
+            --body "$(git log -1 --pretty=%b)"
+        env:
+          GH_TOKEN: ${{ github.token }}

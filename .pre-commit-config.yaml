@@ -79,3 +79,8 @@ repos:
     rev: v1.26.1
     hooks:
     - id: zizmor
+
+  - repo: https://github.com/gulfofmaine/odp-releaser
+    rev: fef1724a2cdd7725a519ebb059a60aca71e24e68
+    hooks:
+      - id: validate-deploy-targets

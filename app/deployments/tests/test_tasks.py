@@ -129,6 +129,59 @@ class TaskTestCase(TransactionTestCase):
         self.assertIsNotNone(self.ts1.value)
         self.assertIsNotNone(self.ts2.value)
 
+    @patch("deployments.tasks.refresh.refresh_dataset.delay")
+    @patch("deployments.tasks.refresh.task_queued")
+    def test_single_refresh_dataset_skips_when_queued(self, task_queued, refresh_dataset_delay):
+        task_queued.return_value = True
+
+        tasks.single_refresh_dataset(self.ds_M01_sbe37.id)
+
+        refresh_dataset_delay.assert_not_called()
+
+    @patch("deployments.tasks.refresh.refresh_dataset.delay")
+    @patch("deployments.tasks.refresh.task_queued")
+    def test_single_refresh_dataset_enqueues_when_not_queued(self, task_queued, refresh_dataset_delay):
+        task_queued.return_value = False
+
+        tasks.single_refresh_dataset(self.ds_M01_sbe37.id, healthcheck=True, clear_end_time=True)
+
+        refresh_dataset_delay.assert_called_once_with(
+            self.ds_M01_sbe37.id,
+            healthcheck=True,
+            clear_end_time=True,
+        )
+
+        self.assertEqual(
+            task_queued.call_args[0][0],
+            tasks.refresh_dataset.name,
+            "task_queued should be called with the actual registered task name",
+        )
+
+    @patch("deployments.tasks.refresh.refresh_server.delay")
+    @patch("deployments.tasks.refresh.task_queued")
+    def test_single_refresh_server_skips_when_queued(self, task_queued, refresh_server_delay):
+        task_queued.return_value = True
+
+        tasks.single_refresh_server(self.erddap.id)
+
+        refresh_server_delay.assert_not_called()
+
+    @patch("deployments.tasks.refresh.refresh_server.delay")
+    @patch("deployments.tasks.refresh.task_queued")
+    def test_single_refresh_server_enqueues_when_not_queued(self, task_queued, refresh_server_delay):
+        task_queued.return_value = False
+
+        tasks.single_refresh_server(self.erddap.id, healthcheck=True)
+
+        refresh_server_delay.assert_called_once_with(self.erddap.id, healthcheck=True)
+
+        self.assertEqual(
+            task_queued.call_args[0][0],
+            tasks.refresh_server.name,
+            "task_queued should be called with the actual registered task name",
+        )
+        self.assertEqual(task_queued.call_args[0][1], [self.erddap.id])
+
 
 @pytest.mark.django_db
 class TaskErrorTestCase(TransactionTestCase):

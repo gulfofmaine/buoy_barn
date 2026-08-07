@@ -197,7 +197,7 @@ def single_refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end
         scope.set_tag("dataset_id", dataset_id)
 
         already_queued = task_queued(
-            "deployments.tasks.refresh_dataset",
+            refresh_dataset.name,
             [dataset_id],
             {"healthcheck": healthcheck, "clear_end_time": clear_end_time},
         )
@@ -238,7 +238,7 @@ def single_refresh_server(server_id: int, healthcheck: bool = False):
         scope.set_tag("server_id", server_id)
 
         already_queued = task_queued(
-            "deployments.tasks.refresh_dataset",
+            refresh_server.name,
             [server_id],
             {"healthcheck": healthcheck},
         )

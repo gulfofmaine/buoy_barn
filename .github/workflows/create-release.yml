@@ -23,6 +23,9 @@ jobs:
           persist-credentials: false
 
       - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+      - uses: j178/prek-action@5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16 # v2
+        with:
+          install-only: true
 
       - run: |
           git config user.name "github-actions[bot]"

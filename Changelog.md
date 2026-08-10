@@ -8,6 +8,26 @@ Changes:
 
 Fixes:
 
+## 0.10.3 - 2026-08-10
+### Bug Fixes
+* Fix TypeError comparing content-length header to int in server_proxy by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1762
+### Other Changes
+* Validate ODP releaser config by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1766
+* Fix duplicate-refresh guard using wrong Celery task name by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1810
+* Release helpers by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1763
+* Install prek for create-release action by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1813
+* Fix create release credentials by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1814
+* Fix the release credentials by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1815
+### Dependency Updates
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.11.32 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1768
+* Update j178/prek-action digest to 5337cb9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1767
+* Update ghcr.io/astral-sh/uv:python3.14-trixie-slim Docker digest to 5d7d18f by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1765
+* Update actions/checkout digest to 3d3c42e by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1764
+* Bump django from 6.0.6 to 6.0.7 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1811
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.10.2...v0.10.3
+
 ## 0.10.2 - 2026-07-15
 
 ### Bug Fixes

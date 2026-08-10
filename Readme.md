@@ -220,12 +220,44 @@ This takes care of things most of the time, but sometimes the database will look
 If this does occur (look for `psycopg` in the errors), just open and save `app/manage.py` to get the server to try to reload.
 It works to hit save in most other `.py` files under the `app/` directory as well.
 
+## Releasing
+
+Releases are prepared with `nox` sessions defined in `noxfile.py`, either locally or via a GitHub Actions workflow. Both paths do the same thing: bump the version, fetch GitHub's auto-generated release notes, and write them into `Changelog.md`.
+
+### Locally
+
+Requires the [`gh` CLI](https://cli.github.com/) to be authenticated. [GitButler](https://gitbutler.com/) (`but`) is used to create the release branch/commit if it's installed; otherwise plain `git` is used instead.
+
+1. Make sure your working tree is clean, then run:
+
+   ```bash
+   nox -s release -- patch   # or: minor, major, or an explicit version like 0.11.0
+   ```
+
+2. The session resolves the new version, pulls the real GitHub-generated release notes for it (`gh api .../releases/generate-notes`), and shows you the exact `Changelog.md` entry it's about to write. Confirm to proceed (or pass `--yes` to skip the prompt), and it will:
+   - Insert that entry into `Changelog.md`.
+   - Bump the version in `app/pyproject.toml`.
+   - Run `prek` so `app/uv.lock` gets regenerated to match.
+   - Create a `release-{version}` branch and commit titled `Release - {version}` with those changes.
+
+3. Review the commit, then open the PR yourself — `but pr new release-{version} -F <message file>` (path printed by the session), or `git push` + `gh pr create` if you're not using GitButler.
+
+4. Once CI passes and the PR is merged into `main`, run:
+
+   ```bash
+   nox -s publish_release -- 0.10.3
+   ```
+
+   This reads the now-merged `Changelog.md` entry and creates the actual GitHub release (`gh release create`) from it.
+
+### Via GitHub Actions
+
+Two manually-triggered workflows mirror the local `nox` sessions, for cutting a release without any local setup:
+
+- **Create Release** (`.github/workflows/create-release.yml`) runs `nox -s release` on a runner. Trigger it from the Actions tab (or `gh workflow run create-release.yml -f version=patch`); it pushes the release branch and opens a **draft PR** automatically. Review and merge the draft PR as usual.
+- **Publish Release** (`.github/workflows/publish-release.yml`) runs `nox -s publish_release` on a runner once the release PR is merged into `main`. Trigger it from the Actions tab (or `gh workflow run publish-release.yml -f version=0.10.3`) to create the GitHub release from the merged `Changelog.md` entry.
+
 ## Kubernetes
 
 As we are moving towards using Kubernetes, you can launch Buoy Barn in a Kubernetes cluster.
 See the `/k8s/` directory to see the configs.
-
-Once those are set up, you can run `skaffold dev` to launch a easily interactive version of the cluster.
-Use `ctrl-c` to shutdown the cluster, and [Skaffold](https://skaffold.dev) will tear down what it set up.
-
-To deploy, use `skaffold run -t VERSION_NUMBER --tail` when connected to the NERACOOS Kubernetes cluster.

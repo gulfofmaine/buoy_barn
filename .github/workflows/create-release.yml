@@ -18,7 +18,7 @@ jobs:
     environment:
       name: create-release
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7 | # zizmor: ignore[artipacked] Credentials are needed to push the release branch below
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           persist-credentials: false
 
@@ -37,7 +37,7 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
 
       - run: |
-          git push -u origin HEAD
+          git -c http.extraheader="AUTHORIZATION: bearer ${GH_TOKEN}" push -u origin HEAD
           gh pr create --draft --base main \
             --title "$(git log -1 --pretty=%s)" \
             --body "$(git log -1 --pretty=%b)"

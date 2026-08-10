@@ -37,7 +37,8 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version }}
 
       - run: |
-          git -c http.extraheader="AUTHORIZATION: bearer ${GH_TOKEN}" push -u origin HEAD
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push -u origin HEAD
           gh pr create --draft --base main \
             --title "$(git log -1 --pretty=%s)" \
             --body "$(git log -1 --pretty=%b)"

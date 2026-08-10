@@ -176,11 +176,11 @@ def _release_preflight(session: nox.Session) -> None:
         session.error("The `gh` CLI is required but was not found on PATH.")
 
 
-def _fetch_release_notes(session: nox.Session, version: str) -> str:
+def _resolve_repo(session: nox.Session) -> str:
     """
-    Fetch the generated release notes for the given version using the GitHub CLI.
+    Resolve the current repo's "owner/name" via the GitHub CLI.
     """
-    repo = session.run(
+    return session.run(
         "gh",
         "repo",
         "view",
@@ -191,6 +191,12 @@ def _fetch_release_notes(session: nox.Session, version: str) -> str:
         external=True,
         silent=True,
     ).strip()
+
+
+def _fetch_release_notes(session: nox.Session, repo: str, version: str) -> str:
+    """
+    Fetch the generated release notes for the given version using the GitHub CLI.
+    """
     raw = session.run(
         "gh",
         "api",
@@ -201,6 +207,63 @@ def _fetch_release_notes(session: nox.Session, version: str) -> str:
         silent=True,
     )
     return json.loads(raw)["body"]
+
+
+def _reconcile_remote_branch(session: nox.Session, repo: str, branch: str) -> None:
+    """
+    Handle a `release-{version}` branch that already exists on origin from a prior run.
+
+    An open PR against it is a hard stop (re-running shouldn't silently clobber active
+    review); otherwise it's a stale/abandoned branch from a closed PR, so it's safe to
+    delete and recreate.
+    """
+    exists = session.run(
+        "git",
+        "ls-remote",
+        "--exit-code",
+        "--heads",
+        "origin",
+        branch,
+        external=True,
+        silent=True,
+        success_codes=[0, 2],
+    ).strip()
+    if not exists:
+        return
+
+    open_prs = json.loads(
+        session.run(
+            "gh",
+            "pr",
+            "list",
+            "--repo",
+            repo,
+            "--head",
+            branch,
+            "--state",
+            "open",
+            "--json",
+            "url",
+            external=True,
+            silent=True,
+        ),
+    )
+    if open_prs:
+        session.error(
+            f"Branch {branch} already has an open PR: {open_prs[0]['url']}\n"
+            "Close or merge it, or bump to a different version, before re-running.",
+        )
+
+    session.log(f"Branch {branch} already exists on origin with no open PR; deleting the stale branch.")
+    session.run(
+        "gh",
+        "api",
+        "-X",
+        "DELETE",
+        f"repos/{repo}/git/refs/heads/{branch}",
+        external=True,
+        silent=True,
+    )
 
 
 def _create_release_branch(session: nox.Session, version: str, commit_message: str) -> None:
@@ -246,8 +309,11 @@ def release(session: nox.Session) -> None:
 
     pyproject_text = PYPROJECT_PATH.read_text()
     version = resolve_version(current_version(pyproject_text), args.version)
+    repo = _resolve_repo(session)
 
-    notes_body = _fetch_release_notes(session, version)
+    _reconcile_remote_branch(session, repo, f"release-{version}")
+
+    notes_body = _fetch_release_notes(session, repo, version)
     today = date.today().isoformat()
     changelog_entry = build_changelog_entry(notes_body, version, today)
     commit_message = build_commit_message(notes_body, version)

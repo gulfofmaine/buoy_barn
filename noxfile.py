@@ -270,7 +270,7 @@ def _reconcile_remote_branch(session: nox.Session, repo: str, branch: str) -> No
 def _create_release_branch(session: nox.Session, version: str, commit_message: str) -> None:
     """Use gitbutler if available to create a release branch, otherwise fall back to git."""
     branch = f"release-{version}"
-    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as message_file:
+    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as message_file:
         message_file.write(commit_message)
         message_path = message_file.name
 
@@ -308,7 +308,7 @@ def release_prep(session: nox.Session) -> None:
 
     _release_preflight(session)
 
-    pyproject_text = PYPROJECT_PATH.read_text()
+    pyproject_text = PYPROJECT_PATH.read_text(encoding="utf-8")
     version = resolve_version(current_version(pyproject_text), args.version)
     repo = _resolve_repo(session)
 
@@ -327,8 +327,11 @@ def release_prep(session: nox.Session) -> None:
             session.log("Aborted; no files were changed.")
             return
 
-    CHANGELOG_PATH.write_text(insert_changelog_entry(CHANGELOG_PATH.read_text(), changelog_entry))
-    PYPROJECT_PATH.write_text(bump_pyproject_version(pyproject_text, version))
+    CHANGELOG_PATH.write_text(
+        insert_changelog_entry(CHANGELOG_PATH.read_text(encoding="utf-8"), changelog_entry),
+        encoding="utf-8",
+    )
+    PYPROJECT_PATH.write_text(bump_pyproject_version(pyproject_text, version), encoding="utf-8")
 
     # A hook exit code of 1 just means uv-lock (or pyproject-fmt) auto-fixed something here.
     session.run(
@@ -393,7 +396,7 @@ def release_draft(session: nox.Session) -> None:
     )
     section = extract_changelog_section(changelog_text, args.version)
 
-    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as notes_file:
+    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as notes_file:
         notes_file.write(section)
         notes_path = notes_file.name
 
@@ -422,7 +425,7 @@ def release_draft(session: nox.Session) -> None:
     # Surface the same prompt in the workflow's job summary; a no-op locally.
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary_path:
-        with Path(summary_path).open("a") as summary_file:
+        with Path(summary_path).open("a", encoding="utf-8") as summary_file:
             summary_file.write(
                 "## Draft release ready\n\n"
                 f"[{tag}]({release_url}) has been drafted. "

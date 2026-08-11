@@ -13,6 +13,7 @@ import json
 import os
 import re
 import shutil
+import subprocess  # nosec B404 - only used for the DEVNULL sentinel, never spawns a process directly
 import tempfile
 from datetime import date
 from pathlib import Path
@@ -361,6 +362,7 @@ def _existing_release(session: nox.Session, tag: str) -> dict | None:
         external=True,
         silent=True,
         success_codes=[0, 1],
+        stderr=subprocess.DEVNULL,
     ).strip()
     return json.loads(raw) if raw else None
 

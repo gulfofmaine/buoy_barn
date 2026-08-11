@@ -8,6 +8,18 @@ Changes:
 
 Fixes:
 
+## 0.10.6 - 2026-08-11
+### Other Changes
+* Draft releases instead of publishing directly so CI actually triggers by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1824
+* Release - 0.10.5 by @github-actions[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1825
+* Fix release_draft crashing when no release exists yet for the tag by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1827
+* Link the created PR in release-prep's job summary by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1826
+### Dependency Updates
+* Update redis Docker tag to v7.4.10 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1821
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.10.4...v0.10.6
+
 ## 0.10.5 - 2026-08-11
 ### Other Changes
 * Draft releases instead of publishing directly so CI actually triggers by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1824

@@ -231,7 +231,7 @@ Requires the [`gh` CLI](https://cli.github.com/) to be authenticated. [GitButler
 1. Make sure your working tree is clean, then run:
 
    ```bash
-   nox -s release -- patch   # or: minor, major, or an explicit version like 0.11.0
+   nox -s release_prep -- patch   # or: minor, major, or an explicit version like 0.11.0
    ```
 
 2. The session resolves the new version, pulls the real GitHub-generated release notes for it (`gh api .../releases/generate-notes`), and shows you the exact `Changelog.md` entry it's about to write. Confirm to proceed (or pass `--yes` to skip the prompt), and it will:
@@ -245,17 +245,19 @@ Requires the [`gh` CLI](https://cli.github.com/) to be authenticated. [GitButler
 4. Once CI passes and the PR is merged into `main`, run:
 
    ```bash
-   nox -s publish_release -- 0.10.3
+   nox -s release_draft -- 0.10.3
    ```
 
-   This reads the now-merged `Changelog.md` entry and creates the actual GitHub release (`gh release create`) from it.
+   This reads the now-merged `Changelog.md` entry and creates a **draft** GitHub release (`gh release create --draft`) from it — running this does **not** ship the release. Open the printed URL and click **Publish release** on GitHub yourself: that manual click is what actually fires the image build/push/Sentry-release/notify flow (a bot/token-authored `gh release create` can't fire it directly — see below). If you abandon a draft instead of publishing it, its tag was already created on `main`, so delete both the draft and the tag (`git push origin --delete vX.Y.Z`) before re-running for that version.
 
 ### Via GitHub Actions
 
 Two manually-triggered workflows mirror the local `nox` sessions, for cutting a release without any local setup:
 
-- **Create Release** (`.github/workflows/create-release.yml`) runs `nox -s release` on a runner. Trigger it from the Actions tab (or `gh workflow run create-release.yml -f version=patch`); it pushes the release branch and opens a **draft PR** automatically. Review and merge the draft PR as usual.
-- **Publish Release** (`.github/workflows/publish-release.yml`) runs `nox -s publish_release` on a runner once the release PR is merged into `main`. Trigger it from the Actions tab (or `gh workflow run publish-release.yml -f version=0.10.3`) to create the GitHub release from the merged `Changelog.md` entry.
+- **1. Release Prep** (`.github/workflows/release-prep.yml`) runs `nox -s release_prep` on a runner. Trigger it from the Actions tab (or `gh workflow run release-prep.yml -f version=patch`); it pushes the release branch and opens a **draft PR** automatically. Review and merge the draft PR as usual.
+- **2. Release Draft** (`.github/workflows/release-draft.yml`) runs `nox -s release_draft` on a runner once the release PR is merged into `main`. Trigger it from the Actions tab (or `gh workflow run release-draft.yml -f version=0.10.3`) to create a **draft** GitHub release from the merged `Changelog.md` entry — check the run's job summary for the draft's URL. This does not ship the release: GitHub deliberately doesn't fire `release: published` for actions taken by a workflow's own token, so someone still has to open that URL and click **Publish release** themselves to trigger the image build/push and downstream deploy notification.
+
+(Workflow names are numbered so they sort correctly in the Actions tab's alphabetically-ordered sidebar.)
 
 ## Kubernetes
 

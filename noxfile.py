@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import tempfile
@@ -269,7 +270,7 @@ def _reconcile_remote_branch(session: nox.Session, repo: str, branch: str) -> No
 def _create_release_branch(session: nox.Session, version: str, commit_message: str) -> None:
     """Use gitbutler if available to create a release branch, otherwise fall back to git."""
     branch = f"release-{version}"
-    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as message_file:
+    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as message_file:
         message_file.write(commit_message)
         message_path = message_file.name
 
@@ -278,7 +279,7 @@ def _create_release_branch(session: nox.Session, version: str, commit_message: s
         session.log(
             f"Created branch {branch} with GitButler.\n"
             f"Review the diff, then run: but pr new {branch} -F {message_path}\n"
-            f"Once CI passes and the PR is merged, run: nox -s publish_release -- {version}",
+            f"Once CI passes and the PR is merged, run: nox -s release_draft -- {version}",
         )
     else:
         session.run("git", "switch", "-c", branch, external=True)
@@ -289,25 +290,25 @@ def _create_release_branch(session: nox.Session, version: str, commit_message: s
             "Review the diff, then run:\n"
             f"  git push -u origin {branch} && gh pr create --draft "
             '--title "$(git log -1 --pretty=%s)" --body "$(git log -1 --pretty=%b)"\n'
-            f"Once CI passes and the PR is merged, run: nox -s publish_release -- {version}",
+            f"Once CI passes and the PR is merged, run: nox -s release_draft -- {version}",
         )
 
 
 @nox.session(venv_backend="none", default=False)
-def release(session: nox.Session) -> None:
+def release_prep(session: nox.Session) -> None:
     """
     Bump the version, update Changelog.md, and create a release branch + commit.
 
-    Usage: nox -s release -- patch|minor|major|X.Y.Z [--yes]
+    Usage: nox -s release_prep -- patch|minor|major|X.Y.Z [--yes]
     """
-    parser = argparse.ArgumentParser(prog="nox -s release --")
+    parser = argparse.ArgumentParser(prog="nox -s release_prep --")
     parser.add_argument("version", help="Bump keyword (patch/minor/major) or explicit X.Y.Z version")
     parser.add_argument("--yes", "-y", action="store_true", help="Skip the confirmation prompt")
     args = parser.parse_args(session.posargs)
 
     _release_preflight(session)
 
-    pyproject_text = PYPROJECT_PATH.read_text()
+    pyproject_text = PYPROJECT_PATH.read_text(encoding="utf-8")
     version = resolve_version(current_version(pyproject_text), args.version)
     repo = _resolve_repo(session)
 
@@ -326,8 +327,11 @@ def release(session: nox.Session) -> None:
             session.log("Aborted; no files were changed.")
             return
 
-    CHANGELOG_PATH.write_text(insert_changelog_entry(CHANGELOG_PATH.read_text(), changelog_entry))
-    PYPROJECT_PATH.write_text(bump_pyproject_version(pyproject_text, version))
+    CHANGELOG_PATH.write_text(
+        insert_changelog_entry(CHANGELOG_PATH.read_text(encoding="utf-8"), changelog_entry),
+        encoding="utf-8",
+    )
+    PYPROJECT_PATH.write_text(bump_pyproject_version(pyproject_text, version), encoding="utf-8")
 
     # A hook exit code of 1 just means uv-lock (or pyproject-fmt) auto-fixed something here.
     session.run(
@@ -343,19 +347,44 @@ def release(session: nox.Session) -> None:
     _create_release_branch(session, version, commit_message)
 
 
-@nox.session(venv_backend="none", default=False)
-def publish_release(session: nox.Session) -> None:
+def _existing_release(session: nox.Session, tag: str) -> dict | None:
     """
-    Publish a merged release: create the GitHub release from Changelog.md's notes.
+    Look up an already-existing release (draft or published) for `tag`, if any.
+    """
+    raw = session.run(
+        "gh",
+        "release",
+        "view",
+        tag,
+        "--json",
+        "url,isDraft",
+        external=True,
+        silent=True,
+        success_codes=[0, 1],
+    ).strip()
+    return json.loads(raw) if raw else None
 
-    Usage: nox -s publish_release -- X.Y.Z
+
+@nox.session(venv_backend="none", default=False)
+def release_draft(session: nox.Session) -> None:
     """
-    parser = argparse.ArgumentParser(prog="nox -s publish_release --")
-    parser.add_argument("version", help="Already-released version, e.g. 0.10.3")
+    Draft a release from Changelog.md's notes for an already-merged version.
+
+    Usage: nox -s release_draft -- X.Y.Z
+    """
+    parser = argparse.ArgumentParser(prog="nox -s release_draft --")
+    parser.add_argument("version", help="Already-merged version, e.g. 0.10.3")
     args = parser.parse_args(session.posargs)
 
     if shutil.which("gh") is None:
         session.error("The `gh` CLI is required but was not found on PATH.")
+
+    tag = f"v{args.version}"
+
+    existing = _existing_release(session, tag)
+    if existing is not None:
+        state = "an unpublished draft" if existing["isDraft"] else "already published"
+        session.error(f"{tag} already has a release ({state}): {existing['url']}")
 
     session.run("git", "fetch", "origin", "main", external=True, silent=True)
     changelog_text = session.run(
@@ -367,23 +396,41 @@ def publish_release(session: nox.Session) -> None:
     )
     section = extract_changelog_section(changelog_text, args.version)
 
-    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as notes_file:
+    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as notes_file:
         notes_file.write(section)
         notes_path = notes_file.name
 
-    session.run(
+    release_url = session.run(
         "gh",
         "release",
         "create",
-        f"v{args.version}",
+        tag,
         "--title",
-        f"v{args.version}",
+        tag,
         "--notes-file",
         notes_path,
         "--target",
         "main",
+        "--draft",
         external=True,
+        silent=True,
+    ).strip()
+
+    session.log(
+        f"Created draft release: {release_url}\n"
+        'This is NOT live yet. Review it, then click "Publish release" on GitHub — '
+        "that click is what triggers the image build/push/Sentry-release/notify flow.",
     )
+
+    # Surface the same prompt in the workflow's job summary; a no-op locally.
+    summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary_path:
+        with Path(summary_path).open("a", encoding="utf-8") as summary_file:
+            summary_file.write(
+                "## Draft release ready\n\n"
+                f"[{tag}]({release_url}) has been drafted. "
+                "Click **Publish release** on that page to ship it.\n",
+            )
 
 
 if __name__ == "__main__":

@@ -6,9 +6,20 @@ on:
   pull_request:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release tag to build, tag and push to Docker Hub (e.g. v0.10.3). Leave blank to only build and test."
+        required: false
+        default: ""
 
 permissions:
   contents: read
+
+# Set for `release` events, and for the `workflow_dispatch` that Publish Release
+# fires (see .github/workflows/publish-release.yml); empty for push/pull_request.
+env:
+  RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
 
 jobs:
   build:
@@ -26,8 +37,8 @@ jobs:
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
       - name: Cache Docker layers
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6  | # zizmor: ignore[cache-poisoning] Disabled by if on releases
-        if: github.event_name != 'release'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6  | # zizmor: ignore[cache-poisoning] Disabled by if on release builds
+        if: env.RELEASE_TAG == ''
         with:
           path: /tmp/.buildx-cache
           key: buoy-barn-buildx-${{ github.sha }}
@@ -47,12 +58,12 @@ jobs:
           context: ./app
           push: false
           tags: gmri/neracoos-buoy-barn:latest
-          cache-from: ${{ github.event_name != 'release' && 'type=local,src=/tmp/.buildx-cache' || '' }}
-          cache-to: ${{ github.event_name != 'release' && 'type=local,dest=/tmp/.buildx-cache-new' || '' }}
+          cache-from: ${{ env.RELEASE_TAG == '' && 'type=local,src=/tmp/.buildx-cache' || '' }}
+          cache-to: ${{ env.RELEASE_TAG == '' && 'type=local,dest=/tmp/.buildx-cache-new' || '' }}
           outputs: type=docker,dest=/tmp/myimage.tar
 
       - name: Move Docker Cache
-        if: github.event_name != 'release'
+        if: env.RELEASE_TAG == ''
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
@@ -112,9 +123,10 @@ jobs:
     outputs:
       tag: ${{ steps.push.outputs.tag }}
       image_digest: ${{ steps.push.outputs.image_digest }}
+    # Job level `if` can't read `env`, so RELEASE_TAG's expression is inlined here.
     if: |
       github.repository == 'gulfofmaine/buoy_barn'
-      && github.event_name == 'release'
+      && (github.event_name == 'release' || inputs.release_tag != '')
 
     steps:
       - name: Checkout
@@ -141,13 +153,13 @@ jobs:
 
       - name: Tag Docker image
         env:
-          SHORT_TAG: ${{ github.event.release.tag_name }}
+          SHORT_TAG: ${{ env.RELEASE_TAG }}
         run: docker tag gmri/neracoos-buoy-barn gmri/neracoos-buoy-barn:${SHORT_TAG}
 
       - name: Push Docker image
         id: push
         env:
-          SHORT_TAG: ${{ github.event.release.tag_name }}
+          SHORT_TAG: ${{ env.RELEASE_TAG }}
         run: |
           docker push gmri/neracoos-buoy-barn:${SHORT_TAG}
           echo "tag=${SHORT_TAG}" >> $GITHUB_OUTPUT
@@ -161,7 +173,7 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: prod
-          release: ${{ github.event.release.tag_name }}
+          release: ${{ env.RELEASE_TAG }}
 
 
   notify:
@@ -173,7 +185,7 @@ jobs:
       pull-requests: read # ODP Releaser wants to figure out who made a PR
     if: |
       github.repository == 'gulfofmaine/buoy_barn'
-      && github.event_name == 'release'
+      && (github.event_name == 'release' || inputs.release_tag != '')
     with:
       image_name: gmri/neracoos-buoy-barn
       tag: ${{ needs.push_image.outputs.tag }}

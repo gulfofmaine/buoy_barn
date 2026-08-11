@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # To dispatch CI for the release build
 
 jobs:
   publish-release:
@@ -26,3 +27,22 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ inputs.version }}
+
+      # The default GITHUB_TOKEN deliberately does not raise events that start new
+      # workflow runs, so the `gh release create` above will not fire CI's
+      # `release: published` trigger. workflow_dispatch is the documented exception,
+      # so kick off the tagged build and push explicitly.
+      - name: Trigger CI to build and push the release image
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: v${{ inputs.version }}
+        run: |
+          for attempt in 1 2 3; do
+            if gh workflow run ci.yaml --repo "$GITHUB_REPOSITORY" \
+                 --ref "$RELEASE_TAG" -f release_tag="$RELEASE_TAG"; then
+              exit 0
+            fi
+            echo "Dispatch attempt ${attempt} failed; retrying" >&2
+            sleep $((attempt * 5))
+          done
+          exit 1

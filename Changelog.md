@@ -8,6 +8,15 @@ Changes:
 
 Fixes:
 
+## 0.10.5 - 2026-08-11
+### Other Changes
+* Draft releases instead of publishing directly so CI actually triggers by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1824
+### Dependency Updates
+* Update redis Docker tag to v7.4.10 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1821
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.10.4...v0.10.5
+
 ## 0.10.4 - 2026-08-11
 ### Other Changes
 * Dispatch CI from publish-release so the image gets built by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1822

@@ -39,8 +39,13 @@ jobs:
       - run: |
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push -u origin HEAD
-          gh pr create --draft --base main \
+          pr_url=$(gh pr create --draft --base main \
             --title "$(git log -1 --pretty=%s)" \
-            --body "$(git log -1 --pretty=%b)"
+            --body "$(git log -1 --pretty=%b)")
+          {
+            echo "## Draft PR ready"
+            echo ""
+            echo "[$pr_url]($pr_url) is ready for review. Once CI passes and it's merged, run the **2. Release Draft** workflow."
+          } >> "$GITHUB_STEP_SUMMARY"
         env:
           GH_TOKEN: ${{ github.token }}

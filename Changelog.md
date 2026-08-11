@@ -8,6 +8,13 @@ Changes:
 
 Fixes:
 
+## 0.10.4 - 2026-08-11
+### Other Changes
+* Dispatch CI from publish-release so the image gets built by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1822
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.10.3...v0.10.4
+
 ## 0.10.3 - 2026-08-10
 ### Bug Fixes
 * Fix TypeError comparing content-length header to int in server_proxy by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1762

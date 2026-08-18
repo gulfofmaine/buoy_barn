@@ -8,6 +8,16 @@ Changes:
 
 Fixes:
 
+## 0.10.7 - 2026-08-18
+### Other Changes
+* Switch to ESRI Ocean Basemap in admin by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1831
+### Dependency Updates
+* Update dependency sentry-sdk to ~=2.67.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1830
+* Update dependency django-health-check to ~=4.5.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1829
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.10.6...v0.10.7
+
 ## 0.10.6 - 2026-08-11
 ### Other Changes
 * Draft releases instead of publishing directly so CI actually triggers by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1824

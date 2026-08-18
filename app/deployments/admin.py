@@ -26,6 +26,7 @@ from .models import (
     TimeSeries,
 )
 from .tasks import refresh
+from .widgets import EsriOceanBasemapWidget
 
 
 class FloodLevelInline(admin.StackedInline):
@@ -331,6 +332,7 @@ class PlatformAdmin(DjangoObjectActions, admin.GISModelAdmin):
 
     change_actions = ["refresh_platform_datasets"]
 
+    gis_widget = EsriOceanBasemapWidget
     gis_widget_kwargs = {
         "attrs": {
             "default_zoom": 6.5,

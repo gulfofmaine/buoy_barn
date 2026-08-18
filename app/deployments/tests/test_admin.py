@@ -15,6 +15,7 @@ from deployments.models import (
     Platform,
     TimeSeries,
 )
+from deployments.widgets import EsriOceanBasemapWidget
 
 
 def _make_request(user=None):
@@ -161,3 +162,12 @@ class ErddapServerAdminObjectActionsTestCase(TestCase):
         self.admin.refresh_erddap_server(request, self.erddap)
 
         mock_delay.assert_called_once_with(self.erddap.id, healthcheck=False)
+
+
+class PlatformAdminGisWidgetTestCase(TestCase):
+    def test_platform_admin_uses_esri_ocean_basemap_widget(self):
+        self.assertIs(PlatformAdmin.gis_widget, EsriOceanBasemapWidget)
+
+    def test_esri_ocean_basemap_widget_base_layer(self):
+        widget = EsriOceanBasemapWidget()
+        self.assertEqual(widget.attrs["base_layer"], "esriOcean")

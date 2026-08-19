@@ -8,7 +8,20 @@ from .erddap_dataset import ErddapDataset
 from .platform import Platform
 
 
-class TimeSeriesManager(models.Manager):
+class TimeSeriesQuerySet(models.QuerySet):
+    def refreshable(self):
+        """The timeseries the refresh path actually fetches.
+
+        One definition of "currently refreshed", used by both
+        `ErddapDataset.group_timeseries_by_constraint_and_type` (which does the fetching) and
+        the `constraint_group.info` metric in `buoy_barn.observability.freshness` (which
+        describes it). Those two must agree or the metric describes groups that are never
+        fetched, so the predicate lives here rather than being written twice.
+        """
+        return self.filter(active=True, end_time__isnull=True)
+
+
+class TimeSeriesManager(models.Manager.from_queryset(TimeSeriesQuerySet)):
     def by_dataset_slug(self, slug: str):
         server, dataset = slug.split("-", 2)
         return self.filter(dataset__server__name=server, dataset__name=dataset)

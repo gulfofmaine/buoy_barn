@@ -58,42 +58,22 @@ class ErddapDataset(models.Model):
 
     def healthcheck_start(self):
         """Signal that a process has started with Healthchecks.io"""
-        hc_url = self.healthcheck_url
+        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
 
-        if hc_url:
-            import requests  # noqa: PLC0415
-
-            try:
-                requests.get(hc_url + "/start", timeout=5)
-            except requests.RequestException as error:
-                logger.error(
-                    f"Unable to send healthcheck start for {self.name} due to: {error}",
-                    exc_info=True,
-                )
+        ping_healthcheck(self.healthcheck_url, self.name, start=True)
 
     def healthcheck_complete(self):
         """Signal that a process has completed with Healthchecks.io"""
-        hc_url = self.healthcheck_url
+        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
 
-        if hc_url:
-            import requests  # noqa: PLC0415
-
-            try:
-                requests.get(hc_url, timeout=5)
-            except requests.RequestException as error:
-                logger.error(
-                    f"Unable to send healthcheck completion for {self.name} due to error: {error}",
-                    exc_info=True,
-                )
+        ping_healthcheck(self.healthcheck_url, self.name)
 
     def group_timeseries_by_constraint_and_type(self) -> dict[tuple[tuple, str], list["TimeSeries"]]:
         """Groups the datasets active timeseries by constraints and types"""
         groups = defaultdict(list)
 
         for ts in (
-            self.timeseries_set.filter(end_time=None, active=True)
-            .select_related("platform")
-            .prefetch_related("data_type")
+            self.timeseries_set.refreshable().select_related("platform").prefetch_related("data_type")
         ):
             try:
                 groups[(tuple((ts.constraints or {}).items()), ts.timeseries_type)].append(ts)

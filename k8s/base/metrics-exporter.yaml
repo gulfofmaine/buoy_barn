@@ -2,47 +2,49 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: celery
+    service: metrics
     tier: backend
-    role: flower
-  name: flower
+    role: exporter
+  name: metrics-exporter
 spec:
+  # These are database-derived gauges, so a second replica would report
+  # every series twice. Recreate rather than RollingUpdate for the same reason, two
+  # overlapping pods during a rollout would double-count.
+  replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
-      service: celery
+      service: metrics
       tier: backend
-      role: flower
+      role: exporter
   template:
     metadata:
       labels:
-        service: celery
+        service: metrics
         tier: backend
-        role: flower
+        role: exporter
     spec:
       containers:
-        - name: flower
+        - name: metrics-exporter
           image: gmri/neracoos-buoy-barn
           args:
-            - celery
-            - -A
-            - buoy_barn
-            - flower
-            - -l
-            - info
-          ports:
-            - containerPort: 5555
-              name: http
+            - uv
+            - run
+            - manage.py
+            - export_metrics
           envFrom:
             - secretRef:
                 name: buoy-barn-secrets
             - configMapRef:
                 name: buoy-barn-config
           env:
-            # Tags every metric with which kind of process produced it.
             - name: BUOY_BARN_OTEL_ROLE
-              value: "flower"
+              value: "exporter"
+            # This pod must never run migrations: it is not part of the deploy ordering,
+            # and the web/worker/beat pods already race each other for that.
             - name: DJANGO_MANAGEPY_MIGRATE
-              value: "on"
+              value: "off"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
               value: "off"
           volumeMounts:

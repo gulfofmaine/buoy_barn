@@ -1,0 +1,20 @@
+# Local-development OpenTelemetry Collector.
+#
+# Just enough to see that instrumentation works: it accepts OTLP over HTTP and prints
+# everything it receives. Production uses the cluster's existing collector, which forwards
+# to Prometheus instead -- see docs/observability-deployment.md.
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  debug:
+    verbosity: detailed
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      exporters: [debug]

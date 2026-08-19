@@ -27,6 +27,8 @@ dependencies = [
   "granian~=2.7",
   "httpx~=0.28",
   "netcdf4~=1.7.1",
+  "opentelemetry-exporter-otlp-proto-http~=1.44",
+  "opentelemetry-sdk~=1.44",
   "paho-mqtt>=2.1",
   "pandas>1.5.3",
   "psycopg2-binary~=2.9.9",

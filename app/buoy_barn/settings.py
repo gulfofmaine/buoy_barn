@@ -30,13 +30,30 @@ DEBUG = os.environ.get("DJANGO_ENV", "").lower() == "dev"
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        # Celery prefixes its own worker logs, but Django and granian did not stamp
+        # anything, so log lines had no timestamp, level, or source. `process` matters
+        # here: granian runs 4 workers and the Celery worker forks children, so without
+        # it there is no way to tell which process a line came from.
+        "verbose": {
+            "format": "%(asctime)s %(levelname)-8s %(process)d %(name)s %(message)s",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        # Counts records as metrics, by logger and level. This is how swallowed ERDDAP
+        # errors become visible: the tasks log and return rather than raising, so Celery
+        # sees success either way. See buoy_barn.observability.log_metrics.
+        "metrics": {
+            "class": "buoy_barn.observability.log_metrics.MetricsLogHandler",
+            "level": "WARNING",
         },
     },
     "root": {
-        "handlers": ["console"],
+        "handlers": ["console", "metrics"],
         "level": "INFO",
     },
 }
@@ -82,15 +99,33 @@ def trace_filter(trace: dict) -> float:
     return SENTRY_TRACES_SAMPLE_RATE
 
 
+# Build paths inside the project like this: BASE_DIR / ...
+BASE_DIR = Path(__file__).parent.parent
+
+
+def _app_version() -> str:
+    """Read the project version out of pyproject.toml.
+
+    Resolved from BASE_DIR rather than the working directory: the project is installed
+    with `uv sync --no-install-project`, so importlib.metadata cannot see it, and a
+    CWD-relative path only works while the process happens to start in /app.
+    """
+    try:
+        with (BASE_DIR / "pyproject.toml").open("rb") as f:
+            return tomllib.load(f)["project"]["version"]
+    except (OSError, KeyError, tomllib.TOMLDecodeError):
+        logger.warning("Unable to read the project version from pyproject.toml")
+        return "unknown"
+
+
+APP_VERSION = _app_version()
+
 if os.environ.get("DJANGO_ENV", "").lower() != "test":
-    with Path("pyproject.toml").open("rb") as f:
-        pyproject = tomllib.load(f)
-    version = pyproject["project"]["version"]
     sentry_sdk.init(
         dsn=os.environ.get("SENTRY_DSN"),
         integrations=[CeleryIntegration(), DjangoIntegration(), RedisIntegration()],
         environment="dev" if DEBUG else "prod",
-        release=f"v{version}",
+        release=f"v{APP_VERSION}",
         traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
         spotlight=(os.environ.get("DJANGO_ENV") == "dev") and "http://spotlight:8969/stream",
         traces_sampler=trace_filter,
@@ -98,10 +133,6 @@ if os.environ.get("DJANGO_ENV", "").lower() != "test":
     )
 else:
     logger.info("Sentry disabled when DJANGO_ENV=test")
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = Path(__file__).parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -131,7 +162,6 @@ INSTALLED_APPS = [
     "django_object_actions",
     # Health checks to allow Kubernetes to restart the pod if locked up
     "health_check",
-    # "health_check.contrib.celery_ping",
     # User management
     "account.apps.AccountConfig",
     # Dataset and forecast management

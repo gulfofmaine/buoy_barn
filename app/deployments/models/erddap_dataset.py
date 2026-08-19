@@ -73,9 +73,7 @@ class ErddapDataset(models.Model):
         groups = defaultdict(list)
 
         for ts in (
-            self.timeseries_set.filter(end_time=None, active=True)
-            .select_related("platform")
-            .prefetch_related("data_type")
+            self.timeseries_set.refreshable().select_related("platform").prefetch_related("data_type")
         ):
             try:
                 groups[(tuple((ts.constraints or {}).items()), ts.timeseries_type)].append(ts)

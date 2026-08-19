@@ -144,14 +144,15 @@ running; double the expected count means it is running more than one replica.
 permanently broken dataset shows up, since the Celery task reports success either way.
 
 ```promql
-# Which datasets are failing, and how
+# Which datasets are failing, and how. `no_rows` is excluded because it is benign -- see
+# the benign/actionable split in observability.md.
 sum by (erddap_server, erddap_dataset, outcome) (
-  increase(buoybarn_erddap_outcome_total{outcome!="success"}[1h])
+  increase(buoybarn_erddap_outcome_total{outcome!~"success|no_rows"}[1h])
 ) > 0
 
 # Overall failure ratio per server
 1 - (
-  sum by (erddap_server) (rate(buoybarn_erddap_outcome_total{outcome="success"}[1h]))
+  sum by (erddap_server) (rate(buoybarn_erddap_outcome_total{outcome=~"success|no_rows"}[1h]))
   / sum by (erddap_server) (rate(buoybarn_erddap_outcome_total[1h]))
 )
 

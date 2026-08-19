@@ -75,15 +75,24 @@ METER_NAME = "buoy_barn"
 ROLES = frozenset({"web", "worker", "beat", "flower", "mqtt", "exporter", "unknown"})
 
 #: Fallback role detection, in priority order, used when BUOY_BARN_OTEL_ROLE is unset.
-#: Checked against the whole command line, so the more specific entries come first.
+#: Checked against the whole command line, so ambiguity is resolved by ordering: the
+#: management commands name themselves, and the web servers are matched before any Celery
+#: subcommand because granian is started with ``--workers 4`` (Dockerfile ``CMD``) and would
+#: otherwise be reported as a Celery worker.
 _ARGV_ROLE_HINTS: tuple[tuple[str, str], ...] = (
     ("erddap_mqtt", "mqtt"),
     ("export_metrics", "exporter"),
+    ("granian", "web"),
+    ("runserver", "web"),
+)
+
+#: Celery subcommands, consulted only when the command line is actually Celery's. Keeping
+#: them separate is what stops a bare word like "worker" from matching another program's
+#: flags.
+_CELERY_ROLE_HINTS: tuple[tuple[str, str], ...] = (
     ("beat", "beat"),
     ("flower", "flower"),
     ("worker", "worker"),
-    ("granian", "web"),
-    ("runserver", "web"),
 )
 
 
@@ -101,6 +110,15 @@ class _State:
         self.configured_pid: int | None = None
         self.atexit_registered = False
         self.warned_unavailable = False
+        #: PID whose provider build already failed, so it is not retried. Memoizing the
+        #: failure is not just an optimisation: `configure` logs when a build fails, the
+        #: metrics log handler records that log, and recording reaches back into
+        #: `configure` -- so a retried failure is an unbounded recursion.
+        self.build_failed_pid: int | None = None
+        #: True while `configure` is running, so logging raised from inside it cannot
+        #: re-enter. Not pid-keyed: it is only ever true within one call on one thread, and
+        #: a `fork()` mid-configure would leave the child a copy it must ignore anyway.
+        self.configuring = False
 
 
 _state = _State()
@@ -133,6 +151,10 @@ def guess_role() -> str:
     for needle, guessed in _ARGV_ROLE_HINTS:
         if needle in argv:
             return guessed
+    if "celery" in argv:
+        for needle, guessed in _CELERY_ROLE_HINTS:
+            if needle in argv:
+                return guessed
     return "unknown"
 
 
@@ -173,8 +195,10 @@ def _build_provider(role: str):
         from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader  # noqa: PLC0415
     except ImportError:
         if not _state.warned_unavailable:
-            logger.warning("OpenTelemetry packages are unavailable; metrics are disabled")
+            # Set before logging, not after: the log record travels through the metrics log
+            # handler, which can lead back here before the flag would have been set.
             _state.warned_unavailable = True
+            logger.warning("OpenTelemetry packages are unavailable; metrics are disabled")
         return None
 
     try:
@@ -206,33 +230,46 @@ def configure(role: str | None = None) -> bool:
     Idempotent per process. Returns True when a usable provider exists afterwards, and
     False when metrics are switched off or the SDK could not be set up -- callers treat
     False as "do nothing", never as an error.
+
+    A failed build is remembered for the life of the process and never retried, and the
+    call is guarded against re-entry, because setup failures are *logged* and log records
+    are themselves recorded as a metric: without both guards one failure recurses until the
+    stack runs out, for every log record emitted.
     """
     pid = os.getpid()
     if _state.configured_pid == pid and _state.provider is not None:
         return True
 
+    if _state.build_failed_pid == pid or _state.configuring:
+        return False
+
     if not enabled():
         return False
 
-    resolved_role = role or guess_role()
-    provider = _build_provider(resolved_role)
-    if provider is None:
-        return False
+    _state.configuring = True
+    try:
+        resolved_role = role or guess_role()
+        provider = _build_provider(resolved_role)
+        if provider is None:
+            _state.build_failed_pid = pid
+            return False
 
-    _state.provider = provider
-    _state.configured_pid = pid
-    _publish_globally(provider)
+        _state.provider = provider
+        _state.configured_pid = pid
+        _publish_globally(provider)
 
-    if not _state.atexit_registered:
-        atexit.register(shutdown)
-        _state.atexit_registered = True
+        if not _state.atexit_registered:
+            atexit.register(shutdown)
+            _state.atexit_registered = True
 
-    logger.info(
-        "OpenTelemetry metrics enabled (role=%s, endpoint=%s)",
-        resolved_role,
-        endpoint(),
-    )
-    return True
+        logger.info(
+            "OpenTelemetry metrics enabled (role=%s, endpoint=%s)",
+            resolved_role,
+            endpoint(),
+        )
+        return True
+    finally:
+        _state.configuring = False
 
 
 def get_meter():
@@ -274,3 +311,6 @@ def reset_for_testing(provider=None) -> None:
     """Swap in a provider (or clear it) from tests. Not for production use."""
     _state.provider = provider
     _state.configured_pid = os.getpid() if provider is not None else None
+    _state.build_failed_pid = None
+    _state.configuring = False
+    _state.warned_unavailable = False

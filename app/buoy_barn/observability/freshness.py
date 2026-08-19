@@ -26,14 +26,28 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-#: Fallback for a label whose source column is null. `ErddapServer.name` is nullable, and
-#: str(None) would put the literal "None" on a time series.
+#: Fallback for a label whose source column is null, so that str(None) never puts the literal
+#: "None" on a time series.
 UNKNOWN = "unknown"
 
 
 def _label(value) -> str:
     """Coerce a possibly-null database value into a usable attribute value."""
     return str(value) if value else UNKNOWN
+
+
+def _server_label(name, base_url) -> str:
+    """The ``erddap.server`` value for these column values.
+
+    Delegates to :func:`buoy_barn.observability.metrics.server_label` rather than formatting
+    the name here, because the refresh path labels the same server through that function. If
+    the two ever disagree -- and they did, when this module used the name alone while the
+    counter used ``str(server)`` -- the ``constraint_group.info`` join returns nothing for
+    every server whose ``name`` is null.
+    """
+    from .metrics import server_label  # noqa: PLC0415
+
+    return server_label(name, base_url)
 
 
 def _observations(callback):
@@ -64,15 +78,19 @@ def _dataset_refresh_ages():
     now = timezone.now()
     rows = ErddapDataset.objects.filter(refresh_attempted__isnull=False).values_list(
         "server__name",
+        "server__base_url",
         "name",
         "refresh_attempted",
     )
     return [
         Observation(
             max((now - refresh_attempted).total_seconds(), 0.0),
-            {"erddap.server": _label(server), "erddap.dataset": _label(dataset)},
+            {
+                "erddap.server": _server_label(server, base_url),
+                "erddap.dataset": _label(dataset),
+            },
         )
-        for server, dataset, refresh_attempted in rows
+        for server, base_url, dataset, refresh_attempted in rows
     ]
 
 
@@ -85,10 +103,16 @@ def _datasets_never_refreshed():
 
     rows = (
         ErddapDataset.objects.filter(refresh_attempted__isnull=True)
-        .values("server__name")
+        .values("server__name", "server__base_url")
         .annotate(total=Count("id"))
     )
-    return [Observation(row["total"], {"erddap.server": _label(row["server__name"])}) for row in rows]
+    return [
+        Observation(
+            row["total"],
+            {"erddap.server": _server_label(row["server__name"], row["server__base_url"])},
+        )
+        for row in rows
+    ]
 
 
 def _timeseries_value_ages():
@@ -106,7 +130,12 @@ def _timeseries_value_ages():
     now = timezone.now()
     rows = (
         TimeSeries.objects.filter(active=True, end_time__isnull=True, value_time__isnull=False)
-        .values("platform__name", "dataset__server__name", "timeseries_type")
+        .values(
+            "platform__name",
+            "dataset__server__name",
+            "dataset__server__base_url",
+            "timeseries_type",
+        )
         .annotate(newest=Max("value_time"), oldest=Min("value_time"))
     )
 
@@ -114,7 +143,10 @@ def _timeseries_value_ages():
     for row in rows:
         attributes = {
             "platform": _label(row["platform__name"]),
-            "erddap.server": _label(row["dataset__server__name"]),
+            "erddap.server": _server_label(
+                row["dataset__server__name"],
+                row["dataset__server__base_url"],
+            ),
             "timeseries.type": _label(row["timeseries_type"]),
         }
         # "newest" is the freshest reading, so its age is the smallest -- that is the
@@ -134,28 +166,49 @@ def _timeseries_value_ages():
     return observations
 
 
+#: ``state`` label value -> the filter that counts it, and the annotation alias holding the
+#: count. The aliases must not collide with a model field name: an ``annotate(active=...)``
+#: shadows ``TimeSeries.active``, so a later ``Q(active=False)`` resolves to the annotation
+#: and Postgres rejects the nested aggregate -- which is how this gauge silently published
+#: nothing at all. Hence the ``_count`` suffix on every alias.
+_TIMESERIES_STATES = (
+    ("active", "active_count", {"active": True, "end_time__isnull": True}),
+    ("inactive", "inactive_count", {"active": False}),
+    ("retired", "retired_count", {"end_time__isnull": False}),
+    ("never_populated", "never_populated_count", {"value_time__isnull": True}),
+)
+
+
 def _timeseries_counts():
-    """How many timeseries are in each state, by server."""
+    """How many timeseries are in each state, by server.
+
+    The states overlap on purpose: a retired series is also inactive, and a never-populated
+    one may be either. Each is the answer to its own question ("how much of this server have
+    we given up on?", "how much never worked?"), so they are counted independently rather
+    than partitioned.
+    """
     from django.db.models import Count, Q  # noqa: PLC0415
     from opentelemetry.metrics import Observation  # noqa: PLC0415
 
     from deployments.models import TimeSeries  # noqa: PLC0415
 
-    rows = TimeSeries.objects.values("dataset__server__name").annotate(
-        active=Count("id", filter=Q(active=True, end_time__isnull=True)),
-        inactive=Count("id", filter=Q(active=False)),
-        retired=Count("id", filter=Q(end_time__isnull=False)),
-        never_populated=Count("id", filter=Q(value_time__isnull=True)),
+    rows = TimeSeries.objects.values("dataset__server__name", "dataset__server__base_url").annotate(
+        **{alias: Count("id", filter=Q(**filters)) for _state, alias, filters in _TIMESERIES_STATES},
     )
 
-    states = ("active", "inactive", "retired", "never_populated")
     return [
         Observation(
-            row[state],
-            {"erddap.server": _label(row["dataset__server__name"]), "state": state},
+            row[alias],
+            {
+                "erddap.server": _server_label(
+                    row["dataset__server__name"],
+                    row["dataset__server__base_url"],
+                ),
+                "state": state,
+            },
         )
         for row in rows
-        for state in states
+        for state, alias, _filters in _TIMESERIES_STATES
     ]
 
 
@@ -204,8 +257,9 @@ def _constraint_group_info():
 
     # One query, grouped in Python. Walking datasets and calling
     # group_timeseries_by_constraint_and_type() per dataset would be ~384 queries per cycle.
-    rows = TimeSeries.objects.filter(active=True, end_time__isnull=True).values(
+    rows = TimeSeries.objects.refreshable().values(
         "dataset__server__name",
+        "dataset__server__base_url",
         "dataset__name",
         "constraints",
         "timeseries_type",
@@ -215,7 +269,7 @@ def _constraint_group_info():
     for row in rows:
         group_id = constraint_group_id(row["constraints"])
         key = (
-            _label(row["dataset__server__name"]),
+            _server_label(row["dataset__server__name"], row["dataset__server__base_url"]),
             _label(row["dataset__name"]),
             group_id,
             _label(row["timeseries_type"]),

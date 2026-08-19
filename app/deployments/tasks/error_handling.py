@@ -13,6 +13,12 @@ logger = logging.getLogger(__name__)
 #: be recorded as a metric attribute. Empty string is falsy, so the single call site in
 #: `refresh.update_values_for_timeseries` -- `if handle_http_errors(...): return` -- keeps
 #: working exactly as it did when these returned True/False.
+#:
+#: Choosing an outcome string is not a judgement call: **the level a handler logs at says
+#: whether its condition is benign.** `handle_500_no_rows_error` logs at INFO and is the
+#: only benign outcome (`no_rows`); every other handler logs at ERROR, so each needs an
+#: outcome of its own rather than being folded into `no_rows` where a dashboard would treat
+#: it as harmless. See the outcome table in docs/observability.md.
 NOT_HANDLED = ""
 
 
@@ -46,7 +52,7 @@ def handle_500_variable_actual_range_error(timeseries_group, compare_text: str) 
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "no_rows"
+        return "constraint_out_of_range"
 
     return NOT_HANDLED
 
@@ -261,7 +267,7 @@ def handle_404_no_matching_time(timeseries_group, compare_text: str) -> str:
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "no_rows"
+        return "no_matching_time"
 
     return NOT_HANDLED
 

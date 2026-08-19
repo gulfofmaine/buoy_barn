@@ -13,18 +13,22 @@ installs a real SDK provider backed by an in-memory reader.
 import hashlib
 import logging
 import re
+import threading
 import time
+from datetime import timedelta
 from unittest.mock import patch
 
 import pytest
 import requests
 from django.test import TransactionTestCase
+from django.utils import timezone
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import InMemoryMetricReader
 
 from buoy_barn.observability import bootstrap, celery_signals, freshness, metrics
 from buoy_barn.observability.log_metrics import MetricsLogHandler
 from deployments import tasks
+from deployments.management.commands.export_metrics import Command as ExportMetricsCommand
 from deployments.models import (
     DataType,
     ErddapDataset,
@@ -32,6 +36,7 @@ from deployments.models import (
     Platform,
     TimeSeries,
 )
+from deployments.tasks import error_handling
 from deployments.tasks.error_handling import BackoffError
 from deployments.utils.healthchecks import ping_healthcheck
 
@@ -47,6 +52,20 @@ EXPECTED_OK_PINGS = 2
 SIMULATED_QUEUE_WAIT_SECONDS = 5
 MINIMUM_OBSERVED_WAIT_SECONDS = 4.5
 EXPECTED_GAUGE_COUNT = 6
+
+#: Ages the freshness tests set up, in seconds, with a generous allowance for how long the
+#: test itself takes between building the rows and reading the gauge.
+ONE_HOUR_SECONDS = 3600
+TWO_HOURS_SECONDS = 7200
+SIX_HOURS_SECONDS = 21600
+LEEWAY_SECONDS = 60
+
+#: The outcomes a dashboard may safely ignore. Every other outcome corresponds to a handler
+#: that logs at ERROR -- see the outcome table in docs/observability.md.
+BENIGN_OUTCOMES = {"success", "no_rows"}
+
+#: Two distinct constraint groups are set up by the grouping tests below.
+EXPECTED_GROUP_COUNT = 2
 
 
 class TestDisabledLayer:
@@ -98,6 +117,39 @@ class TestRole:
         monkeypatch.delenv("BUOY_BARN_OTEL_ROLE", raising=False)
         monkeypatch.setattr("sys.argv", ["celery", "-A", "buoy_barn", "worker", "-l", "info"])
         assert bootstrap.guess_role() == "worker"
+
+    def test_granian_is_web_despite_its_workers_flag(self, monkeypatch):
+        """The real Dockerfile CMD. `--workers 4` used to match the "worker" hint first."""
+        monkeypatch.delenv("BUOY_BARN_OTEL_ROLE", raising=False)
+        monkeypatch.setattr(
+            "sys.argv",
+            [
+                "granian",
+                "--interface",
+                "asgi",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8080",
+                "--workers",
+                "4",
+                "buoy_barn.asgi:application",
+            ],
+        )
+        assert bootstrap.guess_role() == "web"
+
+    def test_celery_subcommands_are_only_matched_for_celery(self, monkeypatch):
+        monkeypatch.delenv("BUOY_BARN_OTEL_ROLE", raising=False)
+        for argv, expected in (
+            (["celery", "-A", "buoy_barn", "beat", "-l", "info"], "beat"),
+            (["celery", "-A", "buoy_barn", "flower", "-l", "info"], "flower"),
+            (["manage.py", "export_metrics"], "exporter"),
+            (["manage.py", "erddap_mqtt", "NERACOOS_SEA_EAGLE"], "mqtt"),
+            # Not Celery and not a server: a bare subcommand word must not match.
+            (["some-tool", "--beat-detection"], "unknown"),
+        ):
+            monkeypatch.setattr("sys.argv", argv)
+            assert bootstrap.guess_role() == expected, argv
 
         monkeypatch.setattr("sys.argv", ["manage.py", "export_metrics"])
         assert bootstrap.guess_role() == "exporter"
@@ -590,3 +642,364 @@ class TestConstraintGroupInfo:
     def test_info_gauge_is_registered(self):
         assert "buoybarn.erddap.constraint_group.info" in freshness.GAUGES
         assert len(freshness.GAUGES) == EXPECTED_GAUGE_COUNT
+
+
+@pytest.mark.django_db
+class FreshnessGaugeTestCase(TransactionTestCase):
+    """Run every freshness callback against a real database.
+
+    This is the class that should have existed from the start. The original harness asserted
+    only that collection *survived* an unreachable database by reporting no data -- and under
+    that assertion a query that is simply broken is indistinguishable from a dead database.
+    `_timeseries_counts` was broken from the first commit (an annotation alias shadowed
+    `TimeSeries.active`, so Postgres rejected the nested aggregate), `_observations` swallowed
+    it, and the gauge silently published nothing.
+
+    So the rule for these tests: assert on **non-empty** observations with real values. An
+    empty list is the failure mode, never a pass.
+    """
+
+    fixtures = ["platforms", "erddapservers", "datatypes"]
+
+    def setUp(self):
+        self.now = timezone.now()
+        self.platform = Platform.objects.get(name="M01")
+        self.data_type = DataType.objects.get(standard_name="sea_water_temperature")
+        self.server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.dataset = ErddapDataset.objects.create(
+            name="M01_sbe37_all",
+            server=self.server,
+            refresh_attempted=self.now - timedelta(hours=2),
+        )
+
+    def _timeseries(self, **kwargs):
+        return TimeSeries.objects.create(
+            platform=self.platform,
+            data_type=self.data_type,
+            variable=kwargs.pop("variable", "temperature"),
+            dataset=kwargs.pop("dataset", self.dataset),
+            start_time=self.now - timedelta(days=30),
+            **kwargs,
+        )
+
+    def test_dataset_refresh_ages_are_real_seconds(self):
+        observations = freshness._observations(freshness._dataset_refresh_ages)
+
+        assert len(observations) == 1
+        observation = observations[0]
+        assert observation.attributes["erddap.dataset"] == "M01_sbe37_all"
+        # Two hours ago, give or take the time this test takes to run.
+        assert TWO_HOURS_SECONDS <= observation.value < TWO_HOURS_SECONDS + LEEWAY_SECONDS
+
+    def test_datasets_never_refreshed_are_counted(self):
+        ErddapDataset.objects.create(name="never_run", server=self.server)
+
+        observations = freshness._observations(freshness._datasets_never_refreshed)
+
+        assert [observation.value for observation in observations] == [1]
+
+    def test_value_ages_report_newest_and_oldest(self):
+        self._timeseries(value_time=self.now - timedelta(hours=1), value=10.0)
+        self._timeseries(
+            variable="temperature2",
+            value_time=self.now - timedelta(hours=6),
+            value=11.0,
+        )
+        # Retired and inactive series must not drag the gauge.
+        self._timeseries(
+            variable="retired",
+            value_time=self.now - timedelta(days=400),
+            end_time=self.now,
+        )
+        self._timeseries(
+            variable="inactive",
+            value_time=self.now - timedelta(days=400),
+            active=False,
+        )
+
+        observations = freshness._observations(freshness._timeseries_value_ages)
+
+        by_agg = {observation.attributes["agg"]: observation.value for observation in observations}
+        assert set(by_agg) == {"min", "max"}
+        # agg=min is the *freshest* reading: one hour, not four hundred days.
+        assert ONE_HOUR_SECONDS <= by_agg["min"] < ONE_HOUR_SECONDS + LEEWAY_SECONDS
+        assert SIX_HOURS_SECONDS <= by_agg["max"] < SIX_HOURS_SECONDS + LEEWAY_SECONDS
+
+    def test_timeseries_counts_publishes_every_state(self):
+        """The regression test for the annotation-alias collision.
+
+        Before the fix this callback raised `FieldError`/`ProgrammingError` every cycle and
+        `_observations` turned that into an empty list, so the gauge never published at all.
+        """
+        self._timeseries(value_time=self.now, value=1.0)
+        self._timeseries(variable="inactive", active=False, value_time=self.now, value=2.0)
+        self._timeseries(variable="retired", end_time=self.now, value_time=self.now, value=3.0)
+        self._timeseries(variable="fresh")  # never populated: no value_time
+
+        observations = freshness._observations(freshness._timeseries_counts)
+
+        assert observations, "the gauge published nothing at all"
+        by_state = {observation.attributes["state"]: observation.value for observation in observations}
+        assert by_state == {
+            "active": 2,  # the populated one and the never-populated one
+            "inactive": 1,
+            "retired": 1,
+            "never_populated": 1,
+        }
+
+    def test_constraint_group_info_describes_each_group(self):
+        self._timeseries(constraints={"depth=": 1.0}, value_time=self.now, value=1.0)
+        self._timeseries(
+            variable="temperature2",
+            constraints={"depth=": 50.0},
+            value_time=self.now,
+            value=2.0,
+        )
+
+        observations = freshness._observations(freshness._constraint_group_info)
+
+        assert len(observations) == EXPECTED_GROUP_COUNT
+        assert {observation.value for observation in observations} == {1}
+        assert {observation.attributes["constraints"] for observation in observations} == {
+            '{"depth=":1.0}',
+            '{"depth=":50.0}',
+        }
+
+    def test_group_ids_match_what_the_refresh_path_records(self):
+        """The Grafana join is silent when the two sides disagree, so assert them equal.
+
+        `group_timeseries_by_constraint_and_type` decides what the refresh path fetches (and
+        therefore what `record_erddap_request` labels); `_constraint_group_info` decides what
+        the lookup metric describes. Both now filter through
+        `TimeSeries.objects.refreshable()`, but a shared filter is not a proof -- the *key*
+        could still drift.
+        """
+        self._timeseries(constraints={"depth=": 1.0}, value_time=self.now, value=1.0)
+        self._timeseries(variable="temperature2", constraints={"depth=": 50.0})
+        self._timeseries(variable="ignored", constraints={"depth=": 99.0}, active=False)
+
+        from_model = {
+            (self.dataset.name, metrics.constraint_group_id(dict(constraints)))
+            for constraints, _type in self.dataset.group_timeseries_by_constraint_and_type()
+        }
+        from_exporter = {
+            (observation.attributes["erddap.dataset"], observation.attributes["constraint_group"])
+            for observation in freshness._observations(freshness._constraint_group_info)
+        }
+
+        assert from_model == from_exporter
+        # The inactive series is in neither set.
+        assert len(from_model) == EXPECTED_GROUP_COUNT, from_model
+
+    def test_server_label_agrees_with_the_counter_for_a_nameless_server(self):
+        """`ErddapServer.name` is nullable, and the two sides used to disagree about it.
+
+        The counter labelled the server `str(server)` -- name or base URL -- while every gauge
+        used the name alone, falling back to "unknown". So for a server without a name the
+        `constraint_group.info` join returned nothing at all.
+        """
+        nameless = ErddapServer.objects.create(name=None, base_url="http://example.com/erddap")
+        ErddapDataset.objects.create(
+            name="nameless_dataset",
+            server=nameless,
+            refresh_attempted=self.now - timedelta(hours=1),
+        )
+
+        gauge_labels = {
+            observation.attributes["erddap.server"]
+            for observation in freshness._observations(freshness._dataset_refresh_ages)
+        }
+
+        assert metrics.server_label(nameless) in gauge_labels
+        assert metrics.server_label(nameless) == "http://example.com/erddap"
+
+
+class TestLoggingRecursion:
+    """A setup failure must not recurse through the log handler that records log records.
+
+    `MetricsLogHandler` sits on the root logger at WARNING, and both `bootstrap.configure`
+    and `metrics.instruments` log when they fail. So a failure logs, the handler records the
+    log, recording asks for a provider, and configuration is attempted again -- once per log
+    record, until the stack runs out. Three guards break the loop; these tests assert the
+    behaviour rather than the guards, so a future refactor cannot quietly reintroduce it.
+    """
+
+    def _install_handler(self):
+        handler = MetricsLogHandler(level=logging.WARNING)
+        root = logging.getLogger()
+        root.addHandler(handler)
+        return handler
+
+    def test_a_failing_provider_build_does_not_recurse(self, monkeypatch):
+        monkeypatch.setenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://collector:4318")
+        monkeypatch.setenv("DJANGO_ENV", "production")
+        bootstrap.reset_for_testing(None)
+        metrics.reset_for_testing()
+
+        attempts = []
+
+        def explode(role):
+            attempts.append(role)
+            # Exactly what the real failure does: log, then report no provider.
+            logging.getLogger("buoy_barn.observability.bootstrap").exception("boom")
+
+        monkeypatch.setattr(bootstrap, "_build_provider", explode)
+        handler = self._install_handler()
+        try:
+            for _ in range(3):
+                assert bootstrap.configure() is False
+                logging.getLogger("deployments.tasks").warning("a later, unrelated warning")
+        finally:
+            logging.getLogger().removeHandler(handler)
+            bootstrap.reset_for_testing(None)
+            metrics.reset_for_testing()
+
+        # One attempt in total: the failure is remembered, so neither the log record it
+        # emitted nor any later one triggers another build.
+        assert len(attempts) == 1, attempts
+
+    def test_a_failing_instrument_build_does_not_recurse(self, monkeypatch):
+        reader = InMemoryMetricReader()
+        provider = MeterProvider(metric_readers=[reader])
+        bootstrap.reset_for_testing(provider)
+        metrics.reset_for_testing()
+
+        attempts = []
+
+        class Exploding:
+            def __init__(self, meter):
+                attempts.append(meter)
+                raise RuntimeError("no instruments for you")
+
+        monkeypatch.setattr(metrics, "_Instruments", Exploding)
+        handler = self._install_handler()
+        try:
+            for _ in range(3):
+                assert metrics.instruments() is None
+                logging.getLogger("deployments.tasks").error("something failed")
+        finally:
+            logging.getLogger().removeHandler(handler)
+            bootstrap.reset_for_testing(None)
+            metrics.reset_for_testing()
+            provider.shutdown()
+
+        assert len(attempts) == 1, attempts
+
+    def test_the_handler_refuses_to_re_enter_itself(self, monkeypatch):
+        """The outermost guard, independent of what the layers below it do.
+
+        On its own logger rather than the root one, because `settings.LOGGING` already
+        attaches a handler there and a second handler counting the same record is correct
+        behaviour, not recursion -- it would just obscure what this test is about.
+        """
+        isolated = logging.getLogger("buoy_barn.tests.recursion")
+        isolated.propagate = False
+        recorded = []
+
+        def record_log_that_logs(logger_name, level):
+            recorded.append(logger_name)
+            # A future call site logging from inside record_log must not loop.
+            isolated.warning("recording failed")
+
+        monkeypatch.setattr(metrics, "record_log", record_log_that_logs)
+        handler = MetricsLogHandler(level=logging.WARNING)
+        isolated.addHandler(handler)
+        try:
+            isolated.warning("the original record")
+        finally:
+            isolated.removeHandler(handler)
+
+        # The record emitted from inside `record_log` reaches the handler and is dropped.
+        assert recorded == ["buoy_barn.tests.recursion"]
+
+
+class TestExporterCommand:
+    """`export_metrics` runs as a Deployment, so returning is a crash loop."""
+
+    def test_it_waits_instead_of_exiting_when_disabled(self, monkeypatch):
+        monkeypatch.delenv("OTEL_EXPORTER_OTLP_ENDPOINT", raising=False)
+        monkeypatch.delenv("OTEL_EXPORTER_OTLP_METRICS_ENDPOINT", raising=False)
+        bootstrap.reset_for_testing(None)
+
+        command = ExportMetricsCommand()
+        stop = threading.Event()
+        monkeypatch.setattr(command, "_stop_event", lambda: stop)
+
+        finished = threading.Event()
+
+        def run():
+            command.handle()
+            finished.set()
+
+        worker = threading.Thread(target=run, daemon=True)
+        worker.start()
+        try:
+            # Returning immediately means the container exits 0 and gets restarted, which is
+            # the crash loop the command exists to avoid.
+            assert not finished.wait(timeout=0.5), "the command returned instead of idling"
+            stop.set()
+            assert finished.wait(timeout=5), "the command ignored its stop event"
+        finally:
+            stop.set()
+            worker.join(timeout=5)
+
+
+class TestOutcomeVocabulary:
+    """The benign/actionable split is what dashboards alert on, so pin it."""
+
+    def test_the_new_outcomes_are_declared(self):
+        assert "constraint_out_of_range" in metrics.ERDDAP_OUTCOMES
+        assert "no_matching_time" in metrics.ERDDAP_OUTCOMES
+
+    def test_error_level_handlers_do_not_report_a_benign_outcome(self):
+        """`no_rows` is benign, so an ERROR-level condition needs an outcome of its own.
+
+        These two used to return `no_rows`, which any dashboard filtering on "not benign"
+        would have hidden. The handlers are called with the real response text so the test
+        breaks if a mapping is changed rather than merely if a constant is renamed.
+        """
+        cases = (
+            (
+                error_handling.handle_500_variable_actual_range_error,
+                "Your query produced no matching results. "
+                "(depth=1.0 is outside of the variable&#39;s actual_range: 50.0 to 100.0)",
+                "constraint_out_of_range",
+            ),
+            (
+                error_handling.handle_404_no_matching_time,
+                "No data matches time>=2020-01-01 (code=404)",
+                "no_matching_time",
+            ),
+            (
+                error_handling.handle_500_no_rows_error,
+                "Query error: nRows = 0",
+                "no_rows",
+            ),
+        )
+
+        group = [_FakeTimeSeries()]
+        for handler, response_text, expected in cases:
+            outcome = handler(group, response_text)
+            assert outcome == expected, handler.__name__
+            assert outcome in metrics.ERDDAP_OUTCOMES, handler.__name__
+            # The rule under test: only the INFO-level handler may report a benign outcome.
+            logs_at_info = handler is error_handling.handle_500_no_rows_error
+            assert (outcome in BENIGN_OUTCOMES) is logs_at_info, handler.__name__
+
+
+class _FakeTimeSeries:
+    """Just enough of a TimeSeries for the handlers' log messages and `error_extra`.
+
+    The handlers under test only read these attributes, so this keeps the vocabulary test
+    out of the database.
+    """
+
+    class _Dataset:
+        name = "M01_sbe37_all"
+        server = "NERACOOS"
+
+    constraints = {"depth=": 1.0}
+    dataset = _Dataset()
+
+    def __str__(self):
+        return "fake timeseries"

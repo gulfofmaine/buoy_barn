@@ -2,7 +2,7 @@
 
 Buoy Barn emits **metrics** over OTLP to an OpenTelemetry collector, and continues to send
 **errors and traces** to Sentry. One module is the single place instrumentation is
-written, so adding a second destination is a configuration change rather than a rewrite.
+written, so adding a second destination can be a configuration change.
 
 For the deployment steps, see [observability-deployment.md](./observability-deployment.md).
 
@@ -79,12 +79,28 @@ queries.
 | `buoybarn.erddap.request.rows` | histogram | `erddap.server` |
 | `buoybarn.erddap.constraint_group.info` | gauge (always 1) | `erddap.server`, `erddap.dataset`, `constraint_group`, `timeseries.type`, `constraints` |
 
-`outcome` is one of `success`, `no_rows`, `empty_dataframe`, `not_found`, `forbidden`,
-`timeout`, `backoff`, `time_range_retired`, `unrecognized_variable`,
-`unrecognized_constraint`, `server_error`, `unknown_error`, `os_error`, `value_error`, or
-`other`. The error handlers return these strings directly, so a dataset that has quietly
+The error handlers return the `outcome` strings directly, so a dataset that has quietly
 moved (`not_found`) is distinguishable from one being throttled (`backoff`) or from a server
 that has blacklisted us (`forbidden`).
+
+Only two outcomes are benign, and the split is not a judgement call — **it follows the level
+the handler logs at.** `handle_500_no_rows_error` is the only handler that logs at `INFO`;
+every other one logs at `ERROR`, so it gets an outcome of its own rather than being folded in
+with the harmless ones:
+
+| Benign | Actionable |
+| --- | --- |
+| `success`, `no_rows` | `empty_dataframe`, `not_found`, `forbidden`, `timeout`, `backoff`, `time_range_retired`, `constraint_out_of_range`, `no_matching_time`, `unrecognized_variable`, `unrecognized_constraint`, `server_error`, `unknown_error`, `os_error`, `value_error`, `other` |
+
+`constraint_out_of_range` (a constraint outside a variable's `actual_range`) and
+`no_matching_time` (the dataset has no valid time for the request) are both configuration
+problems on our side, which is why they are not `no_rows`: an alert on "not benign" must fire
+for them. `no_matching_station` is reported as `not_found`, since a missing station and a
+missing dataset need the same response.
+
+A dashboard panel that means "is anything actually broken?" is therefore
+`outcome!~"success|no_rows"` rather than a list that has to be revised whenever a handler is
+added.
 
 `request.rows` is what catches an ERDDAP server answering `200` with an empty body — a
 failure that previously showed up only as a log warning with its context commented out.
@@ -108,7 +124,7 @@ onto a failure panel to see what actually broke:
 
 ```promql
 sum by (erddap_dataset, constraint_group) (
-  increase(buoybarn_erddap_outcome_total{outcome!="success"}[1h])
+  increase(buoybarn_erddap_outcome_total{outcome!~"success|no_rows"}[1h])
 ) * on (erddap_dataset, constraint_group)
   group_left(constraints) buoybarn_erddap_constraint_group_info
 ```
@@ -211,7 +227,7 @@ opaque `constraint_group` hash useful:
 
 ```promql
 sum by (erddap_server, erddap_dataset, constraint_group, outcome) (
-  increase(buoybarn_erddap_outcome_total{outcome!="success"}[1h])
+  increase(buoybarn_erddap_outcome_total{outcome!~"success|no_rows"}[1h])
 ) * on (erddap_dataset, constraint_group)
   group_left(constraints) buoybarn_erddap_constraint_group_info
 ```

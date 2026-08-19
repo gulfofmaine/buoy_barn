@@ -46,6 +46,31 @@ _GROUP_ID_RE = re.compile(r"^[0-9a-f]{8}$")
 #: ample for the low thousands of real groups, and short enough to read in a dashboard.
 _GROUP_ID_LENGTH = 8
 
+#: Fallback for a server with neither a name nor a base URL. `ErddapServer.name` is nullable,
+#: and str(None) would put the literal "None" on a time series.
+UNKNOWN_SERVER = "unknown"
+
+
+def server_label(server, base_url=None) -> str:
+    """The ``erddap.server`` attribute value for one server, however it was loaded.
+
+    Every metric in this package must agree on what identifies a server, or a query that
+    joins two of them silently returns nothing -- which is exactly what the
+    ``buoybarn.erddap.constraint_group.info`` join does. The refresh path holds an
+    ``ErddapServer`` instance while the exporter's gauges hold plain column values from
+    ``.values()``, so this accepts either: an instance, or a name with an optional base URL.
+
+    The precedence deliberately mirrors ``ErddapServer.__str__`` -- name, else base URL --
+    so the label matches what the logs and the admin call the same server.
+    """
+    name = getattr(server, "name", server)
+    url = getattr(server, "base_url", base_url)
+    if name:
+        return str(name)
+    if url:
+        return str(url)
+    return UNKNOWN_SERVER
+
 
 def canonical_constraints(constraints) -> str:
     """Serialise an ERDDAP constraints mapping so equal constraints always match.
@@ -76,6 +101,11 @@ def constraint_group_id(constraints) -> str:
 
 
 #: Outcome of one ERDDAP fetch. Mirrors the branches in ``deployments.tasks``.
+#:
+#: Only ``success`` and ``no_rows`` are benign. Every other value corresponds to a handler
+#: that logs at ERROR, which is the rule that decides where a new branch belongs: a
+#: condition worth an ERROR is worth its own outcome, because folding it into ``no_rows``
+#: would hide a real misconfiguration behind a value dashboards treat as harmless.
 ERDDAP_OUTCOMES = frozenset(
     {
         "success",
@@ -86,6 +116,8 @@ ERDDAP_OUTCOMES = frozenset(
         "timeout",
         "backoff",
         "time_range_retired",
+        "constraint_out_of_range",
+        "no_matching_time",
         "unrecognized_variable",
         "unrecognized_constraint",
         "server_error",
@@ -199,6 +231,11 @@ class _InstrumentCache:
     def __init__(self) -> None:
         self.instruments: _Instruments | None = None
         self.pid: int | None = None
+        #: PID whose instrument build already failed, so it is not retried. The failure is
+        #: logged, and :class:`~buoy_barn.observability.log_metrics.MetricsLogHandler`
+        #: records log records as metrics -- which comes straight back here. Without this,
+        #: one failure recurses for every log record the process emits.
+        self.failed_pid: int | None = None
 
 
 _cache = _InstrumentCache()
@@ -210,6 +247,9 @@ def instruments() -> _Instruments | None:
     if _cache.pid == pid and _cache.instruments is not None:
         return _cache.instruments
 
+    if _cache.failed_pid == pid:
+        return None
+
     meter = bootstrap.get_meter()
     if meter is None:
         return None
@@ -217,6 +257,9 @@ def instruments() -> _Instruments | None:
     try:
         built = _Instruments(meter)
     except Exception:
+        # Remembered before logging, so that recording the log record below finds a
+        # switched-off layer rather than trying to build instruments again.
+        _cache.failed_pid = pid
         logger.exception("Could not create metric instruments; metrics are disabled")
         return None
 
@@ -229,6 +272,7 @@ def reset_for_testing() -> None:
     """Drop the cached instrument set so a test can install a fresh provider."""
     _cache.instruments = None
     _cache.pid = None
+    _cache.failed_pid = None
 
 
 def _mirror_to_sentry(key: str, attributes: dict) -> None:
@@ -263,7 +307,7 @@ def record_erddap_request(  # noqa: PLR0913 - one metric per dimension it record
 
     try:
         safe_outcome = _bounded(outcome, ERDDAP_OUTCOMES)
-        server_name = str(server)
+        server_name = server_label(server)
 
         # Server-only on the histograms; dataset and group would multiply by the bucket count.
         inst.erddap_duration.record(

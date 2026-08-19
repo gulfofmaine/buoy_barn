@@ -136,6 +136,18 @@ querying ERDDAP servers.
 
 `PROXY_CACHE_SECONDS` can be set to override the default caching time for CORS proxy requests to ERDDAP servers.
 
+### Observability
+
+Metrics are exported over OTLP to an OpenTelemetry collector, and are a no-op unless
+`OTEL_EXPORTER_OTLP_ENDPOINT` is set. `docker compose up` starts a local collector that logs
+what it receives, so `docker compose logs -f otel-collector` shows the instrumentation
+working.
+
+- [docs/observability.md](docs/observability.md) — what is exported, how it relates to
+  Sentry, and how to work on it locally.
+- [docs/observability-deployment.md](docs/observability-deployment.md) — the checklist for
+  the `neracoos-aws-cd` deploy repository.
+
 ### Starting Docker
 
 Then you can use `make up` to start the database and Django server.

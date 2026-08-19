@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: metrics
+    tier: backend
+    role: exporter
+  name: metrics-exporter
+spec:
+  # Load-bearing: these are database-derived gauges, so a second replica would report
+  # every series twice. Recreate rather than RollingUpdate for the same reason -- two
+  # overlapping pods during a rollout would double-count.
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      service: metrics
+      tier: backend
+      role: exporter
+  template:
+    metadata:
+      labels:
+        service: metrics
+        tier: backend
+        role: exporter
+    spec:
+      containers:
+        - name: metrics-exporter
+          image: gmri/neracoos-buoy-barn
+          args:
+            - uv
+            - run
+            - manage.py
+            - export_metrics
+          envFrom:
+            - secretRef:
+                name: buoy-barn-secrets
+            - configMapRef:
+                name: buoy-barn-config
+          env:
+            - name: BUOY_BARN_OTEL_ROLE
+              value: "exporter"
+            # This pod must never run migrations: it is not part of the deploy ordering,
+            # and the web/worker/beat pods already race each other for that.
+            - name: DJANGO_MANAGEPY_MIGRATE
+              value: "off"
+            - name: DJANGO_MANAGEPY_COLLECTSTATIC
+              value: "off"
+          volumeMounts:
+            - name: django-static
+              mountPath: /static
+      volumes:
+        - name: django-static
+          emptyDir: {}

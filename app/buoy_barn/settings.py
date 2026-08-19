@@ -162,7 +162,10 @@ INSTALLED_APPS = [
     "django_object_actions",
     # Health checks to allow Kubernetes to restart the pod if locked up
     "health_check",
-    # "health_check.contrib.celery_ping",
+    # NB: there is no `health_check.contrib.celery_ping` app in django-health-check 4.5 --
+    # the Celery check is `health_check.contrib.celery.Ping`, referenced by dotted path in
+    # urls.py, and needs no INSTALLED_APPS entry. It is deliberately not enabled: see the
+    # note in urls.py and docs/observability.md.
     # User management
     "account.apps.AccountConfig",
     # Dataset and forecast management

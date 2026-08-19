@@ -45,6 +45,12 @@ urlpatterns = [
                 # "health_check.contrib.psutil.Disk",
                 # "health_check.contrib.psutil.Memory",
                 # "health_check.contrib.celery.Ping",
+                #   Left off on purpose. This view backs the Kubernetes *liveness* probe,
+                #   and Ping raises if any queue has no worker replying within 1 second --
+                #   so a merely busy worker would restart the web pods. Worker health is
+                #   covered instead by buoybarn.celery.task.* and
+                #   buoybarn.celery.queue.depth (see docs/observability.md). If a probe is
+                #   wanted, give it its own readiness endpoint rather than this one.
                 # "health_check.contrib.rabbitmq.RabbitMQ",
                 # "health_check.contrib.redis.Redis",
             ],

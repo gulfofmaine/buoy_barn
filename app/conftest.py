@@ -1,8 +1,4 @@
-"""Shared pytest fixtures.
-
-The repo's first conftest -- the suite previously relied entirely on Django TestCase
-classes and per-module fixtures.
-"""
+"""Shared pytest fixtures."""
 
 import pytest
 from opentelemetry.sdk.metrics import MeterProvider

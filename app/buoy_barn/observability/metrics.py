@@ -2,16 +2,16 @@
 
 Design rules, in priority order:
 
-1. **Never raise.** Instrumentation that can break a refresh is worse than no
+1. Never raise - Instrumentation that can break a refresh is worse than no
    instrumentation. Every public function swallows its own errors and logs at most once.
-2. **Be free when switched off.** With no OTLP endpoint configured, each function returns
+2. Be free when switched off - With no OTLP endpoint configured, each function returns
    after one dict lookup. See :mod:`buoy_barn.observability.bootstrap`.
-3. **Keep cardinality bounded.** Attribute values are validated against frozensets
+3. Keep cardinality bounded - Attribute values are validated against frozensets
    declared here, so a future call site cannot quietly start labelling metrics with an
    ERDDAP error string, a ``constraints`` blob, or a primary key. Unknown values collapse
    to ``"other"`` rather than creating a new time series.
 
-Cardinality note: ``erddap.dataset`` appears on the *counter* only, never on a histogram.
+Cardinality note: ``erddap.dataset`` appears on the *counter* only, not on a histogram.
 There are ~384 datasets across ~15 servers; multiplying that by a histogram's bucket count
 would be tens of thousands of series from a single metric. Latency is therefore tracked
 per server -- the unit you actually act on, since you throttle or contact a server, not a
@@ -85,7 +85,7 @@ def constraint_group_id(constraints) -> str:
     """Short stable id for one ERDDAP constraint group.
 
     A dataset is fetched once per ``(constraints, timeseries_type)`` group, so one group can
-    fail while its siblings succeed. This id is what makes that distinguishable on
+    fail while its siblings succeed. This id makes it distinguishable on
     ``buoybarn.erddap.outcome`` without putting the unbounded constraints JSON on a hot
     counter.
 

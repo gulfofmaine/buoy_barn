@@ -1,13 +1,11 @@
-"""One place to ping a Healthchecks.io monitor.
+"""Ping a Healthchecks.io monitor.
 
-The same start/complete ping was written four times -- twice on ``ErddapDataset``, twice on
-``ErddapServer``, and inline in ``periodic_refresh`` -- each swallowing
-``requests.RequestException`` with a slightly different log message. This consolidates the
-behaviour and adds a metric, so a monitor that silently stops being pinged is visible
-instead of looking identical to a healthy one.
+This consolidates the behaviour and adds a metric, so a monitor that silently stops
+being pinged is visible instead of looking identical to a healthy one.
 
 The log messages are kept in the same shape as the originals on purpose: they are the only
-record of a failed ping in the existing deployment, and some are asserted on in tests.
+record of a failed ping in the existing deployment, so anything grepping for them keeps
+working.
 """
 
 import logging
@@ -38,8 +36,6 @@ def ping_healthcheck(url: str | None, monitor: str, *, start: bool = False) -> b
     try:
         requests.get(target, timeout=5)
     except requests.RequestException as error:
-        # Wording preserved verbatim from the five call sites this replaced, including the
-        # inconsistent "due to:" / "due to error:" split, so existing log greps still match.
         message = (
             f"Unable to send healthcheck start for {monitor} due to: {error}"
             if start

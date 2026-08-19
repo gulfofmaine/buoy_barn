@@ -3,12 +3,11 @@
 `k8s/base/` in this repository is the kustomize base that
 [`gulfofmaine/neracoos-aws-cd`](https://github.com/gulfofmaine/neracoos-aws-cd) extends, so
 everything this PR adds to those manifests — the `OTEL_*` config, `BUOY_BARN_OTEL_ROLE` on
-each deployment, and the new `metrics-exporter` — flows through to the overlay automatically.
-Nothing needs re-creating there.
+each deployment, and the new `metrics-exporter`, flows through to the overlay automatically.
 
 See [observability.md](./observability.md) for what is exported and why.
 
-## What still has to be done in the deploy repo
+## What has to be done in the deploy repo
 
 Four things, none of which the base can supply.
 
@@ -20,9 +19,8 @@ Four things, none of which the base can supply.
 OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector.observability:4318
 ```
 
-Patch it in the overlay to the cluster's actual collector address. **Until it resolves,
-every metric in the application is a no-op** — deliberately, so a partial rollout degrades to
-the previous behaviour instead of erroring.
+Patch it in the overlay to the cluster's actual collector address. Until it resolves,
+every metric in the application is a no-op.
 
 ### 2. Add the new secret
 
@@ -32,7 +30,7 @@ stale-timeseries task, which previously had no monitor at all. It belongs in
 
 ### 3. Confirm the collector has a metrics pipeline
 
-Traces alone are not enough; it needs to accept OTLP **metrics** and export them to
+It needs to accept OTLP metrics and export them to
 Prometheus:
 
 ```yaml
@@ -54,8 +52,8 @@ service:
       exporters: [prometheus]
 ```
 
-Prometheus scrapes the collector's `prometheus` exporter endpoint. Application pods are
-**not** scrape targets — they push. This is why: granian runs 4 worker processes and the
+Prometheus scrapes the collector's `prometheus` exporter endpoint. Application pods are not
+scrape targets, they push. Granian runs 4 worker processes and the
 Celery worker forks a child per CPU, so an in-process `/metrics` endpoint could only ever
 show one process out of many.
 

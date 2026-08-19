@@ -10,8 +10,8 @@ variables are consumed by the SDK itself, so they behave exactly as upstream doc
 them.
 
 ``OTEL_EXPORTER_OTLP_ENDPOINT`` (or ``OTEL_EXPORTER_OTLP_METRICS_ENDPOINT``)
-    Base URL of the OTLP collector, e.g. ``http://otel-collector:4318``. **This is the
-    master switch: when neither is set the whole layer is a no-op** -- no exporter, no
+    Base URL of the OTLP collector, e.g. ``http://otel-collector:4318``. This is the
+    switch: when neither is set the whole layer is a no-op: no exporter, no
     background thread, and every recording function returns immediately. Nothing raises
     and nothing blocks, so an unconfigured deployment behaves exactly as it did before
     this package existed.
@@ -37,7 +37,7 @@ Why this looks the way it does
 ------------------------------
 Buoy Barn runs granian with ``--workers 4`` and Celery with the default prefork pool, so
 metrics are recorded from many processes per pod. Three properties of the OTel SDK make
-the naive implementation fail *silently* -- metrics get recorded and then thrown away:
+the naive implementation fail silently:
 
 1. The SDK is not fork-safe. ``PeriodicExportingMetricReader`` runs a background thread,
    and threads do not survive ``fork()``. A provider built in the Celery parent gives
@@ -55,9 +55,9 @@ future ``opentelemetry-instrumentation-*`` package finds a provider, but nothing
 depends on that call taking effect.
 
 Initialisation is lazy: the first metric recorded in a process builds that process's
-provider. That single mechanism covers granian's workers, Celery's forked children, beat,
+provider. That mechanism covers granian's workers, Celery's forked children, beat,
 the MQTT command and the metrics exporter without per-process-type wiring, and it means a
-one-off ``manage.py migrate`` never starts an exporter because it never records anything.
+``manage.py migrate`` never starts an exporter because it never records anything.
 """
 
 import atexit

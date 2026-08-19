@@ -10,14 +10,14 @@ For the deployment steps, see [observability-deployment.md](./observability-depl
 
 Sentry could not answer the three questions that matter most here:
 
-1. **Which ERDDAP servers and datasets are failing?** The refresh pipeline swallows almost
-   every ERDDAP error — `handle_http_errors` returns for every branch it recognises,
+1. Which ERDDAP servers and datasets are failing? - The refresh pipeline swallows almost
+   every ERDDAP error, `handle_http_errors` returns for every branch it recognises,
    `OSError` logs and returns, an empty response is a warning. So Celery reports ~100% task
    success even when every fetch fails, and a task-level failure counter would read zero.
-2. **How long does anything take?** Before this there was no timing instrumentation
+2. How long does anything take? - Before this there was no timing instrumentation
    anywhere in the codebase, so nobody knew whether an ERDDAP call took 2s or 50s, or how
    close `refresh_dataset` ran to its 1800s hard limit.
-3. **How stale is the data?** Only visible by eye in the admin's coloured refresh column,
+3. How stale is the data? - Only visible by eye in the admin's coloured refresh column,
    or in a Slack digest that is only scheduled when Slack env vars are set.
 
 ## Can the same instrumentation feed both Sentry and Prometheus?
@@ -34,12 +34,12 @@ Sentry's metrics beta was retired in October 2024. Its replacement, Application 
 (`sentry_sdk.metrics.count / gauge / distribution`), is a *separate call* from the OTel
 meter rather than another exporter, and is billed like logs. So:
 
-- **Metrics** go to OTel only.
-- **Errors and traces** stay with Sentry, via the `CeleryIntegration` and `DjangoIntegration`
+- Metrics - go to OTel only.
+- Errors and traces - stay with Sentry, via the `CeleryIntegration` and `DjangoIntegration`
   that were already configured. Note `SENTRY_TRACES_SAMPLE_RATE` defaults to `0`, so that
-  span data is currently discarded — set it to something non-zero to start using it.
+  span data is currently discarded, set it to something non-zero to start using it.
 - A small allow-list of failure counters can be mirrored into Sentry Application Metrics by
-  setting `BUOY_BARN_SENTRY_METRIC_MIRROR=true`. **Off by default**: span attributes already
+  setting `BUOY_BARN_SENTRY_METRIC_MIRROR=true`. Off by default: span attributes already
   cover most of what it would buy, and it costs money.
 
 Adopting OTel *tracing* as well (via `OTLPIntegration` plus the
@@ -107,8 +107,8 @@ failure that previously showed up only as a log warning with its context comment
 
 #### Which constraint group failed
 
-A dataset is fetched **once per `(constraints, timeseries_type)` group** — that is what
-`ErddapDataset.group_timeseries_by_constraint_and_type()` returns — so for a dataset carrying
+A dataset is fetched once per `(constraints, timeseries_type)` group, that is what
+`ErddapDataset.group_timeseries_by_constraint_and_type()` returns, so for a dataset carrying
 several platforms behind different `stationID=` constraints, one group can fail while its
 siblings are perfectly healthy. `constraint_group` is what makes that distinguishable rather
 than just "this dataset had a failure".
@@ -118,9 +118,9 @@ with sorted keys so the same constraints always produce the same id regardless o
 ordering. A group with no constraints at all, which is most of them, reports `none` rather
 than the hash of an empty dict.
 
-The hash is opaque, so **`buoybarn.erddap.constraint_group.info` is the other half**: one
-series per (dataset, group), always `1`, carrying the readable constraints as a label. Join it
-onto a failure panel to see what actually broke:
+The hash is opaque, so `buoybarn.erddap.constraint_group.info` is what makes it
+interpretable: one series per (dataset, group), always `1`, carrying the readable constraints
+as a label. Join it onto a failure panel to see what actually broke:
 
 ```promql
 sum by (erddap_dataset, constraint_group) (
@@ -130,23 +130,24 @@ sum by (erddap_dataset, constraint_group) (
 ```
 
 It is also logged next to the group on the `Working on timeseries: … (group abc12345)` line,
-for when you are already reading logs rather than a dashboard.
+for when you are already reading logs rather than a dashboard. It is additionally set as the
+`erddap-constraint-group` tag on Sentry errors raised from that fetch.
 
 #### Cardinality, and one deliberate exception
 
-**`erddap.dataset` and `constraint_group` are on the counter only, never on a histogram.** A
+`erddap.dataset` and `constraint_group` are on the counter only, never on a histogram. A
 histogram multiplies by its bucket count, so ~384 datasets × 12 outcomes × ~15 buckets would
-be tens of thousands of series from a single metric. Latency is tracked per *server*, which is
-the unit you act on — you throttle or contact a server, not a dataset.
+be tens of thousands of series from a single metric. Latency is tracked per server, which is
+the unit you act on, you throttle or contact a server, not a dataset.
 
 On the counter, adding the group raises the bound from "dataset × outcome" to
 "(dataset, group) × outcome". `timeseries.type` is a property of the group rather than an
 independent dimension, so it is not a further multiplier. At two or three groups per dataset
-that is roughly 1k (dataset, group) pairs and **~2–3k series in practice**, with a worst case
+that is roughly 1k (dataset, group) pairs and ~2–3k series in practice, with a worst case
 nearer 12k if every dataset somehow produced every outcome. Only outcomes a group actually
 produces ever materialise.
 
-The `constraints` label on the **info metric** is a deliberate exception to the rule that the
+The `constraints` label on the info metric is a deliberate exception to the rule that the
 constraints JSON must never become a label. That rule exists because the JSON on a hot counter
 multiplies with every outcome and every request. On the info metric there is exactly one
 series per (dataset, group), it is rewritten once per collection cycle, and the single-replica
@@ -186,18 +187,18 @@ churn as series are retired.
 
 Not uniformly, so it is worth being explicit — the rightmost column above is the short version.
 
-- **`value_age` filters.** Only `active=True` series with `end_time IS NULL` and a non-null
+- `value_age` filters. Only `active=True` series with `end_time IS NULL` and a non-null
   `value_time` are included. So a retired or deactivated series can never drag the gauge into
   looking stale — but it is also invisible here, which is the point: this metric answers "is
   the data we are still trying to collect arriving?".
-- **`timeseries.count` splits** rather than filters, by `state` ∈ `active` / `inactive` /
+- `timeseries.count` splits rather than filters, by `state` ∈ `active` / `inactive` /
   `retired` / `never_populated`. This is where retired and deactivated series are visible, and
   its `active` definition is the same predicate `value_age` uses, so the two agree by
   construction. `never_populated` (a series that has never had a `value_time`) is usually a
   configuration mistake rather than an outage.
-- **`refresh_age` and `never_refreshed` are dataset-level and have no notion of `active` at
-  all.** This is a trap worth knowing: **a dataset whose every timeseries has been retired
-  still reports a perfectly healthy refresh age**, because the refresh task still runs, still
+- `refresh_age` and `never_refreshed` are dataset-level and have no notion of `active` at
+  all. A dataset whose every timeseries has been retired
+  still reports a perfectly healthy refresh age, because the refresh task still runs, still
   stamps `refresh_attempted`, and simply finds nothing to fetch. A low `refresh_age` is
   therefore evidence that refreshes are *happening*, not that data is *arriving* — pair it
   with `timeseries.count{state="active"}` for that dataset's server before concluding

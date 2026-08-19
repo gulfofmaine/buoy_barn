@@ -1,17 +1,17 @@
 """Observable gauges describing how fresh the data is, read straight from the database.
 
-These are *observable* (callback-driven) gauges rather than values pushed from the refresh
+These are observable (callback-driven) gauges rather than values pushed from the refresh
 tasks, because they describe state rather than events: "dataset X was last refreshed N
 seconds ago" is a fact about the database, true whether or not anything ran recently. A
 counter incremented by the tasks could never report a dataset that stopped being refreshed
-altogether -- which is precisely the failure worth alerting on.
+altogether, which is the failure worth alerting on.
 
-They must be collected by exactly **one** process, so they live in the ``export_metrics``
-management command and its single-replica deployment. Two replicas would report every gauge
-twice.
+They must be collected by exactly a single process, so they live in the ``export_metrics``
+management command and its single-replica deployment, to avoid reporting a gauge multiple
+times.
 
 Cardinality: ``refresh_age`` is per dataset (~384 stable series -- "which dataset is stale"
-is the question being asked), but ``value_age`` is aggregated **per platform**, not per
+is the question being asked), but ``value_age`` is aggregated per platform, not per
 timeseries. There are thousands of timeseries and they churn as series are retired, so
 per-series gauges would be both large and unstable; the admin already shows per-series
 detail.
@@ -118,7 +118,7 @@ def _datasets_never_refreshed():
 def _timeseries_value_ages():
     """Age of the newest and oldest observation per platform, server and series type.
 
-    A single aggregate query -- deliberately not the row-by-row iteration used by
+    A single aggregate query, not the row-by-row iteration used by
     `more_thank_a_week_old`, which loads every stale series into Python.
     """
     from django.db.models import Max, Min  # noqa: PLC0415
@@ -243,11 +243,13 @@ def _constraint_group_info():
     :mod:`buoy_barn.observability.metrics`. The rule exists because that JSON on a counter
     multiplies with every outcome and every request; here there is exactly one series per
     (dataset, group), it is rewritten once per collection cycle, and the exporter is the only
-    process publishing it. The cost is label *value* length, not series count.
+    process publishing it. The cost is label value length, not series count.
 
-    Deliberately uses the same ``active=True, end_time IS NULL`` filter as
-    ``group_timeseries_by_constraint_and_type``, so the groups described here are exactly the
-    groups the refresh path actually fetches.
+    Selects through ``TimeSeries.objects.refreshable()``, the same queryset method
+    ``group_timeseries_by_constraint_and_type`` uses, so the groups described here are the
+    groups the refresh path actually fetches. A test asserts the two produce identical
+    ``(dataset, group_id)`` sets, since sharing a filter does not by itself keep the *key* in
+    step.
     """
     from opentelemetry.metrics import Observation  # noqa: PLC0415
 

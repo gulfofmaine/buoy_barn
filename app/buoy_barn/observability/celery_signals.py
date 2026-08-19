@@ -1,20 +1,16 @@
-"""Celery task metrics, wired entirely through signals.
+"""Celery task metrics, wired through Celery's signals rather than by editing any task, so
+adding a task automatically gets it measured.
 
-No task function is edited: everything here hangs off Celery's own signals, so adding a
-task automatically gets it measured.
-
-Two things are load-bearing about *where* this runs:
-
-* ``worker_process_init`` is the only correct place to configure the SDK in a prefork
+* ``worker_process_init`` is the place to configure the SDK in a prefork
   worker. See :mod:`buoy_barn.observability.bootstrap` for why configuring in the parent
   silently discards every metric.
-* ``before_task_publish`` fires in the **producer** -- the web process, beat, or the MQTT
-  command -- not in the worker. That is why ``buoy_barn.celery`` imports this module
+* ``before_task_publish`` fires in the producer, the web process, beat, or the MQTT
+  command, not in the worker. ``buoy_barn.celery`` imports this module
   rather than the worker importing it: every process that publishes a task needs the
   receiver installed, or queue latency goes unmeasured.
 
 Task counting deliberately uses ``task_postrun``'s ``state`` rather than ``task_failure``.
-``task_postrun`` fires for success, failure *and* retry, so counting in both places would
+``task_postrun`` fires for success, failure, and retry, so counting in both places would
 double-count every failure.
 """
 

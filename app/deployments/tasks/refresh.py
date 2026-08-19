@@ -33,7 +33,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
     """
     # A dataset is fetched once per (constraints, timeseries_type) group, so the group id is
     # what distinguishes one failing group from its healthy siblings in the metrics. It is
-    # opaque on purpose -- the exporter publishes buoybarn.erddap.constraint_group.info to map
+    # opaque on purpose, the exporter publishes buoybarn.erddap.constraint_group.info to map
     # it back, and it is logged below for when you are already reading logs.
     constraint_group = metrics.constraint_group_id(timeseries[0].constraints)
 

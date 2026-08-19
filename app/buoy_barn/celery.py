@@ -9,3 +9,9 @@ app = Celery("buoy_barn")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.autodiscover_tasks()
+
+# Imported for its side effect of connecting the metric signal receivers. It has to happen
+# here rather than in the worker, because `before_task_publish` fires in whichever process
+# publishes a task -- web, beat, or the MQTT command -- and `buoy_barn/__init__.py` imports
+# this module, so every one of them ends up with the receivers installed.
+from .observability import celery_signals  # noqa: E402,F401

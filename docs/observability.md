@@ -1,7 +1,7 @@
 # Observability
 
 Buoy Barn emits **metrics** over OTLP to an OpenTelemetry collector, and continues to send
-**errors and traces** to Sentry. One facade module is the single place instrumentation is
+**errors and traces** to Sentry. One module is the single place instrumentation is
 written, so adding a second destination is a configuration change rather than a rewrite.
 
 For the deployment steps, see [observability-deployment.md](./observability-deployment.md).
@@ -64,6 +64,11 @@ Nothing needs to be disabled for tests: the layer switches itself off when
 `DJANGO_ENV=test`, the same way Sentry does.
 
 ## What is exported
+
+Names below are the OTel instrument names used in the code. Prometheus sees them underscored,
+with `_total` on counters and `_seconds` on durations — see
+[the naming rules](./observability-deployment.md#metric-names-in-prometheus) before writing
+queries.
 
 ### ERDDAP upstream health
 

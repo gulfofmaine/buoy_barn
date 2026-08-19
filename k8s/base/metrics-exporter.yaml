@@ -7,8 +7,8 @@ metadata:
     role: exporter
   name: metrics-exporter
 spec:
-  # Load-bearing: these are database-derived gauges, so a second replica would report
-  # every series twice. Recreate rather than RollingUpdate for the same reason -- two
+  # These are database-derived gauges, so a second replica would report
+  # every series twice. Recreate rather than RollingUpdate for the same reason, two
   # overlapping pods during a rollout would double-count.
   replicas: 1
   strategy:

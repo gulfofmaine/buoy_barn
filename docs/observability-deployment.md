@@ -1,63 +1,39 @@
 # Deploying the observability changes
 
-This repository's `k8s/` directory is a **reference implementation**. Argo CD deploys from
-[`gulfofmaine/neracoos-aws-cd`](https://github.com/gulfofmaine/neracoos-aws-cd), so the
-changes below have to be made there too.
+`k8s/base/` in this repository is the kustomize base that
+[`gulfofmaine/neracoos-aws-cd`](https://github.com/gulfofmaine/neracoos-aws-cd) extends, so
+everything this PR adds to those manifests — the `OTEL_*` config, `BUOY_BARN_OTEL_ROLE` on
+each deployment, and the new `metrics-exporter` — flows through to the overlay automatically.
+Nothing needs re-creating there.
 
 See [observability.md](./observability.md) for what is exported and why.
 
-## Checklist
+## What still has to be done in the deploy repo
 
-### 1. Configuration
+Four things, none of which the base can supply.
 
-Add to the config map (mirrors `k8s/base/config.env`):
+### 1. Point at the real collector
+
+`k8s/base/config.env` carries a placeholder:
 
 ```
-OTEL_SERVICE_NAME=buoy-barn
 OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector.observability:4318
 ```
 
-Correct the endpoint to whatever the cluster's collector actually is. **Until this is set,
-every metric in the application is a no-op** — that is deliberate, so a partial rollout
-degrades to the previous behaviour instead of erroring.
+Patch it in the overlay to the cluster's actual collector address. **Until it resolves,
+every metric in the application is a no-op** — deliberately, so a partial rollout degrades to
+the previous behaviour instead of erroring.
 
-### 2. Per-deployment role
+### 2. Add the new secret
 
-Add `BUOY_BARN_OTEL_ROLE` to each deployment so metrics can be split by process type:
+`WEEKLY_OLD_TIMESERIES_HEALTHCHECK_URL` — the Healthchecks.io monitor for the weekly
+stale-timeseries task, which previously had no monitor at all. It belongs in
+`buoy-barn-secrets` alongside `HOURLY_REFRESH_HEALTHCHECK_URL`.
 
-| Deployment | Value |
-| --- | --- |
-| `web` | `web` |
-| `worker` | `worker` |
-| `beat` | `beat` |
-| `flower` | `flower` |
-| mqtt (if deployed) | `mqtt` |
-| `metrics-exporter` | `exporter` |
+### 3. Confirm the collector has a metrics pipeline
 
-It is guessed from the command line if unset, but setting it explicitly is cheaper than
-debugging a wrong guess.
-
-### 3. New `metrics-exporter` deployment
-
-Port `k8s/base/metrics-exporter.yaml`. It runs `manage.py export_metrics`, which serves the
-database-derived freshness gauges and Celery queue depth.
-
-- **`replicas: 1`.** These are gauges describing database state, so a second replica reports
-  every series twice.
-- **`strategy: Recreate`.** A rolling update would briefly run two pods, with the same
-  double-counting effect.
-
-It also sets `DJANGO_MANAGEPY_MIGRATE: "off"`: this pod is not part of the deploy ordering,
-and the web/worker/beat pods already contend for migrations on every rollout.
-
-### 4. Secrets
-
-Add `WEEKLY_OLD_TIMESERIES_HEALTHCHECK_URL` — the Healthchecks.io monitor for the weekly
-stale-timeseries task, which previously had no monitor.
-
-### 5. Confirm the collector accepts metrics
-
-The cluster collector must have a **metrics** pipeline, not just traces:
+Traces alone are not enough; it needs to accept OTLP **metrics** and export them to
+Prometheus:
 
 ```yaml
 receivers:
@@ -78,14 +54,15 @@ service:
       exporters: [prometheus]
 ```
 
-Then confirm Prometheus scrapes the collector's `prometheus` exporter endpoint. Application
-pods are **not** scrape targets — they push. This is why: granian runs 4 worker processes and
-the Celery worker forks a child per CPU, so an in-process `/metrics` endpoint could only ever
+Prometheus scrapes the collector's `prometheus` exporter endpoint. Application pods are
+**not** scrape targets — they push. This is why: granian runs 4 worker processes and the
+Celery worker forks a child per CPU, so an in-process `/metrics` endpoint could only ever
 show one process out of many.
 
-### 6. Healthchecks.io
+### 4. Configure the Healthchecks.io monitors
 
-Configure both monitors with a schedule and grace period, or a missed beat tick never alerts:
+Both monitors need a schedule and a grace period on the Healthchecks.io side, or a missed
+beat tick never alerts — the pings themselves are already in the code:
 
 | Monitor | Schedule |
 | --- | --- |
@@ -95,7 +72,7 @@ Configure both monitors with a schedule and grace period, or a missed beat tick 
 Grace periods should exceed the task's normal runtime. The hourly refresh fans out to every
 stale dataset, so give it room.
 
-### 7. Optional: start using the Sentry traces you already pay for
+## Optional: start using the Sentry traces you already pay for
 
 `SENTRY_TRACES_SAMPLE_RATE` defaults to `0`, so the span data that `CeleryIntegration` and
 `DjangoIntegration` already produce is being discarded. Set it to e.g. `0.1`.
@@ -131,6 +108,8 @@ Confirm the exact names against the collector's own metrics endpoint once before
 dashboards; translation defaults do shift between collector versions.
 
 ## Verifying the rollout
+
+The day-to-day queries live in [observability.md](./observability.md#queries-worth-keeping); these four are just the post-deploy smoke test.
 
 **1. Every process is exporting, including the Celery prefork children.** This is the check
 that matters most, because getting it wrong fails silently rather than loudly.
@@ -180,62 +159,7 @@ sum by (erddap_server, erddap_dataset, outcome) (
 sum by (erddap_dataset) (increase(buoybarn_erddap_outcome_total{outcome="unknown_error"}[6h])) > 0
 ```
 
-## Queries worth keeping
-
-**Stale data** — `agg="min"` is the age of the *freshest* reading, i.e. "is this buoy
-reporting at all":
-
-```promql
-max by (platform) (buoybarn_timeseries_value_age_seconds{agg="min"}) > 86400
-
-# Datasets not refreshed in over two hours, against a nominally hourly schedule
-max by (erddap_server, erddap_dataset) (buoybarn_dataset_refresh_age_seconds) > 7200
-```
-
-**Upstream latency**, to find the servers worth throttling or contacting:
-
-```promql
-histogram_quantile(0.95,
-  sum by (le, erddap_server) (rate(buoybarn_erddap_request_duration_seconds_bucket[30m]))
-)
-```
-
-**Task runtime against the 1800s hard limit** — `refresh_server` is the one to watch:
-
-```promql
-histogram_quantile(0.99,
-  sum by (le, celery_task) (rate(buoybarn_celery_task_duration_seconds_bucket[6h]))
-)
-```
-
-**Backlog and stuck tasks:**
-
-```promql
-buoybarn_celery_queue_depth
-
-histogram_quantile(0.95,
-  sum by (le, celery_task) (rate(buoybarn_celery_task_queue_latency_seconds_bucket[30m]))
-)
-
-# In-progress stays above zero while nothing completes -> wedged worker
-sum by (celery_task) (buoybarn_celery_task_in_progress) > 0
-  and sum by (celery_task) (increase(buoybarn_celery_task_count_total{celery_state="success"}[30m])) == 0
-```
-
-**Silently failing Healthchecks.io pings** — every ping call site swallows its exception, so
-without this a monitor that stopped being pinged looks identical to a healthy one:
-
-```promql
-sum by (monitor) (increase(buoybarn_healthcheck_ping_total{outcome="error"}[1d])) > 0
-```
-
-**Error log volume by module**, the coarse backstop for anything the outcome counter misses:
-
-```promql
-sum by (logger) (rate(buoybarn_log_records_total{level="error"}[1h]))
-```
-
-## Rolling back
+## Disabling
 
 Unset `OTEL_EXPORTER_OTLP_ENDPOINT`. Every metric call becomes a no-op with no exporter
 threads and no network traffic; the application behaves exactly as it did before. The

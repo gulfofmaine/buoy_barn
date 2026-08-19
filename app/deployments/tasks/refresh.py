@@ -31,17 +31,26 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
         timeseries: List of timeseries to update
         clear_end_time: If True, clear the end_time field when data is successfully retrieved
     """
+    # A dataset is fetched once per (constraints, timeseries_type) group, so the group id is
+    # what distinguishes one failing group from its healthy siblings in the metrics. It is
+    # opaque on purpose -- the exporter publishes buoybarn.erddap.constraint_group.info to map
+    # it back, and it is logged below for when you are already reading logs.
+    constraint_group = metrics.constraint_group_id(timeseries[0].constraints)
+
     with (
         sentry_sdk.new_scope() as scope,
         metrics.erddap_request(
             timeseries[0].dataset.server,
             timeseries[0].dataset.name,
+            constraint_group=constraint_group,
+            timeseries_type=timeseries[0].timeseries_type,
         ) as outcome,
     ):
         scope.set_tag("erddap-server", timeseries[0].dataset.server)
         scope.set_tag("erddap-dataset", timeseries[0].dataset.name)
+        scope.set_tag("erddap-constraint-group", constraint_group)
 
-        logger.info(f"Working on timeseries: {timeseries}")
+        logger.info(f"Working on timeseries: {timeseries} (group {constraint_group})")
         try:
             timeseries_df = retrieve_dataframe(
                 timeseries[0].dataset.server,

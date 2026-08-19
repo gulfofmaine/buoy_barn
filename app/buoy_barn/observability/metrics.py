@@ -18,8 +18,11 @@ per server -- the unit you actually act on, since you throttle or contact a serv
 dataset -- while per-dataset detail lives on the cheap counter.
 """
 
+import hashlib
+import json
 import logging
 import os
+import re
 import time
 from contextlib import contextmanager
 
@@ -29,6 +32,48 @@ logger = logging.getLogger(__name__)
 
 #: Sentinel for an attribute value outside its declared set.
 OTHER = "other"
+
+#: Attribute value for a group with no ERDDAP constraints at all -- the common case, and far
+#: more readable in a dashboard than the hash of an empty dict.
+NO_CONSTRAINTS = "none"
+
+#: A constraint group id is 8 lowercase hex characters. Because the value is a hash it cannot
+#: be validated against a frozenset like every other attribute, so its *shape* is validated
+#: instead -- which preserves the guarantee that no free text ever reaches a label.
+_GROUP_ID_RE = re.compile(r"^[0-9a-f]{8}$")
+
+#: Length of the hex prefix used as a group id. 8 characters is ~4 billion values, which is
+#: ample for the low thousands of real groups, and short enough to read in a dashboard.
+_GROUP_ID_LENGTH = 8
+
+
+def canonical_constraints(constraints) -> str:
+    """Serialise an ERDDAP constraints mapping so equal constraints always match.
+
+    ``sort_keys`` is what makes this stable: the same constraints built in a different order
+    must produce the same string, or the same group would be counted under two ids.
+    """
+    return json.dumps(constraints or {}, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def constraint_group_id(constraints) -> str:
+    """Short stable id for one ERDDAP constraint group.
+
+    A dataset is fetched once per ``(constraints, timeseries_type)`` group, so one group can
+    fail while its siblings succeed. This id is what makes that distinguishable on
+    ``buoybarn.erddap.outcome`` without putting the unbounded constraints JSON on a hot
+    counter.
+
+    The id is opaque by design, so it is only useful alongside the
+    ``buoybarn.erddap.constraint_group.info`` lookup metric the exporter publishes -- see
+    :mod:`buoy_barn.observability.freshness`. Both call this function, which is what keeps
+    the two sides joinable.
+    """
+    if not constraints:
+        return NO_CONSTRAINTS
+    digest = hashlib.sha256(canonical_constraints(constraints).encode("utf-8")).hexdigest()
+    return digest[:_GROUP_ID_LENGTH]
+
 
 #: Outcome of one ERDDAP fetch. Mirrors the branches in ``deployments.tasks``.
 ERDDAP_OUTCOMES = frozenset(
@@ -53,6 +98,11 @@ ERDDAP_OUTCOMES = frozenset(
 
 CELERY_STATES = frozenset({"started", "success", "failure", "retry", "revoked", OTHER})
 
+#: TimeSeries.TimeSeriesType choices, plus "unknown" for a call site that did not supply one.
+TIMESERIES_TYPES = frozenset(
+    {"Observation", "Prediction", "Forecast", "Climatology", "unknown", OTHER},
+)
+
 PING_OUTCOMES = frozenset({"ok", "error", OTHER})
 
 LOG_LEVELS = frozenset({"debug", "info", "warning", "error", "critical", OTHER})
@@ -64,6 +114,17 @@ def _bounded(value, allowed: frozenset[str]) -> str:
     if text in allowed:
         return text
     logger.debug("Unexpected metric attribute %r; recording as %r", text, OTHER)
+    return OTHER
+
+
+def _bounded_group_id(value) -> str:
+    """Validate a constraint group id by shape, since a hash cannot be enumerated."""
+    if not value:
+        return NO_CONSTRAINTS
+    text = str(value)
+    if text == NO_CONSTRAINTS or _GROUP_ID_RE.match(text):
+        return text
+    logger.debug("Unexpected constraint group id %r; recording as %r", text, OTHER)
     return OTHER
 
 
@@ -181,14 +242,21 @@ def _mirror_to_sentry(key: str, attributes: dict) -> None:
         logger.debug("Could not mirror %s to Sentry metrics", key, exc_info=True)
 
 
-def record_erddap_request(
+def record_erddap_request(  # noqa: PLR0913 - one metric per dimension it records
     server,
     dataset,
     duration_s: float | None,
     outcome: str,
     rows: int | None = None,
+    constraint_group: str | None = None,
+    timeseries_type: str | None = None,
 ) -> None:
-    """Record one ERDDAP fetch: its duration, row count and outcome."""
+    """Record one ERDDAP fetch: its duration, row count and outcome.
+
+    ``constraint_group`` and ``timeseries_type`` land on the **counter only**. Putting either
+    on a histogram would multiply by its bucket count; on the counter each combination is a
+    single series and only the outcomes a group actually produces ever materialise.
+    """
     inst = instruments()
     if inst is None:
         return
@@ -197,7 +265,7 @@ def record_erddap_request(
         safe_outcome = _bounded(outcome, ERDDAP_OUTCOMES)
         server_name = str(server)
 
-        # Server-only on the histograms; dataset would multiply by the bucket count.
+        # Server-only on the histograms; dataset and group would multiply by the bucket count.
         inst.erddap_duration.record(
             max(float(duration_s), 0.0) if duration_s is not None else 0.0,
             {"erddap.server": server_name, "outcome": safe_outcome},
@@ -209,6 +277,10 @@ def record_erddap_request(
             "erddap.server": server_name,
             "erddap.dataset": str(dataset),
             "outcome": safe_outcome,
+            # Always present, even when a caller supplies neither, so a query never has to
+            # cope with the same metric existing both with and without these labels.
+            "constraint_group": _bounded_group_id(constraint_group),
+            "timeseries.type": _bounded(timeseries_type or "unknown", TIMESERIES_TYPES),
         }
         inst.erddap_outcome.add(1, attributes)
         if safe_outcome != "success":
@@ -245,7 +317,7 @@ class OutcomeTracker:
 
 
 @contextmanager
-def erddap_request(server, dataset):
+def erddap_request(server, dataset, constraint_group=None, timeseries_type=None):
     """Time an ERDDAP fetch and record its outcome on the way out.
 
     Used as a context manager so the call site stays a single ``with`` line even though
@@ -274,6 +346,8 @@ def erddap_request(server, dataset):
             time.monotonic() - started,
             tracker.outcome,
             tracker.rows,
+            constraint_group=constraint_group,
+            timeseries_type=timeseries_type,
         )
 
 

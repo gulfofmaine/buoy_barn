@@ -10,7 +10,9 @@ DJANGO_ENV=test), so any test asserting on metrics takes the `metric_reader` fix
 installs a real SDK provider backed by an in-memory reader.
 """
 
+import hashlib
 import logging
+import re
 import time
 from unittest.mock import patch
 
@@ -44,6 +46,7 @@ ROW_COUNT = 12
 EXPECTED_OK_PINGS = 2
 SIMULATED_QUEUE_WAIT_SECONDS = 5
 MINIMUM_OBSERVED_WAIT_SECONDS = 4.5
+EXPECTED_GAUGE_COUNT = 6
 
 
 class TestDisabledLayer:
@@ -477,3 +480,113 @@ class ErddapOutcomeMetricTestCase(TransactionTestCase):
 
         # And the swallowed error was also counted as a log record.
         assert self.metrics.counts("buoybarn.log.records", "level").get("error", 0) >= 1
+
+
+class TestConstraintGroupId:
+    """A dataset is fetched per (constraints, type) group, so the id is what makes one
+    failing group distinguishable from its healthy siblings."""
+
+    def test_empty_constraints_are_readable(self):
+        """Most datasets have no constraints; "none" beats the hash of an empty dict."""
+        assert metrics.constraint_group_id(None) == metrics.NO_CONSTRAINTS
+        assert metrics.constraint_group_id({}) == metrics.NO_CONSTRAINTS
+
+    def test_stable_and_order_independent(self):
+        """Same constraints built in a different order must not become two groups."""
+        first = metrics.constraint_group_id({"depth=": 1.0, "salinity_qc=": 0})
+        second = metrics.constraint_group_id({"salinity_qc=": 0, "depth=": 1.0})
+
+        assert first == second
+        assert first == metrics.constraint_group_id({"depth=": 1.0, "salinity_qc=": 0})
+
+    def test_distinct_constraints_are_distinct_ids(self):
+        assert metrics.constraint_group_id({"stationID=": "8447387"}) != metrics.constraint_group_id(
+            {"depth=": 1.0},
+        )
+
+    def test_id_shape(self):
+        assert re.fullmatch(r"[0-9a-f]{8}", metrics.constraint_group_id({"depth=": 1.0}))
+
+    def test_shape_validation_rejects_free_text(self):
+        """The value is a hash, so it cannot be checked against a frozenset like the other
+        attributes -- its shape is validated instead, keeping free text off labels."""
+        assert metrics._bounded_group_id("a1b2c3d4") == "a1b2c3d4"
+        assert metrics._bounded_group_id(None) == metrics.NO_CONSTRAINTS
+
+        for rejected in ('{"depth=": 1.0}', "NOTAHASH", "a1b2c3d", "A1B2C3D4", "a1b2c3d4e"):
+            assert metrics._bounded_group_id(rejected) == metrics.OTHER, rejected
+
+
+class TestConstraintGroupLabels:
+    def test_group_labels_are_on_the_counter_only(self, metric_reader):
+        """On a histogram they would multiply by the bucket count."""
+        group = metrics.constraint_group_id({"depth=": 1.0})
+
+        with metrics.erddap_request(
+            "neracoos",
+            "A01_all",
+            constraint_group=group,
+            timeseries_type="Observation",
+        ) as outcome:
+            outcome.set("not_found", rows=0)
+
+        for point in metric_reader.points(ERDDAP_OUTCOME):
+            assert point.attributes["constraint_group"] == group
+            assert point.attributes["timeseries.type"] == "Observation"
+
+        for name in (ERDDAP_DURATION, ERDDAP_ROWS):
+            for point in metric_reader.points(name):
+                assert "constraint_group" not in point.attributes
+                assert "timeseries.type" not in point.attributes
+
+    def test_labels_are_always_present(self, metric_reader):
+        """A query should never have to cope with the metric existing both with and without
+        these labels, so an unsupplied value still emits one."""
+        metrics.record_erddap_request("neracoos", "A01_all", 1.0, "success", rows=3)
+
+        point = metric_reader.points(ERDDAP_OUTCOME)[0]
+        assert point.attributes["constraint_group"] == metrics.NO_CONSTRAINTS
+        assert point.attributes["timeseries.type"] == "unknown"
+
+    def test_unknown_timeseries_type_collapses(self, metric_reader):
+        metrics.record_erddap_request(
+            "neracoos",
+            "A01_all",
+            1.0,
+            "success",
+            timeseries_type="NotAChoice",
+        )
+
+        assert metric_reader.points(ERDDAP_OUTCOME)[0].attributes["timeseries.type"] == metrics.OTHER
+
+
+class TestConstraintGroupInfo:
+    """The counter's group id is opaque, so the exporter publishes a lookup metric. If the two
+    sides ever disagree the Grafana join silently returns nothing."""
+
+    def test_exporter_label_is_the_canonical_form_the_id_hashes(self):
+        """Assert the relationship directly rather than trusting that both call one helper."""
+        for constraints in ({"depth=": 1.0, "salinity_qc=": 0}, {"stationID=": "8447387 "}):
+            group_id = metrics.constraint_group_id(constraints)
+            label = freshness._constraints_label(constraints)
+
+            assert label == metrics.canonical_constraints(constraints)
+            assert hashlib.sha256(label.encode("utf-8")).hexdigest()[:8] == group_id
+
+    def test_empty_constraints_agree_on_both_sides(self):
+        assert freshness._constraints_label({}) == metrics.NO_CONSTRAINTS
+        assert metrics.constraint_group_id({}) == metrics.NO_CONSTRAINTS
+
+    def test_absurd_constraints_are_truncated_without_affecting_the_id(self):
+        huge = {f"key{index}=": "x" * 20 for index in range(50)}
+
+        label = freshness._constraints_label(huge)
+
+        assert len(label) <= freshness.MAX_CONSTRAINTS_LABEL
+        assert label.endswith("\u2026")
+        # Truncation is presentational only; the id still hashes the full constraints.
+        assert re.fullmatch(r"[0-9a-f]{8}", metrics.constraint_group_id(huge))
+
+    def test_info_gauge_is_registered(self):
+        assert "buoybarn.erddap.constraint_group.info" in freshness.GAUGES
+        assert len(freshness.GAUGES) == EXPECTED_GAUGE_COUNT

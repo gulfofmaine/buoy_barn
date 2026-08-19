@@ -145,8 +145,9 @@ working.
 
 - [docs/observability.md](docs/observability.md) — what is exported, how it relates to
   Sentry, and how to work on it locally.
-- [docs/observability-deployment.md](docs/observability-deployment.md) — the checklist for
-  the `neracoos-aws-cd` deploy repository.
+- [docs/observability-deployment.md](docs/observability-deployment.md) — Prometheus metric
+  names, verification queries, and the few things the `neracoos-aws-cd` overlay still needs
+  on top of this repo's kustomize base.
 
 ### Starting Docker
 

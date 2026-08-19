@@ -159,6 +159,85 @@ def _timeseries_counts():
     ]
 
 
+#: Longest `constraints` label value the info metric will emit. The whole point of the metric
+#: is that the JSON lives on one bounded series rather than a hot counter, but a pathological
+#: constraints dict should still not be able to bloat it without limit.
+MAX_CONSTRAINTS_LABEL = 200
+
+
+def _constraints_label(constraints) -> str:
+    """Human-readable constraints for the lookup metric, truncated if absurdly long."""
+    from .metrics import NO_CONSTRAINTS, canonical_constraints  # noqa: PLC0415
+
+    if not constraints:
+        return NO_CONSTRAINTS
+    text = canonical_constraints(constraints)
+    if len(text) > MAX_CONSTRAINTS_LABEL:
+        return text[: MAX_CONSTRAINTS_LABEL - 1] + "\u2026"
+    return text
+
+
+def _constraint_group_info():
+    """Map each `constraint_group` id back to the constraints it stands for.
+
+    ``buoybarn.erddap.outcome`` is labelled with an opaque 8-character hash so that a failing
+    constraint group is distinguishable from its healthy siblings without the unbounded
+    constraints JSON ending up on a hot counter. That hash is useless on its own, so this is
+    the other half: the standard Prometheus info-metric pattern, always 1, carrying the
+    readable constraints as a label to be joined onto a failure panel.
+
+    Putting the JSON on a label here is a deliberate exception to the rule stated in
+    :mod:`buoy_barn.observability.metrics`. The rule exists because that JSON on a counter
+    multiplies with every outcome and every request; here there is exactly one series per
+    (dataset, group), it is rewritten once per collection cycle, and the exporter is the only
+    process publishing it. The cost is label *value* length, not series count.
+
+    Deliberately uses the same ``active=True, end_time IS NULL`` filter as
+    ``group_timeseries_by_constraint_and_type``, so the groups described here are exactly the
+    groups the refresh path actually fetches.
+    """
+    from opentelemetry.metrics import Observation  # noqa: PLC0415
+
+    from deployments.models import TimeSeries  # noqa: PLC0415
+
+    from .metrics import constraint_group_id  # noqa: PLC0415
+
+    # One query, grouped in Python. Walking datasets and calling
+    # group_timeseries_by_constraint_and_type() per dataset would be ~384 queries per cycle.
+    rows = TimeSeries.objects.filter(active=True, end_time__isnull=True).values(
+        "dataset__server__name",
+        "dataset__name",
+        "constraints",
+        "timeseries_type",
+    )
+
+    seen = {}
+    for row in rows:
+        group_id = constraint_group_id(row["constraints"])
+        key = (
+            _label(row["dataset__server__name"]),
+            _label(row["dataset__name"]),
+            group_id,
+            _label(row["timeseries_type"]),
+        )
+        if key not in seen:
+            seen[key] = _constraints_label(row["constraints"])
+
+    return [
+        Observation(
+            1,
+            {
+                "erddap.server": server,
+                "erddap.dataset": dataset,
+                "constraint_group": group_id,
+                "timeseries.type": timeseries_type,
+                "constraints": constraints,
+            },
+        )
+        for (server, dataset, group_id, timeseries_type), constraints in seen.items()
+    ]
+
+
 def _celery_queue_depths():
     """Length of each Celery queue on the Redis broker.
 
@@ -220,6 +299,11 @@ GAUGES = {
         "{task}",
         "Tasks waiting on each Celery queue",
         _celery_queue_depths,
+    ),
+    "buoybarn.erddap.constraint_group.info": (
+        "1",
+        "Lookup from a constraint_group id to the constraints it stands for; always 1",
+        _constraint_group_info,
     ),
 }
 

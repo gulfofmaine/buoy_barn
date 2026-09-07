@@ -9,6 +9,7 @@ resources:
   - celery-beat.yaml
   - celery-flower.yaml
   - celery-flower-service.yaml
+  - metrics-exporter.yaml
 configMapGenerator:
   - name: buoy-barn-config
     envs:

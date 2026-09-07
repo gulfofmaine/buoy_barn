@@ -35,6 +35,9 @@ spec:
             - configMapRef:
                 name: buoy-barn-config
           env:
+            # Tags every metric with which kind of process produced it.
+            - name: BUOY_BARN_OTEL_ROLE
+              value: "beat"
             - name: DJANGO_MANAGEPY_MIGRATE
               value: "on"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC

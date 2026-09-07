@@ -1,10 +1,6 @@
-import logging
-
 from django.db import models
 
 from .program import Program
-
-logger = logging.getLogger(__name__)
 
 
 class ErddapServer(models.Model):
@@ -80,30 +76,12 @@ class ErddapServer(models.Model):
 
     def healthcheck_start(self):
         """Signal that a process has started with Healthchecks.io"""
-        hc_url = self.healthcheck_url
+        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
 
-        if hc_url:
-            import requests  # noqa: PLC0415
-
-            try:
-                requests.get(hc_url + "/start", timeout=5)
-            except requests.RequestException as error:
-                logger.error(
-                    f"Unable to send healthcheck start for {self.name} due to: {error}",
-                    exc_info=True,
-                )
+        ping_healthcheck(self.healthcheck_url, self.name, start=True)
 
     def healthcheck_complete(self):
         """Signal that a process has completed with Healthchecks.io"""
-        hc_url = self.healthcheck_url
+        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
 
-        if hc_url:
-            import requests  # noqa: PLC0415
-
-            try:
-                requests.get(hc_url, timeout=5)
-            except requests.RequestException as error:
-                logger.error(
-                    f"Unable to send healthcheck completion for {self.name} due to error: {error}",
-                    exc_info=True,
-                )
+        ping_healthcheck(self.healthcheck_url, self.name)

@@ -31,6 +31,7 @@ lint.ignore = [
 ]
 lint.extend-per-file-ignores."**/migrations/*.py" = [ "E501" ]
 lint.isort.known-first-party = [
+  "buoy_barn",
   "deployments",
   "forecasts",
 ]

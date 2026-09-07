@@ -117,7 +117,17 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
                     ),
                     level=level,
                     constraint_group=constraint_group,
-                    context={"constraints": timeseries[0].constraints, "error": str(error)},
+                    context={
+                        # `dataset` and `server` are what `observability.promql.query_for`
+                        # needs to build this message's own history query, so they are
+                        # recorded even though the subject already implies them -- the query
+                        # is built at render time from `context` alone, without a database
+                        # round trip back to the subject.
+                        "dataset": timeseries[0].dataset.name,
+                        "server": str(timeseries[0].dataset.server),
+                        "constraints": timeseries[0].constraints,
+                        "error": str(error),
+                    },
                 )
 
             outcome.set(handled or Outcome.UNKNOWN_ERROR)
@@ -221,6 +231,8 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
                         ),
                         level=SystemMessage.Level.INFO,
                         context={
+                            "dataset": series.dataset.name,
+                            "server": str(series.dataset.server),
                             "new_value_time": new_value_time.isoformat(),
                             "previous_end_time": previous_end_time.isoformat(),
                         },
@@ -301,6 +313,11 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
                 ),
                 level=SystemMessage.Level.WARNING,
                 context={
+                    # `server` rather than `dataset`: backoff is a property of the server
+                    # being slow, so the query this message links to is the request-duration
+                    # histogram for the server, not the dataset's outcome counter.
+                    "server": str(dataset.server),
+                    "dataset": dataset.name,
                     "previous_request_refresh_time_seconds": request_refresh_time_seconds,
                     "new_request_refresh_time_seconds": new_request_refresh_time_seconds,
                     "constraints": constraints,

@@ -348,6 +348,12 @@ if SLACK_API_TOKEN and SLACK_API_CHANNEL:
         "schedule": crontab(day_of_week=1, hour=15, minute=0),  # Mondays at 10-ish
     }
 
+# Grafana Explore deep links for SystemMessages (buoy_barn/observability/promql.py). Optional
+# and off by default: the PromQL text is always shown and always copyable, so the link is an
+# upgrade over that, not a dependency -- Grafana is not deployed for this project today.
+GRAFANA_BASE_URL = os.environ.get("GRAFANA_BASE_URL", "")
+GRAFANA_PROMETHEUS_UID = os.environ.get("GRAFANA_PROMETHEUS_UID", "")
+
 # Bumping the maximum number of fields to allow editing platforms
 # with many timeseries in the admin
 # https://docs.djangoproject.com/en/5.2/ref/settings/#data-upload-max-number-fields

@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 from django.test import TransactionTestCase
 
-from buoy_barn.observability import metrics
+from buoy_barn.observability import metrics, promql
 from deployments import tasks
 from deployments.models import (
     DataType,
@@ -429,6 +429,17 @@ class TaskErrorTestCase(TransactionTestCase):
         )
         assert message.level == SystemMessage.Level.DANGER
         assert message.constraint_group == metrics.constraint_group_id(ts.constraints)
+
+        # The emitter's `context` and `promql.query_for`'s required keys are two halves of one
+        # contract that nothing else checks: drop "dataset" from the context above and every
+        # test still passes while the admin quietly stops offering a query. Assert the whole
+        # round trip rather than the presence of a key.
+        query = promql.query_for(
+            message.code,
+            {**message.context, "constraint_group": message.constraint_group},
+        )
+        assert query is not None
+        assert dataset.name in query
 
     @my_vcr.use_cassette("400_unrecognized_variable")
     def test_400_unrecognized_variable(self):

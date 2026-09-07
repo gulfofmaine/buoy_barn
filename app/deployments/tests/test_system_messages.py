@@ -1,9 +1,11 @@
 from datetime import timedelta
+from unittest.mock import patch
 
 import pytest
 from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
+from freezegun import freeze_time
 
 from deployments.models import (
     DataType,
@@ -13,6 +15,7 @@ from deployments.models import (
     SystemMessage,
     TimeSeries,
 )
+from deployments.utils.system_messages import record_system_message, resolve_system_messages
 
 
 @pytest.mark.django_db
@@ -191,7 +194,7 @@ class SystemMessageTestCase(TestCase):
 
         with self.assertNumQueries(1):
             results = list(
-                SystemMessage.objects.for_objects([self.platform, self.dataset, self.timeseries])
+                SystemMessage.objects.for_objects([self.platform, self.dataset, self.timeseries]),
             )
 
         self.assertCountEqual(
@@ -204,3 +207,221 @@ class SystemMessageTestCase(TestCase):
             results = list(SystemMessage.objects.for_objects([]))
 
         self.assertEqual(results, [])
+
+
+@pytest.mark.django_db
+class SystemMessageUtilsTestCase(TestCase):
+    fixtures = ["platforms", "erddapservers", "datatypes"]
+
+    def setUp(self):
+        self.platform = Platform.objects.get(name="M01")
+        self.erddap_server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
+
+        self.dataset = ErddapDataset.objects.create(
+            name="M01_sbe37_all",
+            server=self.erddap_server,
+        )
+        self.timeseries = TimeSeries.objects.create(
+            platform=self.platform,
+            data_type=self.salinity,
+            variable="salinity",
+            depth=1,
+            dataset=self.dataset,
+        )
+
+    # -- record_system_message -------------------------------------------------------
+
+    def test_record_creates_a_row_with_one_occurrence(self):
+        message = record_system_message(
+            self.platform,
+            SystemMessage.Code.NOT_FOUND,
+            "Dataset not found",
+            level=SystemMessage.Level.WARNING,
+        )
+
+        self.assertIsNotNone(message)
+        self.assertEqual(message.occurrences, 1)
+        self.assertEqual(SystemMessage.objects.count(), 1)
+
+    def test_record_twice_reuses_the_row_and_bumps_occurrences(self):
+        with freeze_time("2024-01-01 00:00:00"):
+            first = record_system_message(
+                self.platform,
+                SystemMessage.Code.NOT_FOUND,
+                "Dataset not found",
+                level=SystemMessage.Level.WARNING,
+            )
+
+        with freeze_time("2024-01-02 00:00:00"):
+            second = record_system_message(
+                self.platform,
+                SystemMessage.Code.NOT_FOUND,
+                "Dataset not found again",
+                level=SystemMessage.Level.WARNING,
+            )
+
+        self.assertEqual(SystemMessage.objects.count(), 1)
+        self.assertEqual(second.pk, first.pk)
+        self.assertEqual(second.occurrences, 2)
+        self.assertGreater(second.last_seen, first.last_seen)
+        self.assertEqual(second.first_seen, first.first_seen)
+
+    def test_record_twice_overwrites_message_and_context(self):
+        record_system_message(
+            self.platform,
+            SystemMessage.Code.NOT_FOUND,
+            "First message",
+            level=SystemMessage.Level.WARNING,
+            context={"attempt": 1},
+        )
+        second = record_system_message(
+            self.platform,
+            SystemMessage.Code.NOT_FOUND,
+            "Second message",
+            level=SystemMessage.Level.WARNING,
+            context={"attempt": 2},
+        )
+
+        self.assertEqual(second.message, "Second message")
+        self.assertEqual(second.context, {"attempt": 2})
+
+    def test_recording_a_resolved_message_reopens_it(self):
+        message = record_system_message(
+            self.platform,
+            SystemMessage.Code.NOT_FOUND,
+            "Dataset not found",
+            level=SystemMessage.Level.WARNING,
+        )
+        message.resolved_at = timezone.now()
+        message.save()
+
+        reopened = record_system_message(
+            self.platform,
+            SystemMessage.Code.NOT_FOUND,
+            "Dataset not found again",
+            level=SystemMessage.Level.WARNING,
+        )
+
+        self.assertIsNone(reopened.resolved_at)
+        self.assertIn(reopened, SystemMessage.objects.outstanding())
+
+    def test_record_with_differing_constraint_group_creates_separate_rows(self):
+        record_system_message(
+            self.timeseries,
+            SystemMessage.Code.UNRECOGNIZED_CONSTRAINT,
+            "Bad constraint",
+            level=SystemMessage.Level.DANGER,
+            constraint_group="ab12cd34",
+        )
+        record_system_message(
+            self.timeseries,
+            SystemMessage.Code.UNRECOGNIZED_CONSTRAINT,
+            "Bad constraint",
+            level=SystemMessage.Level.DANGER,
+            constraint_group="ef56ab78",
+        )
+
+        self.assertEqual(SystemMessage.objects.count(), 2)
+
+    def test_record_never_raises_when_the_write_fails(self):
+        with patch.object(
+            SystemMessage.objects,
+            "update_or_create",
+            side_effect=RuntimeError("boom"),
+        ):
+            result = record_system_message(
+                self.platform,
+                SystemMessage.Code.NOT_FOUND,
+                "Dataset not found",
+                level=SystemMessage.Level.WARNING,
+            )
+
+        self.assertIsNone(result)
+        self.assertEqual(SystemMessage.objects.count(), 0)
+
+    # -- resolve_system_messages ------------------------------------------------------
+
+    def test_resolve_sets_resolved_at_and_returns_count(self):
+        record_system_message(
+            self.platform,
+            SystemMessage.Code.NOT_FOUND,
+            "Dataset not found",
+            level=SystemMessage.Level.WARNING,
+        )
+
+        count = resolve_system_messages(self.platform, SystemMessage.Code.NOT_FOUND)
+
+        self.assertEqual(count, 1)
+        message = SystemMessage.objects.get(
+            content_type__model="platform",
+            object_id=self.platform.pk,
+            code=SystemMessage.Code.NOT_FOUND,
+        )
+        self.assertIsNotNone(message.resolved_at)
+        self.assertNotIn(message, SystemMessage.objects.outstanding())
+
+    def test_resolve_leaves_other_codes_alone(self):
+        record_system_message(
+            self.platform,
+            SystemMessage.Code.NOT_FOUND,
+            "Dataset not found",
+            level=SystemMessage.Level.WARNING,
+        )
+        record_system_message(
+            self.platform,
+            SystemMessage.Code.FORBIDDEN,
+            "Forbidden",
+            level=SystemMessage.Level.DANGER,
+        )
+
+        resolve_system_messages(self.platform, SystemMessage.Code.NOT_FOUND)
+
+        still_outstanding = SystemMessage.objects.outstanding().get(
+            code=SystemMessage.Code.FORBIDDEN,
+        )
+        self.assertIsNone(still_outstanding.resolved_at)
+
+    def test_resolve_with_constraint_group_only_resolves_that_group(self):
+        record_system_message(
+            self.timeseries,
+            SystemMessage.Code.UNRECOGNIZED_CONSTRAINT,
+            "Bad constraint",
+            level=SystemMessage.Level.DANGER,
+            constraint_group="ab12cd34",
+        )
+        record_system_message(
+            self.timeseries,
+            SystemMessage.Code.UNRECOGNIZED_CONSTRAINT,
+            "Bad constraint",
+            level=SystemMessage.Level.DANGER,
+            constraint_group="ef56ab78",
+        )
+
+        count = resolve_system_messages(
+            self.timeseries,
+            SystemMessage.Code.UNRECOGNIZED_CONSTRAINT,
+            constraint_group="ab12cd34",
+        )
+
+        self.assertEqual(count, 1)
+        resolved = SystemMessage.objects.get(constraint_group="ab12cd34")
+        untouched = SystemMessage.objects.get(constraint_group="ef56ab78")
+        self.assertIsNotNone(resolved.resolved_at)
+        self.assertIsNone(untouched.resolved_at)
+
+    def test_resolve_never_raises_when_the_write_fails(self):
+        record_system_message(
+            self.platform,
+            SystemMessage.Code.NOT_FOUND,
+            "Dataset not found",
+            level=SystemMessage.Level.WARNING,
+        )
+
+        with patch(
+            "deployments.utils.system_messages.ContentType.objects.get_for_model",
+            side_effect=RuntimeError("boom"),
+        ):
+            count = resolve_system_messages(self.platform, SystemMessage.Code.NOT_FOUND)
+
+        self.assertEqual(count, 0)

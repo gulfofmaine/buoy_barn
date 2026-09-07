@@ -1161,34 +1161,70 @@ class TestOutcomeVocabularyOwnership:
         for value in TimeSeries.TimeSeriesType.values:
             assert value in metrics.timeseries_types()
 
-    def test_every_outcome_the_code_returns_is_declared(self):
-        """Scans the handlers for returned string literals rather than trusting the list.
+    def test_every_outcome_the_code_names_exists(self):
+        """Every `Outcome.X` in the refresh path resolves to a real member.
 
-        This is the test that catches a new handler returning an outcome nobody added to
-        `OUTCOMES`, which `_bounded` would otherwise quietly record as "other".
+        This is what makes the enum worth more than a naming convention. A mistyped
+        `Outcome.NO_ROSW` is not a syntax error and ruff will not flag it -- it raises
+        `AttributeError` only when that particular error branch executes, which for a rare
+        ERDDAP failure could be months later, inside the very error handling that is
+        supposed to be keeping the failure visible. Checking it statically means a typo
+        fails here instead.
         """
-        returned = set()
+        referenced = set()
         for module in (error_handling, refresh):
             tree = ast.parse(pathlib.Path(module.__file__).read_text())
             for node in ast.walk(tree):
                 if (
-                    isinstance(node, ast.Return)
-                    and isinstance(node.value, ast.Constant)
-                    and isinstance(node.value.value, str)
-                    and node.value.value
+                    isinstance(node, ast.Attribute)
+                    and isinstance(node.value, ast.Name)
+                    and node.value.id == "Outcome"
                 ):
-                    returned.add(node.value.value)
-            # refresh.py names outcomes through `outcome.set("...")`, not by returning them.
+                    referenced.add(node.attr)
+
+        assert referenced, "no Outcome members referenced -- has the enum been bypassed?"
+        unknown = referenced - {member.name for member in error_handling.Outcome}
+        assert not unknown, f"Outcome members named but not defined: {unknown}"
+
+    def test_no_outcome_is_reported_as_a_bare_string(self):
+        """The other half: nobody may quietly go back to bare strings.
+
+        A bare string is what the enum exists to prevent, and it would slip past the test
+        above by never mentioning `Outcome` at all.
+        """
+        offenders = []
+        for module in (error_handling, refresh):
+            tree = ast.parse(pathlib.Path(module.__file__).read_text())
             for node in ast.walk(tree):
+                literals = []
+                if isinstance(node, ast.Return) and isinstance(node.value, ast.Constant):
+                    literals.append(node.value.value)
                 if (
                     isinstance(node, ast.Call)
                     and isinstance(node.func, ast.Attribute)
                     and node.func.attr == "set"
                     and node.args
                     and isinstance(node.args[0], ast.Constant)
-                    and isinstance(node.args[0].value, str)
                 ):
-                    returned.add(node.args[0].value)
+                    literals.append(node.args[0].value)
+                # NOT_HANDLED is the empty string, and is deliberately not an outcome.
+                offenders.extend(
+                    f"{pathlib.Path(module.__file__).name}:{node.lineno} -> {literal!r}"
+                    for literal in literals
+                    if isinstance(literal, str) and literal in error_handling.OUTCOMES
+                )
 
-        undeclared = returned - error_handling.OUTCOMES - {metrics.NO_CONSTRAINTS}
-        assert not undeclared, f"outcomes produced but not declared in OUTCOMES: {undeclared}"
+        assert not offenders, f"outcomes reported as bare strings instead of Outcome: {offenders}"
+
+    def test_the_exception_map_only_names_declared_outcomes(self):
+        """`_OUTCOME_BY_EXCEPTION` cannot use the enum, so pin its values instead.
+
+        It lives in `buoy_barn.observability.metrics`, which is imported while Django builds
+        `LOGGING` and so cannot import `deployments` at module scope. Its values are
+        therefore bare strings by necessity -- but they still have to be real outcomes, or
+        an escaping exception would be classified as something the vocabulary rejects and
+        recorded as "other".
+        """
+        values = set(metrics._OUTCOME_BY_EXCEPTION.values()) | {"unknown_error"}
+
+        assert values <= error_handling.OUTCOMES, values - error_handling.OUTCOMES

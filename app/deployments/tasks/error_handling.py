@@ -1,5 +1,6 @@
 import logging
 from datetime import timedelta
+from enum import StrEnum
 from http import HTTPStatus
 
 import pandas as pd
@@ -21,40 +22,54 @@ logger = logging.getLogger(__name__)
 #: it as harmless. See the outcome table in docs/observability.md.
 NOT_HANDLED = ""
 
-#: Every outcome the refresh path can report, declared here because this is where they are
-#: produced -- the handlers below return these strings, and `refresh.py` adds the few that
-#: describe the fetch itself rather than an error body.
-#: `buoy_barn.observability.metrics` reads this to validate the metric attribute, so a
-#: handler returning something absent from this set collapses to "other" rather than
-#: creating a new time series. A test asserts the two stay in step.
-OUTCOMES = frozenset(
-    {
-        # Set by refresh.py around the fetch, not by a handler.
-        "success",
-        "empty_dataframe",
-        "timeout",
-        "backoff",
-        "os_error",
-        "value_error",
-        "unknown_error",
-        # Returned by the handlers below.
-        "no_rows",
-        "not_found",
-        "forbidden",
-        "time_range_retired",
-        "constraint_out_of_range",
-        "no_matching_time",
-        "unrecognized_variable",
-        "unrecognized_constraint",
-        "server_error",
-    },
-)
 
-#: The outcomes that need no attention. Everything else in `OUTCOMES` corresponds to a
+class Outcome(StrEnum):
+    """Every outcome the refresh path can report.
+
+    Declared here because this is where they are produced: the handlers below return these,
+    and `refresh.py` names the few that describe the fetch itself rather than an error body.
+    An enum rather than bare strings so a handler cannot report a mistyped outcome -- which
+    would be validated away to "other" by
+    :func:`buoy_barn.observability.metrics.erddap_outcomes` and quietly leave the real
+    failure off every dashboard.
+
+    ``StrEnum`` specifically, not ``(str, Enum)``: members have to *be* their string, since
+    they are returned through ``-> str`` signatures, tested for truthiness against
+    :data:`NOT_HANDLED`, and handed to the metrics facade as an attribute value. With the
+    older idiom ``str(Outcome.NO_ROWS)`` is ``"Outcome.NO_ROWS"``, which is what would end
+    up on the time series.
+    """
+
+    # Named by refresh.py around the fetch, not by a handler.
+    SUCCESS = "success"
+    EMPTY_DATAFRAME = "empty_dataframe"
+    TIMEOUT = "timeout"
+    BACKOFF = "backoff"
+    OS_ERROR = "os_error"
+    VALUE_ERROR = "value_error"
+    UNKNOWN_ERROR = "unknown_error"
+
+    # Returned by the handlers below.
+    NO_ROWS = "no_rows"
+    NOT_FOUND = "not_found"
+    FORBIDDEN = "forbidden"
+    TIME_RANGE_RETIRED = "time_range_retired"
+    CONSTRAINT_OUT_OF_RANGE = "constraint_out_of_range"
+    NO_MATCHING_TIME = "no_matching_time"
+    UNRECOGNIZED_VARIABLE = "unrecognized_variable"
+    UNRECOGNIZED_CONSTRAINT = "unrecognized_constraint"
+    SERVER_ERROR = "server_error"
+
+
+#: The outcome vocabulary as plain strings, which is what
+#: `buoy_barn.observability.metrics` validates the metric attribute against.
+OUTCOMES = frozenset(outcome.value for outcome in Outcome)
+
+#: The outcomes that need no attention. Everything else in :class:`Outcome` corresponds to a
 #: handler that logs at ERROR, which is what makes "is anything broken?" expressible as
 #: `outcome not in BENIGN_OUTCOMES` rather than a list that has to be revised whenever a
 #: handler is added.
-BENIGN_OUTCOMES = frozenset({"success", "no_rows"})
+BENIGN_OUTCOMES = frozenset({Outcome.SUCCESS.value, Outcome.NO_ROWS.value})
 
 
 def handle_500_no_rows_error(timeseries_group, compare_text: str) -> str:
@@ -64,7 +79,7 @@ def handle_500_no_rows_error(timeseries_group, compare_text: str) -> str:
             f"{timeseries_group[0].dataset.name} with constraints "
             f"{timeseries_group[0].constraints} did not return any results",
         )
-        return "no_rows"
+        return Outcome.NO_ROWS
 
     return NOT_HANDLED
 
@@ -87,7 +102,7 @@ def handle_500_variable_actual_range_error(timeseries_group, compare_text: str) 
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "constraint_out_of_range"
+        return Outcome.CONSTRAINT_OUT_OF_RANGE
 
     return NOT_HANDLED
 
@@ -147,7 +162,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
                     exc_info=True,
                 )
 
-        return "time_range_retired"
+        return Outcome.TIME_RANGE_RETIRED
 
     return NOT_HANDLED
 
@@ -185,7 +200,7 @@ def handle_500_unrecognized_constraint(timeseries_group, compare_text: str) -> s
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "unrecognized_constraint"
+        return Outcome.UNRECOGNIZED_CONSTRAINT
 
     return NOT_HANDLED
 
@@ -263,7 +278,7 @@ def handle_400_unrecognized_variable(timeseries_group, compare_text: str) -> str
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "unrecognized_variable"
+        return Outcome.UNRECOGNIZED_VARIABLE
     return NOT_HANDLED
 
 
@@ -289,7 +304,7 @@ def handle_404_dataset_file_not_found(timeseries_group, compare_text: str) -> st
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "not_found"
+        return Outcome.NOT_FOUND
 
     return NOT_HANDLED
 
@@ -302,7 +317,7 @@ def handle_404_no_matching_time(timeseries_group, compare_text: str) -> str:
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "no_matching_time"
+        return Outcome.NO_MATCHING_TIME
 
     return NOT_HANDLED
 
@@ -321,7 +336,7 @@ def handle_404_no_matching_station(timeseries_group, compare_text: str) -> str:
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "not_found"
+        return Outcome.NOT_FOUND
 
     return NOT_HANDLED
 
@@ -337,7 +352,7 @@ def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> st
             extra=error_extra(timeseries_group, compare_text),
             exc_info=True,
         )
-        return "not_found"
+        return Outcome.NOT_FOUND
 
     return NOT_HANDLED
 
@@ -363,7 +378,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> str:  # noqa: PLR0
                     extra=error_extra(timeseries_group),
                     exc_info=True,
                 )
-                return "forbidden"
+                return Outcome.FORBIDDEN
 
             if error.__cause__.response.status_code == HTTPStatus.NOT_FOUND:
                 outcome = handle_404_errors(timeseries_group, error.__cause__.response.text)
@@ -386,7 +401,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> str:  # noqa: PLR0
                     extra=error_extra(timeseries_group, error.__cause__.response.text),
                     exc_info=True,
                 )
-                return "server_error"
+                return Outcome.SERVER_ERROR
 
             logger.error(
                 (
@@ -397,7 +412,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> str:  # noqa: PLR0
                 extra=error_extra(timeseries_group),
                 exc_info=True,
             )
-            return "unknown_error"
+            return Outcome.UNKNOWN_ERROR
 
         except AttributeError:
             pass
@@ -419,4 +434,4 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> str:  # noqa: PLR0
         extra=error_extra(timeseries_group),
         exc_info=True,
     )
-    return "unknown_error"
+    return Outcome.UNKNOWN_ERROR

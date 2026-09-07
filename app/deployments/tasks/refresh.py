@@ -17,7 +17,7 @@ from deployments.utils.erddap_datasets import (
     retrieve_dataframe,
 )
 
-from .error_handling import BackoffError, handle_http_errors
+from .error_handling import BackoffError, Outcome, handle_http_errors
 from .extrema import extrema_for_timeseries
 from .queue import task_queued
 
@@ -60,7 +60,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
             )
 
         except (ConnectError, TimeoutException) as error:
-            outcome.set("timeout")
+            outcome.set(Outcome.TIMEOUT)
             raise BackoffError(
                 f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
                 f"with constraint {timeseries[0].constraints}: {error}",
@@ -71,7 +71,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
             # "no_rows", ...) or "" when they did not, and may raise BackoffError -- which
             # the context manager classifies on its way out.
             handled = handle_http_errors(timeseries, error)
-            outcome.set(handled or "unknown_error")
+            outcome.set(handled or Outcome.UNKNOWN_ERROR)
             if handled:
                 return
 
@@ -87,7 +87,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
                 },
                 exc_info=True,
             )
-            outcome.set("os_error")
+            outcome.set(Outcome.OS_ERROR)
             return
 
         # Row count separates "the server answered with data" from "the server answered
@@ -95,7 +95,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
         # commented out. Per-series save failures below are deliberately *not* folded into
         # this outcome: the fetch itself succeeded, and those show up in buoybarn.log.records.
         rows = len(timeseries_df)
-        outcome.set("success" if rows else "empty_dataframe", rows=rows)
+        outcome.set(Outcome.SUCCESS if rows else Outcome.EMPTY_DATAFRAME, rows=rows)
 
         for series in timeseries:
             filtered_df = filter_dataframe(timeseries_df, series.variable)

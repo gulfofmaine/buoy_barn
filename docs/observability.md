@@ -221,6 +221,111 @@ on. `healthcheck.ping` exists because every Healthchecks.io ping site swallows
 `requests.RequestException`, so a monitor that silently stops being pinged used to look
 exactly like a healthy one.
 
+## Admin system messages
+
+The refresh pipeline above acts on its own and swallows almost every error it meets — that
+is the whole reason the outcome counter exists. The most consequential of those self-directed
+actions is `TimeSeries.end_time`: `handle_500_time_range_error` writes it when ERDDAP reports
+that a dataset's data ends before the requested range, and a set `end_time` retires that
+series from every future refresh and from Mariners Dashboard (issue #1855) without telling
+anyone. Metrics made that failure mode visible on a dashboard; `SystemMessage` makes it
+visible to the admin who can decide whether the retirement is correct and undo it if not.
+
+A `SystemMessage` is a small, machine-written row — level, code, a human-readable
+explanation, and a generic foreign key to whatever subject it concerns — surfaced as a
+sidebar on the Platform, Dataset, Server and Timeseries change pages
+(`SystemMessageSidebarMixin`), and in its own `SystemMessageAdmin` listing.
+
+### What gets recorded, and at what level
+
+| Outcome | Code | Level | Subject |
+| --- | --- | --- | --- |
+| `forbidden` | `forbidden` | `danger` | Dataset |
+| `not_found` | `not_found` | `danger` | Dataset |
+| `unrecognized_variable` | `unrecognized_variable` | `warning` | Dataset |
+| `unrecognized_constraint` | `unrecognized_constraint` | `warning` | Dataset |
+| `server_error` | `server_error` | `warning` | Dataset |
+| `unknown_error` | `unknown_error` | `warning` | Dataset |
+| `time_range_retired` | `end_time_retired` | `danger` | Timeseries |
+| *(a later fetch supersedes a retirement)* | `end_time_cleared` | `info` | Timeseries |
+| *(per-run backoff in `refresh_dataset`, not a fetch outcome)* | `backoff_increased` | `warning` | Dataset |
+
+The first six rows are `_FETCH_FAILURE_MESSAGES` in `refresh.py`, keyed by the same
+`Outcome` values the metrics facade records — a dict rather than a chain of `if`s, so adding
+a new outcome forces a decision about its message instead of silently emitting nothing. The
+subject for all six is the `ErddapDataset`, which is what `update_values_for_timeseries` has
+in hand when the fetch fails.
+
+Only outcomes that are not in `BENIGN_OUTCOMES` get an entry, and that split is decided once,
+not here — see [the benign/actionable table above](#erddap-upstream-health): the level a
+handler logs at says whether its condition is benign, and `handle_500_no_rows_error` is the
+only handler that logs at `INFO`. This doc will not restate that rule a second time; folding
+an actionable outcome into a benign one hides a real misconfiguration, which is exactly what
+that table already warns against.
+
+`time_range_retired` has no row of its own in `_FETCH_FAILURE_MESSAGES` — not because it is
+benign, but because `handle_500_time_range_error` already records a message for it directly,
+one per affected timeseries, under `end_time_retired` rather than `time_range_retired`. A
+dataset-level message could only say "something is wrong with this dataset";
+`end_time_retired` names the exact platform that stopped refreshing, which is the more useful
+subject to attach it to.
+
+### Deduplication
+
+Every message is upserted on the `(content_type, object_id, code, constraint_group)` key
+`SystemMessage`'s unique constraint enforces, in `record_system_message`. A recurring problem
+bumps `occurrences` and `last_seen` on the row that is already there instead of creating a
+new one — the equivalent Sentry issue for one of these failure shapes carries roughly 17,000
+events in 90 days, and a table with one row per event would be as unreadable as the logs this
+feature exists to replace.
+
+### Acknowledgement is global, and contained
+
+Acknowledging a message is global, not per user: there is no per-viewer dismissal list, just
+`acknowledged_at` and `acknowledged_by` on the row itself. It is also not permanent —
+`SystemMessageQuerySet.outstanding()` treats a message as outstanding again once it recurs
+*after* being acknowledged (`last_seen` moves past `acknowledged_at`), so dismissing one
+occurrence cannot hide the next.
+
+Because acknowledging is global, a page may only offer the inline Acknowledge button when
+everything the message reaches is contained within that page — otherwise a click on one
+platform's page would silently dismiss a problem three other platforms still have.
+`admin.py`'s `compute_message_reach` resolves that reach through `TimeSeries`, the only model
+that joins platforms, datasets and servers together, and containment is judged along the axis
+the current page measures: a Platform page requires every platform reached to be this
+platform, a Dataset page requires every dataset reached to be this dataset, and so on.
+Concretely: a message attached to a dataset stops being dismissable inline from a platform
+page as soon as a *second* platform has a timeseries on that dataset — at that point
+acknowledging has to happen from the `SystemMessageAdmin` listing (or the dataset's own page)
+instead, where the "Impact" field spells out everything the click would dismiss.
+
+### Resolution
+
+A successful fetch resolves its own failures: once `update_values_for_timeseries` records
+`Outcome.SUCCESS` or `Outcome.EMPTY_DATAFRAME`, it calls `resolve_system_messages(dataset,
+*_FETCH_FAILURE_CODES, constraint_group=constraint_group)`, closing out the fetch-failure
+codes for that dataset and constraint group specifically. Clearing an `end_time` resolves
+the retirement that set it — `resolve_system_messages(series,
+SystemMessage.Code.END_TIME_RETIRED)` — with no constraint group given, since a series being
+un-retired has none of its own to narrow by.
+
+### The PromQL each message carries
+
+`buoy_barn/observability/promql.py`'s `query_for(code, context)` turns a message's `(code,
+context)` back into the query behind it, ready to paste into Grafana or copy from the admin.
+The eight fetch-failure and end-time codes above resolve to a `buoybarn_erddap_outcome_total`
+query scoped to the message's dataset — and constraint group, when it has one — over a 6h
+window, joined to `buoybarn_erddap_constraint_group_info` the same way as the constraint-group
+query [further down](#queries-worth-keeping). `backoff_increased` resolves to the
+request-duration histogram for the server instead, since a slow server is a latency problem,
+not a failed fetch — the outcome counter has nothing to say about it.
+
+The one trap worth knowing: `end_time_retired` links to the outcome counter and deliberately
+**not** to `buoybarn_timeseries_value_age_seconds`. `value_age` only covers active,
+non-retired series, so once a series is retired its age simply stops updating — it does not
+climb. A freshness panel linked from an `end_time_retired` message would show a reassuring
+flat line for the one failure mode with confirmed data loss (issue #1833).
+
 ## Queries worth keeping
 
 Ready to paste into Grafana Explore or a dashboard panel. Note the names below are the

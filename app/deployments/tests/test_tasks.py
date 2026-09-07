@@ -1,16 +1,22 @@
+from datetime import datetime
+from datetime import timezone as dt_timezone
 from unittest.mock import patch
 
 import pytest
 from django.test import TransactionTestCase
 
+from buoy_barn.observability import metrics
 from deployments import tasks
 from deployments.models import (
     DataType,
     ErddapDataset,
     ErddapServer,
     Platform,
+    SystemMessage,
     TimeSeries,
 )
+from deployments.tasks.error_handling import BackoffError
+from deployments.utils.system_messages import record_system_message
 
 from .vcr import my_vcr
 
@@ -128,6 +134,64 @@ class TaskTestCase(TransactionTestCase):
 
         self.assertIsNotNone(self.ts1.value)
         self.assertIsNotNone(self.ts2.value)
+
+    @my_vcr.use_cassette("tasks_update_values.yaml")
+    def test_update_values_resolves_a_previous_fetch_failure(self):
+        group = metrics.constraint_group_id(self.ts1.constraints)
+        record_system_message(
+            self.ds_M01_sbe37,
+            SystemMessage.Code.NOT_FOUND,
+            "previously not found",
+            level=SystemMessage.Level.DANGER,
+            constraint_group=group,
+        )
+
+        tasks.update_values_for_timeseries((self.ts1, self.ts2))
+
+        message = SystemMessage.objects.for_object(self.ds_M01_sbe37).get(
+            code=SystemMessage.Code.NOT_FOUND,
+        )
+        self.assertIsNotNone(message.resolved_at)
+
+    @my_vcr.use_cassette("tasks_update_values.yaml")
+    def test_update_values_clears_end_time_and_resolves_retirement(self):
+        self.ts1.end_time = datetime(2020, 1, 1, tzinfo=dt_timezone.utc)
+        self.ts1.save()
+
+        SystemMessage.objects.create(
+            subject=self.ts1,
+            code=SystemMessage.Code.END_TIME_RETIRED,
+            level=SystemMessage.Level.DANGER,
+            message="Retired earlier",
+        )
+
+        tasks.update_values_for_timeseries((self.ts1, self.ts2), clear_end_time=True)
+
+        self.ts1.refresh_from_db()
+        self.assertIsNone(self.ts1.end_time)
+
+        cleared = SystemMessage.objects.for_object(self.ts1).get(
+            code=SystemMessage.Code.END_TIME_CLEARED,
+        )
+        self.assertEqual(cleared.level, SystemMessage.Level.INFO)
+
+        retired = SystemMessage.objects.for_object(self.ts1).get(
+            code=SystemMessage.Code.END_TIME_RETIRED,
+        )
+        self.assertIsNotNone(retired.resolved_at)
+
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
+    def test_refresh_dataset_records_backoff_increase(self, update_values_for_timeseries):
+        update_values_for_timeseries.side_effect = BackoffError("timeout")
+
+        tasks.refresh_dataset(self.ds_M01_sbe37.id)
+
+        message = SystemMessage.objects.for_object(self.ds_M01_sbe37).get(
+            code=SystemMessage.Code.BACKOFF_INCREASED,
+        )
+        self.assertEqual(message.level, SystemMessage.Level.WARNING)
+        self.assertIn("previous_request_refresh_time_seconds", message.context)
+        self.assertIn("new_request_refresh_time_seconds", message.context)
 
     @patch("deployments.tasks.refresh.refresh_dataset.delay")
     @patch("deployments.tasks.refresh.task_queued")
@@ -272,6 +336,11 @@ class TaskErrorTestCase(TransactionTestCase):
 
         # assert "did not return any results" in self.caplog.text
 
+        # `no_rows` is benign -- the one outcome the observability docs call out as such --
+        # so it must never turn into a SystemMessage, or every quiet dataset would start
+        # looking like a standing failure in the admin.
+        assert SystemMessage.objects.count() == 0
+
     @my_vcr.use_cassette("500_no_rows_actual_range.yaml")
     def test_500_actual_range(self):
         a01 = Platform.objects.get(name="A01")
@@ -354,6 +423,12 @@ class TaskErrorTestCase(TransactionTestCase):
 
         assert ts.value is None
         assert "is currently unknown by the server" in self.caplog.text
+
+        message = SystemMessage.objects.for_object(dataset).get(
+            code=SystemMessage.Code.NOT_FOUND,
+        )
+        assert message.level == SystemMessage.Level.DANGER
+        assert message.constraint_group == metrics.constraint_group_id(ts.constraints)
 
     @my_vcr.use_cassette("400_unrecognized_variable")
     def test_400_unrecognized_variable(self):

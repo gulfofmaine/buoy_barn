@@ -7,6 +7,8 @@ import pandas as pd
 from django.utils import timezone
 from httpx import HTTPError, HTTPStatusError
 
+from buoy_barn.observability import metrics
+
 logger = logging.getLogger(__name__)
 
 #: Returned by a handler that did not recognise the error, so the caller keeps looking.
@@ -152,6 +154,16 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
         week_ago = timezone.now() - timedelta(days=7)
 
         if end_time < week_ago:
+            # Imported here, not at module scope: `deployments.utils.system_messages` sits
+            # behind `deployments.models`, and this module is imported early (by
+            # `deployments.tasks`, which Celery autodiscovers), so a module-level import risks
+            # a circular import during app startup. See the same pattern in
+            # `deployments/models/erddap_dataset.py`.
+            from deployments.models import SystemMessage  # noqa: PLC0415
+            from deployments.utils.system_messages import record_system_message  # noqa: PLC0415
+
+            constraint_group = metrics.constraint_group_id(timeseries_group[0].constraints)
+
             for ts in timeseries_group:
                 ts.end_time = end_time
                 ts.save()
@@ -160,6 +172,33 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
                     f"Set end time for {ts} to {end_time} based on responses",
                     extra=error_extra(timeseries_group, compare_text),
                     exc_info=True,
+                )
+
+                # This is the action from issue #1855 that can silently retire a live
+                # platform: writing `end_time` drops the series out of
+                # `TimeSeriesQuerySet.refreshable()`, so it stops being refreshed and stops
+                # rendering on Mariners Dashboard. The message is written for the admin who
+                # has to decide whether that is correct, not for a log reader, so it spells
+                # out what happened, why, the consequence, and the undo.
+                record_system_message(
+                    ts,
+                    SystemMessage.Code.END_TIME_RETIRED,
+                    (
+                        f"ERDDAP reported that {timeseries_group[0].dataset.name}'s data ends "
+                        f"at {end_time.isoformat()}, so Buoy Barn set this timeseries' end_time "
+                        "to that value. It will no longer be refreshed or displayed on Mariners "
+                        "Dashboard. If the platform is actually still live, use the "
+                        '"Remove end time for timeseries" action on this Platform in the admin '
+                        "to undo this."
+                    ),
+                    level=SystemMessage.Level.DANGER,
+                    constraint_group=constraint_group,
+                    context={
+                        "end_time": end_time.isoformat(),
+                        "dataset": timeseries_group[0].dataset.name,
+                        "server": str(timeseries_group[0].dataset.server),
+                        "constraints": timeseries_group[0].constraints,
+                    },
                 )
 
         return Outcome.TIME_RANGE_RETIRED

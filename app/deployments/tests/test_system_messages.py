@@ -15,6 +15,7 @@ from deployments.models import (
     SystemMessage,
     TimeSeries,
 )
+from deployments.tasks.error_handling import Outcome, handle_500_time_range_error
 from deployments.utils.system_messages import record_system_message, resolve_system_messages
 
 
@@ -425,3 +426,73 @@ class SystemMessageUtilsTestCase(TestCase):
             count = resolve_system_messages(self.platform, SystemMessage.Code.NOT_FOUND)
 
         self.assertEqual(count, 0)
+
+
+@pytest.mark.django_db
+class Handle500TimeRangeErrorTestCase(TestCase):
+    """`handle_500_time_range_error` is the origin of `end_time_retired` (issue #1855):
+
+    writing `end_time` drops a timeseries out of `TimeSeriesQuerySet.refreshable()`, silently
+    retiring a platform that is actually still live. These tests call the handler directly,
+    the same way `deployments.tasks.refresh.update_values_for_timeseries` reaches it through
+    `handle_http_errors` -> `handle_500_errors`, so the emitted SystemMessage and the
+    unchanged return value can both be asserted without a network fixture.
+    """
+
+    fixtures = ["platforms", "erddapservers", "datatypes"]
+
+    def setUp(self):
+        self.platform = Platform.objects.get(name="M01")
+        self.erddap_server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
+        self.water_temp = DataType.objects.get(standard_name="sea_water_temperature")
+
+        self.dataset = ErddapDataset.objects.create(
+            name="M01_sbe37_all",
+            server=self.erddap_server,
+        )
+        self.ts1 = TimeSeries.objects.create(
+            platform=self.platform,
+            data_type=self.salinity,
+            variable="salinity",
+            constraints={"depth=": 100.0},
+            start_time="2004-06-03 21:00:00+00",
+            dataset=self.dataset,
+        )
+        self.ts2 = TimeSeries.objects.create(
+            platform=self.platform,
+            data_type=self.water_temp,
+            variable="temperature",
+            constraints={"depth=": 100.0},
+            start_time="2004-06-03 21:00:00+00",
+            dataset=self.dataset,
+        )
+        self.compare_text = (
+            "Your query produced no matching results. (time&gt;=2020-10-04T19:40:20Z is "
+            "outside of the variable's actual_range: 2018-07-17T17:00:00Z to "
+            "2019-03-28T14:20:00Z)"
+        )
+
+    def test_retires_each_timeseries_and_records_a_danger_message(self):
+        result = handle_500_time_range_error([self.ts1, self.ts2], self.compare_text)
+
+        # Behaviour is unchanged: the handler still reports the outcome it always has.
+        self.assertEqual(result, Outcome.TIME_RANGE_RETIRED)
+
+        for ts in (self.ts1, self.ts2):
+            ts.refresh_from_db()
+            self.assertIsNotNone(ts.end_time)
+
+            message = SystemMessage.objects.for_object(ts).get(
+                code=SystemMessage.Code.END_TIME_RETIRED,
+            )
+            self.assertEqual(message.level, SystemMessage.Level.DANGER)
+            self.assertIn(ts.end_time.isoformat(), message.message)
+            self.assertEqual(message.context["end_time"], ts.end_time.isoformat())
+            self.assertEqual(message.context["dataset"], self.dataset.name)
+
+        # One message per retired timeseries, not one for the whole group.
+        self.assertEqual(
+            SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).count(),
+            2,
+        )

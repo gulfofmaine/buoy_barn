@@ -9,19 +9,52 @@ from httpcore import ConnectError
 from httpx import HTTPError, TimeoutException
 
 from buoy_barn.observability import metrics
-from deployments.models import ErddapDataset, ErddapServer, TimeSeries
+from deployments.models import ErddapDataset, ErddapServer, SystemMessage, TimeSeries
 from deployments.utils.erddap_datasets import (
     TIME_COLUMN,
     VALUE_COLUMN,
     filter_dataframe,
     retrieve_dataframe,
 )
+from deployments.utils.system_messages import record_system_message, resolve_system_messages
 
 from .error_handling import BackoffError, Outcome, handle_http_errors
 from .extrema import extrema_for_timeseries
 from .queue import task_queued
 
 logger = logging.getLogger(__name__)
+
+#: Swallowed `handle_http_errors` outcomes worth a SystemMessage, mapped to the (code, level)
+#: to record it at. A dict rather than a chain of ifs, so adding a new outcome forces a
+#: decision about its message instead of silently emitting nothing.
+#:
+#: `time_range_retired` is deliberately absent: `handle_500_time_range_error` already records
+#: `end_time_retired` for it, one message per affected timeseries rather than one per dataset,
+#: which is the more precise subject -- it names the exact platform that stopped refreshing
+#: instead of a dataset-wide "something is wrong".
+#:
+#: The benign outcomes (`success`, `no_rows`, and the fetch-succeeded-but-empty case) are
+#: absent for the same reason `BENIGN_OUTCOMES` exists in `error_handling.py`: the level a
+#: handler logs at says whether its condition is benign, and recording a SystemMessage for one
+#: would turn a routine empty response into standing dashboard noise.
+_FETCH_FAILURE_MESSAGES: dict[str, tuple[str, str]] = {
+    Outcome.FORBIDDEN: (SystemMessage.Code.FORBIDDEN, SystemMessage.Level.DANGER),
+    Outcome.NOT_FOUND: (SystemMessage.Code.NOT_FOUND, SystemMessage.Level.DANGER),
+    Outcome.UNRECOGNIZED_VARIABLE: (
+        SystemMessage.Code.UNRECOGNIZED_VARIABLE,
+        SystemMessage.Level.WARNING,
+    ),
+    Outcome.UNRECOGNIZED_CONSTRAINT: (
+        SystemMessage.Code.UNRECOGNIZED_CONSTRAINT,
+        SystemMessage.Level.WARNING,
+    ),
+    Outcome.SERVER_ERROR: (SystemMessage.Code.SERVER_ERROR, SystemMessage.Level.WARNING),
+    Outcome.UNKNOWN_ERROR: (SystemMessage.Code.UNKNOWN_ERROR, SystemMessage.Level.WARNING),
+}
+
+#: Derived from `_FETCH_FAILURE_MESSAGES` rather than listed again, so the "what gets recorded
+#: on failure" set and the "what gets resolved on success" set cannot drift apart.
+_FETCH_FAILURE_CODES = tuple(code for code, _level in _FETCH_FAILURE_MESSAGES.values())
 
 
 def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: bool = False):  # noqa: PLR0912 PLR0915
@@ -71,6 +104,22 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
             # "no_rows", ...) or "" when they did not, and may raise BackoffError -- which
             # the context manager classifies on its way out.
             handled = handle_http_errors(timeseries, error)
+
+            fetch_failure = _FETCH_FAILURE_MESSAGES.get(handled)
+            if fetch_failure is not None:
+                code, level = fetch_failure
+                record_system_message(
+                    timeseries[0].dataset,
+                    code,
+                    (
+                        f"Fetching {timeseries[0].dataset.name} with constraints "
+                        f"{timeseries[0].constraints} failed ({handled}): {error}"
+                    ),
+                    level=level,
+                    constraint_group=constraint_group,
+                    context={"constraints": timeseries[0].constraints, "error": str(error)},
+                )
+
             outcome.set(handled or Outcome.UNKNOWN_ERROR)
             if handled:
                 return
@@ -96,6 +145,15 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
         # this outcome: the fetch itself succeeded, and those show up in buoybarn.log.records.
         rows = len(timeseries_df)
         outcome.set(Outcome.SUCCESS if rows else Outcome.EMPTY_DATAFRAME, rows=rows)
+
+        # The fetch itself succeeded -- whether or not it returned rows -- so whatever fetch
+        # failure was previously recorded against this dataset and constraint group is over.
+        # Without this the list of outstanding messages only ever grows.
+        resolve_system_messages(
+            timeseries[0].dataset,
+            *_FETCH_FAILURE_CODES,
+            constraint_group=constraint_group,
+        )
 
         for series in timeseries:
             filtered_df = filter_dataframe(timeseries_df, series.variable)
@@ -145,11 +203,32 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
                 # Only clear if the new data is more recent than the end_time
                 # This prevents clearing end_time on dataset reloads without new data
                 if clear_end_time and series.end_time is not None and (new_value_time > series.end_time):
+                    previous_end_time = series.end_time
                     logger.info(
                         f"Clearing end_time for {series} - new data at {new_value_time} is after "
                         f"end_time {series.end_time}",
                     )
                     series.end_time = None
+
+                    record_system_message(
+                        series,
+                        SystemMessage.Code.END_TIME_CLEARED,
+                        (
+                            f"New data arrived at {new_value_time.isoformat()}, after the "
+                            f"previously recorded end_time of {previous_end_time.isoformat()}, "
+                            "so Buoy Barn cleared end_time. This timeseries will refresh and "
+                            "display again."
+                        ),
+                        level=SystemMessage.Level.INFO,
+                        context={
+                            "new_value_time": new_value_time.isoformat(),
+                            "previous_end_time": previous_end_time.isoformat(),
+                        },
+                    )
+                    # This un-retirement resolves the retirement message that caused it,
+                    # whatever constraint group recorded it -- clearing end_time has no single
+                    # constraint group of its own to scope the resolution by.
+                    resolve_system_messages(series, SystemMessage.Code.END_TIME_RETIRED)
 
                 series.value_time = new_value_time
                 series.save()
@@ -206,6 +285,26 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
                 f"{new_request_refresh_time_seconds}",
                 extra={"timeseries": timeseries, "constraints": constraints},
                 exc_info=True,
+            )
+            # This increase is per-run only (issue #1838): it lives on a local variable and
+            # is discarded when this task ends, so the message says so up front -- otherwise
+            # whoever reads it goes looking for a persisted backoff value in the admin that
+            # does not exist.
+            record_system_message(
+                dataset,
+                SystemMessage.Code.BACKOFF_INCREASED,
+                (
+                    f"Backing off after a timeout: the per-request delay increased from "
+                    f"{request_refresh_time_seconds}s to {new_request_refresh_time_seconds}s. "
+                    "This increase is per-run only -- it is discarded when this task ends, so "
+                    "there is nothing persisted to look for here in the admin."
+                ),
+                level=SystemMessage.Level.WARNING,
+                context={
+                    "previous_request_refresh_time_seconds": request_refresh_time_seconds,
+                    "new_request_refresh_time_seconds": new_request_refresh_time_seconds,
+                    "constraints": constraints,
+                },
             )
             request_refresh_time_seconds = new_request_refresh_time_seconds
 

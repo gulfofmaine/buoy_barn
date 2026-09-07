@@ -11,6 +11,7 @@ from .platform_link import PlatformLink
 from .program import Program
 from .program_attribution import ProgramAttribution
 from .station_type import StationType
+from .system_message import SystemMessage
 from .timeseries import TimeSeries
 
 __all__ = [
@@ -27,5 +28,6 @@ __all__ = [
     "ProgramAttribution",
     "Program",
     "StationType",
+    "SystemMessage",
     "TimeSeries",
 ]

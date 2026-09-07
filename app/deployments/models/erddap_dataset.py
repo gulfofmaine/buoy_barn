@@ -2,9 +2,11 @@ import logging
 import typing
 from collections import defaultdict
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
 from .erddap_server import ErddapServer
+from .system_message import SystemMessage
 
 if typing.TYPE_CHECKING:
     from .timeseries import TimeSeries
@@ -43,6 +45,8 @@ class ErddapDataset(models.Model):
             "Ask Alex to setup refreshing at a different rate."
         ),
     )
+
+    system_messages = GenericRelation(SystemMessage, related_query_name="erddap_dataset")
 
     class Meta:
         constraints = [

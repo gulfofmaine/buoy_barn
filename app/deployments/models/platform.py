@@ -1,8 +1,10 @@
 from datetime import date
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.gis.db import models
 
 from .program import Program
+from .system_message import SystemMessage
 
 
 class Platform(models.Model):
@@ -35,6 +37,8 @@ class Platform(models.Model):
     watch_circle_radius = models.IntegerField(null=True, blank=True)
 
     geom = models.PointField("Location", null=True)
+
+    system_messages = GenericRelation(SystemMessage, related_query_name="platform")
 
     def __str__(self):
         return self.name

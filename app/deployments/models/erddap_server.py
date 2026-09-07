@@ -1,6 +1,8 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
 from .program import Program
+from .system_message import SystemMessage
 
 
 class ErddapServer(models.Model):
@@ -63,6 +65,8 @@ class ErddapServer(models.Model):
         blank=True,
         max_length=64,
     )
+
+    system_messages = GenericRelation(SystemMessage, related_query_name="erddap_server")
 
     def __str__(self):
         if self.name:

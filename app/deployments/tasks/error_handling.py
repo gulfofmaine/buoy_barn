@@ -21,6 +21,41 @@ logger = logging.getLogger(__name__)
 #: it as harmless. See the outcome table in docs/observability.md.
 NOT_HANDLED = ""
 
+#: Every outcome the refresh path can report, declared here because this is where they are
+#: produced -- the handlers below return these strings, and `refresh.py` adds the few that
+#: describe the fetch itself rather than an error body.
+#: `buoy_barn.observability.metrics` reads this to validate the metric attribute, so a
+#: handler returning something absent from this set collapses to "other" rather than
+#: creating a new time series. A test asserts the two stay in step.
+OUTCOMES = frozenset(
+    {
+        # Set by refresh.py around the fetch, not by a handler.
+        "success",
+        "empty_dataframe",
+        "timeout",
+        "backoff",
+        "os_error",
+        "value_error",
+        "unknown_error",
+        # Returned by the handlers below.
+        "no_rows",
+        "not_found",
+        "forbidden",
+        "time_range_retired",
+        "constraint_out_of_range",
+        "no_matching_time",
+        "unrecognized_variable",
+        "unrecognized_constraint",
+        "server_error",
+    },
+)
+
+#: The outcomes that need no attention. Everything else in `OUTCOMES` corresponds to a
+#: handler that logs at ERROR, which is what makes "is anything broken?" expressible as
+#: `outcome not in BENIGN_OUTCOMES` rather than a list that has to be revised whenever a
+#: handler is added.
+BENIGN_OUTCOMES = frozenset({"success", "no_rows"})
+
 
 def handle_500_no_rows_error(timeseries_group, compare_text: str) -> str:
     """Did the request not return any rows? Returns true if handled"""

@@ -121,7 +121,11 @@ services:
   # instrumentation without a cluster. `docker compose logs -f otel-collector` is the
   # fastest way to check that the Celery prefork children are exporting.
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
+    # Pinned like every other image in this file. `latest` would mean an unchanged checkout
+    # breaks one day on its own: collector-contrib drops components across minor releases
+    # (the `logging` exporter went away in 0.120.0, for instance), and the config below
+    # names the components it needs.
+    image: otel/opentelemetry-collector-contrib:0.160.0@sha256:799dc6cf12c96192af37b5bdba804da8c10b3bc563b43cb90c3f3c58d9572ad6
     command: ["--config=/etc/otel/config.yaml"]
     volumes:
       - ./docker-data/otel-collector.yaml:/etc/otel/config.yaml:ro

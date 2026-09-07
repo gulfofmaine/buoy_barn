@@ -6,10 +6,11 @@ Design rules, in priority order:
    instrumentation. Every public function swallows its own errors and logs at most once.
 2. Be free when switched off - With no OTLP endpoint configured, each function returns
    after one dict lookup. See :mod:`buoy_barn.observability.bootstrap`.
-3. Keep cardinality bounded - Attribute values are validated against frozensets
-   declared here, so a future call site cannot quietly start labelling metrics with an
-   ERDDAP error string, a ``constraints`` blob, or a primary key. Unknown values collapse
-   to ``"other"`` rather than creating a new time series.
+3. Keep cardinality bounded - Attribute values are validated against a bounded set, so a
+   future call site cannot quietly start labelling metrics with an ERDDAP error string, a
+   ``constraints`` blob, or a primary key. Unknown values collapse to ``"other"`` rather
+   than creating a new time series. Vocabularies owned elsewhere are read from their owner
+   rather than restated here -- see :func:`erddap_outcomes` and :func:`timeseries_types`.
 
 Cardinality note: ``erddap.dataset`` appears on the *counter* only, not on a histogram.
 There are ~384 datasets across ~15 servers; multiplying that by a histogram's bucket count
@@ -46,8 +47,11 @@ _GROUP_ID_RE = re.compile(r"^[0-9a-f]{8}$")
 #: ample for the low thousands of real groups, and short enough to read in a dashboard.
 _GROUP_ID_LENGTH = 8
 
-#: Fallback for a server with neither a name nor a base URL. `ErddapServer.name` is nullable,
-#: and str(None) would put the literal "None" on a time series.
+#: Last-resort fallback for a server with neither a name nor a base URL. `ErddapServer.name`
+#: is nullable, so a nameless server is labelled by its `base_url` instead -- see
+#: :func:`server_label`. This constant covers only the case where both are empty, which the
+#: model does not really allow (`base_url` is not nullable); it exists so that a half-built
+#: row from a test or a migration cannot put the literal "None" on a time series.
 UNKNOWN_SERVER = "unknown"
 
 
@@ -75,7 +79,7 @@ def server_label(server, base_url=None) -> str:
 def canonical_constraints(constraints) -> str:
     """Serialise an ERDDAP constraints mapping so equal constraints always match.
 
-    ``sort_keys`` is what makes this stable: the same constraints built in a different order
+    ``sort_keys`` makes this stable: the same constraints built in a different order
     must produce the same string, or the same group would be counted under two ids.
     """
     return json.dumps(constraints or {}, sort_keys=True, separators=(",", ":"), default=str)
@@ -100,44 +104,71 @@ def constraint_group_id(constraints) -> str:
     return digest[:_GROUP_ID_LENGTH]
 
 
-#: Outcome of one ERDDAP fetch. Mirrors the branches in ``deployments.tasks``.
-#:
-#: Only ``success`` and ``no_rows`` are benign. Every other value corresponds to a handler
-#: that logs at ERROR, which is the rule that decides where a new branch belongs: a
-#: condition worth an ERROR is worth its own outcome, because folding it into ``no_rows``
-#: would hide a real misconfiguration behind a value dashboards treat as harmless.
-ERDDAP_OUTCOMES = frozenset(
-    {
-        "success",
-        "no_rows",
-        "empty_dataframe",
-        "not_found",
-        "forbidden",
-        "timeout",
-        "backoff",
-        "time_range_retired",
-        "constraint_out_of_range",
-        "no_matching_time",
-        "unrecognized_variable",
-        "unrecognized_constraint",
-        "server_error",
-        "unknown_error",
-        "os_error",
-        "value_error",
-        OTHER,
-    },
-)
-
 CELERY_STATES = frozenset({"started", "success", "failure", "retry", "revoked", OTHER})
-
-#: TimeSeries.TimeSeriesType choices, plus "unknown" for a call site that did not supply one.
-TIMESERIES_TYPES = frozenset(
-    {"Observation", "Prediction", "Forecast", "Climatology", "unknown", OTHER},
-)
 
 PING_OUTCOMES = frozenset({"ok", "error", OTHER})
 
 LOG_LEVELS = frozenset({"debug", "info", "warning", "error", "critical", OTHER})
+
+#: Vocabularies resolved from ``deployments``, cached after the first lookup.
+#:
+#: Two of the attribute vocabularies are owned elsewhere -- the ERDDAP outcomes by the
+#: handlers that produce them, the timeseries types by the model field's choices -- so they
+#: are read from there rather than restated here, where a second copy would silently drift
+#: and start collapsing real values to "other".
+#:
+#: Resolution has to be lazy. This module is imported while Django builds the ``LOGGING``
+#: setting (via :mod:`buoy_barn.observability.log_metrics`), which is long before the app
+#: registry exists, so importing a model or a task at module scope would break startup.
+#: By the time an ERDDAP outcome is recorded the caller is deep inside the refresh path and
+#: everything is loaded.
+_vocabularies: dict[str, frozenset[str]] = {}
+
+
+def _resolved(name: str, load) -> frozenset[str]:
+    """Cache and return one lazily-loaded vocabulary, including ``OTHER``."""
+    cached = _vocabularies.get(name)
+    if cached is not None:
+        return cached
+    try:
+        resolved = frozenset(load()) | {OTHER}
+    except Exception:
+        # Cannot happen from the refresh path, which has already imported both. Not cached,
+        # so a later call can still succeed; logged at debug because a validation failure
+        # degrades to "other" rather than losing the recording.
+        logger.debug("Could not resolve the %s vocabulary", name, exc_info=True)
+        return frozenset({OTHER})
+    _vocabularies[name] = resolved
+    return resolved
+
+
+def erddap_outcomes() -> frozenset[str]:
+    """Outcome of one ERDDAP fetch, as declared by the code that produces them.
+
+    Only ``success`` and ``no_rows`` are benign -- see ``BENIGN_OUTCOMES`` alongside the
+    declaration. Every other value corresponds to a handler that logs at ERROR, which is the
+    rule that decides where a new branch belongs: a condition worth an ERROR is worth its own
+    outcome, because folding it into ``no_rows`` would hide a real misconfiguration behind a
+    value dashboards treat as harmless.
+    """
+
+    def load():
+        from deployments.tasks.error_handling import OUTCOMES  # noqa: PLC0415
+
+        return OUTCOMES
+
+    return _resolved("erddap outcome", load)
+
+
+def timeseries_types() -> frozenset[str]:
+    """``TimeSeries.timeseries_type`` choices, plus "unknown" for an unsupplied one."""
+
+    def load():
+        from deployments.models import TimeSeries  # noqa: PLC0415
+
+        return set(TimeSeries.TimeSeriesType.values) | {"unknown"}
+
+    return _resolved("timeseries type", load)
 
 
 def _bounded(value, allowed: frozenset[str]) -> str:
@@ -242,7 +273,11 @@ _cache = _InstrumentCache()
 
 
 def instruments() -> _Instruments | None:
-    """Instrument set for this process, or None when metrics are switched off."""
+    """Instrument set for this process, or None when metrics are switched off.
+
+    Never raises. Callers hold the result before entering their own ``try``, so this
+    function is the boundary that keeps rule 1 -- instrumentation must not break a refresh.
+    """
     pid = os.getpid()
     if _cache.pid == pid and _cache.instruments is not None:
         return _cache.instruments
@@ -250,15 +285,28 @@ def instruments() -> _Instruments | None:
     if _cache.failed_pid == pid:
         return None
 
-    meter = bootstrap.get_meter()
+    # Guarded, and deliberately *not* memoized as a failure: acquiring a meter can fail
+    # transiently -- a `shutdown()` racing this call on another thread used to surface here
+    # as an AttributeError -- and a process that is merely mid-shutdown should not be
+    # permanently marked as broken. Nothing is logged either, so this cannot recurse
+    # through the metrics log handler. It matters that this is inside a try at all: every
+    # caller does `inst = instruments()` outside its own, so anything escaping here escapes
+    # into the refresh path and breaks rule 1.
+    try:
+        meter = bootstrap.get_meter()
+    except Exception:
+        logger.debug("Could not acquire a meter; skipping this recording", exc_info=True)
+        return None
+
     if meter is None:
         return None
 
     try:
         built = _Instruments(meter)
     except Exception:
-        # Remembered before logging, so that recording the log record below finds a
-        # switched-off layer rather than trying to build instruments again.
+        # A genuine build failure, so this one *is* remembered -- and remembered before
+        # logging, so that recording the log record below finds a switched-off layer
+        # rather than trying to build instruments again.
         _cache.failed_pid = pid
         logger.exception("Could not create metric instruments; metrics are disabled")
         return None
@@ -306,7 +354,7 @@ def record_erddap_request(  # noqa: PLR0913 - one metric per dimension it record
         return
 
     try:
-        safe_outcome = _bounded(outcome, ERDDAP_OUTCOMES)
+        safe_outcome = _bounded(outcome, erddap_outcomes())
         server_name = server_label(server)
 
         # Server-only on the histograms; dataset and group would multiply by the bucket count.
@@ -324,7 +372,7 @@ def record_erddap_request(  # noqa: PLR0913 - one metric per dimension it record
             # Always present, even when a caller supplies neither, so a query never has to
             # cope with the same metric existing both with and without these labels.
             "constraint_group": _bounded_group_id(constraint_group),
-            "timeseries.type": _bounded(timeseries_type or "unknown", TIMESERIES_TYPES),
+            "timeseries.type": _bounded(timeseries_type or "unknown", timeseries_types()),
         }
         inst.erddap_outcome.add(1, attributes)
         if safe_outcome != "success":
@@ -353,9 +401,16 @@ class OutcomeTracker:
     def __init__(self) -> None:
         self.outcome = "success"
         self.rows: int | None = None
+        #: Did a call site name the outcome? Tracked separately from its *value*, because
+        #: "success" is both the default and a real outcome a call site sets explicitly.
+        #: Testing `outcome == "success"` conflates the two, and then an exception raised
+        #: after a successful fetch -- from saving the rows, say -- rewrites a real success
+        #: into `unknown_error` and reports an ERDDAP failure that never happened.
+        self.explicit = False
 
     def set(self, outcome: str, rows: int | None = None) -> None:
         self.outcome = outcome
+        self.explicit = True
         if rows is not None:
             self.rows = rows
 
@@ -377,10 +432,15 @@ def erddap_request(server, dataset, constraint_group=None, timeseries_type=None)
     try:
         yield tracker
     except BaseException as exc:
-        # An exception escaping the block means the fetch did not succeed, even if nothing
-        # set an outcome -- most importantly BackoffError, which the 408/429 handlers raise
-        # from inside the caller's own `except HTTPError` branch.
-        if tracker.outcome == "success":
+        # An exception escaping the block before any outcome was named means the fetch
+        # itself did not succeed -- most importantly BackoffError, which the 408/429
+        # handlers raise from inside the caller's own `except HTTPError` branch.
+        #
+        # Only when nothing was named, though. This metric describes the *fetch*, so an
+        # exception from the work after a successful fetch (saving the rows) must not
+        # rewrite it into a fetch failure; those failures surface through
+        # buoybarn.log.records and Sentry instead.
+        if not tracker.explicit:
             tracker.set(_OUTCOME_BY_EXCEPTION.get(type(exc).__name__, "unknown_error"))
         raise
     finally:

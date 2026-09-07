@@ -10,8 +10,10 @@ DJANGO_ENV=test), so any test asserting on metrics takes the `metric_reader` fix
 installs a real SDK provider backed by an in-memory reader.
 """
 
+import ast
 import hashlib
 import logging
+import pathlib
 import re
 import threading
 import time
@@ -36,7 +38,7 @@ from deployments.models import (
     Platform,
     TimeSeries,
 )
-from deployments.tasks import error_handling
+from deployments.tasks import error_handling, refresh
 from deployments.tasks.error_handling import BackoffError
 from deployments.utils.healthchecks import ping_healthcheck
 
@@ -45,6 +47,7 @@ from .vcr import my_vcr
 ERDDAP_OUTCOME = "buoybarn.erddap.outcome"
 ERDDAP_DURATION = "buoybarn.erddap.request.duration"
 ERDDAP_ROWS = "buoybarn.erddap.request.rows"
+LOG_RECORDS = "buoybarn.log.records"
 
 #: Arbitrary but fixed values, named so the comparisons below read as intent.
 ROW_COUNT = 12
@@ -60,9 +63,6 @@ TWO_HOURS_SECONDS = 7200
 SIX_HOURS_SECONDS = 21600
 LEEWAY_SECONDS = 60
 
-#: The outcomes a dashboard may safely ignore. Every other outcome corresponds to a handler
-#: that logs at ERROR -- see the outcome table in docs/observability.md.
-BENIGN_OUTCOMES = {"success", "no_rows"}
 
 #: Two distinct constraint groups are set up by the grouping tests below.
 EXPECTED_GROUP_COUNT = 2
@@ -501,7 +501,7 @@ class ErddapOutcomeMetricTestCase(TransactionTestCase):
 
         outcomes = self.metrics.counts(ERDDAP_OUTCOME, "outcome")
         assert "success" not in outcomes, outcomes
-        assert set(outcomes) <= metrics.ERDDAP_OUTCOMES, outcomes
+        assert set(outcomes) <= metrics.erddap_outcomes(), outcomes
 
     @my_vcr.use_cassette("500.yaml")
     def test_task_succeeds_while_the_outcome_records_failure(self):
@@ -948,8 +948,8 @@ class TestOutcomeVocabulary:
     """The benign/actionable split is what dashboards alert on, so pin it."""
 
     def test_the_new_outcomes_are_declared(self):
-        assert "constraint_out_of_range" in metrics.ERDDAP_OUTCOMES
-        assert "no_matching_time" in metrics.ERDDAP_OUTCOMES
+        assert "constraint_out_of_range" in metrics.erddap_outcomes()
+        assert "no_matching_time" in metrics.erddap_outcomes()
 
     def test_error_level_handlers_do_not_report_a_benign_outcome(self):
         """`no_rows` is benign, so an ERROR-level condition needs an outcome of its own.
@@ -981,10 +981,10 @@ class TestOutcomeVocabulary:
         for handler, response_text, expected in cases:
             outcome = handler(group, response_text)
             assert outcome == expected, handler.__name__
-            assert outcome in metrics.ERDDAP_OUTCOMES, handler.__name__
+            assert outcome in metrics.erddap_outcomes(), handler.__name__
             # The rule under test: only the INFO-level handler may report a benign outcome.
             logs_at_info = handler is error_handling.handle_500_no_rows_error
-            assert (outcome in BENIGN_OUTCOMES) is logs_at_info, handler.__name__
+            assert (outcome in error_handling.BENIGN_OUTCOMES) is logs_at_info, handler.__name__
 
 
 class _FakeTimeSeries:
@@ -1003,3 +1003,192 @@ class _FakeTimeSeries:
 
     def __str__(self):
         return "fake timeseries"
+
+
+class TestOutcomeIsNotRewrittenAfterASuccessfulFetch:
+    """`erddap.outcome` describes the *fetch*, so later failures must not rewrite it.
+
+    `refresh.py` sets `success` explicitly once the rows are in hand, then saves each series.
+    A save failure (an `OperationalError`, say) propagates through the context manager, and
+    the tracker used to treat the *value* `"success"` as "nobody set an outcome" — so a fetch
+    that plainly worked was reported as `unknown_error`.
+    """
+
+    def test_explicit_success_survives_a_later_exception(self, metric_reader):
+        with pytest.raises(RuntimeError), metrics.erddap_request("server", "dataset") as outcome:
+            outcome.set("success", rows=ROW_COUNT)
+            # Stands in for the per-series save loop after a good fetch.
+            raise RuntimeError("the database went away while saving")
+
+        assert metric_reader.counts(ERDDAP_OUTCOME, "outcome") == {"success": 1}
+        # The row count from the successful fetch is still recorded.
+        assert metric_reader.points(ERDDAP_ROWS)[0].sum == ROW_COUNT
+
+    def test_an_unnamed_outcome_is_still_classified_from_the_exception(self, metric_reader):
+        """The behaviour the `success` sentinel was there for, which must not regress."""
+        with pytest.raises(BackoffError), metrics.erddap_request("server", "dataset"):
+            raise BackoffError("429 from the server")
+
+        assert metric_reader.counts(ERDDAP_OUTCOME, "outcome") == {"backoff": 1}
+
+    def test_explicit_empty_dataframe_also_survives(self, metric_reader):
+        with pytest.raises(RuntimeError), metrics.erddap_request("server", "dataset") as outcome:
+            outcome.set("empty_dataframe", rows=0)
+            raise RuntimeError("boom")
+
+        assert metric_reader.counts(ERDDAP_OUTCOME, "outcome") == {"empty_dataframe": 1}
+
+
+class TestInstrumentationNeverRaises:
+    """Rule 1 of the facade: instrumentation that can break a refresh is worse than none."""
+
+    def test_a_shutdown_racing_a_recording_does_not_raise(self, monkeypatch):
+        """`configure()` returning True is not a promise the provider is still there.
+
+        `shutdown()` clears it and can run on another thread (`worker_process_shutdown`,
+        `atexit`) while a task is mid-record. Re-reading the attribute raised
+        `AttributeError` on None, which travelled out into `update_values_for_timeseries`.
+        """
+        monkeypatch.setenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://collector:4318")
+        monkeypatch.setenv("DJANGO_ENV", "production")
+        reader = InMemoryMetricReader()
+        provider = MeterProvider(metric_readers=[reader])
+        bootstrap.reset_for_testing(provider)
+        metrics.reset_for_testing()
+
+        # configure() takes its fast path and reports success, then the provider vanishes
+        # before get_meter() reads it — exactly the interleaving a concurrent shutdown gives.
+        real_configure = bootstrap.configure
+
+        def configure_then_shut_down(role=None):
+            result = real_configure(role)
+            bootstrap.reset_for_testing(None)
+            return result
+
+        monkeypatch.setattr(bootstrap, "configure", configure_then_shut_down)
+        try:
+            assert bootstrap.get_meter() is None
+            assert metrics.instruments() is None
+            # The recording functions the refresh path calls must be no-ops, not raisers.
+            metrics.record_erddap_request("server", "dataset", 1.0, "success", rows=1)
+            metrics.record_task("task", "success", 1.0)
+            metrics.record_log("deployments.tasks", "ERROR")
+        finally:
+            bootstrap.reset_for_testing(None)
+            metrics.reset_for_testing()
+            provider.shutdown()
+
+    def test_a_transient_meter_failure_is_not_memoized(self, monkeypatch):
+        """A racing shutdown is transient; a process must not be disabled for good by one."""
+        reader = InMemoryMetricReader()
+        provider = MeterProvider(metric_readers=[reader])
+        bootstrap.reset_for_testing(provider)
+        metrics.reset_for_testing()
+
+        calls = []
+
+        def flaky_get_meter():
+            calls.append(1)
+            if len(calls) == 1:
+                raise AttributeError("'NoneType' object has no attribute 'get_meter'")
+            return provider.get_meter("test")
+
+        monkeypatch.setattr(bootstrap, "get_meter", flaky_get_meter)
+        try:
+            assert metrics.instruments() is None
+            # Second attempt succeeds: the failure above was not remembered.
+            assert metrics.instruments() is not None
+        finally:
+            bootstrap.reset_for_testing(None)
+            metrics.reset_for_testing()
+            provider.shutdown()
+
+
+class TestTelemetryFailuresAreNotCountedAsApplicationErrors:
+    """`buoybarn.log.records` exists to surface swallowed *application* errors.
+
+    With an OTLP endpoint that is set but unreachable, the SDK logs an export failure every
+    interval in every process. Counting those would leave the counter permanently climbing
+    for a reason that has nothing to do with the refresh pipeline, drowning out the signal
+    it was added for — and it is circular, since the failed export is itself recorded as a
+    metric awaiting export.
+    """
+
+    def test_exporter_and_observability_logs_are_skipped(self, metric_reader):
+        handler = MetricsLogHandler(level=logging.WARNING)
+        isolated = logging.getLogger("buoy_barn.tests.exclusions")
+        isolated.propagate = False
+        isolated.addHandler(handler)
+        try:
+            for name in (
+                "opentelemetry.exporter.otlp.proto.http.metric_exporter",
+                "opentelemetry.sdk.metrics._internal.export",
+                "buoy_barn.observability.bootstrap",
+                "buoy_barn.observability.freshness",
+            ):
+                handler.emit(
+                    logging.LogRecord(name, logging.ERROR, __file__, 1, "export failed", (), None),
+                )
+            # A real application error still counts.
+            handler.emit(
+                logging.LogRecord(
+                    "deployments.tasks.refresh",
+                    logging.ERROR,
+                    __file__,
+                    1,
+                    "dataset failed",
+                    (),
+                    None,
+                ),
+            )
+        finally:
+            isolated.removeHandler(handler)
+
+        assert metric_reader.counts(LOG_RECORDS, "logger") == {"deployments.tasks.refresh": 1}
+
+
+class TestOutcomeVocabularyOwnership:
+    """The vocabulary lives with the code that produces it, and must not drift from it."""
+
+    def test_metrics_reads_the_handlers_declaration(self):
+        assert metrics.erddap_outcomes() == error_handling.OUTCOMES | {metrics.OTHER}
+
+    def test_timeseries_types_come_from_the_model_field(self):
+        assert metrics.timeseries_types() == frozenset(
+            set(TimeSeries.TimeSeriesType.values) | {"unknown", metrics.OTHER},
+        )
+        # The point of deriving it: a new choice cannot be silently collapsed to "other".
+        for value in TimeSeries.TimeSeriesType.values:
+            assert value in metrics.timeseries_types()
+
+    def test_every_outcome_the_code_returns_is_declared(self):
+        """Scans the handlers for returned string literals rather than trusting the list.
+
+        This is the test that catches a new handler returning an outcome nobody added to
+        `OUTCOMES`, which `_bounded` would otherwise quietly record as "other".
+        """
+        returned = set()
+        for module in (error_handling, refresh):
+            tree = ast.parse(pathlib.Path(module.__file__).read_text())
+            for node in ast.walk(tree):
+                if (
+                    isinstance(node, ast.Return)
+                    and isinstance(node.value, ast.Constant)
+                    and isinstance(node.value.value, str)
+                    and node.value.value
+                ):
+                    returned.add(node.value.value)
+            # refresh.py names outcomes through `outcome.set("...")`, not by returning them.
+            for node in ast.walk(tree):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "set"
+                    and node.args
+                    and isinstance(node.args[0], ast.Constant)
+                    and isinstance(node.args[0].value, str)
+                ):
+                    returned.add(node.args[0].value)
+
+        undeclared = returned - error_handling.OUTCOMES - {metrics.NO_CONSTRAINTS}
+        assert not undeclared, f"outcomes produced but not declared in OUTCOMES: {undeclared}"

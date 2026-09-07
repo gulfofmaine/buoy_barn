@@ -16,7 +16,7 @@ def metric_reader():
     """Collect metrics in memory instead of shipping them to a collector.
 
     Installs a real ``MeterProvider`` backed by an ``InMemoryMetricReader``, so tests
-    exercise the actual SDK -- instrument creation, attribute handling, aggregation -- with
+    exercise the actual SDK (instrument creation, attribute handling, aggregation) with
     no network and no exporter thread. Yields a helper whose ``points(name)`` returns the
     data points for one metric.
 

@@ -1,12 +1,11 @@
-"""Celery task metrics, wired through Celery's signals rather than by editing any task, so
-adding a task automatically gets it measured.
+"""Celery task metrics, wired through Celery's signals so all tasks get measured.
 
-* ``worker_process_init`` is the place to configure the SDK in a prefork
+* ``worker_process_init`` configures the SDK in a prefork
   worker. See :mod:`buoy_barn.observability.bootstrap` for why configuring in the parent
   silently discards every metric.
 * ``before_task_publish`` fires in the producer, the web process, beat, or the MQTT
   command, not in the worker. ``buoy_barn.celery`` imports this module
-  rather than the worker importing it: every process that publishes a task needs the
+  rather than the worker importing it. Every process that publishes a task needs the
   receiver installed, or queue latency goes unmeasured.
 
 Task counting deliberately uses ``task_postrun``'s ``state`` rather than ``task_failure``.

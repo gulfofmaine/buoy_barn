@@ -273,18 +273,29 @@ def configure(role: str | None = None) -> bool:
 
 
 def get_meter():
-    """Return a Meter for this process, configuring lazily. None when switched off."""
+    """Return a Meter for this process, configuring lazily. None when switched off.
+
+    Reads ``_state.provider`` into a local before using it. ``configure()`` returning True
+    is not a promise that the provider is still there a moment later: `shutdown` clears it,
+    and it can run on another thread (``worker_process_shutdown``, ``atexit``) while a task
+    is still recording. Re-reading the attribute would raise ``AttributeError`` on None,
+    and that would travel all the way out into the refresh path.
+    """
     if not configure():
         return None
-    return _state.provider.get_meter(METER_NAME)
+    provider = _state.provider
+    if provider is None:
+        return None
+    return provider.get_meter(METER_NAME)
 
 
 def force_flush(timeout_millis: int = 5000) -> None:
     """Push whatever is buffered to the collector right now."""
-    if _state.provider is None or _state.configured_pid != os.getpid():
+    provider = _state.provider
+    if provider is None or _state.configured_pid != os.getpid():
         return
     try:
-        _state.provider.force_flush(timeout_millis=timeout_millis)
+        provider.force_flush(timeout_millis=timeout_millis)
     except Exception:
         logger.debug("Failed to flush metrics", exc_info=True)
 

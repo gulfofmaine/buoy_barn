@@ -13,14 +13,25 @@ Four things, none of which the base can supply.
 
 ### 1. Point at the real collector
 
-`k8s/base/config.env` carries a placeholder:
+`k8s/base/config.env` leaves this **unset**, with the expected shape in a comment:
 
 ```
-OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector.observability:4318
+# OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector.observability:4318
 ```
 
-Patch it in the overlay to the cluster's actual collector address. Until it resolves,
-every metric in the application is a no-op.
+Set it in the overlay to the cluster's actual collector address.
+
+It is unset rather than pre-filled on purpose. **Unset is the only value that is truly a
+no-op** — no exporter thread, no network traffic, every recording function returns after a
+dict lookup. An endpoint that is *set but unreachable* is a different thing entirely: the
+SDK keeps a live exporter, retries on every export interval, and logs a failure each time,
+in every pod, indefinitely. A pre-filled placeholder therefore turns "forgot to patch the
+overlay" into a permanent log-error loop, so the base ships without one.
+
+(Those exporter failures are excluded from `buoybarn.log.records` — see
+`EXCLUDED_LOGGER_PREFIXES` in `buoy_barn/observability/log_metrics.py` — because a
+telemetry outage must not masquerade as a pipeline of application errors. They still reach
+the console and Sentry.)
 
 ### 2. Add the new secret
 
@@ -160,7 +171,8 @@ sum by (erddap_dataset) (increase(buoybarn_erddap_outcome_total{outcome="unknown
 
 ## Disabling
 
-Unset `OTEL_EXPORTER_OTLP_ENDPOINT`. Every metric call becomes a no-op with no exporter
-threads and no network traffic; the application behaves exactly as it did before. The
-`metrics-exporter` deployment will log that there is nothing to export and exit rather than
-crash-looping, so it can be scaled to zero at leisure.
+**Unset** `OTEL_EXPORTER_OTLP_ENDPOINT` — do not point it at a black hole. Unset means no
+exporter threads and no network traffic, and the application behaves exactly as it did
+before; an unreachable address keeps the exporter alive and retrying. The
+`metrics-exporter` deployment logs that there is nothing to export and then idles, staying
+`Running` and still honouring SIGTERM, so it can be scaled to zero at leisure.

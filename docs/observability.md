@@ -22,8 +22,6 @@ Sentry could not answer the three questions that matter most here:
 
 ## Can the same instrumentation feed both Sentry and Prometheus?
 
-Partly, and the split is worth knowing:
-
 | Signal | Prometheus | Sentry |
 | --- | --- | --- |
 | Metrics | native target | **not ingestible over OTLP** |
@@ -60,8 +58,8 @@ environment variables, kept next to the code that reads them. The short version:
 | `BUOY_BARN_SENTRY_METRIC_MIRROR` | Mirror failure counters into Sentry. Off by default. |
 | `WEEKLY_OLD_TIMESERIES_HEALTHCHECK_URL` | Healthchecks.io monitor for the weekly stale-timeseries task. |
 
-Nothing needs to be disabled for tests: the layer switches itself off when
-`DJANGO_ENV=test`, the same way Sentry does.
+The layer switches itself off when
+`DJANGO_ENV=test`, the same way Sentry disables itself.
 
 ## What is exported
 
@@ -101,6 +99,12 @@ missing dataset need the same response.
 A dashboard panel that means "is anything actually broken?" is therefore
 `outcome!~"success|no_rows"` rather than a list that has to be revised whenever a handler is
 added.
+
+Both sets are declared as `OUTCOMES` and `BENIGN_OUTCOMES` in
+`deployments/tasks/error_handling.py` — with the handlers that produce them, not with the
+metrics facade that records them. The facade reads them from there, and a test scans the
+handlers for returned outcome strings so that one which is never declared fails the build
+rather than quietly recording as `other`.
 
 `request.rows` is what catches an ERDDAP server answering `200` with an empty body — a
 failure that previously showed up only as a log warning with its context commented out.

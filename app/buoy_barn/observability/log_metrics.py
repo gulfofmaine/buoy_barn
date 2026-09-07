@@ -12,12 +12,29 @@ suite asserts on via ``caplog``.
 
 Attributes are the logger name and the level only -- never the message, which would be
 unbounded cardinality.
+
+Records from the observability layer itself are not counted. See
+:data:`EXCLUDED_LOGGER_PREFIXES`.
 """
 
 import logging
 import threading
 
 from . import metrics
+
+#: Logger trees whose records are never counted.
+#:
+#: The counter exists to reveal *application* failures that would otherwise be swallowed,
+#: so counting the telemetry stack's own failures actively breaks it. With an OTLP endpoint
+#: that is set but unreachable, the SDK logs an export failure on every interval, forever,
+#: in every process -- which would show up as a permanently climbing
+#: ``buoybarn.log.records{level="error"}`` and drown out the real signal. It is also
+#: circular: the failure to export is itself recorded as a metric awaiting export.
+#:
+#: Those failures still reach the console handler and Sentry; they are simply not this
+#: counter's business. The same goes for this package's own modules -- a broken metrics
+#: pipeline is a metrics problem, not a refresh problem.
+EXCLUDED_LOGGER_PREFIXES = ("opentelemetry", "buoy_barn.observability")
 
 #: "This thread is already recording a metric for a log record." Deliberately shared by every
 #: handler instance rather than held per handler: whether we are inside a recording is a
@@ -39,6 +56,9 @@ class MetricsLogHandler(logging.Handler):
     A no-op when metrics are switched off, and it swallows its own errors: a broken metrics
     pipeline must never break logging.
 
+    Records from the telemetry stack itself are skipped -- see
+    :data:`EXCLUDED_LOGGER_PREFIXES`.
+
     Re-entrancy is guarded here as well as in the layers below, because this handler closes
     a loop the rest of the package cannot see: recording a metric can fail, a failure is
     logged, and the log record arrives back at this handler. `bootstrap.configure` and
@@ -48,6 +68,8 @@ class MetricsLogHandler(logging.Handler):
     """
 
     def emit(self, record: logging.LogRecord) -> None:
+        if record.name.startswith(EXCLUDED_LOGGER_PREFIXES):
+            return
         if getattr(_recording, "active", False):
             return
         _recording.active = True

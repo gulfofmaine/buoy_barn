@@ -1,0 +1,17 @@
+{% extends "django_object_actions/change_form.html" %}
+{% comment %}
+Change form with the system message sidebar, for the admins that use DjangoObjectActions.
+
+The parent above MUST be django_object_actions/change_form.html rather than
+admin/change_form.html. `DjangoObjectActions` works by setting `change_form_template` to its
+own template, which fills in the `object-tools-items` block with the change actions;
+extending admin/change_form.html here would still render a perfectly valid-looking page, just
+with every "Refresh this dataset" style button silently gone.
+
+`colMS` is Django's own two-column layout (see admin/css/base.css), so the sidebar needs no
+custom styling. Only switch to it when there is actually something to put there.
+{% endcomment %}
+
+{% block coltype %}{% if system_messages %}colMS{% else %}colM{% endif %}{% endblock %}
+
+{% block sidebar %}{% include "admin/deployments/_system_messages.html" %}{% endblock %}

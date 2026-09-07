@@ -1,0 +1,11 @@
+{% extends "admin/change_form.html" %}
+{% comment %}
+The same sidebar for TimeSeriesAdmin, which is a plain ModelAdmin with no object actions and
+so extends admin/change_form.html directly. Kept as a separate file rather than making the
+parent template configurable: which change form a given admin must extend is decided by which
+mixins that admin uses, and getting it wrong drops buttons without any error.
+{% endcomment %}
+
+{% block coltype %}{% if system_messages %}colMS{% else %}colM{% endif %}{% endblock %}
+
+{% block sidebar %}{% include "admin/deployments/_system_messages.html" %}{% endblock %}

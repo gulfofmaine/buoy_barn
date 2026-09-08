@@ -11,11 +11,10 @@ report a problem *with* data collection.
 
 import logging
 
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import F
 from django.utils import timezone
 
-from deployments.models.system_message import SystemMessage
+from deployments.models.system_message import SystemMessage, subject_field
 
 logger = logging.getLogger(__name__)
 
@@ -59,12 +58,11 @@ def record_system_message(  # noqa: PLR0913 - one parameter per SystemMessage fi
     """
     try:
         code_value = str(code)
-        content_type = ContentType.objects.get_for_model(subject)
+        column = subject_field(subject)
         now = timezone.now()
 
         row, created = SystemMessage.objects.update_or_create(
-            content_type=content_type,
-            object_id=subject.pk,
+            **{column: subject},
             code=code_value,
             constraint_group=constraint_group,
             defaults={
@@ -109,12 +107,11 @@ def resolve_system_messages(subject, *codes, constraint_group=None) -> int:
     is now over. Returns 0 on failure.
     """
     try:
-        content_type = ContentType.objects.get_for_model(subject)
+        column = subject_field(subject)
         code_values = [str(code) for code in codes]
 
         queryset = SystemMessage.objects.filter(
-            content_type=content_type,
-            object_id=subject.pk,
+            **{column: subject},
             code__in=code_values,
             resolved_at__isnull=True,
         )

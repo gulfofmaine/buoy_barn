@@ -1,13 +1,11 @@
 from datetime import datetime, timedelta
 
-from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
 from .buffer_type import BufferType
 from .data_type import DataType
 from .erddap_dataset import ErddapDataset
 from .platform import Platform
-from .system_message import SystemMessage
 
 
 class TimeSeriesQuerySet(models.QuerySet):
@@ -155,8 +153,6 @@ class TimeSeries(models.Model):
         null=True,
         blank=True,
     )
-
-    system_messages = GenericRelation(SystemMessage, related_query_name="timeseries")
 
     objects = TimeSeriesManager()
 

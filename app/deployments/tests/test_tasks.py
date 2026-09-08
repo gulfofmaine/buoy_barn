@@ -220,7 +220,7 @@ class TaskTestCase(TransactionTestCase):
         self.ts1.save()
 
         SystemMessage.objects.create(
-            subject=self.ts1,
+            timeseries=self.ts1,
             code=SystemMessage.Code.END_TIME_RETIRED,
             level=SystemMessage.Level.DANGER,
             message="Retired earlier",

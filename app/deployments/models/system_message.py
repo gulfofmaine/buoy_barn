@@ -1,9 +1,45 @@
+import operator
+from collections import defaultdict
+from functools import reduce
+
 from django.conf import settings
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
+
+from .erddap_dataset import ErddapDataset
+from .erddap_server import ErddapServer
+from .platform import Platform
+from .timeseries import TimeSeries
+
+SUBJECT_FIELDS = {
+    Platform: "platform",
+    TimeSeries: "timeseries",
+    ErddapDataset: "dataset",
+    ErddapServer: "server",
+}
+
+_SUBJECT_COLUMNS = tuple(SUBJECT_FIELDS.values())
+
+# An OR of "this column is set and the other three are not", once per column.
+_EXACTLY_ONE_SUBJECT = reduce(
+    operator.or_,
+    (
+        Q(**{f"{column}__isnull": column != set_column for column in _SUBJECT_COLUMNS})
+        for set_column in _SUBJECT_COLUMNS
+    ),
+)
+
+
+def subject_field(subject) -> str:
+    """The column `subject` attaches through, or a `ValueError` naming the model that cannot."""
+    column = SUBJECT_FIELDS.get(subject._meta.model)
+    if column is None:
+        raise ValueError(
+            f"{subject._meta.label} cannot be a SystemMessage subject; "
+            f"expected one of {', '.join(model._meta.label for model in SUBJECT_FIELDS)}",
+        )
+    return column
 
 
 class SystemMessageQuerySet(models.QuerySet):
@@ -13,7 +49,7 @@ class SystemMessageQuerySet(models.QuerySet):
         Acknowledgement is global to the (subject, code, constraint_group) row, not to a
         single occurrence: there is nothing else to attach an acknowledgement to, since a
         recurring problem re-uses the same row instead of creating a new one (see the
-        unique constraint below). So a message counts as outstanding again once it recurs
+        unique constraints below). So a message counts as outstanding again once it recurs
         *after* it was acknowledged -- `acknowledged_at` predates `last_seen` -- rather than
         staying silently dismissed forever. Resolved messages are never outstanding,
         regardless of acknowledgement.
@@ -24,8 +60,7 @@ class SystemMessageQuerySet(models.QuerySet):
 
     def for_object(self, obj):
         """Messages attached to a single model instance."""
-        content_type = ContentType.objects.get_for_model(obj)
-        return self.filter(content_type=content_type, object_id=obj.pk)
+        return self.filter(**{subject_field(obj): obj.pk})
 
     def for_objects(self, objs):
         """Messages attached to any of a heterogeneous iterable of model instances.
@@ -33,22 +68,21 @@ class SystemMessageQuerySet(models.QuerySet):
         `objs` can mix Platforms, TimeSeries, ErddapDatasets, etc. Filtering naively (one
         query per object, or per type) is what a dashboard listing "all outstanding
         messages for these datasets" would do by default, and that does not scale. Instead
-        group the objects by their ContentType and OR together one
-        `Q(content_type=..., object_id__in=[...])` per type, so the whole heterogeneous
-        list resolves in a single query.
+        group the objects by the column they attach through and OR together one
+        `Q(<column>__in=[...])` per column, so the whole heterogeneous list resolves in a
+        single query.
         """
         objs = list(objs)
         if not objs:
             return self.none()
 
-        ids_by_type = {}
+        ids_by_column = defaultdict(list)
         for obj in objs:
-            content_type = ContentType.objects.get_for_model(obj)
-            ids_by_type.setdefault(content_type, []).append(obj.pk)
+            ids_by_column[subject_field(obj)].append(obj.pk)
 
         query = Q()
-        for content_type, object_ids in ids_by_type.items():
-            query |= Q(content_type=content_type, object_id__in=object_ids)
+        for column, object_ids in ids_by_column.items():
+            query |= Q(**{f"{column}__in": object_ids})
 
         return self.filter(query)
 
@@ -60,17 +94,41 @@ class SystemMessageManager(models.Manager.from_queryset(SystemMessageQuerySet)):
 class SystemMessage(models.Model):
     """A problem or notable event tied to some other model instance.
 
-    Raised by the refresh/error-handling path (and eventually surfaced in the admin) so
-    operators see "this platform's ERDDAP dataset has been returning 404s" instead of having
-    to read logs. Attached to its subject via a generic foreign key rather than a set of
-    nullable FKs, one per subject model, because the set of things that can misbehave --
-    platforms, datasets, servers, individual timeseries -- keeps growing and none of those
-    models should have to know about system messages.
+    Raised by the refresh/error-handling path (and surfaced in the admin) so operators see
+    "this platform's ERDDAP dataset has been returning 404s" instead of having to read logs.
+    Attached to its subject through one nullable foreign key per subject model: the number of
+    platforms, datasets, servers and timeseries keeps growing, but the set of models does
+    not, and real columns are what let the admin's reach lookups use an index.
     """
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    subject = GenericForeignKey("content_type", "object_id")
+    platform = models.ForeignKey(
+        Platform,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="system_messages",
+    )
+    timeseries = models.ForeignKey(
+        TimeSeries,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="system_messages",
+    )
+    dataset = models.ForeignKey(
+        ErddapDataset,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="system_messages",
+    )
+    server = models.ForeignKey(
+        ErddapServer,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="system_messages",
+    )
 
     class Level(models.TextChoices):
         INFO = "info"
@@ -126,14 +184,47 @@ class SystemMessage(models.Model):
     class Meta:
         ordering = ["-last_seen"]
         constraints = [
-            # Also the index the generic-relation lookups use: `for_object` and `for_objects`
-            # filter on (content_type, object_id), which this covers as a leading prefix, so a
-            # separate index on those two would be redundant writes on a hot path.
-            models.UniqueConstraint(
-                fields=["content_type", "object_id", "code", "constraint_group"],
-                name="unique_system_message",
+            models.CheckConstraint(
+                condition=_EXACTLY_ONE_SUBJECT,
+                name="system_message_exactly_one_subject",
             ),
+            # One partial unique index per subject column rather than one combined
+            # constraint: Postgres treats NULLs as distinct, so a single unique constraint
+            # over all four columns -- three of which are always NULL -- would never fire,
+            # and every recurrence would insert a new row instead of bumping `occurrences`.
+            *[
+                models.UniqueConstraint(
+                    fields=[column, "code", "constraint_group"],
+                    condition=Q(**{f"{column}__isnull": False}),
+                    name=f"unique_{column}_system_message",
+                )
+                for column in _SUBJECT_COLUMNS
+            ],
         ]
 
     def __str__(self):
         return f"{self.get_level_display()} - {self.code} - {self.subject}"
+
+    @property
+    def subject_model(self):
+        """The model of whichever subject foreign key is set."""
+        for model, column in SUBJECT_FIELDS.items():
+            if getattr(self, f"{column}_id") is not None:
+                return model
+        return None
+
+    @property
+    def subject_id(self):
+        """The pk of whichever subject foreign key is set, without loading the row."""
+        model = self.subject_model
+        if model is None:
+            return None
+        return getattr(self, f"{SUBJECT_FIELDS[model]}_id")
+
+    @property
+    def subject(self):
+        """Whichever subject foreign key is set, without touching the other three."""
+        model = self.subject_model
+        if model is None:
+            return None
+        return getattr(self, SUBJECT_FIELDS[model])

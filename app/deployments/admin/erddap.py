@@ -140,7 +140,6 @@ class ErddapDatasetAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.M
             "timeseries_set",
             "timeseries_set__data_type",
             "timeseries_set__platform",
-            "system_messages",
         )
         return queryset
 

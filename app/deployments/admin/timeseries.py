@@ -133,8 +133,7 @@ class TimeSeriesAdmin(SystemMessageSidebarMixin, admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest):
         queryset = super().get_queryset(request)
         queryset = queryset.prefetch_related("data_type", "platform")
-        # The system message badge reaches through each row's dataset to its server; without
-        # these the changelist would issue two queries per row to find them.
+        # `dataset` is a list_display column and its __str__ names the server.
         queryset = queryset.select_related("dataset", "dataset__server")
         return queryset
 

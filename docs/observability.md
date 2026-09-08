@@ -232,9 +232,20 @@ anyone. Metrics made that failure mode visible on a dashboard; `SystemMessage` m
 visible to the admin who can decide whether the retirement is correct and undo it if not.
 
 A `SystemMessage` is a small, machine-written row — level, code, a human-readable
-explanation, and a generic foreign key to whatever subject it concerns — surfaced as a
-sidebar on the Platform, Dataset, Server and Timeseries change pages
-(`SystemMessageSidebarMixin`), and in its own `SystemMessageAdmin` listing.
+explanation, and a foreign key to whatever subject it concerns — surfaced as a sidebar on the
+Platform, Dataset, Server and Timeseries change pages (`SystemMessageSidebarMixin`), and in
+its own `SystemMessageAdmin` listing. The subject is one of four nullable foreign keys
+(`platform`, `timeseries`, `dataset`, `server`) with a check constraint asserting exactly one
+is set, rather than a generic foreign key: the number of platforms, datasets, servers and
+timeseries keeps growing, but the set of models does not, and real columns are what let the
+changelist's reach lookups use an index.
+
+`MESSAGE_PATHS` in `deployments/admin/system_messages.py` is the single description of how a
+message reaches a page — the sidebar, the changelist filter and the severity sort all read
+it, so a page cannot offer a filter that hides rows whose own badge says they have a message.
+Each path is queried on its own rather than OR'd into one lookup, because Postgres plans an
+OR across four multi-valued paths as a single many-way left join with an OR'd join filter,
+which no index can serve.
 
 ### What gets recorded, and at what level
 
@@ -276,8 +287,11 @@ row rather than a per-timeseries message.
 
 ### Deduplication
 
-Every message is upserted on the `(content_type, object_id, code, constraint_group)` key
-`SystemMessage`'s unique constraint enforces, in `record_system_message`. A recurring problem
+Every message is upserted on the `(subject, code, constraint_group)` key `SystemMessage`
+enforces, in `record_system_message`. That key is four partial unique constraints, one per
+subject column, each conditioned on that column being non-null — Postgres treats NULLs as
+distinct, so a single unique constraint over all four subject columns (three of which are
+always NULL) would never fire. A recurring problem
 bumps `occurrences` and `last_seen` on the row that is already there instead of creating a
 new one — the equivalent Sentry issue for one of these failure shapes carries roughly 17,000
 events in 90 days, and a table with one row per event would be as unreadable as the logs this

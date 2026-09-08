@@ -16,10 +16,10 @@ from typing import Any
 from django.contrib.admin import SimpleListFilter
 from django.contrib.admin.utils import unquote
 from django.contrib.admin.views.main import ChangeList
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis import admin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Case, Exists, IntegerField, OuterRef, Q, Value, When
+from django.db.models import Case, Exists, IntegerField, OuterRef, Q, Subquery, Value, When
+from django.db.models.functions import Coalesce, Greatest
 from django.db.models.query import QuerySet
 from django.http import HttpResponseNotAllowed, HttpResponseRedirect
 from django.http.request import HttpRequest
@@ -32,10 +32,11 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from buoy_barn.observability.promql import explore_url, query_for
 
 from ..models import ErddapDataset, ErddapServer, Platform, SystemMessage, TimeSeries
+from ..models.system_message import SUBJECT_FIELDS
 
-#: The axis containment is measured along, per page model. On a Platform page a message is
-#: contained when every platform it reaches is this platform; on a Dataset page, when every
-#: dataset it reaches is this dataset; and so on. Same rule, different unit.
+# The axis containment is measured along, per page model. On a Platform page a message is
+# contained when every platform it reaches is this platform; on a Dataset page, when every
+# dataset it reaches is this dataset; and so on. Same rule, different unit.
 _REACH_AXES = {
     Platform: "platform_ids",
     ErddapDataset: "dataset_ids",
@@ -43,10 +44,10 @@ _REACH_AXES = {
     TimeSeries: "timeseries_ids",
 }
 
-#: How a message subject of each type is found in the TimeSeries table. Every kind of subject
-#: resolves through TimeSeries because that is the only model that joins platforms, datasets
-#: and servers together -- which is what makes the whole reach computation four queries at
-#: worst, one per subject type present, regardless of how many messages there are.
+# How a message subject of each type is found in the TimeSeries table. Every kind of subject
+# resolves through TimeSeries because that is the only model that joins platforms, datasets
+# and servers together -- which is what makes the whole reach computation four queries at
+# worst, one per subject type present, regardless of how many messages there are.
 _SUBJECT_COLUMN = {
     Platform: "platform_id",
     ErddapDataset: "dataset_id",
@@ -54,13 +55,13 @@ _SUBJECT_COLUMN = {
     TimeSeries: "id",
 }
 
-#: The columns `_reach_rows` selects, and the position of each. Every key in
-#: `_SUBJECT_COLUMN` is one of these, so a single four-column row serves as both the lookup
-#: key and the reach payload.
+# The columns `_reach_rows` selects, and the position of each. Every key in
+# `_SUBJECT_COLUMN` is one of these, so a single four-column row serves as both the lookup
+# key and the reach payload.
 _REACH_COLUMNS = ("id", "platform_id", "dataset_id", "dataset__server_id")
 
-#: Short, human names for subject types. `verbose_name` gives "erddap dataset"; on a sidebar
-#: row that has to lead with what the message is about, "Dataset" reads better.
+# Short, human names for subject types. `verbose_name` gives "erddap dataset"; on a sidebar
+# row that has to lead with what the message is about, "Dataset" reads better.
 _SUBJECT_LABELS = {
     Platform: "Platform",
     ErddapDataset: "Dataset",
@@ -68,7 +69,7 @@ _SUBJECT_LABELS = {
     TimeSeries: "Timeseries",
 }
 
-#: Plural nouns for the spill count ("affects 3 platforms").
+# Plural nouns for the spill count ("affects 3 platforms").
 _REACH_NOUNS = {
     Platform: "platforms",
     ErddapDataset: "datasets",
@@ -82,42 +83,51 @@ _LEVEL_COLORS = {
     SystemMessage.Level.INFO: "gray",
 }
 
-#: Most alarming first, so a split badge leads with the worst thing it has to report.
+# Most alarming first, so a split badge leads with the worst thing it has to report.
 _LEVEL_ORDER = [
     SystemMessage.Level.DANGER,
     SystemMessage.Level.WARNING,
     SystemMessage.Level.INFO,
 ]
 
-#: How a message reaches a page model, written from the *message's* side: each path leads
-#: from `SystemMessage` back to the rows a message on that rung belongs to. These are the
-#: mirror image of `related_subjects` below -- a Platform page gathers its own messages plus
-#: its timeseries', their datasets' and those datasets' servers', so a message reaches a
-#: platform through exactly those four paths -- and the two have to stay in step. If they
-#: drifted, the changelist would offer a filter that hides rows whose own badge says they
-#: have a message.
-_MESSAGE_PATHS = {
+# How a message reaches a page model, written from the *message's* side: each path leads from
+# `SystemMessage` back to the rows a message on that rung belongs to. The sidebar, the
+# changelist filter and the severity sort all read this table, so none of them can drift into
+# hiding a row whose own badge says it has a message.
+MESSAGE_PATHS = {
     Platform: (
         "platform",
         "timeseries__platform",
-        "erddap_dataset__timeseries__platform",
-        "erddap_server__erddapdataset__timeseries__platform",
+        "dataset__timeseries__platform",
+        "server__erddapdataset__timeseries__platform",
     ),
     TimeSeries: (
         "timeseries",
-        "erddap_dataset__timeseries",
-        "erddap_server__erddapdataset__timeseries",
+        "dataset__timeseries",
+        "server__erddapdataset__timeseries",
     ),
     ErddapDataset: (
-        "erddap_dataset",
-        "erddap_server__erddapdataset",
+        "dataset",
+        "server__erddapdataset",
         "timeseries__dataset",
     ),
     ErddapServer: (
-        "erddap_server",
-        "erddap_dataset__server",
+        "server",
+        "dataset__server",
+        "timeseries__dataset__server",
     ),
 }
+
+# Enough of each subject chain to render a sidebar row's label and PromQL query without a
+# query per row.
+_SUBJECT_SELECT_RELATED = (
+    "platform",
+    "timeseries__platform",
+    "timeseries__data_type",
+    "timeseries__dataset__server",
+    "dataset__server",
+    "server",
+)
 
 
 @dataclass(frozen=True)
@@ -150,9 +160,9 @@ def compute_message_reach(messages) -> dict[int, MessageReach]:
 
     The naive version of this -- ask each message's subject what it touches -- costs a query
     per message, which is exactly the shape a sidebar of ten messages must not have. Instead
-    the messages are grouped by subject type and each group resolved with a single
-    `TimeSeries` query, so the cost is at most four queries (one per subject type that is
-    actually present) whether there is one message or a hundred.
+    the messages are grouped by which subject foreign key they set and each group resolved
+    with a single `TimeSeries` query, so the cost is at most four queries (one per subject
+    type that is actually present) whether there is one message or a hundred.
 
     A subject always appears in its own axis even when nothing joins to it: a dataset with no
     timeseries still reaches itself, and must stay dismissable on its own page.
@@ -161,15 +171,10 @@ def compute_message_reach(messages) -> dict[int, MessageReach]:
     if not messages:
         return {}
 
-    model_by_content_type = {
-        ContentType.objects.get_for_model(model).id: model for model in _SUBJECT_COLUMN
-    }
-
     ids_by_model = defaultdict(set)
     for message in messages:
-        model = model_by_content_type.get(message.content_type_id)
-        if model is not None:
-            ids_by_model[model].add(message.object_id)
+        if message.subject_model is not None:
+            ids_by_model[message.subject_model].add(message.subject_id)
 
     accumulated: dict[tuple[Any, int], dict[str, set]] = {}
     for model, ids in ids_by_model.items():
@@ -189,8 +194,7 @@ def compute_message_reach(messages) -> dict[int, MessageReach]:
 
     reach_by_message = {}
     for message in messages:
-        model = model_by_content_type.get(message.content_type_id)
-        reached = accumulated.get((model, message.object_id))
+        reached = accumulated.get((message.subject_model, message.subject_id))
         if reached is None:
             reach_by_message[message.pk] = _EMPTY_REACH
             continue
@@ -204,60 +208,24 @@ def compute_message_reach(messages) -> dict[int, MessageReach]:
     return reach_by_message
 
 
-def _prefetched_or_related(manager, *related):
-    """The manager's rows, using an existing prefetch when the caller already loaded them.
+def messages_reaching(page_model, pks) -> dict[int, set[int]]:
+    """The pks of the outstanding messages reaching each of `pks`, one query per path.
 
-    `related_subjects` is called both from a change view (one object, nothing prefetched --
-    wants `select_related`) and from a changelist (many objects, all prefetched -- where a
-    `select_related` call would throw the prefetch away and reintroduce the N+1 it exists to
-    prevent). Checking for a populated result cache lets one function serve both.
+    Queried per path rather than through one OR'd filter because an OR over four
+    multi-valued paths returns each message once per matching join row, so the caller would
+    have to de-duplicate rows the database had already multiplied.
     """
-    queryset = manager.all()
-    if queryset._result_cache is None:  # noqa: SLF001 - no public "is this prefetched?" API
-        queryset = queryset.select_related(*related)
-    return queryset
-
-
-def related_subjects(obj) -> list:
-    """The objects whose messages belong on `obj`'s change page.
-
-    A problem is rarely recorded against the thing an operator is looking at: a platform's
-    data stops arriving because a *server* is refusing requests, and the message is attached
-    to the server. So each page gathers up and down its own chain -- a platform reaches
-    through its timeseries to their datasets and those datasets' servers -- rather than
-    showing only messages whose subject is literally this row.
-    """
-    if isinstance(obj, Platform):
-        subjects = [obj]
-        for timeseries in _prefetched_or_related(obj.timeseries_set, "dataset", "dataset__server"):
-            subjects.extend([timeseries, timeseries.dataset, timeseries.dataset.server])
-    elif isinstance(obj, ErddapDataset):
-        subjects = [obj, obj.server, *_prefetched_or_related(obj.timeseries_set)]
-    elif isinstance(obj, ErddapServer):
-        subjects = [obj, *_prefetched_or_related(obj.erddapdataset_set)]
-    elif isinstance(obj, TimeSeries):
-        subjects = [obj, obj.dataset, obj.dataset.server]
-    else:
-        subjects = [obj]
-
-    deduped = {}
-    for subject in subjects:
-        if subject is not None:
-            deduped.setdefault((subject._meta.model, subject.pk), subject)
-    return list(deduped.values())
-
-
-def _subject_key(obj) -> tuple[int, int]:
-    return (ContentType.objects.get_for_model(obj).id, obj.pk)
-
-
-def _gather_messages(subjects):
-    """Every outstanding message on any of `subjects`, in one query."""
-    return list(
-        SystemMessage.objects.outstanding()
-        .for_objects(subjects)
-        .select_related("content_type", "acknowledged_by"),
-    )
+    pks = list(pks)
+    reaching: dict[int, set[int]] = defaultdict(set)
+    for message_path in MESSAGE_PATHS.get(page_model, ()):
+        pairs = (
+            SystemMessage.objects.outstanding()
+            .filter(**{f"{message_path}__in": pks})
+            .values_list(message_path, "pk")
+        )
+        for object_pk, message_pk in pairs:
+            reaching[object_pk].add(message_pk)
+    return reaching
 
 
 def _admin_url(admin_site, obj) -> str:
@@ -273,12 +241,12 @@ def _admin_url(admin_site, obj) -> str:
         return ""
 
 
-def _subject_label(obj, message) -> str:
-    if obj is None:
-        return str(message.content_type)
-    model = obj._meta.model
+def _subject_label(subject) -> str:
+    if subject is None:
+        return "Unknown subject"
+    model = subject._meta.model
     label = _SUBJECT_LABELS.get(model, model._meta.verbose_name.title())
-    return f"{label} · {obj}"
+    return f"{label} · {subject}"
 
 
 def _promql_context(message, subject) -> dict:
@@ -326,20 +294,23 @@ class SystemMessageRow:
     grafana_url: str | None
 
 
-def build_system_message_rows(obj, admin_site, subjects=None) -> list[SystemMessageRow]:
+def build_system_message_rows(obj, admin_site) -> list[SystemMessageRow]:
     """The sidebar for `obj`'s change page: gather, judge containment, and pre-render."""
-    subjects = related_subjects(obj) if subjects is None else subjects
-    subject_by_key = {_subject_key(subject): subject for subject in subjects}
-
-    messages = _gather_messages(subjects)
+    page_model = obj._meta.model
+    message_pks = messages_reaching(page_model, [obj.pk]).get(obj.pk, set())
+    messages = list(
+        SystemMessage.objects.filter(pk__in=message_pks).select_related(
+            "acknowledged_by",
+            *_SUBJECT_SELECT_RELATED,
+        ),
+    )
     reach_by_message = compute_message_reach(messages)
 
-    page_model = obj._meta.model
     reach_label = _REACH_NOUNS.get(page_model, "objects")
 
     rows = []
     for message in messages:
-        subject = subject_by_key.get((message.content_type_id, message.object_id))
+        subject = message.subject
         reach = reach_by_message.get(message.pk, _EMPTY_REACH)
         axis = reach.ids_along(page_model)
         spilled = axis - {obj.pk}
@@ -349,7 +320,7 @@ def build_system_message_rows(obj, admin_site, subjects=None) -> list[SystemMess
         rows.append(
             SystemMessageRow(
                 message=message,
-                subject_label=_subject_label(subject, message),
+                subject_label=_subject_label(subject),
                 subject_url=_admin_url(admin_site, subject),
                 message_url=_admin_url(admin_site, message),
                 acknowledge_url=reverse(
@@ -389,37 +360,22 @@ def annotate_system_message_badges(objs, page_model) -> list:
     if not objs:
         return objs
 
-    subjects_by_pk = {obj.pk: related_subjects(obj) for obj in objs}
-
-    deduped_subjects = {}
-    for subjects in subjects_by_pk.values():
-        for subject in subjects:
-            deduped_subjects.setdefault(_subject_key(subject), subject)
-
-    messages = _gather_messages(deduped_subjects.values())
-    reach_by_message = compute_message_reach(messages)
-
-    messages_by_subject = defaultdict(list)
-    for message in messages:
-        messages_by_subject[(message.content_type_id, message.object_id)].append(message)
+    reaching = messages_reaching(page_model, [obj.pk for obj in objs])
+    message_pks = set().union(*reaching.values()) if reaching else set()
+    messages = {message.pk: message for message in SystemMessage.objects.filter(pk__in=message_pks)}
+    reach_by_message = compute_message_reach(messages.values())
 
     for obj in objs:
         contained = defaultdict(int)
         spilling = defaultdict(int)
-        seen = set()
 
-        for subject in subjects_by_pk[obj.pk]:
-            for message in messages_by_subject.get(_subject_key(subject), ()):
-                if message.pk in seen:
-                    continue
-                seen.add(message.pk)
-
-                reach = reach_by_message.get(message.pk, _EMPTY_REACH)
-                if reach.ids_along(page_model) - {obj.pk}:
-                    subject_model = subject._meta.model
-                    spilling[_SUBJECT_LABELS.get(subject_model, "other").lower()] += 1
-                else:
-                    contained[message.level] += 1
+        for message_pk in reaching.get(obj.pk, ()):
+            message = messages[message_pk]
+            reach = reach_by_message.get(message_pk, _EMPTY_REACH)
+            if reach.ids_along(page_model) - {obj.pk}:
+                spilling[_SUBJECT_LABELS.get(message.subject_model, "other").lower()] += 1
+            else:
+                contained[message.level] += 1
 
         obj._system_message_badge = SystemMessageBadge(  # noqa: SLF001 - carrier for the display fn
             contained=[(level, contained[level]) for level in _LEVEL_ORDER if contained.get(level)],
@@ -429,38 +385,57 @@ def annotate_system_message_badges(objs, page_model) -> list:
     return objs
 
 
-#: The annotation `system_message_status` sorts on. Named once so the display callable's
-#: `admin_order_field` and the queryset that has to supply it cannot fall out of step.
+# The annotation `system_message_status` sorts on. Named once so the display callable's
+# `admin_order_field` and the queryset that has to supply it cannot fall out of step.
 SYSTEM_MESSAGE_RANK = "system_message_rank"
 
 
-def outstanding_messages_exist(page_model, level=None) -> Exists | None:
-    """Whether an outstanding message reaches a row of `page_model`, as a correlated subquery.
+def outstanding_messages_exist(page_model, level=None) -> Q | None:
+    """Whether an outstanding message reaches a row of `page_model`, as correlated subqueries.
 
-    `Exists` rather than a filter through the `system_messages` relation, because every rung
+    `Exists` rather than a filter through the `system_messages` relations, because every rung
     of the chain is multi-valued: a join-based filter returns one row per matching message,
-    so a platform with a message on its dataset *and* its server is listed twice. The usual
-    cure, `.distinct()`, would impose a DISTINCT over a changelist that is already prefetching
-    four relations and selecting a wide row. A subquery has neither problem -- it cannot
-    multiply the outer rows, and it stops at the first message rather than materialising them
-    all.
+    so a platform with a message on its dataset *and* its server is listed twice. One
+    `Exists` per path rather than one over all four OR'd together, because Postgres plans the
+    OR'd form as a single many-way left join with an OR'd join filter -- which no index can
+    serve -- while each path alone is an index lookup.
 
     The outstanding predicate comes from `SystemMessageQuerySet.outstanding()` rather than
     being rewritten here, so the filter and the sidebar cannot disagree about whether an
     acknowledged-then-recurring message still counts.
     """
-    paths = _MESSAGE_PATHS.get(page_model)
+    paths = MESSAGE_PATHS.get(page_model)
     if not paths:
         return None
-
-    reaches = Q()
-    for message_path in paths:
-        reaches |= Q(**{message_path: OuterRef("pk")})
 
     messages = SystemMessage.objects.outstanding()
     if level is not None:
         messages = messages.filter(level=level)
-    return Exists(messages.filter(reaches))
+
+    reaches = Q()
+    for message_path in paths:
+        reaches |= Q(Exists(messages.filter(**{message_path: OuterRef("pk")})))
+    return reaches
+
+
+def _worst_severity_along(message_path):
+    """The severity of the worst outstanding message reaching a row through one path."""
+    severity = Case(
+        *[
+            When(level=level, then=Value(len(_LEVEL_ORDER) - index))
+            for index, level in enumerate(_LEVEL_ORDER)
+        ],
+        default=Value(0),
+        output_field=IntegerField(),
+    )
+    worst = (
+        SystemMessage.objects.outstanding()
+        .filter(**{message_path: OuterRef("pk")})
+        .annotate(severity=severity)
+        .order_by("-severity")
+        .values("severity")[:1]
+    )
+    return Coalesce(Subquery(worst), Value(0), output_field=IntegerField())
 
 
 def system_message_rank(page_model):
@@ -471,17 +446,14 @@ def system_message_rank(page_model):
     page would give that away: the column just sorts wrongly and quietly. So severity is
     ranked explicitly, with 0 for a row nothing reaches so "None" sorts below every level.
     """
-    if page_model not in _MESSAGE_PATHS:
+    paths = MESSAGE_PATHS.get(page_model)
+    if not paths:
         return Value(0, output_field=IntegerField())
 
-    return Case(
-        *[
-            When(outstanding_messages_exist(page_model, level), then=Value(len(_LEVEL_ORDER) - index))
-            for index, level in enumerate(_LEVEL_ORDER)
-        ],
-        default=Value(0),
-        output_field=IntegerField(),
-    )
+    ranks = [_worst_severity_along(message_path) for message_path in paths]
+    if len(ranks) == 1:
+        return ranks[0]
+    return Greatest(*ranks)
 
 
 @admin.display(description="System messages", ordering=SYSTEM_MESSAGE_RANK)
@@ -537,10 +509,10 @@ class SystemMessageChangeList(ChangeList):
 class SystemMessageListFilter(SimpleListFilter):
     """Filter a platform/timeseries/dataset changelist by what its chain is complaining about.
 
-    Deliberately speaks the badge's language: it matches on the same chain `related_subjects`
-    gathers, so a platform whose *server* is failing is matched here exactly as it is shown
-    there. "None" therefore means nothing anywhere in the chain, not merely nothing attached
-    to this row.
+    Deliberately speaks the badge's language: it matches through the same `MESSAGE_PATHS` the
+    sidebar gathers on, so a platform whose *server* is failing is matched here exactly as it
+    is shown there. "None" therefore means nothing anywhere in the chain, not merely nothing
+    attached to this row.
     """
 
     title = "system messages"
@@ -576,10 +548,6 @@ class SystemMessageSidebarMixin:
         # replacing it.
         js = ["deployments/js/system_messages.js"]
 
-    def related_subjects(self, obj) -> list:
-        """The objects this page gathers messages from. Overridden per admin where it differs."""
-        return related_subjects(obj)
-
     def get_changelist(self, request, **kwargs):
         return SystemMessageChangeList
 
@@ -589,7 +557,7 @@ class SystemMessageSidebarMixin:
         Added here rather than in each admin so the annotation and the column arrive together:
         an admin that lists the badge but forgot the annotation would raise on the first click
         of the column header. Skipped where the column is not listed, since the annotation
-        costs one correlated subquery per level.
+        costs one correlated subquery per path.
         """
         queryset = super().get_queryset(request)
         if system_message_status in self.list_display:
@@ -600,11 +568,7 @@ class SystemMessageSidebarMixin:
         extra_context = {**(extra_context or {})}
         obj = self.get_object(request, unquote(object_id))
         if obj is not None:
-            extra_context["system_messages"] = build_system_message_rows(
-                obj,
-                self.admin_site,
-                subjects=self.related_subjects(obj),
-            )
+            extra_context["system_messages"] = build_system_message_rows(obj, self.admin_site)
         return super().change_view(request, object_id, form_url, extra_context)
 
 
@@ -650,6 +614,22 @@ class SystemMessageStateFilter(SimpleListFilter):
         return queryset
 
 
+class SystemMessageSubjectFilter(SimpleListFilter):
+    """Filter the message list by which kind of thing the messages are about."""
+
+    title = "subject type"
+    parameter_name = "subject_type"
+
+    def lookups(self, request: Any, model_admin: Any) -> list[tuple[Any, str]]:
+        return [(column, _SUBJECT_LABELS[model]) for model, column in SUBJECT_FIELDS.items()]
+
+    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+        value = self.value()
+        if value not in set(SUBJECT_FIELDS.values()):
+            return queryset
+        return queryset.filter(**{f"{value}__isnull": False})
+
+
 @admin.register(SystemMessage)
 class SystemMessageAdmin(admin.ModelAdmin):
     """Read-only-except-acknowledgement admin for machine-written messages.
@@ -669,7 +649,7 @@ class SystemMessageAdmin(admin.ModelAdmin):
         "last_seen",
         "state",
     ]
-    list_filter = [SystemMessageStateFilter, "level", "code", "content_type"]
+    list_filter = [SystemMessageStateFilter, "level", "code", SystemMessageSubjectFilter]
     search_fields = ["message", "code"]
     date_hierarchy = "last_seen"
 
@@ -692,7 +672,7 @@ class SystemMessageAdmin(admin.ModelAdmin):
         "impact",
     ]
 
-    #: The only two fields a human is allowed to write.
+    # The only two fields a human is allowed to write.
     editable_fields = ("acknowledged_at", "acknowledged_by")
 
     class Media:
@@ -702,9 +682,7 @@ class SystemMessageAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request: HttpRequest) -> QuerySet:
         queryset = super().get_queryset(request)
-        return queryset.select_related("content_type", "acknowledged_by").prefetch_related(
-            "subject",
-        )
+        return queryset.select_related("acknowledged_by", *_SUBJECT_SELECT_RELATED)
 
     def get_readonly_fields(self, request, obj=None):
         return [name for name in self.fields if name not in self.editable_fields]
@@ -764,7 +742,7 @@ class SystemMessageAdmin(admin.ModelAdmin):
     @admin.display(description="Subject")
     def subject_link(self, obj: SystemMessage):
         subject = obj.subject
-        label = _subject_label(subject, obj)
+        label = _subject_label(subject)
         url = _admin_url(self.admin_site, subject)
         if not url:
             return label

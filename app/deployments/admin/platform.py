@@ -105,10 +105,6 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
         queryset = queryset.prefetch_related(
             "timeseries_set",
             "timeseries_set__data_type",
-            # The badge gathers messages from each platform's datasets and servers, and from
-            # the platform itself; without these the changelist would go N+1 over the page.
-            "timeseries_set__dataset__server",
-            "system_messages",
         )
         return queryset
 

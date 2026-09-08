@@ -14,7 +14,6 @@ from pathlib import Path
 import pytest
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.db import connection
 from django.test import TestCase
 from django.test.utils import CaptureQueriesContext
@@ -23,7 +22,7 @@ from django.utils import timezone
 
 from deployments.admin import (
     compute_message_reach,
-    related_subjects,
+    messages_reaching,
     system_message_status,
 )
 from deployments.models import (
@@ -34,11 +33,12 @@ from deployments.models import (
     SystemMessage,
     TimeSeries,
 )
+from deployments.models.system_message import subject_field
 
 
 def _message(subject, *, code=SystemMessage.Code.NOT_FOUND, level=SystemMessage.Level.DANGER, **kwargs):
     return SystemMessage.objects.create(
-        subject=subject,
+        **{subject_field(subject): subject},
         code=code,
         level=level,
         message=kwargs.pop("message", "Something went wrong"),
@@ -685,7 +685,7 @@ class SystemMessageListFilterTestCase(SystemMessageAdminTestCase):
         self.assertEqual(self.matched("danger"), {"VIASERVER"})
 
     def test_acknowledged_message_stops_matching_until_it_recurs(self):
-        message = SystemMessage.objects.get(object_id=self.own["platform"].pk, level="warning")
+        message = SystemMessage.objects.get(platform=self.own["platform"], level="warning")
         message.acknowledged_at = timezone.now()
         message.save(update_fields=["acknowledged_at"])
 
@@ -699,7 +699,7 @@ class SystemMessageListFilterTestCase(SystemMessageAdminTestCase):
         self.assertIn("OWN", self.matched("any"))
 
     def test_resolved_message_does_not_match(self):
-        SystemMessage.objects.filter(object_id=self.via_server["server"].pk).update(
+        SystemMessage.objects.filter(server=self.via_server["server"]).update(
             resolved_at=timezone.now(),
         )
 
@@ -823,29 +823,65 @@ class SystemMessageListFilterTestCase(SystemMessageAdminTestCase):
 
 
 @pytest.mark.django_db
-class RelatedSubjectsTestCase(SystemMessageAdminTestCase):
-    def test_platform_gathers_the_whole_chain(self):
-        subjects = related_subjects(self.platform)
+class MessagesReachingTestCase(SystemMessageAdminTestCase):
+    """`MESSAGE_PATHS` is the single description of what each page gathers, in both directions.
 
-        self.assertIn(self.platform, subjects)
-        self.assertIn(self.timeseries, subjects)
-        self.assertIn(self.dataset, subjects)
-        self.assertIn(self.server, subjects)
+    One message per rung, all four at once, so a path that reaches the wrong rung shows up as
+    a missing or extra message rather than as a plausible-looking count.
+    """
+
+    def one_message_per_rung(self):
+        rungs = {
+            "platform": self.platform,
+            "timeseries": self.timeseries,
+            "dataset": self.dataset,
+            "server": self.server,
+        }
+        return {rung: _message(subject) for rung, subject in rungs.items()}
+
+    def reaching(self, page_model, obj):
+        return messages_reaching(page_model, [obj.pk]).get(obj.pk, set())
+
+    def test_platform_gathers_the_whole_chain(self):
+        messages = self.one_message_per_rung()
+
+        self.assertEqual(
+            self.reaching(Platform, self.platform),
+            {message.pk for message in messages.values()},
+        )
 
     def test_dataset_gathers_itself_its_server_and_its_timeseries(self):
-        subjects = related_subjects(self.dataset)
+        messages = self.one_message_per_rung()
 
-        self.assertCountEqual(subjects, [self.dataset, self.server, self.timeseries])
+        self.assertEqual(
+            self.reaching(ErddapDataset, self.dataset),
+            {messages["dataset"].pk, messages["server"].pk, messages["timeseries"].pk},
+        )
 
-    def test_server_gathers_itself_and_its_datasets(self):
-        subjects = related_subjects(self.server)
+    def test_server_gathers_itself_its_datasets_and_their_timeseries(self):
+        messages = self.one_message_per_rung()
 
-        self.assertCountEqual(subjects, [self.server, self.dataset])
+        self.assertEqual(
+            self.reaching(ErddapServer, self.server),
+            {messages["server"].pk, messages["dataset"].pk, messages["timeseries"].pk},
+        )
 
     def test_timeseries_gathers_itself_its_dataset_and_its_server(self):
-        subjects = related_subjects(self.timeseries)
+        messages = self.one_message_per_rung()
 
-        self.assertCountEqual(subjects, [self.timeseries, self.dataset, self.server])
+        self.assertEqual(
+            self.reaching(TimeSeries, self.timeseries),
+            {messages["timeseries"].pk, messages["dataset"].pk, messages["server"].pk},
+        )
+
+    def test_resolved_messages_are_not_gathered(self):
+        messages = self.one_message_per_rung()
+        SystemMessage.objects.filter(pk=messages["server"].pk).update(resolved_at=timezone.now())
+
+        self.assertNotIn(messages["server"].pk, self.reaching(Platform, self.platform))
+
+    def test_a_model_with_no_paths_gathers_nothing(self):
+        self.assertEqual(messages_reaching(DataType, [self.salinity.pk]), {})
 
 
 @pytest.mark.django_db
@@ -875,15 +911,11 @@ class MessageReachTestCase(SystemMessageAdminTestCase):
         self.assertEqual(reach.dataset_ids, frozenset({empty_dataset.pk}))
         self.assertEqual(reach.platform_ids, frozenset())
 
-    def test_unknown_subject_type_reaches_nothing(self):
-        message = SystemMessage.objects.create(
-            content_type=ContentType.objects.get_for_model(DataType),
-            object_id=self.salinity.pk,
-            code=SystemMessage.Code.UNKNOWN_ERROR,
-            level=SystemMessage.Level.INFO,
-            message="Nothing to reach",
-        )
+    def test_a_platform_message_reaches_no_dataset_it_has_no_timeseries_on(self):
+        lonely = Platform.objects.create(name="LONELY", mooring_site_desc="No timeseries")
+        message = _message(lonely)
 
         reach = compute_message_reach([message])[message.pk]
 
-        self.assertEqual(reach.platform_ids, frozenset())
+        self.assertEqual(reach.platform_ids, frozenset({lonely.pk}))
+        self.assertEqual(reach.dataset_ids, frozenset())

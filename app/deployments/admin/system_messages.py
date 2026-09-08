@@ -29,53 +29,91 @@ from django.utils import timezone
 from django.utils.html import format_html, format_html_join
 from django.utils.http import url_has_allowed_host_and_scheme
 
+from buoy_barn.observability import metrics
 from buoy_barn.observability.promql import explore_url, query_for
 
 from ..models import ErddapDataset, ErddapServer, Platform, SystemMessage, TimeSeries
 from ..models.system_message import SUBJECT_FIELDS
 
-# The axis containment is measured along, per page model. On a Platform page a message is
-# contained when every platform it reaches is this platform; on a Dataset page, when every
-# dataset it reaches is this dataset; and so on. Same rule, different unit.
-_REACH_AXES = {
-    Platform: "platform_ids",
-    ErddapDataset: "dataset_ids",
-    ErddapServer: "server_ids",
-    TimeSeries: "timeseries_ids",
+
+@dataclass(frozen=True)
+class SubjectKind:
+    """Everything the admin needs to know about one kind of message subject.
+
+    Every subject resolves through `TimeSeries` because that is the only model joining
+    platforms, datasets and servers.
+    """
+
+    field: str  # the SystemMessage FK column
+    reach_attr: str  # the MessageReach attribute containment is measured on
+    timeseries_column: str  # how this subject is found in the TimeSeries table
+    label: str  # short display name, e.g. "Dataset"
+    plural: str  # plural noun for the spill count, e.g. "datasets"
+    paths: tuple[str, ...]  # lookups from SystemMessage back to rows of this model
+
+
+SUBJECT_KINDS: dict[type, SubjectKind] = {
+    Platform: SubjectKind(
+        field=SUBJECT_FIELDS[Platform],
+        reach_attr="platform_ids",
+        timeseries_column="platform_id",
+        label="Platform",
+        plural="platforms",
+        paths=(
+            "platform",
+            "timeseries__platform",
+            "dataset__timeseries__platform",
+            "server__erddapdataset__timeseries__platform",
+        ),
+    ),
+    TimeSeries: SubjectKind(
+        field=SUBJECT_FIELDS[TimeSeries],
+        reach_attr="timeseries_ids",
+        timeseries_column="id",
+        label="Timeseries",
+        plural="timeseries",
+        paths=(
+            "timeseries",
+            "dataset__timeseries",
+            "server__erddapdataset__timeseries",
+        ),
+    ),
+    ErddapDataset: SubjectKind(
+        field=SUBJECT_FIELDS[ErddapDataset],
+        reach_attr="dataset_ids",
+        timeseries_column="dataset_id",
+        label="Dataset",
+        plural="datasets",
+        paths=(
+            "dataset",
+            "server__erddapdataset",
+            "timeseries__dataset",
+        ),
+    ),
+    ErddapServer: SubjectKind(
+        field=SUBJECT_FIELDS[ErddapServer],
+        reach_attr="server_ids",
+        timeseries_column="dataset__server_id",
+        label="Server",
+        plural="servers",
+        paths=(
+            "server",
+            "dataset__server",
+            "timeseries__dataset__server",
+        ),
+    ),
 }
 
-# How a message subject of each type is found in the TimeSeries table. Every kind of subject
-# resolves through TimeSeries because that is the only model that joins platforms, datasets
-# and servers together -- which is what makes the whole reach computation four queries at
-# worst, one per subject type present, regardless of how many messages there are.
-_SUBJECT_COLUMN = {
-    Platform: "platform_id",
-    ErddapDataset: "dataset_id",
-    ErddapServer: "dataset__server_id",
-    TimeSeries: "id",
-}
+# The columns `_reach_rows` selects. "id" is TimeSeries's own column too, so de-duplicate it.
+_REACH_COLUMNS = tuple(
+    dict.fromkeys(("id", *(kind.timeseries_column for kind in SUBJECT_KINDS.values()))),
+)
 
-# The columns `_reach_rows` selects, and the position of each. Every key in
-# `_SUBJECT_COLUMN` is one of these, so a single four-column row serves as both the lookup
-# key and the reach payload.
-_REACH_COLUMNS = ("id", "platform_id", "dataset_id", "dataset__server_id")
-
-# Short, human names for subject types. `verbose_name` gives "erddap dataset"; on a sidebar
-# row that has to lead with what the message is about, "Dataset" reads better.
-_SUBJECT_LABELS = {
-    Platform: "Platform",
-    ErddapDataset: "Dataset",
-    ErddapServer: "Server",
-    TimeSeries: "Timeseries",
-}
-
-# Plural nouns for the spill count ("affects 3 platforms").
-_REACH_NOUNS = {
-    Platform: "platforms",
-    ErddapDataset: "datasets",
-    ErddapServer: "servers",
-    TimeSeries: "timeseries",
-}
+# Where each reach attribute lands in a `_reach_rows` row, so `compute_message_reach` can read
+# a row by name instead of by position.
+_REACH_COLUMN_ATTRS = tuple(
+    (_REACH_COLUMNS.index(kind.timeseries_column), kind.reach_attr) for kind in SUBJECT_KINDS.values()
+)
 
 _LEVEL_COLORS = {
     SystemMessage.Level.DANGER: "red",
@@ -253,7 +291,7 @@ def _promql_context(message, subject) -> dict:
     """The context `promql.query_for` wants, filled in from the message's subject.
 
     `constraint_group` is a model field rather than a context key, and the fetch-failure
-    handlers record neither the dataset nor the server name (they have no need to -- the
+    handlers record neither the dataset nor the server name (they have no need to, the
     subject already says which one it is). Both have to be supplied here or every outcome-code
     message would render without a query.
     """

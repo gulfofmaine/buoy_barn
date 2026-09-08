@@ -41,6 +41,35 @@ class TestQueryForOutcomeCodes(SimpleTestCase):
         assert query is not None
         assert "constraint_group=" not in query
 
+    def test_no_join_against_the_constraint_group_info_metric(self):
+        """The join docs/observability.md uses is wrong here, in two ways.
+
+        `constraint_group_info` also carries `erddap_server` and `timeseries_type`, so one
+        dataset serving two timeseries types under the same constraints gives the match group
+        two right-hand series and PromQL errors the whole query out. And it is published only
+        for `refreshable()` timeseries, which a retirement removes -- so for `end_time_retired`
+        the join returns nothing for the very event the message is about.
+        """
+        query = promql.query_for(
+            "end_time_retired",
+            {"dataset": "my_dataset", "constraint_group": "abc12345"},
+        )
+
+        assert query is not None
+        assert "group_left" not in query
+        assert "constraint_group_info" not in query
+
+    def test_every_code_resolves_to_a_query(self):
+        """The code sets are derived from `SystemMessage.Code`, not listed.
+
+        They used to be listed, and the codes added afterwards silently got no query at all.
+        """
+        from deployments.models import SystemMessage  # noqa: PLC0415
+
+        for code in SystemMessage.Code:
+            context = {"dataset": "my_dataset", "server": "my_server"}
+            assert promql.query_for(code.value, context) is not None, code
+
     def test_end_time_retired_targets_outcome_counter_not_freshness(self):
         """Issue #1833: a retirement never moves `value_age`, so linking this message to a
         freshness panel would show a reassuring flat line instead of the event itself.

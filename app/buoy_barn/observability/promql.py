@@ -14,42 +14,36 @@ never-raise contract:
    from `context` means `None`, not a query with the literal string ``"None"`` baked into a
    label matcher.
 
-`code` is accepted as a plain string rather than by importing
-:class:`deployments.models.SystemMessage.Code` -- this module has no reason to depend on the
-app registry, and the values below are exactly the ``Code`` choices' string values.
 """
 
 import json
 import logging
 import urllib.parse
+from functools import cache
 
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
-#: Codes whose own history is best read off `buoybarn.erddap.outcome` -- the counter behind
-#: every fetch-failure branch in `error_handling.py`, plus the two end_time transitions
-#: `refresh.py` records when a timeseries stops or resumes being refreshed.
-#:
-#: `end_time_retired` belongs here and NOT with any freshness metric -- see the comment on
-#: `_build_outcome_query` for why that particular substitution is a trap rather than a
-#: simplification.
-_OUTCOME_CODES = frozenset(
-    {
-        "end_time_retired",
-        "end_time_cleared",
-        "not_found",
-        "forbidden",
-        "unrecognized_variable",
-        "unrecognized_constraint",
-        "server_error",
-        "unknown_error",
-    },
-)
 
-#: `backoff_increased` describes a slow server, not a failed fetch, so its signal is latency
-#: rather than outcome -- see `_build_duration_query`.
-_DURATION_CODES = frozenset({"backoff_increased"})
+@cache
+def _duration_codes() -> frozenset[str]:
+    """Codes whose signal is server latency rather than a fetch outcome."""
+    from deployments.models import SystemMessage  # noqa: PLC0415
+
+    return frozenset({SystemMessage.Code.BACKOFF_INCREASED.value})
+
+
+@cache
+def _outcome_codes() -> frozenset[str]:
+    """Everything else: read off the outcome counter.
+
+    Derived by subtraction rather than listed, so a new `Code` gets a query automatically. The
+    listed version silently left the codes added after it was written without one.
+    """
+    from deployments.models import SystemMessage  # noqa: PLC0415
+
+    return frozenset(code.value for code in SystemMessage.Code) - _duration_codes()
 
 
 def _escape(value: str) -> str:
@@ -65,17 +59,17 @@ def _escape(value: str) -> str:
 def _build_outcome_query(dataset: str, constraint_group: str) -> str:
     """The outcome-counter query for one dataset, optionally scoped to a constraint group.
 
-    Joined to `buoybarn_erddap_constraint_group_info` exactly as `docs/observability.md`
-    does, so the opaque `constraint_group` hash resolves to its real constraints in the same
-    query rather than requiring a second lookup.
+    Built on `buoybarn_erddap_outcome_total` even for `end_time_retired`, never on a freshness
+    metric: a retirement is invisible to `value_age` by construction, since a retired series
+    stops being refreshed and its age flatlines rather than climbing (#1833).
 
-    Deliberately built on `buoybarn_erddap_outcome_total` even for `end_time_retired`, never
-    on `buoybarn_timeseries_value_age_seconds` or any other freshness metric. Issue #1833:
-    a retirement is invisible to `value_age` *by construction* -- `value_age` only covers
-    active, non-retired series (see docs/observability.md), so once a series is retired its
-    age simply stops updating rather than climbing. Linking a retirement message to a
-    freshness panel would show a reassuring flat line for the exact event the message is
-    warning about.
+    No `group_left` join to `buoybarn_erddap_constraint_group_info`, though the equivalent
+    query in docs/observability.md has one. Two reasons, both found in review: that metric also
+    carries `erddap_server` and `timeseries_type`, so a dataset serving two timeseries types
+    under one set of constraints gives the match group two right-hand series and the whole
+    query errors out; and it is published only for `refreshable()` timeseries, which a
+    retirement removes -- so the join would return nothing for the one event it documents. The
+    message's own context already carries the constraints the join existed to recover.
     """
     matchers = [f'erddap_dataset="{_escape(dataset)}"']
     if constraint_group:
@@ -84,8 +78,7 @@ def _build_outcome_query(dataset: str, constraint_group: str) -> str:
     return (
         "sum by (erddap_dataset, constraint_group, outcome) (\n"
         f"  increase(buoybarn_erddap_outcome_total{selector}[6h])\n"
-        ") * on (erddap_dataset, constraint_group)\n"
-        "  group_left(constraints) buoybarn_erddap_constraint_group_info"
+        ")"
     )
 
 
@@ -121,13 +114,13 @@ def query_for(code, context) -> str | None:
         code_value = str(code)
         context = context or {}
 
-        if code_value in _OUTCOME_CODES:
+        if code_value in _outcome_codes():
             dataset = context.get("dataset")
             if not dataset:
                 return None
             return _build_outcome_query(str(dataset), str(context.get("constraint_group") or ""))
 
-        if code_value in _DURATION_CODES:
+        if code_value in _duration_codes():
             server = context.get("server")
             if not server:
                 return None
@@ -142,19 +135,10 @@ def query_for(code, context) -> str | None:
 def explore_url(query) -> str | None:
     """Grafana Explore deep link for `query`, or `None` when Grafana isn't configured.
 
-    `None` is the normal case today -- Grafana is not deployed for this project, and nothing
-    downstream may assume this ever returns a URL. Both `GRAFANA_BASE_URL` and
-    `GRAFANA_PROMETHEUS_UID` must be set, since a datasource UID is required to build a
-    working link at all.
+    Needs both `GRAFANA_BASE_URL` and `GRAFANA_PROMETHEUS_UID`; the admin falls back to
+    rendering the query as copyable text, so an unset pair degrades rather than breaking.
 
-    Targets Grafana >= 10.2's `panes`-based Explore URL scheme (a single JSON blob covering
-    every pane). Older Grafana instead read a single pane from a `?left=` query parameter
-    with a similar-but-not-identical JSON shape -- all of that URL-shape knowledge is kept in
-    this one function so supporting an older Grafana is a one-line change here, not a change
-    at every call site.
-
-    Never raises, matching the rest of this package's contract: a malformed setting or a
-    query that fails to serialise must not break whatever page is rendering the message.
+    Targets Grafana >= 10.2's `panes` Explore scheme.
     """
     try:
         base_url = settings.GRAFANA_BASE_URL

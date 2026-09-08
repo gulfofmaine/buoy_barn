@@ -824,7 +824,7 @@ class SystemMessageListFilterTestCase(SystemMessageAdminTestCase):
 
 @pytest.mark.django_db
 class MessagesReachingTestCase(SystemMessageAdminTestCase):
-    """`MESSAGE_PATHS` is the single description of what each page gathers, in both directions.
+    """`SUBJECT_KINDS`'s `paths` is the single description of what each page gathers, in both directions.
 
     One message per rung, all four at once, so a path that reaches the wrong rung shows up as
     a missing or extra message rather than as a plausible-looking count.

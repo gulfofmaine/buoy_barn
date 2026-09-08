@@ -1,11 +1,8 @@
 """Django admin registrations for the deployments app, split by feature.
 
-Every submodule is imported here so `django.contrib.admin.autodiscover()` (which only ever
-imports `deployments.admin`, this package) actually runs each module's `@admin.register`
-calls -- a submodule left out of this list would silently vanish from the admin with nothing
-else noticing. Import order follows the dependency graph: `system_messages` and `displays`
-have no dependencies on the rest of this package, `timeseries` depends on `system_messages`,
-and `platform` / `erddap` depend on all three; `lookups` stands alone.
+Submodules are imported here so `django.contrib.admin.autodiscover()` (which only ever
+imports `deployments.admin`) run each module's `@admin.register`
+calls.
 """
 
 from .displays import timeseries_status
@@ -19,8 +16,9 @@ from .platform import (
     TimeseriesActiveFilter,
 )
 from .system_messages import (
-    MESSAGE_PATHS,
+    SUBJECT_KINDS,
     MessageReach,
+    SubjectKind,
     SystemMessageAdmin,
     SystemMessageBadge,
     SystemMessageChangeList,
@@ -45,7 +43,7 @@ from .timeseries import (
 )
 
 __all__ = [
-    "MESSAGE_PATHS",
+    "SUBJECT_KINDS",
     "AlertInline",
     "BufferTypeAdmin",
     "DataTypeAdmin",
@@ -57,6 +55,7 @@ __all__ = [
     "PlatformLinkInline",
     "ProgramAttributionInline",
     "RefreshStatusListFilter",
+    "SubjectKind",
     "SystemMessageAdmin",
     "SystemMessageBadge",
     "SystemMessageChangeList",

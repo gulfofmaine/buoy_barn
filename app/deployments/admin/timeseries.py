@@ -95,7 +95,7 @@ class TimeSeriesAdmin(SystemMessageSidebarMixin, admin.ModelAdmin):
         day_ago = now - timedelta(days=1)
 
         if instance.value_time is None:
-            return format_html("<span style='color: gray;'>No data</span>")
+            return format_html("<span style='color: gray;'>{}</span>", "No data")
         if instance.value_time < day_ago:
             return format_html("<span style='color: red;'>{}</span>", instance.value_time)
         if instance.value_time < hour_ago:

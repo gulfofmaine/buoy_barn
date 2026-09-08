@@ -536,9 +536,83 @@ class SystemMessageAdminActionsTestCase(SystemMessageAdminTestCase):
         )
 
         self.assertNotContains(response, 'name="message"')
-        # A split datetime widget, so the editable acknowledgement shows up as _0/_1.
-        self.assertContains(response, 'name="acknowledged_at_0"')
-        self.assertContains(response, 'name="acknowledged_by"')
+
+    def test_acknowledgement_has_no_hand_editable_fields(self):
+        """The regression this guards: acknowledging must stay a button, never a typed field."""
+        message = _message(self.timeseries)
+
+        response = self.client.get(
+            reverse("admin:deployments_systemmessage_change", args=[message.pk]),
+        )
+
+        self.assertNotContains(response, 'name="acknowledged_at_0"')
+        self.assertNotContains(response, 'name="acknowledged_at_1"')
+        self.assertNotContains(response, 'name="acknowledged_by"')
+
+
+@pytest.mark.django_db
+class ChangePageActionButtonsTestCase(SystemMessageAdminTestCase):
+    """The Acknowledge/Unacknowledge buttons that replaced the hand-editable fields."""
+
+    def setUp(self):
+        super().setUp()
+        self.message = _message(self.timeseries)
+        self.change_url = reverse(
+            "admin:deployments_systemmessage_change",
+            args=[self.message.pk],
+        )
+
+    def action_url(self, tool):
+        return reverse(
+            "admin:deployments_systemmessage_actions",
+            kwargs={"pk": self.message.pk, "tool": tool},
+        )
+
+    def test_object_actions_survive_this_admin_too(self):
+        """Mirrors PlatformSidebarGatheringTestCase's template-collision guard.
+
+        `SystemMessageAdmin` has no sidebar to collide with, but adding `DjangoObjectActions`
+        must still leave `change_form_template` pointing at its template rather than admin's
+        plain one, or these buttons would silently vanish.
+        """
+        response = self.client.get(self.change_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "objectaction-item")
+        self.assertContains(response, "acknowledge")
+        self.assertContains(response, "unacknowledge")
+        self.assertContains(response, self.action_url("acknowledge"))
+        self.assertContains(response, self.action_url("unacknowledge"))
+
+    def test_acknowledge_button_stamps_user_and_time_and_leaves_outstanding(self):
+        response = self.client.post(self.action_url("acknowledge"), follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.message.refresh_from_db()
+        self.assertIsNotNone(self.message.acknowledged_at)
+        self.assertEqual(self.message.acknowledged_by, self.user)
+        self.assertFalse(SystemMessage.objects.outstanding().filter(pk=self.message.pk).exists())
+
+    def test_unacknowledge_button_clears_the_stamp_and_returns_to_outstanding(self):
+        self.message.acknowledged_at = timezone.now()
+        self.message.acknowledged_by = self.user
+        self.message.save(update_fields=["acknowledged_at", "acknowledged_by"])
+
+        response = self.client.post(self.action_url("unacknowledge"), follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.message.refresh_from_db()
+        self.assertIsNone(self.message.acknowledged_at)
+        self.assertIsNone(self.message.acknowledged_by)
+        self.assertTrue(SystemMessage.objects.outstanding().filter(pk=self.message.pk).exists())
+
+    def test_a_get_does_not_acknowledge(self):
+        """The action is wired as a POST-only form, same as the sidebar's own button."""
+        response = self.client.get(self.action_url("acknowledge"))
+
+        self.assertEqual(response.status_code, 405)
+        self.message.refresh_from_db()
+        self.assertIsNone(self.message.acknowledged_at)
 
 
 @pytest.mark.django_db

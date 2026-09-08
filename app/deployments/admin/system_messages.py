@@ -24,6 +24,7 @@ from django.urls import NoReverseMatch, path, reverse
 from django.utils import timezone
 from django.utils.html import format_html, format_html_join
 from django.utils.http import url_has_allowed_host_and_scheme
+from django_object_actions import DjangoObjectActions, action
 
 from buoy_barn.observability import metrics
 from buoy_barn.observability.promql import explore_url, query_for
@@ -236,6 +237,18 @@ def messages_reaching(page_model, pks) -> dict[int, set[int]]:
         for object_pk, message_pk in pairs:
             reaching[object_pk].add(message_pk)
     return reaching
+
+
+def _stamp_acknowledgement(message, user) -> None:
+    message.acknowledged_at = timezone.now()
+    message.acknowledged_by = user
+    message.save(update_fields=["acknowledged_at", "acknowledged_by"])
+
+
+def _clear_acknowledgement(message) -> None:
+    message.acknowledged_at = None
+    message.acknowledged_by = None
+    message.save(update_fields=["acknowledged_at", "acknowledged_by"])
 
 
 def _admin_url(admin_site, obj) -> str:
@@ -646,13 +659,13 @@ class SystemMessageSubjectFilter(SimpleListFilter):
 
 
 @admin.register(SystemMessage)
-class SystemMessageAdmin(admin.ModelAdmin):
-    """Read-only-except-acknowledgement admin for machine-written messages.
+class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
+    """Fully read-only admin for machine-written messages: acknowledging is a button, not a field.
 
-    Every field here is written by the refresh pipeline. A human editing one by hand is not a
-    correction, it is a lie about what the system observed -- so the only thing this admin
-    lets anyone change is whether the message has been acknowledged, and even that goes
-    through actions and the sidebar button rather than free-form editing.
+    Every field here is written by the refresh pipeline, so a human edit is not a correction,
+    it is a lie about what the system observed -- and a hand-typed acknowledged_at is worse
+    than most, since `SystemMessageQuerySet.outstanding()` compares it against `last_seen` to
+    decide whether a message has recurred.
     """
 
     list_display = [
@@ -669,6 +682,7 @@ class SystemMessageAdmin(admin.ModelAdmin):
     date_hierarchy = "last_seen"
 
     actions = ["acknowledge_messages", "unacknowledge_messages"]
+    change_actions = ["acknowledge", "unacknowledge"]
 
     fields = [
         "subject_link",
@@ -687,9 +701,6 @@ class SystemMessageAdmin(admin.ModelAdmin):
         "impact",
     ]
 
-    # The only two fields a human is allowed to write.
-    editable_fields = ("acknowledged_at", "acknowledged_by")
-
     class Media:
         # Same copy/select-all affordance as the sidebar's PromQL block, since
         # `promql_query` below renders the identical `.system-message-promql` markup.
@@ -699,12 +710,17 @@ class SystemMessageAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         return queryset.select_related("acknowledged_by", *_SUBJECT_SELECT_RELATED)
 
-    def get_readonly_fields(self, request, obj=None):
-        return [name for name in self.fields if name not in self.editable_fields]
-
     def has_add_permission(self, request):
         """Messages are recorded by the refresh pipeline, never typed in."""
         return False
+
+    def has_change_permission(self, request, obj=None):
+        """False for everyone: Django then renders every field readonly, with no Save button."""
+        return False
+
+    def _may_acknowledge(self, request) -> bool:
+        """The real change permission, since `has_change_permission` above is pinned to False."""
+        return super().has_change_permission(request)
 
     def get_urls(self):
         urls = super().get_urls()
@@ -729,13 +745,11 @@ class SystemMessageAdmin(admin.ModelAdmin):
         if request.method != "POST":
             return HttpResponseNotAllowed(["POST"])
 
-        if not self.has_change_permission(request):
+        if not self._may_acknowledge(request):
             raise PermissionDenied
 
         message = get_object_or_404(SystemMessage, pk=message_id)
-        message.acknowledged_at = timezone.now()
-        message.acknowledged_by = request.user
-        message.save(update_fields=["acknowledged_at", "acknowledged_by"])
+        _stamp_acknowledgement(message, request.user)
 
         self.message_user(request, f"Acknowledged '{message}'.")
 
@@ -753,6 +767,20 @@ class SystemMessageAdmin(admin.ModelAdmin):
                 args=[message.pk],
             ),
         )
+
+    @action(description="Acknowledge this message", button_type="form", methods=("POST",))
+    def acknowledge(self, request, obj):
+        if not self._may_acknowledge(request):
+            raise PermissionDenied
+        _stamp_acknowledgement(obj, request.user)
+        self.message_user(request, f"Acknowledged '{obj}'.")
+
+    @action(description="Clear this message's acknowledgement", button_type="form", methods=("POST",))
+    def unacknowledge(self, request, obj):
+        if not self._may_acknowledge(request):
+            raise PermissionDenied
+        _clear_acknowledgement(obj)
+        self.message_user(request, f"Un-acknowledged '{obj}'.")
 
     @admin.display(description="Subject")
     def subject_link(self, obj: SystemMessage):

@@ -40,7 +40,10 @@ are treated as untrusted throughout; every value below goes through Django's aut
             {% if row.promql %}
               <details>
                 <summary>PromQL</summary>
-                <pre>{{ row.promql }}</pre>
+                <div class="system-message-promql">
+                  <pre style="white-space: pre-wrap; overflow-wrap: anywhere;">{{ row.promql }}</pre>
+                  <button type="button" class="button system-message-copy">Copy</button>
+                </div>
                 {% if row.grafana_url %}
                   <a href="{{ row.grafana_url }}" rel="noreferrer">Open in Grafana</a>
                 {% endif %}

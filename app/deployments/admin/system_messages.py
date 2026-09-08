@@ -567,6 +567,15 @@ class SystemMessageSidebarMixin:
 
     change_form_template = "admin/deployments/change_form.html"
 
+    class Media:
+        # Wires up the sidebar's PromQL "Copy" button and click-to-select-all. Declared here
+        # (rather than only on `SystemMessageAdmin`) so it loads on every admin that mixes
+        # this in -- Platform, ErddapDataset, ErddapServer, TimeSeries -- since any of them
+        # can render a `.system-message-promql` block. `extend` defaults to True, so this
+        # merges with each ModelAdmin's own base media (jquery, core.js, ...) rather than
+        # replacing it.
+        js = ["deployments/js/system_messages.js"]
+
     def related_subjects(self, obj) -> list:
         """The objects this page gathers messages from. Overridden per admin where it differs."""
         return related_subjects(obj)
@@ -686,6 +695,11 @@ class SystemMessageAdmin(admin.ModelAdmin):
     #: The only two fields a human is allowed to write.
     editable_fields = ("acknowledged_at", "acknowledged_by")
 
+    class Media:
+        # Same copy/select-all affordance as the sidebar's PromQL block, since
+        # `promql_query` below renders the identical `.system-message-promql` markup.
+        js = ["deployments/js/system_messages.js"]
+
     def get_queryset(self, request: HttpRequest) -> QuerySet:
         queryset = super().get_queryset(request)
         return queryset.select_related("content_type", "acknowledged_by").prefetch_related(
@@ -783,12 +797,20 @@ class SystemMessageAdmin(admin.ModelAdmin):
         if not query:
             return "No metric is associated with this code."
 
+        block = format_html(
+            "<div class='system-message-promql'>"
+            "<pre style='white-space: pre-wrap; overflow-wrap: anywhere;'>{}</pre>"
+            "<button type='button' class='button system-message-copy'>Copy</button>"
+            "</div>",
+            query,
+        )
+
         url = explore_url(query)
         if not url:
-            return format_html("<pre>{}</pre>", query)
+            return block
         return format_html(
-            "<pre>{}</pre><a href='{}' rel='noreferrer'>Open in Grafana</a>",
-            query,
+            "{}<a href='{}' rel='noreferrer'>Open in Grafana</a>",
+            block,
             url,
         )
 

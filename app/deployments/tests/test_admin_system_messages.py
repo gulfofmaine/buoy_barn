@@ -9,8 +9,10 @@ safely dismissable yesterday must stop being dismissable today.
 """
 
 from datetime import timedelta
+from pathlib import Path
 
 import pytest
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
@@ -142,6 +144,89 @@ class PlatformSidebarGatheringTestCase(SystemMessageAdminTestCase):
 
         self.assertContains(response, "objectaction-item")
         self.assertContains(response, "refresh_platform_datasets")
+
+
+@pytest.mark.django_db
+class PromqlCopyAffordanceTestCase(SystemMessageAdminTestCase):
+    """The sidebar's PromQL block: a copy button, click-to-select-all, and no side scroll.
+
+    `self.timeseries` sits on `self.dataset`, and `_message`'s default code (`NOT_FOUND`) is
+    an outcome code, so a message on either subject resolves to a query via
+    `_promql_context` filling in the dataset name. A message on the platform itself never
+    gets a dataset or server into that context, so it is the case with no query at all.
+    """
+
+    def test_the_script_delegates_because_it_loads_before_the_sidebar(self):
+        """Django's Media puts this in <head> with no `defer`, so it runs before the sidebar.
+
+        A version that bound listeners by querying `.system-message-promql` on load would find
+        nothing and leave every button inert -- while the page still returned 200 and every
+        other test in this class still passed, because they only assert the markup is present.
+        There is no JS test harness in this repo, so this asserts the two halves of that
+        contract directly: the script really does load ahead of the DOM it operates on, and it
+        really does delegate from `document` rather than querying for the blocks up front.
+        """
+        _message(self.timeseries, message="Timeseries rung")
+
+        html = self.platform_page().content.decode()
+        script_at = html.find("deployments/js/system_messages.js")
+        self.assertGreater(script_at, 0, "the script is not loaded at all")
+        self.assertLess(script_at, html.find("</head>"), "script moved out of <head>")
+        self.assertNotIn("defer", html[script_at - 120 : script_at])
+
+        source = (
+            Path(settings.BASE_DIR) / "deployments/static/deployments/js/system_messages.js"
+        ).read_text()
+        self.assertIn('document.addEventListener("click"', source)
+        self.assertNotIn("document.querySelectorAll", source)
+
+    def test_copy_control_and_query_text_render_for_a_message_with_a_query(self):
+        _message(self.timeseries, message="Timeseries rung")
+
+        response = self.platform_page()
+
+        self.assertContains(response, "system-message-promql")
+        self.assertContains(response, "system-message-copy")
+        self.assertContains(response, "buoybarn_erddap_outcome_total")
+        self.assertContains(response, self.dataset.name)
+
+    def test_no_promql_block_or_button_when_the_message_has_no_query(self):
+        _message(self.platform, message="Platform rung, no subject to key a query on")
+
+        response = self.platform_page()
+
+        self.assertContains(response, "Platform rung, no subject to key a query on")
+        self.assertNotContains(response, "system-message-promql")
+        self.assertNotContains(response, "system-message-copy")
+
+    def test_query_text_stays_escaped(self):
+        """Dataset names come from ERDDAP and are untrusted, same as message text.
+
+        Deliberately given no timeseries of its own and read back from the SystemMessage
+        change page (rather than a platform page), so this only exercises the PromQL
+        rendering this ticket touches -- a dataset with a timeseries also feeds an unrelated,
+        pre-existing unescaped-URL widget on the platform/dataset inline pages, which would
+        make this test fail for a reason that has nothing to do with the copy affordance.
+        """
+        hostile_dataset = ErddapDataset.objects.create(
+            name='M01"><script>alert(1)</script>',
+            server=self.server,
+        )
+        message = _message(hostile_dataset)
+
+        response = self.client.get(
+            reverse("admin:deployments_systemmessage_change", args=[message.pk]),
+        )
+
+        self.assertNotContains(response, "<script>alert(1)</script>")
+        self.assertContains(response, "&lt;script&gt;alert(1)&lt;/script&gt;")
+
+    def test_static_js_is_referenced_on_the_change_page(self):
+        _message(self.timeseries)
+
+        response = self.platform_page()
+
+        self.assertContains(response, "deployments/js/system_messages.js")
 
 
 @pytest.mark.django_db

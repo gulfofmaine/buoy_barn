@@ -1,16 +1,15 @@
 {% comment %}
-Outstanding system messages for this page's whole chain, rendered into Django's own
-`#content-related` sidebar module -- the same markup admin/index.html uses for "Recent
-actions", so this needs no CSS of its own.
+Outstanding system messages for this page's whole chain, in Django's own `#content-related`
+sidebar module -- the same markup admin/index.html uses for "Recent actions", so it needs no
+CSS of its own.
 
-Every row leads with the subject it is about, because the same message shows up on several
-different pages: a server refusing requests appears on that server's page, on each of its
-datasets, and on every platform with a timeseries underneath. Without the subject on the row,
-a reader on a platform page cannot tell whether "not found" means their platform is broken or
-the whole server is.
+Every row leads with its subject, because one message shows up on several pages: a server
+refusing requests appears on that server, on each of its datasets, and on every platform with
+a timeseries underneath. Without it, a reader cannot tell whether "not found" means their
+platform is broken or the whole server is.
 
-Nothing here is marked safe. Message text and dataset names come back from ERDDAP servers and
-are treated as untrusted throughout; every value below goes through Django's autoescaping.
+Nothing here is marked safe -- message text and dataset names come from ERDDAP and are
+untrusted, so every value goes through Django's autoescaping.
 {% endcomment %}
 {% if system_messages %}
   <div id="content-related">
@@ -57,9 +56,8 @@ are treated as untrusted throughout; every value below goes through Django's aut
               </form>
             {% else %}
               {% comment %}
-              Acknowledging is global, and this message reaches beyond this page, so the
-              button would dismiss it for rows nobody here can see. The link leads to the
-              message's own page, where the full impact is listed.
+              This message reaches beyond this page, so the containment rule withholds the
+              button. The link leads to the message's own page, which lists its full impact.
               {% endcomment %}
               <p>
                 <a href="{{ row.message_url }}">Review impact &rarr;</a>

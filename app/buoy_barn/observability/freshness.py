@@ -1,32 +1,22 @@
 """Observable gauges describing how fresh the data is, read straight from the database.
 
-These are observable (callback-driven) gauges rather than values pushed from the refresh
-tasks, because they describe state rather than events: "dataset X was last refreshed N
-seconds ago" is a fact about the database, true whether or not anything ran recently. A
-counter incremented by the tasks could never report a dataset that stopped being refreshed
-altogether, which is the failure worth alerting on.
+Callbacks rather than values pushed from the refresh tasks: a counter the tasks increment
+could never report a dataset that stopped being refreshed altogether, which is the failure
+worth alerting on. Exactly one process may collect them, so they live in the
+``export_metrics`` management command and its single-replica deployment.
 
-They must be collected by exactly a single process, so they live in the ``export_metrics``
-management command and its single-replica deployment, to avoid reporting a gauge multiple
-times.
+``value_age`` is aggregated per platform rather than per timeseries: there are thousands of
+those and they churn as series are retired, so per-series gauges would be large and unstable.
 
-Cardinality: ``refresh_age`` is per dataset (~384 stable series -- "which dataset is stale"
-is the question being asked), but ``value_age`` is aggregated per platform, not per
-timeseries. There are thousands of timeseries and they churn as series are retired, so
-per-series gauges would be both large and unstable; the admin already shows per-series
-detail.
-
-Every callback runs on the SDK's exporter thread and must therefore never raise: an
-exception escaping an observable-gauge callback can stop collection for the whole provider.
-Each one closes stale database connections first, since this is a long-lived process and
-``CONN_MAX_AGE`` is not set.
+No callback may raise, an exception escaping one can stop collection for the whole
+provider. See :func:`_observations`, which every callback goes through.
 """
 
 import logging
 
 logger = logging.getLogger(__name__)
 
-# Fallback for a label whose source column is null, so that str(None) never puts the literal
+# Fallback for a label whose source column is null, so `str(None)` never puts the literal
 # "None" on a time series.
 UNKNOWN = "unknown"
 
@@ -39,11 +29,9 @@ def _label(value) -> str:
 def _server_label(name, base_url) -> str:
     """The ``erddap.server`` value for these column values.
 
-    Delegates to :func:`buoy_barn.observability.metrics.server_label` rather than formatting
-    the name here, because the refresh path labels the same server through that function. If
-    the two ever disagree -- and they did, when this module used the name alone while the
-    counter used ``str(server)`` -- the ``constraint_group.info`` join returns nothing for
-    every server whose ``name`` is null.
+    Delegates to :func:`buoy_barn.observability.metrics.server_label` because the refresh
+    path labels the same server through it. The two disagreeing breaks the
+    ``constraint_group.info`` join for every server whose ``name`` is null.
     """
     from .metrics import server_label  # noqa: PLC0415
 
@@ -53,10 +41,8 @@ def _server_label(name, base_url) -> str:
 def _observations(callback):
     """Run a gauge callback safely, returning [] on any failure.
 
-    Wraps three concerns that every callback shares: dropping database connections that
-    the server may have closed under a long-lived process, converting failures into "no
-    data this cycle" rather than a crashed exporter thread, and keeping the callbacks
-    themselves readable.
+    Closes stale database connections first: this is a long-lived process and
+    ``CONN_MAX_AGE`` is not set, so the server may have dropped the connection underneath it.
     """
     from django.db import close_old_connections  # noqa: PLC0415
 
@@ -118,8 +104,8 @@ def _datasets_never_refreshed():
 def _timeseries_value_ages():
     """Age of the newest and oldest observation per platform, server and series type.
 
-    A single aggregate query, not the row-by-row iteration used by
-    `more_thank_a_week_old`, which loads every stale series into Python.
+    A single aggregate query, unlike `more_thank_a_week_old`, which loads every stale series
+    into Python.
     """
     from django.db.models import Max, Min  # noqa: PLC0415
     from django.utils import timezone  # noqa: PLC0415
@@ -149,8 +135,8 @@ def _timeseries_value_ages():
             ),
             "timeseries.type": _label(row["timeseries_type"]),
         }
-        # "newest" is the freshest reading, so its age is the smallest -- that is the
-        # number that answers "is this buoy reporting?".
+        # "newest" is the freshest reading, so its age is the smallest -- the number that
+        # answers "is this buoy reporting?".
         observations.append(
             Observation(
                 max((now - row["newest"]).total_seconds(), 0.0),
@@ -167,10 +153,9 @@ def _timeseries_value_ages():
 
 
 # ``state`` label value -> the filter that counts it, and the annotation alias holding the
-# count. The aliases must not collide with a model field name: an ``annotate(active=...)``
-# shadows ``TimeSeries.active``, so a later ``Q(active=False)`` resolves to the annotation
-# and Postgres rejects the nested aggregate -- which is how this gauge silently published
-# nothing at all. Hence the ``_count`` suffix on every alias.
+# count. Every alias needs its ``_count`` suffix: an ``annotate(active=...)`` shadows
+# ``TimeSeries.active``, so a later ``Q(active=False)`` resolves to the annotation and
+# Postgres rejects the nested aggregate, which silently published nothing at all.
 _TIMESERIES_STATES = (
     ("active", "active_count", {"active": True, "end_time__isnull": True}),
     ("inactive", "inactive_count", {"active": False}),
@@ -182,10 +167,8 @@ _TIMESERIES_STATES = (
 def _timeseries_counts():
     """How many timeseries are in each state, by server.
 
-    The states overlap on purpose: a retired series is also inactive, and a never-populated
-    one may be either. Each is the answer to its own question ("how much of this server have
-    we given up on?", "how much never worked?"), so they are counted independently rather
-    than partitioned.
+    The states overlap on purpose (a retired series is also inactive) so they are counted
+    independently rather than partitioned, and do not sum to the server's total.
     """
     from django.db.models import Count, Q  # noqa: PLC0415
     from opentelemetry.metrics import Observation  # noqa: PLC0415
@@ -212,9 +195,8 @@ def _timeseries_counts():
     ]
 
 
-# Longest `constraints` label value the info metric will emit. The whole point of the metric
-# is that the JSON lives on one bounded series rather than a hot counter, but a pathological
-# constraints dict should still not be able to bloat it without limit.
+# Longest `constraints` label value the info metric will emit, so a pathological constraints
+# dict cannot bloat it without limit.
 MAX_CONSTRAINTS_LABEL = 200
 
 
@@ -233,23 +215,17 @@ def _constraints_label(constraints) -> str:
 def _constraint_group_info():
     """Map each `constraint_group` id back to the constraints it stands for.
 
-    ``buoybarn.erddap.outcome`` is labelled with an opaque 8-character hash so that a failing
-    constraint group is distinguishable from its healthy siblings without the unbounded
-    constraints JSON ending up on a hot counter. That hash is useless on its own, so this is
-    the other half: the standard Prometheus info-metric pattern, always 1, carrying the
-    readable constraints as a label to be joined onto a failure panel.
+    The other half of the opaque hash on ``buoybarn.erddap.outcome``: the standard Prometheus
+    info-metric pattern, always 1, carrying the readable constraints as a joinable label.
 
-    Putting the JSON on a label here is a deliberate exception to the rule stated in
-    :mod:`buoy_barn.observability.metrics`. The rule exists because that JSON on a counter
-    multiplies with every outcome and every request; here there is exactly one series per
-    (dataset, group), it is rewritten once per collection cycle, and the exporter is the only
-    process publishing it. The cost is label value length, not series count.
+    That JSON on a label is a deliberate exception to the cardinality rule in
+    :mod:`buoy_barn.observability.metrics`. Here there is one series per (dataset, group),
+    rewritten once per cycle by the single exporter, so the cost is label length rather than
+    series count.
 
-    Selects through ``TimeSeries.objects.refreshable()``, the same queryset method
-    ``group_timeseries_by_constraint_and_type`` uses, so the groups described here are the
-    groups the refresh path actually fetches. A test asserts the two produce identical
-    ``(dataset, group_id)`` sets, since sharing a filter does not by itself keep the *key* in
-    step.
+    Selects through ``TimeSeries.objects.refreshable()``, as
+    ``group_timeseries_by_constraint_and_type`` does. Sharing a filter does not by itself keep
+    the *key* in step, so a test asserts both produce identical ``(dataset, group_id)`` sets.
     """
     from opentelemetry.metrics import Observation  # noqa: PLC0415
 
@@ -257,8 +233,8 @@ def _constraint_group_info():
 
     from .metrics import constraint_group_id  # noqa: PLC0415
 
-    # One query, grouped in Python. Walking datasets and calling
-    # group_timeseries_by_constraint_and_type() per dataset would be ~384 queries per cycle.
+    # Grouped in Python: calling group_timeseries_by_constraint_and_type() per dataset would
+    # be ~384 queries per cycle.
     rows = TimeSeries.objects.refreshable().values(
         "dataset__server__name",
         "dataset__server__base_url",
@@ -297,8 +273,8 @@ def _constraint_group_info():
 def _celery_queue_depths():
     """Length of each Celery queue on the Redis broker.
 
-    Sampled here rather than from the workers because it must be single-writer: reading it
-    from N prefork children would report the same backlog N times.
+    Sampled here rather than from the workers because reading it from N prefork children
+    would report the same backlog N times.
     """
     from django.conf import settings  # noqa: PLC0415
     from opentelemetry.metrics import Observation  # noqa: PLC0415
@@ -311,8 +287,7 @@ def _celery_queue_depths():
 
     client = redis.Redis.from_url(broker_url)
     try:
-        # Celery stores each queue as a Redis list named after the queue. Only the default
-        # queue is configured (there is no task_routes), but read whatever exists.
+        # Celery stores each queue as a Redis list named after the queue.
         return [
             Observation(client.llen(queue), {"celery.queue": queue}) for queue in _queue_names(settings)
         ]
@@ -367,8 +342,8 @@ GAUGES = {
 def register(meter) -> list:
     """Create every observable gauge on ``meter``. Returns the created instruments.
 
-    The instruments must be kept alive by the caller; the SDK only holds weak references
-    to callbacks in some versions, and letting them be collected silently stops collection.
+    The caller must keep the instruments alive: some SDK versions hold only weak references
+    to callbacks, and letting them be collected silently stops collection.
     """
     instruments = []
     for name, (unit, description, callback) in GAUGES.items():

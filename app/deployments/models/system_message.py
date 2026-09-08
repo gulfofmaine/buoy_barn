@@ -46,13 +46,11 @@ class SystemMessageQuerySet(models.QuerySet):
     def outstanding(self):
         """Messages that still need attention.
 
-        Acknowledgement is global to the (subject, code, constraint_group) row, not to a
-        single occurrence: there is nothing else to attach an acknowledgement to, since a
-        recurring problem re-uses the same row instead of creating a new one (see the
-        unique constraints below). So a message counts as outstanding again once it recurs
-        *after* it was acknowledged -- `acknowledged_at` predates `last_seen` -- rather than
-        staying silently dismissed forever. Resolved messages are never outstanding,
-        regardless of acknowledgement.
+        Acknowledgement attaches to the (subject, code, constraint_group) row rather than to
+        one occurrence, since a recurring problem re-uses the same row. So a message counts
+        as outstanding again once it recurs *after* being acknowledged (`acknowledged_at`
+        predates `last_seen`) rather than staying silently dismissed forever. Resolved
+        messages are never outstanding, regardless of acknowledgement.
         """
         return self.filter(resolved_at__isnull=True).filter(
             Q(acknowledged_at__isnull=True) | Q(acknowledged_at__lt=models.F("last_seen")),
@@ -65,12 +63,9 @@ class SystemMessageQuerySet(models.QuerySet):
     def for_objects(self, objs):
         """Messages attached to any of a heterogeneous iterable of model instances.
 
-        `objs` can mix Platforms, TimeSeries, ErddapDatasets, etc. Filtering naively (one
-        query per object, or per type) is what a dashboard listing "all outstanding
-        messages for these datasets" would do by default, and that does not scale. Instead
-        group the objects by the column they attach through and OR together one
-        `Q(<column>__in=[...])` per column, so the whole heterogeneous list resolves in a
-        single query.
+        `objs` can mix Platforms, TimeSeries, ErddapDatasets and ErddapServers. They are
+        grouped by the column they attach through and OR'd together as one
+        `Q(<column>__in=[...])` per column, so the whole list resolves in a single query.
         """
         objs = list(objs)
         if not objs:
@@ -94,11 +89,12 @@ class SystemMessageManager(models.Manager.from_queryset(SystemMessageQuerySet)):
 class SystemMessage(models.Model):
     """A problem or notable event tied to some other model instance.
 
-    Raised by the refresh/error-handling path (and surfaced in the admin) so operators see
+    Raised by the refresh/error-handling path and surfaced in the admin, so operators see
     "this platform's ERDDAP dataset has been returning 404s" instead of having to read logs.
-    Attached to its subject through one nullable foreign key per subject model: the number of
-    platforms, datasets, servers and timeseries keeps growing, but the set of models does
-    not, and real columns are what let the admin's reach lookups use an index.
+
+    Attached to its subject through one nullable foreign key per subject model rather than a
+    generic relation: the set of subject models does not grow, and real columns are what let
+    the admin's reach lookups use an index.
     """
 
     platform = models.ForeignKey(
@@ -190,7 +186,7 @@ class SystemMessage(models.Model):
             ),
             # One partial unique index per subject column rather than one combined
             # constraint: Postgres treats NULLs as distinct, so a single unique constraint
-            # over all four columns -- three of which are always NULL -- would never fire,
+            # over all four columns (three of which are always NULL) would never fire,
             # and every recurrence would insert a new row instead of bumping `occurrences`.
             *[
                 models.UniqueConstraint(

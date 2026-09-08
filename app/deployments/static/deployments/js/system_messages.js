@@ -1,14 +1,11 @@
 /*
- * Makes the PromQL block in the system-messages sidebar (and on the SystemMessage change
- * page, where the same markup is reused for the `promql_query` readonly field) easy to copy:
- * clicking the <pre> selects its whole contents, and the "Copy" button next to it copies the
- * query to the clipboard.
+ * Makes the PromQL block copyable: clicking the <pre> selects its contents, and the "Copy"
+ * button copies the query. Used by the system-messages sidebar and by the SystemMessage
+ * change page's `promql_query` field, which render the same markup.
  *
- * No inline handlers (the admin's CSP disallows them in some deployments anyway), no jQuery,
- * no build step. The query text is read back out of the DOM via `textContent` rather than
- * being handed to us in a data attribute or templated into this file -- dataset and server
- * names come from ERDDAP and are untrusted, and `textContent` is exactly the read that can't
- * be turned into an injection.
+ * The query is read back out of the DOM via `textContent` rather than templated into this
+ * file (dataset and server names come from ERDDAP and are untrusted), and `textContent` is
+ * the one read that cannot be turned into an injection.
  */
 (function () {
   "use strict";
@@ -46,8 +43,7 @@
           flash(button, "Copied");
         },
         function () {
-          // Clipboard permission denied or unavailable at call time -- fall back to
-          // selecting the text so the user can still copy it themselves.
+          // Clipboard permission denied, fall back to selecting the text.
           selectAllText(pre);
           flash(button, "Selected, use Ctrl/Cmd-C");
         },
@@ -55,18 +51,15 @@
       return;
     }
 
-    // `navigator.clipboard` is undefined outside secure contexts (plain HTTP on a
-    // non-localhost host), which is plausible for an internal admin. Select the text so a
-    // manual Ctrl/Cmd-C still works.
+    // `navigator.clipboard` is undefined outside secure contexts, plain HTTP on a
+    // non-localhost host, which is plausible for an internal admin.
     selectAllText(pre);
     flash(button, "Selected, use Ctrl/Cmd-C");
   }
 
-  // Delegated from `document` rather than bound to each block on load. Django's `Media`
-  // renders this into <head> with no `defer`, so it executes before the sidebar it operates
-  // on has been parsed -- querying for `.system-message-promql` here would match nothing and
-  // leave every button inert, with the page still rendering perfectly and every test passing.
-  // `document` is the one node guaranteed to exist at this point.
+  // Delegated from `document`, not bound to each block. Django's `Media` renders this into
+  // <head> with no `defer`, so it runs before the sidebar is parsed: querying for
+  // `.system-message-promql` here matches nothing and leaves every button silently inert.
   document.addEventListener("click", function (event) {
     var button = event.target.closest(".system-message-copy");
     if (button) {

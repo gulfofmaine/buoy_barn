@@ -107,9 +107,9 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
                     exc_info=True,
                 )
 
-                # Writing end_time drops this series out of `refreshable()` -- it stops being
-                # refreshed and displayed (issue #1855). Written for the admin who has to
-                # decide whether that's correct, not for a log reader.
+                # Writing end_time drops this series out of `refreshable()`, so it stops
+                # being refreshed and displayed. The message is addressed to the admin who
+                # has to decide whether that was correct.
                 record_system_message(
                     ts,
                     SystemMessage.Code.END_TIME_RETIRED,

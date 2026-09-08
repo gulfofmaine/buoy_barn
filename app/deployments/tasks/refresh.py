@@ -42,8 +42,8 @@ def _fetch_failure_message(dataset, constraints, handled, error) -> str:
 def _resolve_stale_fetch_failures(dataset, constraint_group, codes, keep=None):
     """Resolve `codes` for `dataset`+`constraint_group`, except `keep`.
 
-    Called on all outcomes, so a dataset that switches failure
-    mode (403 -> 404) does not leave the old message outstanding forever.
+    Called on every outcome, so a dataset that switches failure mode (403 -> 404) does not
+    leave the old message outstanding forever.
     """
     codes = tuple(code for code in codes if code != keep)
     if codes:
@@ -57,9 +57,8 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
         timeseries: List of timeseries to update
         clear_end_time: If True, clear the end_time field when data is successfully retrieved
     """
-    # The group id distinguishes one failing constraint group from its healthy siblings.
-    # Opaque on purpose -- buoybarn.erddap.constraint_group.info maps it back to real
-    # constraints, and it's logged below for when you're already reading logs, not a dashboard.
+    # Distinguishes one failing constraint group from its healthy siblings. Opaque on purpose;
+    # buoybarn.erddap.constraint_group.info maps it back to the real constraints.
     constraint_group = metrics.constraint_group_id(timeseries[0].constraints)
 
     with (
@@ -125,8 +124,8 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
 
             outcome.set(handled or Outcome.UNKNOWN_ERROR)
             if handled:
-                # A recognised outcome, benign or not, means whatever else was previously
-                # wrong with this dataset+group is no longer the failure mode in effect.
+                # A recognised outcome, benign or not, means whatever else was wrong with
+                # this dataset+group is no longer the failure mode in effect.
                 _resolve_stale_fetch_failures(
                     timeseries[0].dataset,
                     constraint_group,
@@ -150,9 +149,9 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
             outcome.set(Outcome.OS_ERROR)
             return
 
-        # Row count separates "answered with data" from "answered with nothing" -- previously
-        # only a warning with its context commented out. Per-series save failures below don't
-        # fold into this outcome: the fetch itself succeeded; those surface via buoybarn.log.records.
+        # Row count separates "answered with data" from "answered with nothing". Per-series
+        # save failures below do not fold into this outcome -- the fetch itself succeeded, and
+        # those surface via buoybarn.log.records.
         rows = len(timeseries_df)
         outcome.set(Outcome.SUCCESS if rows else Outcome.EMPTY_DATAFRAME, rows=rows)
 
@@ -235,9 +234,8 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
                             "previous_end_time": previous_end_time.isoformat(),
                         },
                     )
-                    # This un-retirement resolves the retirement message that caused it
-                    # (whatever constraint group recorded it), clearing end_time has no single
-                    # constraint group of its own to scope the resolution by.
+                    # Resolved for any constraint group: clearing end_time has no single
+                    # group of its own to scope the resolution by.
                     resolve_system_messages(series, SystemMessage.Code.END_TIME_RETIRED)
 
                 series.value_time = new_value_time

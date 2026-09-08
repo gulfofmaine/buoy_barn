@@ -1,8 +1,7 @@
 """Django admin registrations for the deployments app, split by feature.
 
-Submodules are imported here so `django.contrib.admin.autodiscover()` (which only ever
-imports `deployments.admin`) run each module's `@admin.register`
-calls.
+Submodules are imported here because `django.contrib.admin.autodiscover()` only ever imports
+`deployments.admin`, so this is what runs each module's `@admin.register` calls.
 """
 
 from .displays import timeseries_status

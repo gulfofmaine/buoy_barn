@@ -13,14 +13,12 @@ class Outcome(StrEnum):
     """Every outcome the refresh path can report, produced in error_handling.py or refresh.py.
 
     An enum rather than bare strings so a handler cannot report a mistyped outcome, which
-    would be validated away to "other" by
-    :func:`buoy_barn.observability.metrics.erddap_outcomes` and quietly leave the real
-    failure off every dashboard.
+    :func:`buoy_barn.observability.metrics.erddap_outcomes` would validate away to "other",
+    quietly leaving the real failure off every dashboard.
 
     ``StrEnum``, not ``(str, Enum)``: members must equal their own string value, since they
-    are tested for truthiness against :data:`NOT_HANDLED` and handed to the metrics facade
-    as an attribute. ``(str, Enum)`` would make ``str(Outcome.NO_ROWS)`` be
-    ``"Outcome.NO_ROWS"`` instead.
+    are tested for truthiness against :data:`NOT_HANDLED` and handed to the metrics facade as
+    an attribute. ``(str, Enum)`` would make ``str(Outcome.NO_ROWS)`` be ``"Outcome.NO_ROWS"``.
     """
 
     # Named by refresh.py around the fetch, not by a handler.
@@ -52,12 +50,8 @@ OUTCOMES = frozenset(outcome.value for outcome in Outcome)
 # `handle_500_no_rows_error` logs at INFO). Keep this set in sync with that, not the reverse.
 BENIGN_OUTCOMES = frozenset({Outcome.SUCCESS.value, Outcome.NO_ROWS.value})
 
-# Non-benign outcomes worth a SystemMessage, mapped to the (code, level) to record it at. A
-# dict forces a decision here.
-#
-# `time_range_retired` is absent on purpose: `handle_500_time_range_error` already records
-# `end_time_retired` per affected timeseries, the more precise subject. See
-# `HANDLED_ELSEWHERE` below for that and every other outcome recorded outside this map.
+# Non-benign outcomes worth a SystemMessage, mapped to the (code, level) to record it at.
+# The outcomes deliberately absent are listed in `HANDLED_ELSEWHERE` below.
 FETCH_FAILURE_MESSAGES: dict[str, tuple[str, str]] = {
     Outcome.FORBIDDEN: (SystemMessage.Code.FORBIDDEN, SystemMessage.Level.DANGER),
     Outcome.NOT_FOUND: (SystemMessage.Code.NOT_FOUND, SystemMessage.Level.DANGER),

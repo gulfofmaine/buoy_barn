@@ -1,12 +1,8 @@
 """Record and resolve :class:`~deployments.models.system_message.SystemMessage` rows.
 
-Called from deep inside the refresh pipeline -- error handlers, backoff logic, dataset
-validation -- so a problem worth reporting can be raised without those call sites having to
-know anything about `update_or_create`, dedupe keys, or the outstanding/resolved lifecycle.
-Both functions follow the same never-raise contract as
-:mod:`buoy_barn.observability.metrics`: instrumentation and reporting that can break a
-refresh are worse than no instrumentation, because they'd fail data collection in order to
-report a problem *with* data collection.
+Called from deep inside the refresh pipeline, so neither function ever raises: failing data
+collection in order to report a problem *with* data collection is worse than not reporting.
+Every failure is logged at WARNING and swallowed.
 """
 
 import logging
@@ -30,31 +26,15 @@ def record_system_message(  # noqa: PLR0913 - one parameter per SystemMessage fi
 ) -> SystemMessage | None:
     """Upsert a SystemMessage for `subject`, deduped on (subject, code, constraint_group).
 
-    A recurring problem reuses its existing row rather than creating a new one each time it
-    is seen -- that's what the unique constraint enforces -- so this always resolves to
-    exactly one of "create the row" or "update the row that's already there":
+    On update, `message`, `context` and `level` take the latest values and `resolved_at` is
+    cleared. The dedupe key admits one row per key, so a recurrence has nowhere to go except
+    back into the row that was resolved.
 
-    * On create: `first_seen`/`last_seen` take the model's `timezone.now` default and
-      `occurrences` starts at 1, all untouched by this function.
-    * On update: `message`, `context` and `level` are overwritten with the latest values
-      (an old message about a problem that has since changed shape is not useful), and
-      `resolved_at` is cleared. A resolved message getting recorded again means the problem
-      came back, and that has to reopen the row -- there's nowhere else for a recurrence to
-      go, since the dedupe key admits only one row per (subject, code, constraint_group).
+    `occurrences` is bumped by a separate `F()` UPDATE because `update_or_create`'s
+    `defaults` can only write fixed values; reading it here and saving the result would drop
+    concurrent increments.
 
-    `occurrences` is bumped in a second, separate statement -- `.filter(pk=...).update(
-    occurrences=F("occurrences") + 1)` -- instead of incrementing the Python attribute and
-    saving it. `update_or_create`'s `defaults` can only overwrite fields with fixed values,
-    it cannot express "whatever is currently in the database, plus one", so a
-    read-then-write of `occurrences` here would drop concurrent increments (two workers
-    both reading occurrences=4 and both saving 5). The `F()` expression pushes the
-    read-and-add into a single UPDATE the database executes atomically, so no increment is
-    lost regardless of how many workers report the same problem at once.
-
-    Never raises: this runs inside the refresh pipeline, where letting a reporting failure
-    propagate would take down data collection over a problem with *reporting on* data
-    collection. Every failure is caught, logged at WARNING with a traceback, and swallowed;
-    the caller gets `None` back and keeps going.
+    Returns `None` if recording failed.
     """
     try:
         code_value = str(code)
@@ -92,19 +72,11 @@ def record_system_message(  # noqa: PLR0913 - one parameter per SystemMessage fi
 def resolve_system_messages(subject, *codes, constraint_group=None) -> int:
     """Resolve outstanding messages for `subject` whose code is in `codes`.
 
-    `constraint_group` narrows the resolution to one constraint group when given, including
-    the empty string (a subject with no constraint group at all). Left as `None` -- the
-    default -- it is not filtered on at all, so every constraint group for this subject and
-    these codes is resolved; that's deliberate, since a caller resolving "this dataset is
-    reachable again" has no single constraint group to name, and passing `""` there would
-    silently miss every message recorded with a real group.
+    `constraint_group=None` (the default) means *any* group, not the empty one: it is not
+    filtered on at all. Passing `""` instead narrows to the group with no constraints, which
+    would silently miss every message recorded against a real group.
 
-    Only rows that are not already resolved are touched, and the return value is the number
-    of rows this call resolved -- not the number matching the filter before it ran.
-
-    Never raises, for the same reason as :func:`record_system_message`: a resolution that
-    fails to write must not be allowed to break the refresh path that discovered the problem
-    is now over. Returns 0 on failure.
+    Returns the number of rows this call resolved, or 0 if resolving failed.
     """
     try:
         column = subject_field(subject)

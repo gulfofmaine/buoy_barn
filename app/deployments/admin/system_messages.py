@@ -1,8 +1,8 @@
 """The SystemMessage feature: reach/containment, sidebar gathering, the badge, and the admin.
 
-Acknowledging a SystemMessage is global.
-A page may only offer an inline Acknowledge button for a message whose blast radius is
-entirely contained by that page.
+The containment rule everything here serves: acknowledging a SystemMessage is global, so a
+page may only offer an inline Acknowledge button for a message whose blast radius that page
+entirely contains.
 """
 
 from collections import defaultdict
@@ -165,11 +165,9 @@ def _reach_rows(column, ids):
 def compute_message_reach(messages) -> dict[int, MessageReach]:
     """Map each message's pk to what it reaches, in a constant number of queries.
 
-    The naive version of this (ask each message's subject what it touches) costs a query
-    per message, which is the shape a sidebar of ten messages must not have. Instead
-    the messages are grouped by which subject foreign key they set and each group resolved
-    with a single `TimeSeries` query, so the cost is at most four queries (one per subject
-    type that is actually present) whether there is one message or a hundred.
+    Messages are grouped by which subject foreign key they set and each group resolved with
+    one `TimeSeries` query, so the cost is at most four queries whether there is one message
+    or a hundred. Asking each subject in turn would be a query per sidebar row.
 
     A subject always appears in its own axis even when nothing joins to it: a dataset with no
     timeseries still reaches itself, and must stay dismissable on its own page.
@@ -222,9 +220,8 @@ def _paths_for(page_model) -> tuple[str, ...]:
 def messages_reaching(page_model, pks) -> dict[int, set[int]]:
     """The pks of the outstanding messages reaching each of `pks`, one query per path.
 
-    Queried per path rather than through one OR'd filter because an OR over four
-    multi-valued paths returns each message once per matching join row, so the caller would
-    have to de-duplicate rows the database had already multiplied.
+    Queried per path rather than through one OR'd filter: the subject paths are multi-valued,
+    so an OR over them returns each message once per matching join row.
     """
     pks = list(pks)
     reaching: dict[int, set[int]] = defaultdict(set)
@@ -277,9 +274,8 @@ def _promql_context(message, subject) -> dict:
     """The context `promql.query_for` wants, filled in from the message's subject.
 
     `constraint_group` is a model field rather than a context key, and the fetch-failure
-    handlers record neither the dataset nor the server name (they have no need to, the
-    subject already says which one it is). Both have to be supplied here or every outcome-code
-    message would render without a query.
+    handlers record neither the dataset nor the server name. Without both supplied here,
+    every outcome-code message renders without a query.
     """
     context = {**(message.context or {}), "constraint_group": message.constraint_group}
 
@@ -291,7 +287,7 @@ def _promql_context(message, subject) -> dict:
 
     if not context.get("server"):
         # server_label, not `.name`: name is nullable, and the metric labels this query
-        # matches on use name-or-base_url. `.name` would yield no query for a nameless server.
+        # matches on use name-or-base_url.
         if isinstance(subject, ErddapServer):
             context["server"] = metrics.server_label(subject)
         elif isinstance(subject, ErddapDataset):
@@ -378,10 +374,9 @@ class SystemMessageBadge:
 def annotate_system_message_badges(objs, page_model) -> list:
     """Attach a `SystemMessageBadge` to every object on a changelist page, in bulk.
 
-    Computed once for the whole page rather than once per row: the changelist calls the
-    display function once per object, so anything that queries in there is an N+1 by
-    construction. `SystemMessageChangeList` calls this from `get_results`, where the page's
-    objects are all in hand at once.
+    The changelist calls the display function once per object, so querying in there is an
+    N+1 by construction. `SystemMessageChangeList` calls this from `get_results` instead,
+    where the whole page is in hand at once.
     """
     objs = list(objs)
     if not objs:
@@ -421,16 +416,14 @@ SYSTEM_MESSAGE_RANK = "system_message_rank"
 def outstanding_messages_exist(page_model, level=None) -> Q | None:
     """Whether an outstanding message reaches a row of `page_model`, as correlated subqueries.
 
-    `Exists` rather than a filter through the `system_messages` relations, because the chain is
-    multi-valued: a join-based filter returns one row per matching message,
-    so a platform with a message on its dataset *and* its server is listed twice. One
-    `Exists` per path rather than one over all four OR'd together, because Postgres plans the
-    OR'd form as a single many-way left join with an OR'd join filter (which no index can
-    serve) while each path alone is an index lookup.
+    `Exists` rather than a filter through the `system_messages` relations: the chain is
+    multi-valued, so a join-based filter lists a platform twice if a message reaches it
+    through both its dataset and its server. One `Exists` per path rather than one over all
+    four OR'd together, because Postgres plans the OR'd form as a many-way left join with an
+    OR'd join filter that no index can serve, while each path alone is an index lookup.
 
-    The outstanding predicate comes from `SystemMessageQuerySet.outstanding()` rather than
-    being rewritten here, so the filter and the sidebar cannot disagree about whether an
-    acknowledged-then-recurring message still counts.
+    The outstanding predicate comes from `SystemMessageQuerySet.outstanding()`, so this
+    filter and the sidebar cannot disagree about acknowledged-then-recurring messages.
     """
     paths = _paths_for(page_model)
     if not paths:
@@ -469,10 +462,10 @@ def _worst_severity_along(message_path):
 def system_message_rank(page_model):
     """The severity of the worst outstanding message reaching a row, as a sortable number.
 
-    `Level` is a CharField, so ordering by the column is alphabetical -- danger, info,
-    warning -- which files the least alarming level in between the other two. Nothing on the
-    page would give that away: the column just sorts wrongly and quietly. So severity is
-    ranked explicitly, with 0 for a row nothing reaches so "None" sorts below every level.
+    `Level` is a CharField, so ordering by the column is alphabetical (danger, info,
+    warning), filing the least alarming level in between the other two, quietly and with
+    nothing on the page to give it away. Hence an explicit rank, with 0 for a row nothing
+    reaches so "None" sorts below every level.
     """
     paths = _paths_for(page_model)
     if not paths:
@@ -488,10 +481,9 @@ def system_message_rank(page_model):
 def system_message_status(obj: ErddapDataset | Platform | TimeSeries):
     """Split badge: what this row can act on, then muted, what it only shares.
 
-    The two halves are not interchangeable. "2 danger" is a problem this row owns and can
-    dismiss from its own page; "(+1 server)" is a problem it merely suffers, shared with
-    platforms nobody looking at this changelist can see. Running them together would invite
-    exactly the global dismissal the containment rule exists to prevent.
+    "2 danger" is a problem this row owns and can dismiss from its own page; "(+1 server)" is
+    one it merely suffers, shared with rows nobody here can see. Running the two together
+    would invite the global dismissal the containment rule prevents.
     """
     badge = getattr(obj, "_system_message_badge", None)
     if badge is None:
@@ -537,10 +529,8 @@ class SystemMessageChangeList(ChangeList):
 class SystemMessageListFilter(SimpleListFilter):
     """Filter a platform/timeseries/dataset changelist by what its chain is complaining about.
 
-    Deliberately speaks the badge's language: it matches through the same `SUBJECT_KINDS`
-    paths the sidebar gathers on, so a platform whose *server* is failing is matched here
-    exactly as it is shown there. "None" therefore means nothing anywhere in the chain, not
-    merely nothing attached to this row.
+    Matches through the same `SUBJECT_KINDS` paths the sidebar gathers on, so "None" means
+    nothing anywhere in the chain, not merely nothing attached to this row.
     """
 
     title = "system messages"
@@ -568,12 +558,9 @@ class SystemMessageSidebarMixin:
     change_form_template = "admin/deployments/change_form.html"
 
     class Media:
-        # Wires up the sidebar's PromQL "Copy" button and click-to-select-all. Declared here
-        # (rather than only on `SystemMessageAdmin`) so it loads on admins that mix
-        # this in (Platform, ErddapDataset, ErddapServer, TimeSeries) since any of them
-        # can render a `.system-message-promql` block. `extend` defaults to True, so this
-        # merges with each ModelAdmin's own base media (jquery, core.js, ...) rather than
-        # replacing it.
+        # Wires up the sidebar's PromQL "Copy" button and click-to-select-all, on every admin
+        # that mixes this in and so can render a `.system-message-promql` block. `extend`
+        # defaults to True, so this merges with each ModelAdmin's own base media.
         js = ["deployments/js/system_messages.js"]
 
     def get_changelist(self, request, **kwargs):
@@ -582,10 +569,9 @@ class SystemMessageSidebarMixin:
     def get_queryset(self, request: HttpRequest) -> QuerySet:
         """Supply the severity annotation the badge column sorts on.
 
-        Added here rather than in each admin so the annotation and the column arrive together:
-        an admin that lists the badge but forgot the annotation would raise on the first click
-        of the column header. Skipped where the column is not listed, since the annotation
-        costs one correlated subquery per path.
+        Added here so the annotation and the column arrive together: an admin listing the
+        badge without it would raise on the first click of the column header. Skipped where
+        the column is not listed, since it costs one correlated subquery per path.
         """
         queryset = super().get_queryset(request)
         if system_message_status in self.list_display:
@@ -603,10 +589,9 @@ class SystemMessageSidebarMixin:
 class SystemMessageStateFilter(SimpleListFilter):
     """Outstanding / acknowledged / resolved, defaulting to outstanding.
 
-    A system message list that opens on *everything ever recorded* is a list nobody reads, so
-    the unfiltered view is not the default. The stock "All" choice is replaced by an explicit
-    lookup of the same name, because Django treats "no parameter" as "All" and there is no
-    other way to make "no parameter" mean something else while still offering a way out.
+    The stock "All" choice is replaced by an explicit lookup of the same name: Django treats
+    "no parameter" as "All", and this is the only way to make "no parameter" mean outstanding
+    while still offering a way out.
     """
 
     title = "state"
@@ -662,10 +647,9 @@ class SystemMessageSubjectFilter(SimpleListFilter):
 class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
     """Fully read-only admin for machine-written messages: acknowledging is a button, not a field.
 
-    Every field here is written by the refresh pipeline, so a human edit is not a correction,
-    it is a lie about what the system observed -- and a hand-typed acknowledged_at is worse
-    than most, since `SystemMessageQuerySet.outstanding()` compares it against `last_seen` to
-    decide whether a message has recurred.
+    Every field is written by the refresh pipeline, so a human edit is a lie about what the
+    system observed. A hand-typed `acknowledged_at` is worst: `outstanding()` compares it
+    against `last_seen` to decide whether a message has recurred.
     """
 
     list_display = [
@@ -702,8 +686,7 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
     ]
 
     class Media:
-        # Same copy/select-all affordance as the sidebar's PromQL block, since
-        # `promql_query` below renders the identical `.system-message-promql` markup.
+        # `promql_query` below renders the same `.system-message-promql` markup as the sidebar.
         js = ["deployments/js/system_messages.js"]
 
     def get_queryset(self, request: HttpRequest) -> QuerySet:
@@ -736,11 +719,9 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
     def acknowledge_view(self, request, message_id):
         """Acknowledge one message and bounce back to the page the button was clicked on.
 
-        POST only, because acknowledging is a state change and a GET-able one would be
-        acknowledged by every link prefetcher and crawler that touched the page. The `next`
-        parameter is validated rather than trusted: it arrives in a form body on a page that
-        renders operator-visible content, and an unchecked redirect target here would be a
-        plain open redirect out of an authenticated admin session.
+        POST only: a GET-able state change would be triggered by every link prefetcher and
+        crawler that touched the page. `next` is validated because an unchecked redirect
+        target here is an open redirect out of an authenticated admin session.
         """
         if request.method != "POST":
             return HttpResponseNotAllowed(["POST"])
@@ -839,10 +820,8 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
     def impact(self, obj: SystemMessage):
         """Everything acknowledging this message would dismiss it for.
 
-        Deliberately built from the same `compute_message_reach` the sidebar's containment
-        gate uses. If this page and the gate computed reach separately they would eventually
-        disagree, and the disagreement would show up as a button that dismisses more than the
-        page it sits on admits to.
+        Built from the same `compute_message_reach` as the sidebar's containment gate, so
+        what this page lists and what the gate allows cannot drift apart.
         """
         reach = compute_message_reach([obj]).get(obj.pk, _EMPTY_REACH)
 

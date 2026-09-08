@@ -18,43 +18,36 @@ from deployments.utils.erddap_datasets import (
 )
 from deployments.utils.system_messages import record_system_message, resolve_system_messages
 
-from .error_handling import BackoffError, Outcome, handle_http_errors
+from .error_handling import BackoffError, handle_http_errors
 from .extrema import extrema_for_timeseries
+from .outcomes import FETCH_FAILURE_CODES, FETCH_FAILURE_MESSAGES, RESOLVED_ON_SUCCESS, Outcome
 from .queue import task_queued
 
 logger = logging.getLogger(__name__)
 
-#: Swallowed `handle_http_errors` outcomes worth a SystemMessage, mapped to the (code, level)
-#: to record it at. A dict rather than a chain of ifs, so adding a new outcome forces a
-#: decision about its message instead of silently emitting nothing.
-#:
-#: `time_range_retired` is deliberately absent: `handle_500_time_range_error` already records
-#: `end_time_retired` for it, one message per affected timeseries rather than one per dataset,
-#: which is the more precise subject -- it names the exact platform that stopped refreshing
-#: instead of a dataset-wide "something is wrong".
-#:
-#: The benign outcomes (`success`, `no_rows`, and the fetch-succeeded-but-empty case) are
-#: absent for the same reason `BENIGN_OUTCOMES` exists in `error_handling.py`: the level a
-#: handler logs at says whether its condition is benign, and recording a SystemMessage for one
-#: would turn a routine empty response into standing dashboard noise.
-_FETCH_FAILURE_MESSAGES: dict[str, tuple[str, str]] = {
-    Outcome.FORBIDDEN: (SystemMessage.Code.FORBIDDEN, SystemMessage.Level.DANGER),
-    Outcome.NOT_FOUND: (SystemMessage.Code.NOT_FOUND, SystemMessage.Level.DANGER),
-    Outcome.UNRECOGNIZED_VARIABLE: (
-        SystemMessage.Code.UNRECOGNIZED_VARIABLE,
-        SystemMessage.Level.WARNING,
-    ),
-    Outcome.UNRECOGNIZED_CONSTRAINT: (
-        SystemMessage.Code.UNRECOGNIZED_CONSTRAINT,
-        SystemMessage.Level.WARNING,
-    ),
-    Outcome.SERVER_ERROR: (SystemMessage.Code.SERVER_ERROR, SystemMessage.Level.WARNING),
-    Outcome.UNKNOWN_ERROR: (SystemMessage.Code.UNKNOWN_ERROR, SystemMessage.Level.WARNING),
-}
+# `time_range_reported` didn't fail (the generic "failed" sentence below would be wrong for it),
+# so it gets its own text instead of an entry in `FETCH_FAILURE_MESSAGES`'s message shape.
+_TIME_RANGE_REPORTED_MESSAGE = (
+    "ERDDAP reported that this dataset's data ends soon, but recently enough that Buoy Barn "
+    "left every timeseries in this constraint group alone: {error}"
+)
 
-#: Derived from `_FETCH_FAILURE_MESSAGES` rather than listed again, so the "what gets recorded
-#: on failure" set and the "what gets resolved on success" set cannot drift apart.
-_FETCH_FAILURE_CODES = tuple(code for code, _level in _FETCH_FAILURE_MESSAGES.values())
+
+def _fetch_failure_message(dataset, constraints, handled, error) -> str:
+    if handled == Outcome.TIME_RANGE_REPORTED:
+        return _TIME_RANGE_REPORTED_MESSAGE.format(error=error)
+    return f"Fetching {dataset.name} with constraints {constraints} failed ({handled}): {error}"
+
+
+def _resolve_stale_fetch_failures(dataset, constraint_group, codes, keep=None):
+    """Resolve `codes` for `dataset`+`constraint_group`, except `keep`.
+
+    Called on all outcomes, so a dataset that switches failure
+    mode (403 -> 404) does not leave the old message outstanding forever.
+    """
+    codes = tuple(code for code in codes if code != keep)
+    if codes:
+        resolve_system_messages(dataset, *codes, constraint_group=constraint_group)
 
 
 def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: bool = False):  # noqa: PLR0912 PLR0915
@@ -64,10 +57,9 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
         timeseries: List of timeseries to update
         clear_end_time: If True, clear the end_time field when data is successfully retrieved
     """
-    # A dataset is fetched once per (constraints, timeseries_type) group, so the group id is
-    # what distinguishes one failing group from its healthy siblings in the metrics. It is
-    # opaque on purpose, the exporter publishes buoybarn.erddap.constraint_group.info to map
-    # it back, and it is logged below for when you are already reading logs.
+    # The group id distinguishes one failing constraint group from its healthy siblings.
+    # Opaque on purpose -- buoybarn.erddap.constraint_group.info maps it back to real
+    # constraints, and it's logged below for when you're already reading logs, not a dashboard.
     constraint_group = metrics.constraint_group_id(timeseries[0].constraints)
 
     with (
@@ -105,24 +97,25 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
             # the context manager classifies on its way out.
             handled = handle_http_errors(timeseries, error)
 
-            fetch_failure = _FETCH_FAILURE_MESSAGES.get(handled)
+            fetch_failure = FETCH_FAILURE_MESSAGES.get(handled)
+            keep = None
             if fetch_failure is not None:
                 code, level = fetch_failure
+                keep = code
                 record_system_message(
                     timeseries[0].dataset,
                     code,
-                    (
-                        f"Fetching {timeseries[0].dataset.name} with constraints "
-                        f"{timeseries[0].constraints} failed ({handled}): {error}"
+                    _fetch_failure_message(
+                        timeseries[0].dataset,
+                        timeseries[0].constraints,
+                        handled,
+                        error,
                     ),
                     level=level,
                     constraint_group=constraint_group,
                     context={
-                        # `dataset` and `server` are what `observability.promql.query_for`
-                        # needs to build this message's own history query, so they are
-                        # recorded even though the subject already implies them -- the query
-                        # is built at render time from `context` alone, without a database
-                        # round trip back to the subject.
+                        # dataset/server are here so promql.query_for can rebuild the query
+                        # from context alone, without a DB round trip.
                         "dataset": timeseries[0].dataset.name,
                         "server": str(timeseries[0].dataset.server),
                         "constraints": timeseries[0].constraints,
@@ -132,6 +125,14 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
 
             outcome.set(handled or Outcome.UNKNOWN_ERROR)
             if handled:
+                # A recognised outcome, benign or not, means whatever else was previously
+                # wrong with this dataset+group is no longer the failure mode in effect.
+                _resolve_stale_fetch_failures(
+                    timeseries[0].dataset,
+                    constraint_group,
+                    FETCH_FAILURE_CODES,
+                    keep=keep,
+                )
                 return
 
         except OSError as error:
@@ -149,20 +150,18 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
             outcome.set(Outcome.OS_ERROR)
             return
 
-        # Row count separates "the server answered with data" from "the server answered
-        # with nothing", which previously only showed up as a warning with its context
-        # commented out. Per-series save failures below are deliberately *not* folded into
-        # this outcome: the fetch itself succeeded, and those show up in buoybarn.log.records.
+        # Row count separates "answered with data" from "answered with nothing" -- previously
+        # only a warning with its context commented out. Per-series save failures below don't
+        # fold into this outcome: the fetch itself succeeded; those surface via buoybarn.log.records.
         rows = len(timeseries_df)
         outcome.set(Outcome.SUCCESS if rows else Outcome.EMPTY_DATAFRAME, rows=rows)
 
-        # The fetch itself succeeded -- whether or not it returned rows -- so whatever fetch
-        # failure was previously recorded against this dataset and constraint group is over.
-        # Without this the list of outstanding messages only ever grows.
-        resolve_system_messages(
+        # The fetch succeeded, so any outstanding fetch failure (or backoff) for this
+        # dataset+group is over; otherwise the list of outstanding messages only ever grows.
+        _resolve_stale_fetch_failures(
             timeseries[0].dataset,
-            *_FETCH_FAILURE_CODES,
-            constraint_group=constraint_group,
+            constraint_group,
+            RESOLVED_ON_SUCCESS,
         )
 
         for series in timeseries:
@@ -209,9 +208,8 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
 
                 new_value_time = pd.to_datetime(time)
 
-                # Clear end_time if requested AND we have fresh data
-                # Only clear if the new data is more recent than the end_time
-                # This prevents clearing end_time on dataset reloads without new data
+                # Only clear end_time when the new data is actually newer than it, so a
+                # dataset reload that returns the same old rows does not un-retire a series.
                 if clear_end_time and series.end_time is not None and (new_value_time > series.end_time):
                     previous_end_time = series.end_time
                     logger.info(
@@ -237,8 +235,8 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
                             "previous_end_time": previous_end_time.isoformat(),
                         },
                     )
-                    # This un-retirement resolves the retirement message that caused it,
-                    # whatever constraint group recorded it -- clearing end_time has no single
+                    # This un-retirement resolves the retirement message that caused it
+                    # (whatever constraint group recorded it), clearing end_time has no single
                     # constraint group of its own to scope the resolution by.
                     resolve_system_messages(series, SystemMessage.Code.END_TIME_RETIRED)
 
@@ -298,24 +296,23 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
                 extra={"timeseries": timeseries, "constraints": constraints},
                 exc_info=True,
             )
-            # This increase is per-run only (issue #1838): it lives on a local variable and
-            # is discarded when this task ends, so the message says so up front -- otherwise
-            # whoever reads it goes looking for a persisted backoff value in the admin that
-            # does not exist.
+            failing_group = metrics.constraint_group_id(dict(constraints))
             record_system_message(
                 dataset,
                 SystemMessage.Code.BACKOFF_INCREASED,
                 (
-                    f"Backing off after a timeout: the per-request delay increased from "
+                    f"Backing off after a timeout on constraint group {failing_group}: the "
+                    "per-request delay for the rest of this dataset's run increased from "
                     f"{request_refresh_time_seconds}s to {new_request_refresh_time_seconds}s. "
                     "This increase is per-run only -- it is discarded when this task ends, so "
                     "there is nothing persisted to look for here in the admin."
                 ),
                 level=SystemMessage.Level.WARNING,
+                constraint_group=failing_group,
                 context={
                     # `server` rather than `dataset`: backoff is a property of the server
-                    # being slow, so the query this message links to is the request-duration
-                    # histogram for the server, not the dataset's outcome counter.
+                    # being slow, so this message links to the request-duration histogram
+                    # for the server.
                     "server": str(dataset.server),
                     "dataset": dataset.name,
                     "previous_request_refresh_time_seconds": request_refresh_time_seconds,

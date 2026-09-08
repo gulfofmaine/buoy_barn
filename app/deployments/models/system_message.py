@@ -87,6 +87,9 @@ class SystemMessage(models.Model):
         UNRECOGNIZED_CONSTRAINT = "unrecognized_constraint"
         SERVER_ERROR = "server_error"
         UNKNOWN_ERROR = "unknown_error"
+        CONSTRAINT_OUT_OF_RANGE = "constraint_out_of_range"
+        NO_MATCHING_TIME = "no_matching_time"
+        TIME_RANGE_REPORTED = "time_range_reported"
 
     code = models.CharField(choices=Code, max_length=64)
     constraint_group = models.CharField(

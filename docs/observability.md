@@ -88,7 +88,7 @@ with the harmless ones:
 
 | Benign | Actionable |
 | --- | --- |
-| `success`, `no_rows` | `empty_dataframe`, `not_found`, `forbidden`, `timeout`, `backoff`, `time_range_retired`, `constraint_out_of_range`, `no_matching_time`, `unrecognized_variable`, `unrecognized_constraint`, `server_error`, `unknown_error`, `os_error`, `value_error`, `other` |
+| `success`, `no_rows` | `empty_dataframe`, `not_found`, `forbidden`, `timeout`, `backoff`, `time_range_retired`, `time_range_reported`, `constraint_out_of_range`, `no_matching_time`, `unrecognized_variable`, `unrecognized_constraint`, `server_error`, `unknown_error`, `os_error`, `value_error`, `other` |
 
 `constraint_out_of_range` (a constraint outside a variable's `actual_range`) and
 `no_matching_time` (the dataset has no valid time for the request) are both configuration
@@ -246,29 +246,33 @@ sidebar on the Platform, Dataset, Server and Timeseries change pages
 | `unrecognized_constraint` | `unrecognized_constraint` | `warning` | Dataset |
 | `server_error` | `server_error` | `warning` | Dataset |
 | `unknown_error` | `unknown_error` | `warning` | Dataset |
+| `constraint_out_of_range` | `constraint_out_of_range` | `warning` | Dataset |
+| `no_matching_time` | `no_matching_time` | `warning` | Dataset |
+| `time_range_reported` | `time_range_reported` | `info` | Dataset |
 | `time_range_retired` | `end_time_retired` | `danger` | Timeseries |
 | *(a later fetch supersedes a retirement)* | `end_time_cleared` | `info` | Timeseries |
 | *(per-run backoff in `refresh_dataset`, not a fetch outcome)* | `backoff_increased` | `warning` | Dataset |
 
-The first six rows are `_FETCH_FAILURE_MESSAGES` in `refresh.py`, keyed by the same
-`Outcome` values the metrics facade records — a dict rather than a chain of `if`s, so adding
-a new outcome forces a decision about its message instead of silently emitting nothing. The
-subject for all six is the `ErddapDataset`, which is what `update_values_for_timeseries` has
-in hand when the fetch fails.
+The first nine rows are `_FETCH_FAILURE_MESSAGES` in `refresh.py`, keyed by the same
+`Outcome` values the metrics facade records. A dict forces a decision about its message instead of silently emitting nothing. A
+test asserts the map is exhaustive: every non-benign `Outcome` is either a key here or named
+in `_HANDLED_ELSEWHERE` with a reason it is recorded some other way. The subject for all
+nine is the `ErddapDataset`, which is what `update_values_for_timeseries` has in hand when
+the fetch resolves.
 
-Only outcomes that are not in `BENIGN_OUTCOMES` get an entry, and that split is decided once,
-not here — see [the benign/actionable table above](#erddap-upstream-health): the level a
+Only outcomes that are not in `BENIGN_OUTCOMES` get an entry (see [the benign/actionable table above](#erddap-upstream-health)): the level a
 handler logs at says whether its condition is benign, and `handle_500_no_rows_error` is the
-only handler that logs at `INFO`. This doc will not restate that rule a second time; folding
-an actionable outcome into a benign one hides a real misconfiguration, which is exactly what
-that table already warns against.
+only handler that logs at `INFO`.
 
 `time_range_retired` has no row of its own in `_FETCH_FAILURE_MESSAGES` — not because it is
 benign, but because `handle_500_time_range_error` already records a message for it directly,
 one per affected timeseries, under `end_time_retired` rather than `time_range_retired`. A
 dataset-level message could only say "something is wrong with this dataset";
 `end_time_retired` names the exact platform that stopped refreshing, which is the more useful
-subject to attach it to.
+subject to attach it to. `time_range_reported` is the complementary outcome for the same
+handler: ERDDAP reported an actual_range ending inside the last week, recently enough that
+nothing was retired. Nothing timeseries-specific happened, so this one *is* a dataset-level
+row rather than a per-timeseries message.
 
 ### Deduplication
 
@@ -301,13 +305,18 @@ instead, where the "Impact" field spells out everything the click would dismiss.
 
 ### Resolution
 
-A successful fetch resolves its own failures: once `update_values_for_timeseries` records
-`Outcome.SUCCESS` or `Outcome.EMPTY_DATAFRAME`, it calls `resolve_system_messages(dataset,
-*_FETCH_FAILURE_CODES, constraint_group=constraint_group)`, closing out the fetch-failure
-codes for that dataset and constraint group specifically. Clearing an `end_time` resolves
-the retirement that set it — `resolve_system_messages(series,
-SystemMessage.Code.END_TIME_RETIRED)` — with no constraint group given, since a series being
-un-retired has none of its own to narrow by.
+Recognised outcomes resolve stale failures for that dataset and constraint group: `update_values_for_timeseries` calls `_resolve_stale_fetch_failures`, which
+resolves every fetch-failure code except the one just recorded. A dataset that switches
+failure mode (say, `forbidden` to `not_found`) closes out the old message instead of leaving
+it outstanding forever. On `Outcome.SUCCESS` or `Outcome.EMPTY_DATAFRAME` there is nothing to
+keep, so every fetch-failure code is resolved.
+
+`backoff_increased` is recorded outside
+the map, but no longer warranted once a fetch for that group succeeds.
+
+Clearing an
+`end_time` resolves the retirement that set it (`resolve_system_messages(series,
+SystemMessage.Code.END_TIME_RETIRED)`).
 
 ### The PromQL each message carries
 

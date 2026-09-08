@@ -1,6 +1,5 @@
 import logging
 from datetime import timedelta
-from enum import StrEnum
 from http import HTTPStatus
 
 import pandas as pd
@@ -8,70 +7,12 @@ from django.utils import timezone
 from httpx import HTTPError, HTTPStatusError
 
 from buoy_barn.observability import metrics
+from deployments.models import SystemMessage
+from deployments.utils.system_messages import record_system_message
+
+from .outcomes import NOT_HANDLED, Outcome
 
 logger = logging.getLogger(__name__)
-
-#: Returned by a handler that did not recognise the error, so the caller keeps looking.
-#: The handlers return an *outcome string* rather than a bool so the specific failure can
-#: be recorded as a metric attribute. Empty string is falsy, so the single call site in
-#: `refresh.update_values_for_timeseries` -- `if handle_http_errors(...): return` -- keeps
-#: working exactly as it did when these returned True/False.
-#:
-#: Choosing an outcome string is not a judgement call: **the level a handler logs at says
-#: whether its condition is benign.** `handle_500_no_rows_error` logs at INFO and is the
-#: only benign outcome (`no_rows`); every other handler logs at ERROR, so each needs an
-#: outcome of its own rather than being folded into `no_rows` where a dashboard would treat
-#: it as harmless. See the outcome table in docs/observability.md.
-NOT_HANDLED = ""
-
-
-class Outcome(StrEnum):
-    """Every outcome the refresh path can report.
-
-    Declared here because this is where they are produced: the handlers below return these,
-    and `refresh.py` names the few that describe the fetch itself rather than an error body.
-    An enum rather than bare strings so a handler cannot report a mistyped outcome -- which
-    would be validated away to "other" by
-    :func:`buoy_barn.observability.metrics.erddap_outcomes` and quietly leave the real
-    failure off every dashboard.
-
-    ``StrEnum`` specifically, not ``(str, Enum)``: members have to *be* their string, since
-    they are returned through ``-> str`` signatures, tested for truthiness against
-    :data:`NOT_HANDLED`, and handed to the metrics facade as an attribute value. With the
-    older idiom ``str(Outcome.NO_ROWS)`` is ``"Outcome.NO_ROWS"``, which is what would end
-    up on the time series.
-    """
-
-    # Named by refresh.py around the fetch, not by a handler.
-    SUCCESS = "success"
-    EMPTY_DATAFRAME = "empty_dataframe"
-    TIMEOUT = "timeout"
-    BACKOFF = "backoff"
-    OS_ERROR = "os_error"
-    VALUE_ERROR = "value_error"
-    UNKNOWN_ERROR = "unknown_error"
-
-    # Returned by the handlers below.
-    NO_ROWS = "no_rows"
-    NOT_FOUND = "not_found"
-    FORBIDDEN = "forbidden"
-    TIME_RANGE_RETIRED = "time_range_retired"
-    CONSTRAINT_OUT_OF_RANGE = "constraint_out_of_range"
-    NO_MATCHING_TIME = "no_matching_time"
-    UNRECOGNIZED_VARIABLE = "unrecognized_variable"
-    UNRECOGNIZED_CONSTRAINT = "unrecognized_constraint"
-    SERVER_ERROR = "server_error"
-
-
-#: The outcome vocabulary as plain strings, which is what
-#: `buoy_barn.observability.metrics` validates the metric attribute against.
-OUTCOMES = frozenset(outcome.value for outcome in Outcome)
-
-#: The outcomes that need no attention. Everything else in :class:`Outcome` corresponds to a
-#: handler that logs at ERROR, which is what makes "is anything broken?" expressible as
-#: `outcome not in BENIGN_OUTCOMES` rather than a list that has to be revised whenever a
-#: handler is added.
-BENIGN_OUTCOMES = frozenset({Outcome.SUCCESS.value, Outcome.NO_ROWS.value})
 
 
 def handle_500_no_rows_error(timeseries_group, compare_text: str) -> str:
@@ -154,14 +95,6 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
         week_ago = timezone.now() - timedelta(days=7)
 
         if end_time < week_ago:
-            # Imported here, not at module scope: `deployments.utils.system_messages` sits
-            # behind `deployments.models`, and this module is imported early (by
-            # `deployments.tasks`, which Celery autodiscovers), so a module-level import risks
-            # a circular import during app startup. See the same pattern in
-            # `deployments/models/erddap_dataset.py`.
-            from deployments.models import SystemMessage  # noqa: PLC0415
-            from deployments.utils.system_messages import record_system_message  # noqa: PLC0415
-
             constraint_group = metrics.constraint_group_id(timeseries_group[0].constraints)
 
             for ts in timeseries_group:
@@ -174,12 +107,9 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
                     exc_info=True,
                 )
 
-                # This is the action from issue #1855 that can silently retire a live
-                # platform: writing `end_time` drops the series out of
-                # `TimeSeriesQuerySet.refreshable()`, so it stops being refreshed and stops
-                # rendering on Mariners Dashboard. The message is written for the admin who
-                # has to decide whether that is correct, not for a log reader, so it spells
-                # out what happened, why, the consequence, and the undo.
+                # Writing end_time drops this series out of `refreshable()` -- it stops being
+                # refreshed and displayed (issue #1855). Written for the admin who has to
+                # decide whether that's correct, not for a log reader.
                 record_system_message(
                     ts,
                     SystemMessage.Code.END_TIME_RETIRED,
@@ -201,7 +131,12 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
                     },
                 )
 
-        return Outcome.TIME_RANGE_RETIRED
+            return Outcome.TIME_RANGE_RETIRED
+
+        # ERDDAP reported an actual_range ending inside the last week, recent enough that
+        # nothing was retired. Distinct from TIME_RANGE_RETIRED so a dataset map lookup
+        # doesn't claim a retirement that didn't happen.
+        return Outcome.TIME_RANGE_REPORTED
 
     return NOT_HANDLED
 

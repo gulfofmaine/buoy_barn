@@ -1,9 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from datetime import timezone as dt_timezone
 from unittest.mock import patch
 
 import pytest
 from django.test import TransactionTestCase
+from django.utils import timezone
+from httpx import HTTPError, HTTPStatusError, Request, Response
 
 from buoy_barn.observability import metrics, promql
 from deployments import tasks
@@ -19,6 +21,21 @@ from deployments.tasks.error_handling import BackoffError
 from deployments.utils.system_messages import record_system_message
 
 from .vcr import my_vcr
+
+
+def _http_status_error(status_code: int, text: str) -> HTTPError:
+    """Build an `HTTPError` shaped the way `handle_http_errors` expects to unwrap it.
+
+    `handle_http_errors` reads `error.__cause__.response`, which is how erddapy's real
+    errors are chained -- so tests that need a specific ERDDAP response body construct one
+    directly instead of recording a new VCR cassette for it.
+    """
+    request = Request("GET", "http://example.com")
+    response = Response(status_code, request=request, text=text)
+    status_error = HTTPStatusError(f"{status_code} error", request=request, response=response)
+    error = HTTPError(str(status_error))
+    error.__cause__ = status_error
+    return error
 
 
 @pytest.mark.django_db
@@ -154,6 +171,50 @@ class TaskTestCase(TransactionTestCase):
         self.assertIsNotNone(message.resolved_at)
 
     @my_vcr.use_cassette("tasks_update_values.yaml")
+    def test_update_values_resolves_a_previous_backoff_increase(self):
+        group = metrics.constraint_group_id(self.ts1.constraints)
+        record_system_message(
+            self.ds_M01_sbe37,
+            SystemMessage.Code.BACKOFF_INCREASED,
+            "previously backing off",
+            level=SystemMessage.Level.WARNING,
+            constraint_group=group,
+        )
+
+        tasks.update_values_for_timeseries((self.ts1, self.ts2))
+
+        message = SystemMessage.objects.for_object(self.ds_M01_sbe37).get(
+            code=SystemMessage.Code.BACKOFF_INCREASED,
+        )
+        self.assertIsNotNone(message.resolved_at)
+
+    @patch("deployments.tasks.refresh.retrieve_dataframe")
+    def test_time_range_reported_records_an_info_message_without_retiring(
+        self,
+        retrieve_dataframe,
+    ):
+        recent_end = timezone.now() - timedelta(days=2)
+        compare_text = (
+            "Your query produced no matching results. (time&gt;=2020-10-04T19:40:20Z is "
+            "outside of the variable's actual_range: 2018-07-17T17:00:00Z to "
+            f"{recent_end.strftime('%Y-%m-%dT%H:%M:%SZ')})"
+        )
+        retrieve_dataframe.side_effect = _http_status_error(500, compare_text)
+
+        tasks.update_values_for_timeseries([self.ts1])
+
+        message = SystemMessage.objects.for_object(self.ds_M01_sbe37).get(
+            code=SystemMessage.Code.TIME_RANGE_REPORTED,
+        )
+        self.assertEqual(message.level, SystemMessage.Level.INFO)
+
+        self.ts1.refresh_from_db()
+        self.assertIsNone(self.ts1.end_time)
+        self.assertFalse(
+            SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).exists(),
+        )
+
+    @my_vcr.use_cassette("tasks_update_values.yaml")
     def test_update_values_clears_end_time_and_resolves_retirement(self):
         self.ts1.end_time = datetime(2020, 1, 1, tzinfo=dt_timezone.utc)
         self.ts1.save()
@@ -186,12 +247,32 @@ class TaskTestCase(TransactionTestCase):
 
         tasks.refresh_dataset(self.ds_M01_sbe37.id)
 
-        message = SystemMessage.objects.for_object(self.ds_M01_sbe37).get(
+        # ds_M01_sbe37 has two constraint groups, both timing out under the mock -- one row
+        # per group, not a single row merged across the whole dataset.
+        messages = SystemMessage.objects.for_object(self.ds_M01_sbe37).filter(
             code=SystemMessage.Code.BACKOFF_INCREASED,
         )
-        self.assertEqual(message.level, SystemMessage.Level.WARNING)
-        self.assertIn("previous_request_refresh_time_seconds", message.context)
-        self.assertIn("new_request_refresh_time_seconds", message.context)
+        self.assertEqual(messages.count(), 2)
+        for message in messages:
+            self.assertEqual(message.level, SystemMessage.Level.WARNING)
+            self.assertIn("previous_request_refresh_time_seconds", message.context)
+            self.assertIn("new_request_refresh_time_seconds", message.context)
+
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
+    def test_refresh_dataset_records_backoff_with_the_failing_constraint_group(
+        self,
+        update_values_for_timeseries,
+    ):
+        update_values_for_timeseries.side_effect = BackoffError("timeout")
+
+        # A dataset with a single constraint group, so the recorded message is unambiguous.
+        tasks.refresh_dataset(self.ds_M01_aanderaa.id)
+
+        expected_group = metrics.constraint_group_id(self.ts4.constraints)
+        message = SystemMessage.objects.for_object(self.ds_M01_aanderaa).get(
+            code=SystemMessage.Code.BACKOFF_INCREASED,
+        )
+        self.assertEqual(message.constraint_group, expected_group)
 
     @patch("deployments.tasks.refresh.refresh_dataset.delay")
     @patch("deployments.tasks.refresh.task_queued")
@@ -340,6 +421,83 @@ class TaskErrorTestCase(TransactionTestCase):
         # so it must never turn into a SystemMessage, or every quiet dataset would start
         # looking like a standing failure in the admin.
         assert SystemMessage.objects.count() == 0
+
+    @my_vcr.use_cassette("500_no_rows.yaml")
+    def test_500_no_rows_resolves_a_previous_fetch_failure(self):
+        """A benign outcome must still close out a stale failure for the same group.
+
+        `no_rows` never gets its own row in `FETCH_FAILURE_MESSAGES` (it's benign), which
+        used to mean the `if handled: return` early exit skipped resolution entirely for it
+        -- leaving a stale DANGER outstanding forever even once the dataset started
+        answering quietly instead of failing.
+        """
+        a01 = Platform.objects.get(name="A01")
+        dataset = ErddapDataset.objects.create(name="A01_sbe37_all", server=self.erddap)
+        ts = TimeSeries.objects.create(
+            platform=a01,
+            data_type=DataType.objects.get(standard_name="sea_water_salinity"),
+            variable="salinity",
+            constraints={"depth=": 1.0, "salinity_qc=": 0},
+            start_time="2001-07-10T04:00:01Z",
+            dataset=dataset,
+        )
+        group = metrics.constraint_group_id(ts.constraints)
+        record_system_message(
+            dataset,
+            SystemMessage.Code.FORBIDDEN,
+            "previously forbidden",
+            level=SystemMessage.Level.DANGER,
+            constraint_group=group,
+        )
+
+        tasks.update_values_for_timeseries([ts])
+
+        message = SystemMessage.objects.for_object(dataset).get(
+            code=SystemMessage.Code.FORBIDDEN,
+        )
+        self.assertIsNotNone(message.resolved_at)
+
+    @my_vcr.use_cassette("404_no_matching_dataset")
+    def test_switching_failure_mode_resolves_the_stale_message(self):
+        """A dataset that switches failure mode must not keep the old message forever.
+
+        A stale `forbidden` DANGER, recorded on a previous run, must be resolved once this
+        run records `not_found` instead -- and the freshly recorded `not_found` must *not*
+        be immediately resolved along with it.
+        """
+        wlis = Platform.objects.get(name="WLIS")
+        dataset = ErddapDataset.objects.create(
+            name="UCONN_WLIS_MET",
+            server=self.erddap,
+        )
+        ts = TimeSeries.objects.create(
+            platform=wlis,
+            data_type=DataType.objects.get(standard_name="wind_from_direction"),
+            variable="wind_direction",
+            constraints={},
+            start_time="2019-12-30T12:00:00",
+            dataset=dataset,
+        )
+        group = metrics.constraint_group_id(ts.constraints)
+        record_system_message(
+            dataset,
+            SystemMessage.Code.FORBIDDEN,
+            "previously forbidden",
+            level=SystemMessage.Level.DANGER,
+            constraint_group=group,
+        )
+
+        tasks.update_values_for_timeseries([ts])
+
+        forbidden = SystemMessage.objects.for_object(dataset).get(
+            code=SystemMessage.Code.FORBIDDEN,
+        )
+        self.assertIsNotNone(forbidden.resolved_at)
+
+        not_found = SystemMessage.objects.for_object(dataset).get(
+            code=SystemMessage.Code.NOT_FOUND,
+        )
+        self.assertIsNone(not_found.resolved_at)
 
     @my_vcr.use_cassette("500_no_rows_actual_range.yaml")
     def test_500_actual_range(self):

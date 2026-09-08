@@ -153,7 +153,7 @@ def erddap_outcomes() -> frozenset[str]:
     """
 
     def load():
-        from deployments.tasks.error_handling import OUTCOMES  # noqa: PLC0415
+        from deployments.tasks.outcomes import OUTCOMES  # noqa: PLC0415
 
         return OUTCOMES
 

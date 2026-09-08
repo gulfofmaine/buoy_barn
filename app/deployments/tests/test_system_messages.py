@@ -15,7 +15,8 @@ from deployments.models import (
     SystemMessage,
     TimeSeries,
 )
-from deployments.tasks.error_handling import Outcome, handle_500_time_range_error
+from deployments.tasks.error_handling import handle_500_time_range_error
+from deployments.tasks.outcomes import Outcome
 from deployments.utils.system_messages import record_system_message, resolve_system_messages
 
 
@@ -495,4 +496,30 @@ class Handle500TimeRangeErrorTestCase(TestCase):
         self.assertEqual(
             SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).count(),
             2,
+        )
+
+    def test_reports_without_retiring_when_the_range_ends_recently(self):
+        """A range ending inside the last week must not be reported as a retirement.
+
+        `end_time < week_ago` guards the retirement loop; when it's `False` nothing should
+        be written or retired, and the outcome must say so rather than claim a retirement
+        that never happened.
+        """
+        recent_end = timezone.now() - timedelta(days=2)
+        compare_text = (
+            "Your query produced no matching results. (time&gt;=2020-10-04T19:40:20Z is "
+            "outside of the variable's actual_range: 2018-07-17T17:00:00Z to "
+            f"{recent_end.strftime('%Y-%m-%dT%H:%M:%SZ')})"
+        )
+
+        result = handle_500_time_range_error([self.ts1, self.ts2], compare_text)
+
+        self.assertEqual(result, Outcome.TIME_RANGE_REPORTED)
+
+        for ts in (self.ts1, self.ts2):
+            ts.refresh_from_db()
+            self.assertIsNone(ts.end_time)
+
+        self.assertFalse(
+            SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).exists(),
         )

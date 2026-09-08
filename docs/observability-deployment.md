@@ -88,12 +88,11 @@ stale dataset, so give it room.
 
 ## Optional: Grafana Explore deep links for system messages
 
-`GRAFANA_BASE_URL` and `GRAFANA_PROMETHEUS_UID` are both unset by default, and nothing else
-here depends on them: every `SystemMessage`'s PromQL is always rendered as copyable text in
-the admin (see [Admin system messages](./observability.md#admin-system-messages)) whether or
-not Grafana is configured. Setting both turns that text into a clickable "Open in Grafana"
-link as well — the deep link is an upgrade over the copyable query, not a dependency it
-needs. Grafana is not deployed for this project today.
+Set both `GRAFANA_BASE_URL` and `GRAFANA_PROMETHEUS_UID` to turn every `SystemMessage`'s
+PromQL into a clickable "Open in Grafana" link (see
+[Admin system messages](./observability.md#admin-system-messages)). Unset, the admin still
+renders the query as copyable text, so an unconfigured environment degrades rather than
+breaking.
 
 | Variable | Effect |
 | --- | --- |
@@ -101,11 +100,8 @@ needs. Grafana is not deployed for this project today.
 | `GRAFANA_PROMETHEUS_UID` | The Prometheus datasource UID within that Grafana instance. Required alongside `GRAFANA_BASE_URL` — a datasource UID is needed to build a working Explore link at all, so setting only one of the two still leaves the link off. |
 
 The URL is built for Grafana >= 10.2's `panes`-based Explore scheme
-(`?schemaVersion=1&panes=<url-encoded JSON>`). Older Grafana instead reads a single pane from
-a `?left=` parameter with a similar but not identical JSON shape — all of that URL-shape
-knowledge is kept in one function, `explore_url()` in `buoy_barn/observability/promql.py`, so
-supporting an older Grafana is a one-line change there rather than a change at every call
-site.
+(`?schemaVersion=1&panes=<url-encoded JSON>`), in `explore_url()` in
+`buoy_barn/observability/promql.py`.
 
 ## Metric names in Prometheus
 

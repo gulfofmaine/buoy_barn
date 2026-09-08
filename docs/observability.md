@@ -240,7 +240,7 @@ is set, rather than a generic foreign key: the number of platforms, datasets, se
 timeseries keeps growing, but the set of models does not, and real columns are what let the
 changelist's reach lookups use an index.
 
-`MESSAGE_PATHS` in `deployments/admin/system_messages.py` is the single description of how a
+`SUBJECT_KINDS` in `deployments/admin/system_messages.py` is the single description of how a
 message reaches a page — the sidebar, the changelist filter and the severity sort all read
 it, so a page cannot offer a filter that hides rows whose own badge says they have a message.
 Each path is queried on its own rather than OR'd into one lookup, because Postgres plans an
@@ -264,26 +264,23 @@ which no index can serve.
 | *(a later fetch supersedes a retirement)* | `end_time_cleared` | `info` | Timeseries |
 | *(per-run backoff in `refresh_dataset`, not a fetch outcome)* | `backoff_increased` | `warning` | Dataset |
 
-The first nine rows are `_FETCH_FAILURE_MESSAGES` in `refresh.py`, keyed by the same
-`Outcome` values the metrics facade records. A dict forces a decision about its message instead of silently emitting nothing. A
-test asserts the map is exhaustive: every non-benign `Outcome` is either a key here or named
-in `_HANDLED_ELSEWHERE` with a reason it is recorded some other way. The subject for all
-nine is the `ErddapDataset`, which is what `update_values_for_timeseries` has in hand when
-the fetch resolves.
+The first nine rows are `FETCH_FAILURE_MESSAGES` in `deployments/tasks/outcomes.py`, which
+owns the whole vocabulary — the enum, the benign set, and this map. They were split across
+two modules until the halves drifted and two outcomes ended up recording nothing. A test now
+asserts the map is exhaustive: every non-benign `Outcome` is either a key here or named in
+`HANDLED_ELSEWHERE` with the reason it is recorded some other way.
 
-Only outcomes that are not in `BENIGN_OUTCOMES` get an entry (see [the benign/actionable table above](#erddap-upstream-health)): the level a
-handler logs at says whether its condition is benign, and `handle_500_no_rows_error` is the
-only handler that logs at `INFO`.
+Only outcomes outside `BENIGN_OUTCOMES` get an entry (see
+[the benign/actionable table above](#erddap-upstream-health)): the level a handler logs at
+says whether its condition is benign, and `handle_500_no_rows_error` is the only one at
+`INFO`.
 
-`time_range_retired` has no row of its own in `_FETCH_FAILURE_MESSAGES` — not because it is
-benign, but because `handle_500_time_range_error` already records a message for it directly,
-one per affected timeseries, under `end_time_retired` rather than `time_range_retired`. A
-dataset-level message could only say "something is wrong with this dataset";
-`end_time_retired` names the exact platform that stopped refreshing, which is the more useful
-subject to attach it to. `time_range_reported` is the complementary outcome for the same
-handler: ERDDAP reported an actual_range ending inside the last week, recently enough that
-nothing was retired. Nothing timeseries-specific happened, so this one *is* a dataset-level
-row rather than a per-timeseries message.
+`time_range_retired` is in `HANDLED_ELSEWHERE`, not because it is benign but because
+`handle_500_time_range_error` records it per affected timeseries as `end_time_retired`, which
+names the platform that stopped refreshing rather than saying something is wrong with the
+dataset. `time_range_reported` is the same handler's other outcome: ERDDAP reported a range
+ending inside the last week, recent enough that nothing was retired. Nothing
+timeseries-specific happened, so that one is a dataset-level row.
 
 ### Deduplication
 
@@ -336,18 +333,27 @@ SystemMessage.Code.END_TIME_RETIRED)`).
 
 `buoy_barn/observability/promql.py`'s `query_for(code, context)` turns a message's `(code,
 context)` back into the query behind it, ready to paste into Grafana or copy from the admin.
-The eight fetch-failure and end-time codes above resolve to a `buoybarn_erddap_outcome_total`
-query scoped to the message's dataset — and constraint group, when it has one — over a 6h
-window, joined to `buoybarn_erddap_constraint_group_info` the same way as the constraint-group
-query [further down](#queries-worth-keeping). `backoff_increased` resolves to the
-request-duration histogram for the server instead, since a slow server is a latency problem,
-not a failed fetch — the outcome counter has nothing to say about it.
+Every code resolves to a `buoybarn_erddap_outcome_total` query scoped to the message's dataset
+— and constraint group, when it has one — over a 6h window, except `backoff_increased`, which
+resolves to the request-duration histogram for the server: a slow server is a latency problem,
+and the outcome counter has nothing to say about it.
 
-The one trap worth knowing: `end_time_retired` links to the outcome counter and deliberately
-**not** to `buoybarn_timeseries_value_age_seconds`. `value_age` only covers active,
-non-retired series, so once a series is retired its age simply stops updating — it does not
-climb. A freshness panel linked from an `end_time_retired` message would show a reassuring
-flat line for the one failure mode with confirmed data loss (issue #1833).
+Two traps, both found in review.
+
+**`end_time_retired` links to the outcome counter and deliberately not to
+`buoybarn_timeseries_value_age_seconds`.** `value_age` only covers active, non-retired series,
+so once a series is retired its age stops updating rather than climbing. A freshness panel
+linked from an `end_time_retired` message would show a reassuring flat line for the one
+failure mode with confirmed data loss (issue #1833).
+
+**These queries do not join `buoybarn_erddap_constraint_group_info`, though the
+constraint-group query [further down](#queries-worth-keeping) does.** That metric also carries
+`erddap_server` and `timeseries_type`, so a dataset serving two timeseries types under one set
+of constraints gives the match group two right-hand series and PromQL errors the query out.
+And it is published only for `refreshable()` timeseries — which a retirement removes — so for
+`end_time_retired` the join would return nothing for the event it documents. The join existed
+to recover the constraints behind the opaque group hash, and the message's own `context`
+already carries them.
 
 ## Queries worth keeping
 

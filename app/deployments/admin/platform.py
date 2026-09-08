@@ -11,7 +11,11 @@ from ..models import Alert, Platform, PlatformLink, ProgramAttribution, TimeSeri
 from ..tasks import refresh
 from ..widgets import EsriOceanBasemapWidget
 from .displays import timeseries_status
-from .system_messages import SystemMessageSidebarMixin, system_message_status
+from .system_messages import (
+    SystemMessageListFilter,
+    SystemMessageSidebarMixin,
+    system_message_status,
+)
 from .timeseries import TimeSeriesInline
 
 
@@ -77,6 +81,7 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
         "ndbc_site_id",
     ]
     list_filter = [
+        SystemMessageListFilter,
         "platform_type",
         "timeseries__dataset__server__name",
         ("timeseries__active", TimeseriesActiveFilter),

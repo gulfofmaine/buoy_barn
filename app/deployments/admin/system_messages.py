@@ -19,6 +19,7 @@ from django.contrib.admin.views.main import ChangeList
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.gis import admin
 from django.core.exceptions import PermissionDenied
+from django.db.models import Case, Exists, IntegerField, OuterRef, Q, Value, When
 from django.db.models.query import QuerySet
 from django.http import HttpResponseNotAllowed, HttpResponseRedirect
 from django.http.request import HttpRequest
@@ -87,6 +88,36 @@ _LEVEL_ORDER = [
     SystemMessage.Level.WARNING,
     SystemMessage.Level.INFO,
 ]
+
+#: How a message reaches a page model, written from the *message's* side: each path leads
+#: from `SystemMessage` back to the rows a message on that rung belongs to. These are the
+#: mirror image of `related_subjects` below -- a Platform page gathers its own messages plus
+#: its timeseries', their datasets' and those datasets' servers', so a message reaches a
+#: platform through exactly those four paths -- and the two have to stay in step. If they
+#: drifted, the changelist would offer a filter that hides rows whose own badge says they
+#: have a message.
+_MESSAGE_PATHS = {
+    Platform: (
+        "platform",
+        "timeseries__platform",
+        "erddap_dataset__timeseries__platform",
+        "erddap_server__erddapdataset__timeseries__platform",
+    ),
+    TimeSeries: (
+        "timeseries",
+        "erddap_dataset__timeseries",
+        "erddap_server__erddapdataset__timeseries",
+    ),
+    ErddapDataset: (
+        "erddap_dataset",
+        "erddap_server__erddapdataset",
+        "timeseries__dataset",
+    ),
+    ErddapServer: (
+        "erddap_server",
+        "erddap_dataset__server",
+    ),
+}
 
 
 @dataclass(frozen=True)
@@ -398,7 +429,62 @@ def annotate_system_message_badges(objs, page_model) -> list:
     return objs
 
 
-@admin.display(description="System messages")
+#: The annotation `system_message_status` sorts on. Named once so the display callable's
+#: `admin_order_field` and the queryset that has to supply it cannot fall out of step.
+SYSTEM_MESSAGE_RANK = "system_message_rank"
+
+
+def outstanding_messages_exist(page_model, level=None) -> Exists | None:
+    """Whether an outstanding message reaches a row of `page_model`, as a correlated subquery.
+
+    `Exists` rather than a filter through the `system_messages` relation, because every rung
+    of the chain is multi-valued: a join-based filter returns one row per matching message,
+    so a platform with a message on its dataset *and* its server is listed twice. The usual
+    cure, `.distinct()`, would impose a DISTINCT over a changelist that is already prefetching
+    four relations and selecting a wide row. A subquery has neither problem -- it cannot
+    multiply the outer rows, and it stops at the first message rather than materialising them
+    all.
+
+    The outstanding predicate comes from `SystemMessageQuerySet.outstanding()` rather than
+    being rewritten here, so the filter and the sidebar cannot disagree about whether an
+    acknowledged-then-recurring message still counts.
+    """
+    paths = _MESSAGE_PATHS.get(page_model)
+    if not paths:
+        return None
+
+    reaches = Q()
+    for message_path in paths:
+        reaches |= Q(**{message_path: OuterRef("pk")})
+
+    messages = SystemMessage.objects.outstanding()
+    if level is not None:
+        messages = messages.filter(level=level)
+    return Exists(messages.filter(reaches))
+
+
+def system_message_rank(page_model):
+    """The severity of the worst outstanding message reaching a row, as a sortable number.
+
+    `Level` is a CharField, so ordering by the column is alphabetical -- danger, info,
+    warning -- which files the least alarming level in between the other two. Nothing on the
+    page would give that away: the column just sorts wrongly and quietly. So severity is
+    ranked explicitly, with 0 for a row nothing reaches so "None" sorts below every level.
+    """
+    if page_model not in _MESSAGE_PATHS:
+        return Value(0, output_field=IntegerField())
+
+    return Case(
+        *[
+            When(outstanding_messages_exist(page_model, level), then=Value(len(_LEVEL_ORDER) - index))
+            for index, level in enumerate(_LEVEL_ORDER)
+        ],
+        default=Value(0),
+        output_field=IntegerField(),
+    )
+
+
+@admin.display(description="System messages", ordering=SYSTEM_MESSAGE_RANK)
 def system_message_status(obj: ErddapDataset | Platform | TimeSeries):
     """Split badge: what this row can act on, then muted, what it only shares.
 
@@ -448,6 +534,34 @@ class SystemMessageChangeList(ChangeList):
             self.result_list = annotate_system_message_badges(self.result_list, self.model)
 
 
+class SystemMessageListFilter(SimpleListFilter):
+    """Filter a platform/timeseries/dataset changelist by what its chain is complaining about.
+
+    Deliberately speaks the badge's language: it matches on the same chain `related_subjects`
+    gathers, so a platform whose *server* is failing is matched here exactly as it is shown
+    there. "None" therefore means nothing anywhere in the chain, not merely nothing attached
+    to this row.
+    """
+
+    title = "system messages"
+    parameter_name = "system_message"
+
+    def lookups(self, request: Any, model_admin: Any) -> list[tuple[Any, str]]:
+        levels = [(level.value, level.label) for level in _LEVEL_ORDER]
+        return [("any", "Any outstanding"), *levels, ("none", "None")]
+
+    def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
+        value = self.value()
+        if value not in {"any", "none", *SystemMessage.Level.values}:
+            return queryset
+
+        level = value if value in SystemMessage.Level.values else None
+        reaching = outstanding_messages_exist(queryset.model, level)
+        if reaching is None:
+            return queryset
+        return queryset.filter(~reaching if value == "none" else reaching)
+
+
 class SystemMessageSidebarMixin:
     """Puts outstanding messages for a page's whole chain into Django's own right sidebar."""
 
@@ -459,6 +573,19 @@ class SystemMessageSidebarMixin:
 
     def get_changelist(self, request, **kwargs):
         return SystemMessageChangeList
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet:
+        """Supply the severity annotation the badge column sorts on.
+
+        Added here rather than in each admin so the annotation and the column arrive together:
+        an admin that lists the badge but forgot the annotation would raise on the first click
+        of the column header. Skipped where the column is not listed, since the annotation
+        costs one correlated subquery per level.
+        """
+        queryset = super().get_queryset(request)
+        if system_message_status in self.list_display:
+            queryset = queryset.annotate(**{SYSTEM_MESSAGE_RANK: system_message_rank(self.model)})
+        return queryset
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         extra_context = {**(extra_context or {})}

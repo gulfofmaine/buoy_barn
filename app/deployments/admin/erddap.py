@@ -14,7 +14,11 @@ from django_object_actions import DjangoObjectActions, action
 from ..models import ErddapDataset, ErddapServer, TimeSeries
 from ..tasks import refresh
 from .displays import timeseries_status
-from .system_messages import SystemMessageSidebarMixin, system_message_status
+from .system_messages import (
+    SystemMessageListFilter,
+    SystemMessageSidebarMixin,
+    system_message_status,
+)
 from .timeseries import TimeSeriesInline
 
 
@@ -124,7 +128,7 @@ class ErddapDatasetAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.M
         "server",
         "refresh_status",
     ]
-    list_filter = ["server__name", RefreshStatusListFilter]
+    list_filter = [SystemMessageListFilter, "server__name", RefreshStatusListFilter]
     inlines = [TimeSeriesInline]
 
     actions = ["disable_timeseries", "enable_timeseries", "refresh_dataset"]

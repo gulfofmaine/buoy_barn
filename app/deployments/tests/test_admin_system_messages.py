@@ -8,6 +8,8 @@ regression that would otherwise slip through is exactly that: a dataset message 
 safely dismissable yesterday must stop being dismissable today.
 """
 
+from datetime import timedelta
+
 import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
@@ -520,6 +522,219 @@ class SplitBadgeTestCase(SystemMessageAdminTestCase):
             self.client.get(reverse("admin:deployments_platform_changelist"))
 
         self.assertEqual(len(many.captured_queries), len(few.captured_queries))
+
+
+@pytest.mark.django_db
+class SystemMessageListFilterTestCase(SystemMessageAdminTestCase):
+    """The changelist filter and the sidebar have to agree, rung for rung.
+
+    Each platform below is reachable through exactly one rung of the chain, and each sits on
+    its own server, so a lookup that quietly collapses the chain -- or leaks a server's
+    message onto every platform that shares it -- shows up as a name in the wrong bucket
+    rather than as a subtly wrong count.
+    """
+
+    def platform_with_chain(self, name, level=None, subject_rung=None):
+        """A platform with a server, dataset and timeseries all its own."""
+        platform = Platform.objects.create(name=name, mooring_site_desc=name)
+        server = ErddapServer.objects.create(name=f"{name}-server", base_url=f"http://{name}.test")
+        dataset = ErddapDataset.objects.create(name=f"{name}_all", server=server)
+        timeseries = TimeSeries.objects.create(
+            platform=platform,
+            data_type=self.water_temp,
+            variable="temperature",
+            depth=1,
+            dataset=dataset,
+        )
+        rungs = {
+            "platform": platform,
+            "timeseries": timeseries,
+            "dataset": dataset,
+            "server": server,
+        }
+        if subject_rung is not None:
+            _message(rungs[subject_rung], level=level)
+        return rungs
+
+    def setUp(self):
+        super().setUp()
+        self.own = self.platform_with_chain(
+            "OWN",
+            level=SystemMessage.Level.WARNING,
+            subject_rung="platform",
+        )
+        self.via_dataset = self.platform_with_chain(
+            "VIADATASET",
+            level=SystemMessage.Level.INFO,
+            subject_rung="dataset",
+        )
+        self.via_server = self.platform_with_chain(
+            "VIASERVER",
+            level=SystemMessage.Level.DANGER,
+            subject_rung="server",
+        )
+        self.quiet = self.platform_with_chain("QUIET")
+
+    def changelist(self, model_name="platform", **params):
+        response = self.client.get(
+            reverse(f"admin:deployments_{model_name}_changelist"),
+            params,
+        )
+        self.assertEqual(response.status_code, 200)
+        return response
+
+    def names(self, **params):
+        return [obj.name for obj in self.changelist(**params).context["cl"].result_list]
+
+    def matched(self, value):
+        """The names this lookup matches, restricted to the four platforms under test."""
+        under_test = {"OWN", "VIADATASET", "VIASERVER", "QUIET"}
+        return {name for name in self.names(system_message=value) if name in under_test}
+
+    def test_any_matches_every_rung_of_the_chain(self):
+        self.assertEqual(self.matched("any"), {"OWN", "VIADATASET", "VIASERVER"})
+
+    def test_each_level_matches_only_its_own_platform(self):
+        self.assertEqual(self.matched("warning"), {"OWN"})
+        self.assertEqual(self.matched("info"), {"VIADATASET"})
+        self.assertEqual(self.matched("danger"), {"VIASERVER"})
+
+    def test_acknowledged_message_stops_matching_until_it_recurs(self):
+        message = SystemMessage.objects.get(object_id=self.own["platform"].pk, level="warning")
+        message.acknowledged_at = timezone.now()
+        message.save(update_fields=["acknowledged_at"])
+
+        self.assertNotIn("OWN", self.matched("any"))
+
+        # The recurrence rule the whole feature rests on: the same row seen again after it
+        # was acknowledged is outstanding again.
+        message.last_seen = message.acknowledged_at + timedelta(minutes=1)
+        message.save(update_fields=["last_seen"])
+
+        self.assertIn("OWN", self.matched("any"))
+
+    def test_resolved_message_does_not_match(self):
+        SystemMessage.objects.filter(object_id=self.via_server["server"].pk).update(
+            resolved_at=timezone.now(),
+        )
+
+        self.assertNotIn("VIASERVER", self.matched("any"))
+        self.assertIn("VIASERVER", self.matched("none"))
+
+    def test_none_means_nothing_anywhere_in_the_chain(self):
+        none = self.matched("none")
+
+        self.assertEqual(none, {"QUIET"})
+        self.assertNotIn("VIASERVER", none)
+
+    def test_none_includes_platforms_with_no_chain_at_all(self):
+        self.assertIn("EXRX", self.names(system_message="none"))
+
+    def test_a_platform_matched_on_several_rungs_appears_once(self):
+        """The duplicate-row bug: joining through a multi-valued relation multiplies rows."""
+        for rung, code in (
+            ("timeseries", SystemMessage.Code.FORBIDDEN),
+            ("dataset", SystemMessage.Code.SERVER_ERROR),
+            ("server", SystemMessage.Code.UNKNOWN_ERROR),
+        ):
+            _message(self.own[rung], code=code, level=SystemMessage.Level.WARNING)
+
+        names = self.names(system_message="any")
+
+        self.assertEqual(names.count("OWN"), 1)
+
+    def test_unfiltered_changelist_has_no_duplicates_either(self):
+        names = self.names()
+
+        self.assertEqual(len(names), len(set(names)))
+
+    def order_index(self):
+        """The `?o=` column index, taken from the changelist so the action column is counted."""
+        changelist = self.changelist().context["cl"]
+        return list(changelist.list_display).index(system_message_status)
+
+    def ranked_names(self, descending=False):
+        prefix = "-" if descending else ""
+        names = self.names(o=f"{prefix}{self.order_index()}")
+        return {name: position for position, name in enumerate(names)}
+
+    def test_ordering_is_by_severity_not_alphabet(self):
+        """`Level` sorts danger < info < warning as text, which is not severity order."""
+        ascending = self.ranked_names()
+
+        self.assertLess(ascending["QUIET"], ascending["VIADATASET"])
+        self.assertLess(ascending["VIADATASET"], ascending["OWN"])
+        self.assertLess(ascending["OWN"], ascending["VIASERVER"])
+
+    def test_ordering_reverses(self):
+        descending = self.ranked_names(descending=True)
+
+        self.assertLess(descending["VIASERVER"], descending["OWN"])
+        self.assertLess(descending["OWN"], descending["VIADATASET"])
+        self.assertLess(descending["VIADATASET"], descending["QUIET"])
+
+    def test_ordering_is_stable_between_requests(self):
+        self.assertEqual(self.names(o=str(self.order_index())), self.names(o=str(self.order_index())))
+
+    def test_query_count_does_not_grow_with_rows(self):
+        def count(**params):
+            with CaptureQueriesContext(connection) as queries:
+                self.changelist(**params)
+            return len(queries.captured_queries)
+
+        few = count(system_message="any", o=f"-{self.order_index()}")
+
+        for index in range(12):
+            self.platform_with_chain(
+                f"EXTRA{index}",
+                level=SystemMessage.Level.DANGER,
+                subject_rung="dataset",
+            )
+
+        many = count(system_message="any", o=f"-{self.order_index()}")
+
+        self.assertEqual(many, few)
+
+    def test_filter_actually_narrows_the_page(self):
+        self.assertGreater(len(self.names()), len(self.names(system_message="any")))
+
+    def test_timeseries_changelist_uses_its_own_chain(self):
+        """A timeseries gathers its dataset and server -- but never its platform."""
+        response = self.changelist("timeseries", system_message="danger")
+        matched = {ts.pk for ts in response.context["cl"].result_list}
+
+        self.assertIn(self.via_server["timeseries"].pk, matched)
+        self.assertNotIn(self.own["timeseries"].pk, matched)
+        self.assertNotIn(self.quiet["timeseries"].pk, matched)
+
+    def test_timeseries_changelist_none_excludes_the_server_rung(self):
+        response = self.changelist("timeseries", system_message="none")
+        matched = {ts.pk for ts in response.context["cl"].result_list}
+
+        self.assertNotIn(self.via_server["timeseries"].pk, matched)
+        self.assertIn(self.quiet["timeseries"].pk, matched)
+        # The platform's own message is off the timeseries chain, so it stays "none" here.
+        self.assertIn(self.own["timeseries"].pk, matched)
+
+    def test_dataset_changelist_gathers_its_server_and_timeseries(self):
+        _message(
+            self.quiet["timeseries"],
+            code=SystemMessage.Code.FORBIDDEN,
+            level=SystemMessage.Level.DANGER,
+        )
+
+        response = self.changelist("erddapdataset", system_message="danger")
+        matched = {dataset.pk for dataset in response.context["cl"].result_list}
+
+        self.assertIn(self.via_server["dataset"].pk, matched)
+        self.assertIn(self.quiet["dataset"].pk, matched)
+        self.assertNotIn(self.own["dataset"].pk, matched)
+
+    def test_dataset_changelist_ignores_the_platform_rung(self):
+        response = self.changelist("erddapdataset", system_message="none")
+        matched = {dataset.pk for dataset in response.context["cl"].result_list}
+
+        self.assertIn(self.own["dataset"].pk, matched)
 
 
 @pytest.mark.django_db

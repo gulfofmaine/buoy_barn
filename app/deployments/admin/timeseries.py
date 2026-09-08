@@ -13,7 +13,11 @@ from django.utils.safestring import mark_safe
 
 from ..models import FloodLevel, TimeSeries
 from ..tasks import refresh
-from .system_messages import SystemMessageSidebarMixin, system_message_status
+from .system_messages import (
+    SystemMessageListFilter,
+    SystemMessageSidebarMixin,
+    system_message_status,
+)
 
 
 class FloodLevelInline(admin.StackedInline):
@@ -72,6 +76,7 @@ class TimeSeriesAdmin(SystemMessageSidebarMixin, admin.ModelAdmin):
         "dataset",
     ]
     list_filter = [
+        SystemMessageListFilter,
         TimesiersStatusListFilter,
         "active",
         "platform",

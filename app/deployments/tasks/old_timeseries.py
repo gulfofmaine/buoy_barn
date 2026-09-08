@@ -9,8 +9,8 @@ from slack_sdk import WebClient
 from deployments.models import TimeSeries
 from deployments.utils.healthchecks import ping_healthcheck
 
-#: Metric label for the weekly monitor. Give it a weekly schedule and grace period on the
-#: Healthchecks.io side so a beat that stops firing this task alerts on absence.
+# Metric label for the weekly monitor. Give it a weekly schedule and grace period on the
+# Healthchecks.io side so a beat that stops firing this task alerts on absence.
 WEEKLY_MONITOR = "weekly_old_timeseries"
 
 

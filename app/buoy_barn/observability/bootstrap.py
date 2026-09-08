@@ -71,14 +71,14 @@ logger = logging.getLogger(__name__)
 DEFAULT_SERVICE_NAME = "buoy-barn"
 METER_NAME = "buoy_barn"
 
-#: Roles we recognise for the ``buoybarn.role`` resource attribute.
+# Roles we recognise for the ``buoybarn.role`` resource attribute.
 ROLES = frozenset({"web", "worker", "beat", "flower", "mqtt", "exporter", "unknown"})
 
-#: Fallback role detection, in priority order, used when BUOY_BARN_OTEL_ROLE is unset.
-#: Checked against the whole command line, so ambiguity is resolved by ordering: the
-#: management commands name themselves, and the web servers are matched before any Celery
-#: subcommand because granian is started with ``--workers 4`` (Dockerfile ``CMD``) and would
-#: otherwise be reported as a Celery worker.
+# Fallback role detection, in priority order, used when BUOY_BARN_OTEL_ROLE is unset.
+# Checked against the whole command line, so ambiguity is resolved by ordering: the
+# management commands name themselves, and the web servers are matched before any Celery
+# subcommand because granian is started with ``--workers 4`` (Dockerfile ``CMD``) and would
+# otherwise be reported as a Celery worker.
 _ARGV_ROLE_HINTS: tuple[tuple[str, str], ...] = (
     ("erddap_mqtt", "mqtt"),
     ("export_metrics", "exporter"),
@@ -86,9 +86,9 @@ _ARGV_ROLE_HINTS: tuple[tuple[str, str], ...] = (
     ("runserver", "web"),
 )
 
-#: Celery subcommands, consulted only when the command line is actually Celery's. Keeping
-#: them separate is what stops a bare word like "worker" from matching another program's
-#: flags.
+# Celery subcommands, consulted only when the command line is actually Celery's. Keeping
+# them separate is what stops a bare word like "worker" from matching another program's
+# flags.
 _CELERY_ROLE_HINTS: tuple[tuple[str, str], ...] = (
     ("beat", "beat"),
     ("flower", "flower"),
@@ -106,18 +106,18 @@ class _State:
 
     def __init__(self) -> None:
         self.provider = None
-        #: PID ``provider`` was built for. Never a bool -- see the module docstring.
+        # PID ``provider`` was built for. Never a bool -- see the module docstring.
         self.configured_pid: int | None = None
         self.atexit_registered = False
         self.warned_unavailable = False
-        #: PID whose provider build already failed, so it is not retried. Memoizing the
-        #: failure is not just an optimisation: `configure` logs when a build fails, the
-        #: metrics log handler records that log, and recording reaches back into
-        #: `configure` -- so a retried failure is an unbounded recursion.
+        # PID whose provider build already failed, so it is not retried. Memoizing the
+        # failure is not just an optimisation: `configure` logs when a build fails, the
+        # metrics log handler records that log, and recording reaches back into
+        # `configure` -- so a retried failure is an unbounded recursion.
         self.build_failed_pid: int | None = None
-        #: True while `configure` is running, so logging raised from inside it cannot
-        #: re-enter. Not pid-keyed: it is only ever true within one call on one thread, and
-        #: a `fork()` mid-configure would leave the child a copy it must ignore anyway.
+        # True while `configure` is running, so logging raised from inside it cannot
+        # re-enter. Not pid-keyed: it is only ever true within one call on one thread, and
+        # a `fork()` mid-configure would leave the child a copy it must ignore anyway.
         self.configuring = False
 
 

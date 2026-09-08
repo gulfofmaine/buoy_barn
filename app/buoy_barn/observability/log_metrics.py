@@ -22,27 +22,27 @@ import threading
 
 from . import metrics
 
-#: Logger trees whose records are never counted.
-#:
-#: The counter exists to reveal *application* failures that would otherwise be swallowed,
-#: so counting the telemetry stack's own failures actively breaks it. With an OTLP endpoint
-#: that is set but unreachable, the SDK logs an export failure on every interval, forever,
-#: in every process -- which would show up as a permanently climbing
-#: ``buoybarn.log.records{level="error"}`` and drown out the real signal. It is also
-#: circular: the failure to export is itself recorded as a metric awaiting export.
-#:
-#: Those failures still reach the console handler and Sentry; they are simply not this
-#: counter's business. The same goes for this package's own modules -- a broken metrics
-#: pipeline is a metrics problem, not a refresh problem.
+# Logger trees whose records are never counted.
+#
+# The counter exists to reveal *application* failures that would otherwise be swallowed,
+# so counting the telemetry stack's own failures actively breaks it. With an OTLP endpoint
+# that is set but unreachable, the SDK logs an export failure on every interval, forever,
+# in every process -- which would show up as a permanently climbing
+# ``buoybarn.log.records{level="error"}`` and drown out the real signal. It is also
+# circular: the failure to export is itself recorded as a metric awaiting export.
+#
+# Those failures still reach the console handler and Sentry; they are simply not this
+# counter's business. The same goes for this package's own modules -- a broken metrics
+# pipeline is a metrics problem, not a refresh problem.
 EXCLUDED_LOGGER_PREFIXES = ("opentelemetry", "buoy_barn.observability")
 
-#: "This thread is already recording a metric for a log record." Deliberately shared by every
-#: handler instance rather than held per handler: whether we are inside a recording is a
-#: property of the thread, not of one handler. Two handlers each guarding only themselves
-#: would still bounce a record between them -- handler A records, that logs, handler B is
-#: unguarded and records, which logs again. Thread-local rather than a plain global because
-#: two threads logging at once are unrelated, and a shared flag would let one thread's
-#: recording silently drop the other's record.
+# "This thread is already recording a metric for a log record." Deliberately shared by every
+# handler instance rather than held per handler: whether we are inside a recording is a
+# property of the thread, not of one handler. Two handlers each guarding only themselves
+# would still bounce a record between them -- handler A records, that logs, handler B is
+# unguarded and records, which logs again. Thread-local rather than a plain global because
+# two threads logging at once are unrelated, and a shared flag would let one thread's
+# recording silently drop the other's record.
 _recording = threading.local()
 
 

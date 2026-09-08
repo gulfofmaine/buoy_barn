@@ -9,19 +9,45 @@ from httpcore import ConnectError
 from httpx import HTTPError, TimeoutException
 
 from buoy_barn.observability import metrics
-from deployments.models import ErddapDataset, ErddapServer, TimeSeries
+from deployments.models import ErddapDataset, ErddapServer, SystemMessage, TimeSeries
 from deployments.utils.erddap_datasets import (
     TIME_COLUMN,
     VALUE_COLUMN,
     filter_dataframe,
     retrieve_dataframe,
 )
+from deployments.utils.system_messages import record_system_message, resolve_system_messages
 
-from .error_handling import BackoffError, Outcome, handle_http_errors
+from .error_handling import BackoffError, handle_http_errors
 from .extrema import extrema_for_timeseries
+from .outcomes import FETCH_FAILURE_CODES, FETCH_FAILURE_MESSAGES, RESOLVED_ON_SUCCESS, Outcome
 from .queue import task_queued
 
 logger = logging.getLogger(__name__)
+
+# `time_range_reported` didn't fail (the generic "failed" sentence below would be wrong for it),
+# so it gets its own text instead of an entry in `FETCH_FAILURE_MESSAGES`'s message shape.
+_TIME_RANGE_REPORTED_MESSAGE = (
+    "ERDDAP reported that this dataset's data ends soon, but recently enough that Buoy Barn "
+    "left every timeseries in this constraint group alone: {error}"
+)
+
+
+def _fetch_failure_message(dataset, constraints, handled, error) -> str:
+    if handled == Outcome.TIME_RANGE_REPORTED:
+        return _TIME_RANGE_REPORTED_MESSAGE.format(error=error)
+    return f"Fetching {dataset.name} with constraints {constraints} failed ({handled}): {error}"
+
+
+def _resolve_stale_fetch_failures(dataset, constraint_group, codes, keep=None):
+    """Resolve `codes` for `dataset`+`constraint_group`, except `keep`.
+
+    Called on every outcome, so a dataset that switches failure mode (403 -> 404) does not
+    leave the old message outstanding forever.
+    """
+    codes = tuple(code for code in codes if code != keep)
+    if codes:
+        resolve_system_messages(dataset, *codes, constraint_group=constraint_group)
 
 
 def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: bool = False):  # noqa: PLR0912 PLR0915
@@ -31,10 +57,8 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
         timeseries: List of timeseries to update
         clear_end_time: If True, clear the end_time field when data is successfully retrieved
     """
-    # A dataset is fetched once per (constraints, timeseries_type) group, so the group id is
-    # what distinguishes one failing group from its healthy siblings in the metrics. It is
-    # opaque on purpose, the exporter publishes buoybarn.erddap.constraint_group.info to map
-    # it back, and it is logged below for when you are already reading logs.
+    # Distinguishes one failing constraint group from its healthy siblings. Opaque on purpose;
+    # buoybarn.erddap.constraint_group.info maps it back to the real constraints.
     constraint_group = metrics.constraint_group_id(timeseries[0].constraints)
 
     with (
@@ -71,8 +95,43 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
             # "no_rows", ...) or "" when they did not, and may raise BackoffError -- which
             # the context manager classifies on its way out.
             handled = handle_http_errors(timeseries, error)
+
+            fetch_failure = FETCH_FAILURE_MESSAGES.get(handled)
+            keep = None
+            if fetch_failure is not None:
+                code, level = fetch_failure
+                keep = code
+                record_system_message(
+                    timeseries[0].dataset,
+                    code,
+                    _fetch_failure_message(
+                        timeseries[0].dataset,
+                        timeseries[0].constraints,
+                        handled,
+                        error,
+                    ),
+                    level=level,
+                    constraint_group=constraint_group,
+                    context={
+                        # dataset/server are here so promql.query_for can rebuild the query
+                        # from context alone, without a DB round trip.
+                        "dataset": timeseries[0].dataset.name,
+                        "server": str(timeseries[0].dataset.server),
+                        "constraints": timeseries[0].constraints,
+                        "error": str(error),
+                    },
+                )
+
             outcome.set(handled or Outcome.UNKNOWN_ERROR)
             if handled:
+                # A recognised outcome, benign or not, means whatever else was wrong with
+                # this dataset+group is no longer the failure mode in effect.
+                _resolve_stale_fetch_failures(
+                    timeseries[0].dataset,
+                    constraint_group,
+                    FETCH_FAILURE_CODES,
+                    keep=keep,
+                )
                 return
 
         except OSError as error:
@@ -90,12 +149,19 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
             outcome.set(Outcome.OS_ERROR)
             return
 
-        # Row count separates "the server answered with data" from "the server answered
-        # with nothing", which previously only showed up as a warning with its context
-        # commented out. Per-series save failures below are deliberately *not* folded into
-        # this outcome: the fetch itself succeeded, and those show up in buoybarn.log.records.
+        # Row count separates "answered with data" from "answered with nothing". Per-series
+        # save failures below do not fold into this outcome -- the fetch itself succeeded, and
+        # those surface via buoybarn.log.records.
         rows = len(timeseries_df)
         outcome.set(Outcome.SUCCESS if rows else Outcome.EMPTY_DATAFRAME, rows=rows)
+
+        # The fetch succeeded, so any outstanding fetch failure (or backoff) for this
+        # dataset+group is over; otherwise the list of outstanding messages only ever grows.
+        _resolve_stale_fetch_failures(
+            timeseries[0].dataset,
+            constraint_group,
+            RESOLVED_ON_SUCCESS,
+        )
 
         for series in timeseries:
             filtered_df = filter_dataframe(timeseries_df, series.variable)
@@ -141,15 +207,36 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
 
                 new_value_time = pd.to_datetime(time)
 
-                # Clear end_time if requested AND we have fresh data
-                # Only clear if the new data is more recent than the end_time
-                # This prevents clearing end_time on dataset reloads without new data
+                # Only clear end_time when the new data is actually newer than it, so a
+                # dataset reload that returns the same old rows does not un-retire a series.
                 if clear_end_time and series.end_time is not None and (new_value_time > series.end_time):
+                    previous_end_time = series.end_time
                     logger.info(
                         f"Clearing end_time for {series} - new data at {new_value_time} is after "
                         f"end_time {series.end_time}",
                     )
                     series.end_time = None
+
+                    record_system_message(
+                        series,
+                        SystemMessage.Code.END_TIME_CLEARED,
+                        (
+                            f"New data arrived at {new_value_time.isoformat()}, after the "
+                            f"previously recorded end_time of {previous_end_time.isoformat()}, "
+                            "so Buoy Barn cleared end_time. This timeseries will refresh and "
+                            "display again."
+                        ),
+                        level=SystemMessage.Level.INFO,
+                        context={
+                            "dataset": series.dataset.name,
+                            "server": str(series.dataset.server),
+                            "new_value_time": new_value_time.isoformat(),
+                            "previous_end_time": previous_end_time.isoformat(),
+                        },
+                    )
+                    # Resolved for any constraint group: clearing end_time has no single
+                    # group of its own to scope the resolution by.
+                    resolve_system_messages(series, SystemMessage.Code.END_TIME_RETIRED)
 
                 series.value_time = new_value_time
                 series.save()
@@ -206,6 +293,30 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
                 f"{new_request_refresh_time_seconds}",
                 extra={"timeseries": timeseries, "constraints": constraints},
                 exc_info=True,
+            )
+            failing_group = metrics.constraint_group_id(dict(constraints))
+            record_system_message(
+                dataset,
+                SystemMessage.Code.BACKOFF_INCREASED,
+                (
+                    f"Backing off after a timeout on constraint group {failing_group}: the "
+                    "per-request delay for the rest of this dataset's run increased from "
+                    f"{request_refresh_time_seconds}s to {new_request_refresh_time_seconds}s. "
+                    "This increase is per-run only -- it is discarded when this task ends, so "
+                    "there is nothing persisted to look for here in the admin."
+                ),
+                level=SystemMessage.Level.WARNING,
+                constraint_group=failing_group,
+                context={
+                    # `server` rather than `dataset`: backoff is a property of the server
+                    # being slow, so this message links to the request-duration histogram
+                    # for the server.
+                    "server": str(dataset.server),
+                    "dataset": dataset.name,
+                    "previous_request_refresh_time_seconds": request_refresh_time_seconds,
+                    "new_request_refresh_time_seconds": new_request_refresh_time_seconds,
+                    "constraints": constraints,
+                },
             )
             request_refresh_time_seconds = new_request_refresh_time_seconds
 

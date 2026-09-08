@@ -1,0 +1,72 @@
+{% comment %}
+Outstanding system messages for this page's whole chain, in Django's own `#content-related`
+sidebar module -- the same markup admin/index.html uses for "Recent actions", so it needs no
+CSS of its own.
+
+Every row leads with its subject, because one message shows up on several pages: a server
+refusing requests appears on that server, on each of its datasets, and on every platform with
+a timeseries underneath. Without it, a reader cannot tell whether "not found" means their
+platform is broken or the whole server is.
+
+Nothing here is marked safe -- message text and dataset names come from ERDDAP and are
+untrusted, so every value goes through Django's autoescaping.
+{% endcomment %}
+{% if system_messages %}
+  <div id="content-related">
+    <div class="module" id="system-messages-module">
+      <h2>System messages ({{ system_messages|length }})</h2>
+      <ul class="actionlist">
+        {% for row in system_messages %}
+          <li>
+            <p>
+              {% if row.subject_url %}
+                <a href="{{ row.subject_url }}">{{ row.subject_label }}</a>
+              {% else %}
+                {{ row.subject_label }}
+              {% endif %}
+            </p>
+            <p>
+              <span style="color: {{ row.level_color }};">{{ row.message.get_level_display }}</span>
+              &middot; <code>{{ row.message.code }}</code>
+            </p>
+            <p>{{ row.message.message }}</p>
+            <p>
+              <small>
+                seen {{ row.message.occurrences }} time{{ row.message.occurrences|pluralize }},
+                last {{ row.message.last_seen }}
+              </small>
+            </p>
+            {% if row.promql %}
+              <details>
+                <summary>PromQL</summary>
+                <div class="system-message-promql">
+                  <pre style="white-space: pre-wrap; overflow-wrap: anywhere;">{{ row.promql }}</pre>
+                  <button type="button" class="button system-message-copy">Copy</button>
+                </div>
+                {% if row.grafana_url %}
+                  <a href="{{ row.grafana_url }}" rel="noreferrer">Open in Grafana</a>
+                {% endif %}
+              </details>
+            {% endif %}
+            {% if row.can_acknowledge %}
+              <form method="post" action="{{ row.acknowledge_url }}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" class="button">Acknowledge</button>
+              </form>
+            {% else %}
+              {% comment %}
+              This message reaches beyond this page, so the containment rule withholds the
+              button. The link leads to the message's own page, which lists its full impact.
+              {% endcomment %}
+              <p>
+                <a href="{{ row.message_url }}">Review impact &rarr;</a>
+                <small>affects {{ row.reach_count }} {{ row.reach_label }}</small>
+              </p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endif %}

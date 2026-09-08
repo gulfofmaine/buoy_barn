@@ -13,8 +13,8 @@ from .refresh import single_refresh_dataset
 
 NOT_RECENTLY = timedelta(minutes=45)
 
-#: Metric label for the hourly monitor. A short constant rather than the URL, which would
-#: be both high cardinality and a secret.
+# Metric label for the hourly monitor. A short constant rather than the URL, which would
+# be both high cardinality and a secret.
 HOURLY_REFRESH_MONITOR = "hourly_refresh"
 
 

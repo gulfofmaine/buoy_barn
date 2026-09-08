@@ -86,6 +86,23 @@ stale dataset, so give it room.
 `SENTRY_TRACES_SAMPLE_RATE` defaults to `0`, so the span data that `CeleryIntegration` and
 `DjangoIntegration` already produce is being discarded. Set it to e.g. `0.1`.
 
+## Optional: Grafana Explore deep links for system messages
+
+Set both `GRAFANA_BASE_URL` and `GRAFANA_PROMETHEUS_UID` to turn every `SystemMessage`'s
+PromQL into a clickable "Open in Grafana" link (see
+[Admin system messages](./observability.md#admin-system-messages)). Unset, the admin still
+renders the query as copyable text, so an unconfigured environment degrades rather than
+breaking.
+
+| Variable | Effect |
+| --- | --- |
+| `GRAFANA_BASE_URL` | Base URL of the Grafana instance, e.g. `https://grafana.example.org`. |
+| `GRAFANA_PROMETHEUS_UID` | The Prometheus datasource UID within that Grafana instance. Required alongside `GRAFANA_BASE_URL` — a datasource UID is needed to build a working Explore link at all, so setting only one of the two still leaves the link off. |
+
+The URL is built for Grafana >= 10.2's `panes`-based Explore scheme
+(`?schemaVersion=1&panes=<url-encoded JSON>`), in `explore_url()` in
+`buoy_barn/observability/promql.py`.
+
 ## Metric names in Prometheus
 
 The instrument names in the code are dotted OTel names; the collector's `prometheus` exporter

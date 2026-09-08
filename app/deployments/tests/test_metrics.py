@@ -40,6 +40,7 @@ from deployments.models import (
 )
 from deployments.tasks import error_handling, refresh
 from deployments.tasks.error_handling import BackoffError
+from deployments.tasks.outcomes import BENIGN_OUTCOMES, OUTCOMES, Outcome
 from deployments.utils.healthchecks import ping_healthcheck
 
 from .vcr import my_vcr
@@ -49,22 +50,22 @@ ERDDAP_DURATION = "buoybarn.erddap.request.duration"
 ERDDAP_ROWS = "buoybarn.erddap.request.rows"
 LOG_RECORDS = "buoybarn.log.records"
 
-#: Arbitrary but fixed values, named so the comparisons below read as intent.
+# Arbitrary but fixed values, named so the comparisons below read as intent.
 ROW_COUNT = 12
 EXPECTED_OK_PINGS = 2
 SIMULATED_QUEUE_WAIT_SECONDS = 5
 MINIMUM_OBSERVED_WAIT_SECONDS = 4.5
 EXPECTED_GAUGE_COUNT = 6
 
-#: Ages the freshness tests set up, in seconds, with a generous allowance for how long the
-#: test itself takes between building the rows and reading the gauge.
+# Ages the freshness tests set up, in seconds, with a generous allowance for how long the
+# test itself takes between building the rows and reading the gauge.
 ONE_HOUR_SECONDS = 3600
 TWO_HOURS_SECONDS = 7200
 SIX_HOURS_SECONDS = 21600
 LEEWAY_SECONDS = 60
 
 
-#: Two distinct constraint groups are set up by the grouping tests below.
+# Two distinct constraint groups are set up by the grouping tests below.
 EXPECTED_GROUP_COUNT = 2
 
 
@@ -984,7 +985,7 @@ class TestOutcomeVocabulary:
             assert outcome in metrics.erddap_outcomes(), handler.__name__
             # The rule under test: only the INFO-level handler may report a benign outcome.
             logs_at_info = handler is error_handling.handle_500_no_rows_error
-            assert (outcome in error_handling.BENIGN_OUTCOMES) is logs_at_info, handler.__name__
+            assert (outcome in BENIGN_OUTCOMES) is logs_at_info, handler.__name__
 
 
 class _FakeTimeSeries:
@@ -1151,7 +1152,7 @@ class TestOutcomeVocabularyOwnership:
     """The vocabulary lives with the code that produces it, and must not drift from it."""
 
     def test_metrics_reads_the_handlers_declaration(self):
-        assert metrics.erddap_outcomes() == error_handling.OUTCOMES | {metrics.OTHER}
+        assert metrics.erddap_outcomes() == OUTCOMES | {metrics.OTHER}
 
     def test_timeseries_types_come_from_the_model_field(self):
         assert metrics.timeseries_types() == frozenset(
@@ -1183,7 +1184,7 @@ class TestOutcomeVocabularyOwnership:
                     referenced.add(node.attr)
 
         assert referenced, "no Outcome members referenced -- has the enum been bypassed?"
-        unknown = referenced - {member.name for member in error_handling.Outcome}
+        unknown = referenced - {member.name for member in Outcome}
         assert not unknown, f"Outcome members named but not defined: {unknown}"
 
     def test_no_outcome_is_reported_as_a_bare_string(self):
@@ -1211,7 +1212,7 @@ class TestOutcomeVocabularyOwnership:
                 offenders.extend(
                     f"{pathlib.Path(module.__file__).name}:{node.lineno} -> {literal!r}"
                     for literal in literals
-                    if isinstance(literal, str) and literal in error_handling.OUTCOMES
+                    if isinstance(literal, str) and literal in OUTCOMES
                 )
 
         assert not offenders, f"outcomes reported as bare strings instead of Outcome: {offenders}"
@@ -1227,4 +1228,4 @@ class TestOutcomeVocabularyOwnership:
         """
         values = set(metrics._OUTCOME_BY_EXCEPTION.values()) | {"unknown_error"}
 
-        assert values <= error_handling.OUTCOMES, values - error_handling.OUTCOMES
+        assert values <= OUTCOMES, values - OUTCOMES

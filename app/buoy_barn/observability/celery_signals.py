@@ -30,12 +30,12 @@ from . import bootstrap, metrics
 
 logger = logging.getLogger(__name__)
 
-#: Message header carrying the publish timestamp used to derive queue latency.
+# Message header carrying the publish timestamp used to derive queue latency.
 PUBLISHED_AT_HEADER = "buoybarn_published_at"
 
-#: Wall-clock start times, keyed by task id, populated in prerun and drained in postrun.
-#: Wall clock rather than a monotonic clock because publish and execution happen in
-#: different processes, where monotonic values are not comparable.
+# Wall-clock start times, keyed by task id, populated in prerun and drained in postrun.
+# Wall clock rather than a monotonic clock because publish and execution happen in
+# different processes, where monotonic values are not comparable.
 _start_times: dict[str, float] = {}
 
 

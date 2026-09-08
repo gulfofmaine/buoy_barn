@@ -31,27 +31,27 @@ from . import bootstrap
 
 logger = logging.getLogger(__name__)
 
-#: Sentinel for an attribute value outside its declared set.
+# Sentinel for an attribute value outside its declared set.
 OTHER = "other"
 
-#: Attribute value for a group with no ERDDAP constraints at all -- the common case, and far
-#: more readable in a dashboard than the hash of an empty dict.
+# Attribute value for a group with no ERDDAP constraints at all -- the common case, and far
+# more readable in a dashboard than the hash of an empty dict.
 NO_CONSTRAINTS = "none"
 
-#: A constraint group id is 8 lowercase hex characters. Because the value is a hash it cannot
-#: be validated against a frozenset like every other attribute, so its *shape* is validated
-#: instead -- which preserves the guarantee that no free text ever reaches a label.
+# A constraint group id is 8 lowercase hex characters. Because the value is a hash it cannot
+# be validated against a frozenset like every other attribute, so its *shape* is validated
+# instead -- which preserves the guarantee that no free text ever reaches a label.
 _GROUP_ID_RE = re.compile(r"^[0-9a-f]{8}$")
 
-#: Length of the hex prefix used as a group id. 8 characters is ~4 billion values, which is
-#: ample for the low thousands of real groups, and short enough to read in a dashboard.
+# Length of the hex prefix used as a group id. 8 characters is ~4 billion values, which is
+# ample for the low thousands of real groups, and short enough to read in a dashboard.
 _GROUP_ID_LENGTH = 8
 
-#: Last-resort fallback for a server with neither a name nor a base URL. `ErddapServer.name`
-#: is nullable, so a nameless server is labelled by its `base_url` instead -- see
-#: :func:`server_label`. This constant covers only the case where both are empty, which the
-#: model does not really allow (`base_url` is not nullable); it exists so that a half-built
-#: row from a test or a migration cannot put the literal "None" on a time series.
+# Last-resort fallback for a server with neither a name nor a base URL. `ErddapServer.name`
+# is nullable, so a nameless server is labelled by its `base_url` instead -- see
+# :func:`server_label`. This constant covers only the case where both are empty, which the
+# model does not really allow (`base_url` is not nullable); it exists so that a half-built
+# row from a test or a migration cannot put the literal "None" on a time series.
 UNKNOWN_SERVER = "unknown"
 
 
@@ -110,18 +110,18 @@ PING_OUTCOMES = frozenset({"ok", "error", OTHER})
 
 LOG_LEVELS = frozenset({"debug", "info", "warning", "error", "critical", OTHER})
 
-#: Vocabularies resolved from ``deployments``, cached after the first lookup.
-#:
-#: Two of the attribute vocabularies are owned elsewhere -- the ERDDAP outcomes by the
-#: handlers that produce them, the timeseries types by the model field's choices -- so they
-#: are read from there rather than restated here, where a second copy would silently drift
-#: and start collapsing real values to "other".
-#:
-#: Resolution has to be lazy. This module is imported while Django builds the ``LOGGING``
-#: setting (via :mod:`buoy_barn.observability.log_metrics`), which is long before the app
-#: registry exists, so importing a model or a task at module scope would break startup.
-#: By the time an ERDDAP outcome is recorded the caller is deep inside the refresh path and
-#: everything is loaded.
+# Vocabularies resolved from ``deployments``, cached after the first lookup.
+#
+# Two of the attribute vocabularies are owned elsewhere -- the ERDDAP outcomes by the
+# handlers that produce them, the timeseries types by the model field's choices -- so they
+# are read from there rather than restated here, where a second copy would silently drift
+# and start collapsing real values to "other".
+#
+# Resolution has to be lazy. This module is imported while Django builds the ``LOGGING``
+# setting (via :mod:`buoy_barn.observability.log_metrics`), which is long before the app
+# registry exists, so importing a model or a task at module scope would break startup.
+# By the time an ERDDAP outcome is recorded the caller is deep inside the refresh path and
+# everything is loaded.
 _vocabularies: dict[str, frozenset[str]] = {}
 
 
@@ -262,10 +262,10 @@ class _InstrumentCache:
     def __init__(self) -> None:
         self.instruments: _Instruments | None = None
         self.pid: int | None = None
-        #: PID whose instrument build already failed, so it is not retried. The failure is
-        #: logged, and :class:`~buoy_barn.observability.log_metrics.MetricsLogHandler`
-        #: records log records as metrics -- which comes straight back here. Without this,
-        #: one failure recurses for every log record the process emits.
+        # PID whose instrument build already failed, so it is not retried. The failure is
+        # logged, and :class:`~buoy_barn.observability.log_metrics.MetricsLogHandler`
+        # records log records as metrics -- which comes straight back here. Without this,
+        # one failure recurses for every log record the process emits.
         self.failed_pid: int | None = None
 
 
@@ -381,10 +381,10 @@ def record_erddap_request(  # noqa: PLR0913 - one metric per dimension it record
         logger.debug("Failed to record ERDDAP metrics", exc_info=True)
 
 
-#: When an exception escapes an :func:`erddap_request` block and the caller has not named
-#: an outcome, classify it by exception class name. Keyed on the name rather than the class
-#: so this module stays independent of ``deployments`` -- ``BackoffError`` in particular is
-#: raised by the error handlers themselves, deep inside the ``with`` body.
+# When an exception escapes an :func:`erddap_request` block and the caller has not named
+# an outcome, classify it by exception class name. Keyed on the name rather than the class
+# so this module stays independent of ``deployments`` -- ``BackoffError`` in particular is
+# raised by the error handlers themselves, deep inside the ``with`` body.
 _OUTCOME_BY_EXCEPTION = {
     "BackoffError": "backoff",
     "TimeoutException": "timeout",
@@ -401,11 +401,11 @@ class OutcomeTracker:
     def __init__(self) -> None:
         self.outcome = "success"
         self.rows: int | None = None
-        #: Did a call site name the outcome? Tracked separately from its *value*, because
-        #: "success" is both the default and a real outcome a call site sets explicitly.
-        #: Testing `outcome == "success"` conflates the two, and then an exception raised
-        #: after a successful fetch -- from saving the rows, say -- rewrites a real success
-        #: into `unknown_error` and reports an ERDDAP failure that never happened.
+        # Did a call site name the outcome? Tracked separately from its *value*, because
+        # "success" is both the default and a real outcome a call site sets explicitly.
+        # Testing `outcome == "success"` conflates the two, and then an exception raised
+        # after a successful fetch -- from saving the rows, say -- rewrites a real success
+        # into `unknown_error` and reports an ERDDAP failure that never happened.
         self.explicit = False
 
     def set(self, outcome: str, rows: int | None = None) -> None:

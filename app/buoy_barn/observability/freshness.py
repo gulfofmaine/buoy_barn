@@ -26,8 +26,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-#: Fallback for a label whose source column is null, so that str(None) never puts the literal
-#: "None" on a time series.
+# Fallback for a label whose source column is null, so that str(None) never puts the literal
+# "None" on a time series.
 UNKNOWN = "unknown"
 
 
@@ -166,11 +166,11 @@ def _timeseries_value_ages():
     return observations
 
 
-#: ``state`` label value -> the filter that counts it, and the annotation alias holding the
-#: count. The aliases must not collide with a model field name: an ``annotate(active=...)``
-#: shadows ``TimeSeries.active``, so a later ``Q(active=False)`` resolves to the annotation
-#: and Postgres rejects the nested aggregate -- which is how this gauge silently published
-#: nothing at all. Hence the ``_count`` suffix on every alias.
+# ``state`` label value -> the filter that counts it, and the annotation alias holding the
+# count. The aliases must not collide with a model field name: an ``annotate(active=...)``
+# shadows ``TimeSeries.active``, so a later ``Q(active=False)`` resolves to the annotation
+# and Postgres rejects the nested aggregate -- which is how this gauge silently published
+# nothing at all. Hence the ``_count`` suffix on every alias.
 _TIMESERIES_STATES = (
     ("active", "active_count", {"active": True, "end_time__isnull": True}),
     ("inactive", "inactive_count", {"active": False}),
@@ -212,9 +212,9 @@ def _timeseries_counts():
     ]
 
 
-#: Longest `constraints` label value the info metric will emit. The whole point of the metric
-#: is that the JSON lives on one bounded series rather than a hot counter, but a pathological
-#: constraints dict should still not be able to bloat it without limit.
+# Longest `constraints` label value the info metric will emit. The whole point of the metric
+# is that the JSON lives on one bounded series rather than a hot counter, but a pathological
+# constraints dict should still not be able to bloat it without limit.
 MAX_CONSTRAINTS_LABEL = 200
 
 
@@ -329,7 +329,7 @@ def _queue_names(settings) -> list[str]:
     return sorted(names)
 
 
-#: Gauge name -> (unit, description, callback).
+# Gauge name -> (unit, description, callback).
 GAUGES = {
     "buoybarn.dataset.refresh_age": (
         "s",

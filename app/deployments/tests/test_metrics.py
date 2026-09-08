@@ -50,22 +50,22 @@ ERDDAP_DURATION = "buoybarn.erddap.request.duration"
 ERDDAP_ROWS = "buoybarn.erddap.request.rows"
 LOG_RECORDS = "buoybarn.log.records"
 
-#: Arbitrary but fixed values, named so the comparisons below read as intent.
+# Arbitrary but fixed values, named so the comparisons below read as intent.
 ROW_COUNT = 12
 EXPECTED_OK_PINGS = 2
 SIMULATED_QUEUE_WAIT_SECONDS = 5
 MINIMUM_OBSERVED_WAIT_SECONDS = 4.5
 EXPECTED_GAUGE_COUNT = 6
 
-#: Ages the freshness tests set up, in seconds, with a generous allowance for how long the
-#: test itself takes between building the rows and reading the gauge.
+# Ages the freshness tests set up, in seconds, with a generous allowance for how long the
+# test itself takes between building the rows and reading the gauge.
 ONE_HOUR_SECONDS = 3600
 TWO_HOURS_SECONDS = 7200
 SIX_HOURS_SECONDS = 21600
 LEEWAY_SECONDS = 60
 
 
-#: Two distinct constraint groups are set up by the grouping tests below.
+# Two distinct constraint groups are set up by the grouping tests below.
 EXPECTED_GROUP_COUNT = 2
 
 

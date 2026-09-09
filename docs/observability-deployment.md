@@ -9,7 +9,7 @@ See [observability.md](./observability.md) for what is exported and why.
 
 ## What has to be done in the deploy repo
 
-Four things, none of which the base can supply.
+Five things, none of which the base can supply.
 
 ### 1. Point at the real collector
 
@@ -80,6 +80,24 @@ beat tick never alerts — the pings themselves are already in the code:
 
 Grace periods should exceed the task's normal runtime. The hourly refresh fans out to every
 stale dataset, so give it room.
+
+### 5. Patch in the Prometheus selector label
+
+`k8s/base/web-servicemonitor.yaml` now exists in this repo: a generic `ServiceMonitor`
+targeting the `web` Service's `/ht/?format=openmetrics` endpoint. It deliberately ships
+without `metadata.labels` — the label a cluster's Prometheus Operator `Prometheus` custom
+resource looks for in its own `serviceMonitorSelector` (commonly a `release: <name>`
+convention) is specific to that install, not to this application, so it doesn't belong in
+the shared base. The deploy repo needs a Kustomize patch adding that label to this
+`ServiceMonitor`'s `metadata.labels` before Prometheus will pick it up.
+
+The web deployment runs 4 granian worker processes behind one Service/port, so a given
+scrape lands on an arbitrary one of them. That's fine here: `/ht/` reports on shared
+external dependencies (Cache, Database, Storage), not per-process state, so it reads the
+same regardless of which worker answers.
+
+Scraping it generates no Sentry transaction noise either — `SENTRY_IGNORE_PATHS = {"/ht/",
+"/ht/celery/"}` in `settings.py`'s `trace_filter` already excludes it from tracing.
 
 ## Optional: start using the Sentry traces you already pay for
 

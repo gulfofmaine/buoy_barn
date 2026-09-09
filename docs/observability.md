@@ -463,10 +463,10 @@ Two things worth knowing:
 
 - **`/ht/?format=openmetrics` already renders health checks in Prometheus/OpenMetrics
   format** (`django_health_check_*`), for free, in the installed django-health-check 4.5.
-  Nothing scrapes it today. Wiring up a ServiceMonitor for it is tracked in
-  [#1844](https://github.com/gulfofmaine/buoy_barn/issues/1844) — it needs a Prometheus
-  Operator selector label that belongs with the observability stack rather than here, so it is
-  a scrape-config change rather than an app change.
+  `k8s/base/web-servicemonitor.yaml` (added for [#1844](https://github.com/gulfofmaine/buoy_barn/issues/1844))
+  now scrapes it. All that's left is a deploy-repo concern: patching the Prometheus selector
+  label onto that ServiceMonitor, since that label belongs with the observability stack
+  rather than here — see [observability-deployment.md](./observability-deployment.md#5-patch-in-the-prometheus-selector-label).
 - **The commented-out Celery ping check was left commented out deliberately.** See the note
   in `urls.py`; enabling it as written would break, and enabling it correctly would tie
   web-pod liveness to worker responsiveness within one second.

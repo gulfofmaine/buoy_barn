@@ -56,12 +56,6 @@ spec:
               path: /healthcheck
             periodSeconds: 30
             failureThreshold: 3
-          resources:
-            requests:
-              cpu: 50m
-              memory: 192Mi
-            limits:
-              memory: 512Mi
       volumes:
         - name: django-static
           emptyDir: {}

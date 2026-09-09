@@ -50,6 +50,12 @@ spec:
           volumeMounts:
             - name: django-static
               mountPath: /static
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
       volumes:
         - name: django-static
           emptyDir: {}

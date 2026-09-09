@@ -71,7 +71,7 @@ def before_send(event, hint):
 
 
 SENTRY_TRACES_SAMPLE_RATE = float(os.environ.get("SENTRY_TRACES_SAMPLE_RATE", 0))  # noqa: PLW1508
-SENTRY_IGNORE_PATHS = {"/ht/"}
+SENTRY_IGNORE_PATHS = {"/ht/", "/ht/celery/"}
 
 
 def trace_filter(trace: dict) -> float:

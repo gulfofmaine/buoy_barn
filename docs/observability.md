@@ -468,5 +468,24 @@ Two things worth knowing:
   Operator selector label that belongs with the observability stack rather than here, so it is
   a scrape-config change rather than an app change.
 - **The commented-out Celery ping check was left commented out deliberately.** See the note
-  in `settings.py`; enabling it as written would break, and enabling it correctly would tie
+  in `urls.py`; enabling it as written would break, and enabling it correctly would tie
   web-pod liveness to worker responsiveness within one second.
+- **`/ht/celery/` is a separate endpoint that runs only the Celery `Ping` check**, with its
+  timeout raised from the library's 1-second default to 10 seconds so a busy worker doesn't
+  read as a dead one. It must never back a probe that restarts anything: `Ping`'s
+  `check_active_queues` step makes a second round trip through `self.app.control.inspect(...)`
+  that ignores our timeout entirely and always uses Celery's own hardcoded 1-second default,
+  so this endpoint can still fail on a worker that is merely busy.
+- **The worker, beat and flower deployments each carry their own `livenessProbe`** now (see
+  `k8s/base/celery-worker.yaml`, `celery-beat.yaml`, `celery-flower.yaml`), which is the actual
+  fix for the incident that motivated this section: a dead Redis connection used to leave
+  worker and beat running but silently doing nothing.
+  - **worker and beat** exec `celery inspect ping` inside the container (wrapped in `sh -c`
+    so `$HOSTNAME` gets shell-expanded, since exec probes don't go through a shell or get
+    Kubernetes' `$(VAR)` substitution). The ping traverses the broker, so it catches exactly
+    the incident's failure mode. `timeoutSeconds` is 20, comfortably above the ~7s it took to
+    fail against an unreachable broker in testing. beat has no pidbox of its own to address
+    (no `-d` flag), so it can't tell "no worker replied" apart from "broker unreachable" --
+    either way it retries and eventually restarts, which is an acceptable false-positive-ish
+    restart because beat carries no long-running state.
+  - **flower** gets a plain HTTP probe against its own `/healthcheck` endpoint.

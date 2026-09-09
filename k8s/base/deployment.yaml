@@ -41,6 +41,12 @@ spec:
           volumeMounts:
             - name: django-static
               mountPath: /static
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              memory: 1Gi
           livenessProbe:
             httpGet:
               port: http

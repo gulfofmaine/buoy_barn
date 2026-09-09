@@ -39,12 +39,42 @@ spec:
             - name: BUOY_BARN_OTEL_ROLE
               value: "worker"
             - name: DJANGO_MANAGEPY_MIGRATE
-              value: "on"
+              value: "off"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
               value: "off"
           volumeMounts:
             - name: django-static
               mountPath: /static
+          # `exec.command` is not run through a shell, and Kubernetes' `$(VAR)` env
+          # substitution does not apply inside probe commands -- so this wraps itself in
+          # `sh -c '...'` to get $HOSTNAME shell-expanded at exec time inside the container.
+          # The ping traverses the broker, so this is what actually catches the incident
+          # this probe exists for: a worker that has silently lost its Redis connection.
+          # Observed exit codes against the real container: 0 healthy, 69 when no node
+          # replies, and 1 in ~7s when the broker is unreachable -- timeoutSeconds is 20 to
+          # sit comfortably above that ~7s failure path.
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - uv run --frozen celery -A buoy_barn inspect ping -d celery@$HOSTNAME -t 10
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 20
+            failureThreshold: 3
+          # Requests are set on every workload here; only memory gets a limit, deliberately
+          # no CPU limit. CPU limits would throttle the pandas / scipy.signal.find_peaks
+          # data-refresh path for no real isolation benefit, while the memory limit is what
+          # protects other pods on the node from one oversized ERDDAP response ballooning
+          # this pod's memory. These numbers are starting points, not measured values -- tune
+          # them from buoybarn.celery.task.duration and container_memory_working_set_bytes.
+          resources:
+            requests:
+              cpu: 250m
+              memory: 768Mi
+            limits:
+              memory: 2Gi
       volumes:
         - name: django-static
           emptyDir: {}

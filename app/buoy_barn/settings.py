@@ -160,6 +160,9 @@ INSTALLED_APPS = [
     "corsheaders",
     "memoize",
     "django_object_actions",
+    # Persists Celery task results to Postgres, so per-invocation history survives a
+    # restart and is inspectable in the admin via `dj_celery_panel`.
+    "django_celery_results",
     # Health checks to allow Kubernetes to restart the pod if locked up
     "health_check",
     # User management
@@ -319,6 +322,21 @@ CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
 
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+# The hard limit above kills the worker child outright, so the task cannot finish the
+# timeseries it is mid-way through writing or record why it died. The soft limit raises
+# SoftTimeLimitExceeded inside the task instead, leaving room to exit deliberately. The
+# five minute gap is comfortably more than ErddapServer.request_timeout_seconds (60), so
+# an in-flight ERDDAP fetch can still complete. Re-pick this from the
+# buoybarn.celery.task.duration histogram once there is a distribution to read.
+CELERY_TASK_SOFT_TIME_LIMIT = 25 * 60
+
+CELERY_RESULT_BACKEND = "django-db"
+# Store the task name, args and kwargs alongside the result.
+CELERY_RESULT_EXTENDED = True
+# Long enough to debug a refresh after the fact, short enough that the table does not grow
+# without bound. Setting this is also what makes Celery install its own daily
+# `celery.backend_cleanup` beat entry, so the pruning needs no schedule entry of ours.
+CELERY_RESULT_EXPIRES = 6 * 60 * 60
 
 CELERY_BEAT_SCHEDULE = {
     "hourly_default_dataset_refresh": {

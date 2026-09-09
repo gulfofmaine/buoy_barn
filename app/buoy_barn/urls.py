@@ -17,6 +17,8 @@ Including another URLconf
 
 """
 
+from datetime import timedelta
+
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
@@ -44,15 +46,34 @@ urlpatterns = [
                 # 3rd party checks
                 # "health_check.contrib.psutil.Disk",
                 # "health_check.contrib.psutil.Memory",
-                # "health_check.contrib.celery.Ping",
                 #   Left off on purpose. This view backs the Kubernetes *liveness* probe,
                 #   and Ping raises if any queue has no worker replying within 1 second --
                 #   so a merely busy worker would restart the web pods. Worker health is
                 #   covered instead by buoybarn.celery.task.* and
-                #   buoybarn.celery.queue.depth (see docs/observability.md). If a probe is
-                #   wanted, give it its own readiness endpoint rather than this one.
+                #   buoybarn.celery.queue.depth (see docs/observability.md). A Celery ping
+                #   is available at /ht/celery/ below for manual/dashboard use, but per its
+                #   own comment it must never back a probe that restarts anything.
                 # "health_check.contrib.rabbitmq.RabbitMQ",
                 # "health_check.contrib.redis.Redis",
+            ],
+        ),
+    ),
+    path(
+        "ht/celery/",
+        # A separate endpoint, not a check added to /ht/ above. The tuple form (dotted
+        # path + options dict) is used instead of importing Ping directly, because that's
+        # what HealthCheckView.get_checks expects: it calls check(**options) on each pair.
+        # 10s instead of Ping's 1s default because a busy worker is not a dead one.
+        #
+        # WARNING: Ping.check_active_queues makes a *second* round trip via
+        # self.app.control.inspect(...), and that inspect call does not take our timeout --
+        # it always uses Celery's own hardcoded 1.0s default. Because of that, this endpoint
+        # must never be wired to a probe that restarts anything (it must never become the
+        # Kubernetes web liveness probe, for instance) -- a merely-busy worker could still
+        # fail the inspect leg and take down whatever this is attached to.
+        HealthCheckView.as_view(
+            checks=[
+                ("health_check.contrib.celery.Ping", {"timeout": timedelta(seconds=10)}),
             ],
         ),
     ),

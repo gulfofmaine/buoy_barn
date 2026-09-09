@@ -42,12 +42,20 @@ spec:
             - name: BUOY_BARN_OTEL_ROLE
               value: "flower"
             - name: DJANGO_MANAGEPY_MIGRATE
-              value: "on"
+              value: "off"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
               value: "off"
           volumeMounts:
             - name: django-static
               mountPath: /static
+          # Flower serves its own /healthcheck (see the installed flower/urls.py), so this
+          # is a plain HTTP probe rather than the exec-into-celery one worker/beat use.
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /healthcheck
+            periodSeconds: 30
+            failureThreshold: 3
       volumes:
         - name: django-static
           emptyDir: {}

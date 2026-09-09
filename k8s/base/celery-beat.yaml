@@ -39,12 +39,30 @@ spec:
             - name: BUOY_BARN_OTEL_ROLE
               value: "beat"
             - name: DJANGO_MANAGEPY_MIGRATE
-              value: "on"
+              value: "off"
             - name: DJANGO_MANAGEPY_COLLECTSTATIC
               value: "off"
           volumeMounts:
             - name: django-static
               mountPath: /static
+          # No `-d celery@$HOSTNAME` here: beat is not a worker and has no pidbox of its own
+          # to address, so it can't ping itself directly. Without `-d` the ping still
+          # traverses the broker and gets answered by whichever worker replies. This means
+          # this probe fails the same way both when the broker is unreachable and when no
+          # worker replies at all (there's no `-d` target to tell those two apart, so any
+          # negative answer looks identical from beat's side). Restarting beat on that
+          # "no worker replied" false positive is an accepted trade-off: beat has no
+          # long-running state, so its restarts are cheap.
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - uv run --frozen celery -A buoy_barn inspect ping -t 10
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 20
+            failureThreshold: 3
       volumes:
         - name: django-static
           emptyDir: {}

@@ -15,7 +15,7 @@ from buoy_barn.observability import metrics
 logger = logging.getLogger(__name__)
 
 
-def ping_healthcheck(url: str | None, monitor: str, *, start: bool = False) -> bool:
+def ping_healthcheck(url: str | None, monitor: str, *, start: bool = False, fail: bool = False) -> bool:
     """Ping a Healthchecks.io monitor. Returns True if the ping was accepted.
 
     Args:
@@ -24,23 +24,37 @@ def ping_healthcheck(url: str | None, monitor: str, *, start: bool = False) -> b
         monitor: Short label used as the metric attribute. Must be low cardinality, so pass
             something like a dataset or task name, never a full URL.
         start: Ping the ``/start`` endpoint instead of the completion endpoint.
+        fail: Ping the ``/fail`` endpoint, which records the run as failed immediately
+            instead of leaving the monitor to notice once its grace period lapses.
 
-    Never raises: a monitoring side channel must not be able to fail a refresh.
+    Raises ``ValueError`` if both ``start`` and ``fail`` are given: that is a bug at the call
+    site rather than a runtime condition, so it should be loud. Nothing that happens on the
+    network raises -- a monitoring side channel must not be able to fail a refresh.
     """
+    if start and fail:
+        raise ValueError("ping_healthcheck takes start or fail, not both")
+
     if not url:
         return False
 
     import requests  # noqa: PLC0415
 
-    target = url + "/start" if start else url
+    if start:
+        target = url + "/start"
+    elif fail:
+        target = url + "/fail"
+    else:
+        target = url
+
     try:
         requests.get(target, timeout=5)
     except requests.RequestException as error:
-        message = (
-            f"Unable to send healthcheck start for {monitor} due to: {error}"
-            if start
-            else f"Unable to send healthcheck completion for {monitor} due to error: {error}"
-        )
+        if start:
+            message = f"Unable to send healthcheck start for {monitor} due to: {error}"
+        elif fail:
+            message = f"Unable to send healthcheck failure for {monitor} due to error: {error}"
+        else:
+            message = f"Unable to send healthcheck completion for {monitor} due to error: {error}"
         logger.error(message, exc_info=True)
         metrics.record_healthcheck_ping(monitor, "error")
         return False

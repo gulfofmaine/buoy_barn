@@ -12,6 +12,7 @@ dependencies = [
   "celery~=5.4",
   "dj-control-room[all]>=1.2",
   "django~=6.0",
+  "django-celery-results~=2.6",
   "django-cors-headers~=4.4",
   "django-debug-toolbar~=7.0",
   "django-health-check~=4.5.0",

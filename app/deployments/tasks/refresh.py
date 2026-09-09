@@ -4,6 +4,8 @@ import time
 import pandas as pd
 import sentry_sdk
 from celery import shared_task
+from celery.exceptions import SoftTimeLimitExceeded
+from django.conf import settings
 from django.utils import timezone
 from httpcore import ConnectError
 from httpx import HTTPError, TimeoutException
@@ -31,6 +33,39 @@ _TIME_RANGE_REPORTED_MESSAGE = (
     "ERDDAP reported that this dataset's data ends soon, but recently enough that Buoy Barn "
     "left every timeseries in this constraint group alone: {error}"
 )
+
+
+# Celery raises `SoftTimeLimitExceeded` wherever the task happens to be when the limit
+# lapses, and the traceback only says where, not how much of the run had been done.
+_SOFT_TIME_LIMIT_MESSAGE = (
+    "Celery's {limit}s soft time limit ended this run after {processed} of {total} {unit}. "
+    "The {unit} it never reached still hold the values from the last run that did, so they "
+    "will keep looking stale until a run finishes. Either they have got slower or there are "
+    "now more of them than fit in the limit -- compare the server's request durations before "
+    "raising CELERY_TASK_SOFT_TIME_LIMIT."
+)
+
+
+def _record_soft_time_limit(subject, unit: str, processed: int, total: int, context: dict) -> None:
+    """Record the `task_soft_time_limit` message for a run Celery cut short.
+
+    `unit` names what `processed`/`total` count -- constraint groups for a dataset, datasets
+    for a server -- so both tasks share one message shape instead of drifting apart.
+    """
+    limit = settings.CELERY_TASK_SOFT_TIME_LIMIT
+    record_system_message(
+        subject,
+        SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
+        _SOFT_TIME_LIMIT_MESSAGE.format(limit=limit, processed=processed, total=total, unit=unit),
+        level=SystemMessage.Level.DANGER,
+        context={
+            "processed": processed,
+            "total": total,
+            "unit": unit,
+            "soft_time_limit_seconds": limit,
+            **context,
+        },
+    )
 
 
 def _fetch_failure_message(dataset, constraints, handled, error) -> str:
@@ -280,45 +315,71 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
 
     groups = dataset.group_timeseries_by_constraint_and_type()
 
-    for (constraints, _), timeseries in groups.items():
-        time.sleep(request_refresh_time_seconds)
+    # Counted as the loop runs rather than worked out afterwards: a soft timeout can land
+    # anywhere in it, and how far the run got is not recoverable once the exception is raised.
+    processed = 0
 
-        try:
-            update_values_for_timeseries(timeseries, clear_end_time=clear_end_time)
-        except BackoffError:
-            new_request_refresh_time_seconds = max(request_refresh_time_seconds, 1) * 2
-            logger.error(
-                f"Some form of timeout encountered while refreshing dataset {dataset_id}"
-                f"Increasing backoff from {request_refresh_time_seconds} to "
-                f"{new_request_refresh_time_seconds}",
-                extra={"timeseries": timeseries, "constraints": constraints},
-                exc_info=True,
-            )
-            failing_group = metrics.constraint_group_id(dict(constraints))
-            record_system_message(
-                dataset,
-                SystemMessage.Code.BACKOFF_INCREASED,
-                (
-                    f"Backing off after a timeout on constraint group {failing_group}: the "
-                    "per-request delay for the rest of this dataset's run increased from "
-                    f"{request_refresh_time_seconds}s to {new_request_refresh_time_seconds}s. "
-                    "This increase is per-run only -- it is discarded when this task ends, so "
-                    "there is nothing persisted to look for here in the admin."
-                ),
-                level=SystemMessage.Level.WARNING,
-                constraint_group=failing_group,
-                context={
-                    # `server` rather than `dataset`: backoff is a property of the server
-                    # being slow, so this message links to the request-duration histogram
-                    # for the server.
-                    "server": str(dataset.server),
-                    "dataset": dataset.name,
-                    "previous_request_refresh_time_seconds": request_refresh_time_seconds,
-                    "new_request_refresh_time_seconds": new_request_refresh_time_seconds,
-                    "constraints": constraints,
-                },
-            )
-            request_refresh_time_seconds = new_request_refresh_time_seconds
+    try:
+        for (constraints, _), timeseries in groups.items():
+            time.sleep(request_refresh_time_seconds)
+
+            try:
+                update_values_for_timeseries(timeseries, clear_end_time=clear_end_time)
+            except BackoffError:
+                new_request_refresh_time_seconds = max(request_refresh_time_seconds, 1) * 2
+                logger.error(
+                    f"Some form of timeout encountered while refreshing dataset {dataset_id}"
+                    f"Increasing backoff from {request_refresh_time_seconds} to "
+                    f"{new_request_refresh_time_seconds}",
+                    extra={"timeseries": timeseries, "constraints": constraints},
+                    exc_info=True,
+                )
+                failing_group = metrics.constraint_group_id(dict(constraints))
+                record_system_message(
+                    dataset,
+                    SystemMessage.Code.BACKOFF_INCREASED,
+                    (
+                        f"Backing off after a timeout on constraint group {failing_group}: the "
+                        "per-request delay for the rest of this dataset's run increased from "
+                        f"{request_refresh_time_seconds}s to {new_request_refresh_time_seconds}s. "
+                        "This increase is per-run only -- it is discarded when this task ends, so "
+                        "there is nothing persisted to look for here in the admin."
+                    ),
+                    level=SystemMessage.Level.WARNING,
+                    constraint_group=failing_group,
+                    context={
+                        # `server` rather than `dataset`: backoff is a property of the server
+                        # being slow, so this message links to the request-duration histogram
+                        # for the server.
+                        "server": str(dataset.server),
+                        "dataset": dataset.name,
+                        "previous_request_refresh_time_seconds": request_refresh_time_seconds,
+                        "new_request_refresh_time_seconds": new_request_refresh_time_seconds,
+                        "constraints": constraints,
+                    },
+                )
+                request_refresh_time_seconds = new_request_refresh_time_seconds
+
+            processed += 1
+    except SoftTimeLimitExceeded:
+        # Celery will hard-kill this worker shortly, so leave a record of the run before
+        # re-raising and fail the monitor.
+        _record_soft_time_limit(
+            dataset,
+            "constraint groups",
+            processed,
+            len(groups),
+            {"dataset": dataset.name, "server": str(dataset.server)},
+        )
+        if healthcheck:
+            dataset.healthcheck_fail()
+        raise
+
+    # Reaching here means the run fit inside the soft time limit, so a timeout recorded on an
+    # earlier run is over. Resolved at task level, for any constraint group: unlike the
+    # fetch-level messages, a soft timeout belongs to the whole run rather than to whichever
+    # group happened to be in flight when it fired.
+    resolve_system_messages(dataset, SystemMessage.Code.TASK_SOFT_TIME_LIMIT)
 
     if healthcheck:
         dataset.healthcheck_complete()
@@ -365,8 +426,25 @@ def refresh_server(server_id: int, healthcheck: bool = False):
     if healthcheck:
         server.healthcheck_start()
 
-    for ds in server.erddapdataset_set.all():
-        refresh_dataset(ds.id)
+    # Listed up front so the message below can say how many datasets the run was meant to
+    # cover, not just how many it got to.
+    datasets = list(server.erddapdataset_set.all())
+    processed = 0
+
+    try:
+        for ds in datasets:
+            refresh_dataset(ds.id)
+            processed += 1
+    except SoftTimeLimitExceeded:
+        # The limit applies to this task, so it fires here even though the work was being
+        # done inside `refresh_dataset`, which records its own dataset-scoped message on the
+        # way past. See `refresh_dataset` for why the monitor is failed rather than completed.
+        _record_soft_time_limit(server, "datasets", processed, len(datasets), {"server": str(server)})
+        if healthcheck:
+            server.healthcheck_fail()
+        raise
+
+    resolve_system_messages(server, SystemMessage.Code.TASK_SOFT_TIME_LIMIT)
 
     if healthcheck:
         server.healthcheck_complete()

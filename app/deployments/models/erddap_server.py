@@ -85,3 +85,9 @@ class ErddapServer(models.Model):
         from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
 
         ping_healthcheck(self.healthcheck_url, self.name)
+
+    def healthcheck_fail(self):
+        """Signal that a process has failed with Healthchecks.io"""
+        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
+
+        ping_healthcheck(self.healthcheck_url, self.name, fail=True)

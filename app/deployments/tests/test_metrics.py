@@ -22,6 +22,7 @@ from unittest.mock import patch
 
 import pytest
 import requests
+from celery.exceptions import SoftTimeLimitExceeded
 from django.test import TransactionTestCase
 from django.utils import timezone
 from opentelemetry.sdk.metrics import MeterProvider
@@ -218,6 +219,17 @@ class TestErddapRequestContextManager:
 
         assert metric_reader.counts(ERDDAP_OUTCOME, "outcome") == {"unknown_error": 1}
 
+    def test_soft_time_limit_is_a_timeout_not_an_unknown_error(self, metric_reader):
+        """Celery's soft time limit can fire mid-fetch, inside the `with` body.
+
+        It means the run ran out of time, so it belongs with the other timeouts rather than
+        in `unknown_error`, which is meant for failures nobody has classified yet.
+        """
+        with pytest.raises(SoftTimeLimitExceeded), metrics.erddap_request("neracoos", "A01_all"):
+            raise SoftTimeLimitExceeded
+
+        assert metric_reader.counts(ERDDAP_OUTCOME, "outcome") == {"timeout": 1}
+
     def test_explicit_outcome_is_not_overwritten_by_an_exception(self, metric_reader):
         with (
             pytest.raises(BackoffError),
@@ -271,6 +283,20 @@ class TestHealthcheckPing:
         ]
         pings = metric_reader.counts("buoybarn.healthcheck.ping", "monitor", "outcome")
         assert pings[("hourly_refresh", "ok")] == EXPECTED_OK_PINGS
+
+    def test_failure_ping_hits_the_fail_url(self, metric_reader):
+        """`/fail` records the run as failed now, rather than after the grace period lapses."""
+        with patch("requests.get") as get:
+            assert ping_healthcheck("https://hc.example/token", "hourly_refresh", fail=True)
+
+        assert [call.args[0] for call in get.call_args_list] == ["https://hc.example/token/fail"]
+        pings = metric_reader.counts("buoybarn.healthcheck.ping", "monitor", "outcome")
+        assert pings[("hourly_refresh", "ok")] == 1
+
+    def test_start_and_fail_together_raises(self):
+        """A call site asking for both is a bug, not a runtime condition, so it is loud."""
+        with pytest.raises(ValueError, match="start or fail"):
+            ping_healthcheck("https://hc.example/token", "hourly_refresh", start=True, fail=True)
 
     def test_failed_ping_is_counted_and_swallowed(self, metric_reader):
         with patch("requests.get", side_effect=requests.ConnectionError("boom")):

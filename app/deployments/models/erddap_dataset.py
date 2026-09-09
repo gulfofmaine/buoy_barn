@@ -68,6 +68,12 @@ class ErddapDataset(models.Model):
 
         ping_healthcheck(self.healthcheck_url, self.name)
 
+    def healthcheck_fail(self):
+        """Signal that a process has failed with Healthchecks.io"""
+        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
+
+        ping_healthcheck(self.healthcheck_url, self.name, fail=True)
+
     def group_timeseries_by_constraint_and_type(self) -> dict[tuple[tuple, str], list["TimeSeries"]]:
         """Groups the datasets active timeseries by constraints and types"""
         groups = defaultdict(list)

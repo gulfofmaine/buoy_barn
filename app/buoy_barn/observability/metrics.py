@@ -361,6 +361,10 @@ _OUTCOME_BY_EXCEPTION = {
     "ConnectError": "timeout",
     "ConnectTimeout": "timeout",
     "ReadTimeout": "timeout",
+    # Celery's soft time limit landing mid-fetch: the run ran out of time, which is a timeout
+    # rather than a surprise. Without this it would count as "unknown_error" and hide the
+    # slow-dataset signal behind the bucket reserved for genuinely unclassified failures.
+    "SoftTimeLimitExceeded": "timeout",
     "OSError": "os_error",
 }
 

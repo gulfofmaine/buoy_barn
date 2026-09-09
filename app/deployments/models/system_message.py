@@ -144,6 +144,7 @@ class SystemMessage(models.Model):
         CONSTRAINT_OUT_OF_RANGE = "constraint_out_of_range"
         NO_MATCHING_TIME = "no_matching_time"
         TIME_RANGE_REPORTED = "time_range_reported"
+        TASK_SOFT_TIME_LIMIT = "task_soft_time_limit"
 
     code = models.CharField(choices=Code, max_length=64)
     constraint_group = models.CharField(

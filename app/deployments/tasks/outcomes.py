@@ -83,7 +83,10 @@ FETCH_FAILURE_MESSAGES: dict[str, tuple[str, str]] = {
 # is what lets the exhaustiveness test tell "handled elsewhere" from "forgotten".
 HANDLED_ELSEWHERE: dict[str, str] = {
     Outcome.TIME_RANGE_RETIRED: "recorded per-timeseries by handle_500_time_range_error",
-    Outcome.TIMEOUT: "recorded as backoff_increased by refresh_dataset's BackoffError catch",
+    Outcome.TIMEOUT: (
+        "recorded as backoff_increased by refresh_dataset's BackoffError catch, or as "
+        "task_soft_time_limit when Celery's soft time limit ends the whole task"
+    ),
     Outcome.BACKOFF: "recorded as backoff_increased by refresh_dataset's BackoffError catch",
     Outcome.OS_ERROR: "logged with exc_info; reaches Sentry/log.records, not a SystemMessage",
     Outcome.EMPTY_DATAFRAME: "tracked only by the rows metric, to avoid routine-empty noise",

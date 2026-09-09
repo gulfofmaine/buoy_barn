@@ -3,6 +3,7 @@ from datetime import timezone as dt_timezone
 from unittest.mock import patch
 
 import pytest
+from celery.exceptions import SoftTimeLimitExceeded
 from django.test import TransactionTestCase
 from django.utils import timezone
 from httpx import HTTPError, HTTPStatusError, Request, Response
@@ -273,6 +274,98 @@ class TaskTestCase(TransactionTestCase):
             code=SystemMessage.Code.BACKOFF_INCREASED,
         )
         self.assertEqual(message.constraint_group, expected_group)
+
+    @patch("requests.get")
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
+    def test_refresh_dataset_records_a_soft_time_limit(self, update_values_for_timeseries, get):
+        """A soft timeout used to vanish: nothing caught it, so nothing said the run stopped."""
+        update_values_for_timeseries.side_effect = SoftTimeLimitExceeded()
+        self.ds_M01_sbe37.healthcheck_url = "https://hc.example/dataset"
+        self.ds_M01_sbe37.save()
+
+        # Re-raised, so Celery still marks the task failed and the postrun signal records it.
+        with self.assertRaises(SoftTimeLimitExceeded):
+            tasks.refresh_dataset(self.ds_M01_sbe37.id, healthcheck=True)
+
+        message = SystemMessage.objects.for_object(self.ds_M01_sbe37).get(
+            code=SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
+        )
+        self.assertEqual(message.level, SystemMessage.Level.DANGER)
+        self.assertEqual(message.context["processed"], 0)
+        self.assertEqual(message.context["total"], 2, "sbe37 has two refreshable constraint groups")
+        self.assertIn("soft_time_limit_seconds", message.context)
+
+        # `/fail` and never the bare completion URL: a run that timed out did not complete,
+        # and pinging both would leave the monitor looking healthy.
+        self.assertEqual(
+            [call.args[0] for call in get.call_args_list],
+            ["https://hc.example/dataset/start", "https://hc.example/dataset/fail"],
+        )
+
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
+    def test_refresh_dataset_resolves_a_previous_soft_time_limit(self, update_values_for_timeseries):
+        record_system_message(
+            self.ds_M01_sbe37,
+            SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
+            "previously timed out",
+            level=SystemMessage.Level.DANGER,
+        )
+
+        tasks.refresh_dataset(self.ds_M01_sbe37.id)
+
+        message = SystemMessage.objects.for_object(self.ds_M01_sbe37).get(
+            code=SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
+        )
+        self.assertIsNotNone(message.resolved_at)
+
+    @patch("requests.get")
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
+    def test_refresh_server_records_a_soft_time_limit(self, update_values_for_timeseries, get):
+        update_values_for_timeseries.side_effect = SoftTimeLimitExceeded()
+        self.erddap.healthcheck_url = "https://hc.example/server"
+        self.erddap.save()
+
+        with self.assertRaises(SoftTimeLimitExceeded):
+            tasks.refresh_server(self.erddap.id, healthcheck=True)
+
+        message = SystemMessage.objects.for_object(self.erddap).get(
+            code=SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
+        )
+        self.assertEqual(message.level, SystemMessage.Level.DANGER)
+        self.assertEqual(message.context["processed"], 0)
+        self.assertEqual(message.context["total"], 2, "the server has two datasets to refresh")
+
+        # The nested `refresh_dataset` call records its own dataset-scoped message on the way
+        # past, so an operator can see which dataset the run was stuck on. Which dataset that
+        # is depends on iteration order, so only the existence of one is asserted here.
+        self.assertTrue(
+            SystemMessage.objects.filter(
+                code=SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
+                dataset__isnull=False,
+            ).exists(),
+        )
+
+        # Only the server's own monitor is pinged: the nested call is not the healthcheck one.
+        self.assertEqual(
+            [call.args[0] for call in get.call_args_list],
+            ["https://hc.example/server/start", "https://hc.example/server/fail"],
+        )
+
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
+    def test_refresh_server_resolves_a_previous_soft_time_limit(self, update_values_for_timeseries):
+        record_system_message(
+            self.erddap,
+            SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
+            "previously timed out",
+            level=SystemMessage.Level.DANGER,
+        )
+
+        tasks.refresh_server(self.erddap.id)
+
+        message = SystemMessage.objects.for_object(self.erddap).get(
+            code=SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
+        )
+        self.assertIsNotNone(message.resolved_at)
 
     @patch("deployments.tasks.refresh.refresh_dataset.delay")
     @patch("deployments.tasks.refresh.task_queued")

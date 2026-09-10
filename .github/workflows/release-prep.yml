@@ -8,13 +8,18 @@ on:
         required: true
         default: "patch"
 
-permissions:
-  contents: write
-  pull-requests: write
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions: {}
 
 jobs:
   release-prep:
+    name: Release Prep
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to push the release commit
+      pull-requests: write # to open the draft release PR
     environment:
       name: release-prep
     steps:

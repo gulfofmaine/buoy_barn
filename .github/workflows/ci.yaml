@@ -7,6 +7,10 @@ on:
   release:
     types: [published]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -104,7 +108,7 @@ jobs:
     needs: test
     permissions:
       contents: read
-      deployments: write
+      deployments: write # to update the deployment status shown on the release
     environment:
       # Despite changing deploy method, secrets are tied to the existing environment
       name: Buoy Barn via Argo CD

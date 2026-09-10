@@ -7,12 +7,17 @@ on:
         description: "Version to publish (e.g. 0.10.3) - must already be merged into main's Changelog.md"
         required: true
 
-permissions:
-  contents: write
+concurrency:
+  group: ${{ github.workflow }}
+
+permissions: {}
 
 jobs:
   release-draft:
+    name: Release Draft
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to publish the release and update the changelog
     environment:
       name: release-draft
     steps:

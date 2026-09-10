@@ -5,6 +5,7 @@ resources:
   - deployment.yaml
   - ingress.yaml
   - web-service.yaml
+  - web-servicemonitor.yaml
   - celery-worker.yaml
   - celery-beat.yaml
   - celery-flower.yaml

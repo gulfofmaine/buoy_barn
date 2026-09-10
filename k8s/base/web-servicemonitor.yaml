@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      service: web
+      tier: frontend
+      role: api
+  endpoints:
+    - port: http
+      path: /ht/
+      params:
+        format:
+          - openmetrics

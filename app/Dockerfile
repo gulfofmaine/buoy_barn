@@ -1,4 +1,4 @@
-#syntax=docker/dockerfile:1.25
+#syntax=docker/dockerfile:1.27
 # Use a Python image with uv pre-installed
 FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim@sha256:5d7d18f8d3d16b4a3e55a8a865c150dbefb8d444c5355f7071a5457fc62352e1
 

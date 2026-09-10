@@ -167,7 +167,7 @@ jobs:
   notify:
     name: Notify deployment repos of new image
     needs: [push_image]
-    uses: gulfofmaine/odp-releaser/.github/workflows/notify.yml@fef1724a2cdd7725a519ebb059a60aca71e24e68 # main
+    uses: gulfofmaine/odp-releaser/.github/workflows/notify.yml@0671e1a55e539d6416d95cca773a7420a2fc06bf # main
     permissions:
       contents: read
       pull-requests: read # ODP Releaser wants to figure out who made a PR

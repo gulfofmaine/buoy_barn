@@ -117,7 +117,12 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
     def refresh(self, request, **kwargs):
         dataset = self.dataset(**kwargs)
 
-        tasks.single_refresh_dataset.delay(dataset.id, healthcheck=True)
+        # `?clear_end_time=true` is how a human (or erddap_mqtt, recovering a wrongly-retired
+        # series on an MQTT "dataset updated" notification) asks this refresh to also try
+        # un-retiring series (see TimeSeriesQuerySet.refreshable).
+        clear_end_time = request.query_params.get("clear_end_time", "").lower() in {"true", "1"}
+
+        tasks.single_refresh_dataset.delay(dataset.id, healthcheck=True, clear_end_time=clear_end_time)
 
         serializer = self.serializer_class(dataset, context={"request": request})
         return Response(serializer.data)

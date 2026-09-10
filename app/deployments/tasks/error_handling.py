@@ -97,9 +97,50 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
         if end_time < week_ago:
             constraint_group = metrics.constraint_group_id(timeseries_group[0].constraints)
 
+            # `series.value_time > series.end_time` should not happen for real data. If it
+            # would, Buoy Barn already has a reading newer than what ERDDAP is now reporting
+            # as the end of the range, so the 500 is more likely a bad/transient response than
+            # a genuine retirement. Guard those series off instead of retiring a live platform
+            # on ERDDAP's say-so (issue #1855).
+            any_retired = False
+
             for ts in timeseries_group:
+                if ts.value_time is not None and ts.value_time > end_time:
+                    logger.warning(
+                        (
+                            f"Not setting end_time for {ts} to {end_time}: Buoy Barn already "
+                            f"has a reading at {ts.value_time}, after that end_time"
+                        ),
+                        extra=error_extra(timeseries_group, compare_text),
+                    )
+
+                    record_system_message(
+                        ts,
+                        SystemMessage.Code.TIME_RANGE_INCONSISTENT,
+                        (
+                            f"ERDDAP reported that {timeseries_group[0].dataset.name}'s data "
+                            f"ends at {end_time.isoformat()}, but Buoy Barn already has a "
+                            f"reading at {ts.value_time.isoformat()} for this timeseries "
+                            "after that end_time, which should not be possible for real data. "
+                            "Buoy Barn left this timeseries untouched rather than retire a "
+                            "platform that may still be live. The "
+                            "ERDDAP response may be wrong or transient."
+                        ),
+                        level=SystemMessage.Level.WARNING,
+                        constraint_group=constraint_group,
+                        context={
+                            "end_time": end_time.isoformat(),
+                            "dataset": timeseries_group[0].dataset.name,
+                            "server": str(timeseries_group[0].dataset.server),
+                            "constraints": timeseries_group[0].constraints,
+                            "value_time": ts.value_time.isoformat(),
+                        },
+                    )
+                    continue
+
                 ts.end_time = end_time
                 ts.save()
+                any_retired = True
 
                 logger.error(
                     f"Set end time for {ts} to {end_time} based on responses",
@@ -108,8 +149,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
                 )
 
                 # Writing end_time drops this series out of `refreshable()`, so it stops
-                # being refreshed and displayed. The message is addressed to the admin who
-                # has to decide whether that was correct.
+                # being refreshed and displayed.
                 record_system_message(
                     ts,
                     SystemMessage.Code.END_TIME_RETIRED,
@@ -131,7 +171,9 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
                     },
                 )
 
-            return Outcome.TIME_RANGE_RETIRED
+            # Every series in the group got guarded off, nothing was actually retired, so
+            # say so rather than claim TIME_RANGE_RETIRED for a no-op.
+            return Outcome.TIME_RANGE_RETIRED if any_retired else Outcome.TIME_RANGE_INCONSISTENT
 
         # ERDDAP reported an actual_range ending inside the last week, recent enough that
         # nothing was retired. Distinct from TIME_RANGE_RETIRED so a dataset map lookup

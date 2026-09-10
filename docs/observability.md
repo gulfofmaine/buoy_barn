@@ -261,6 +261,7 @@ which no index can serve.
 | `no_matching_time` | `no_matching_time` | `warning` | Dataset |
 | `time_range_reported` | `time_range_reported` | `info` | Dataset |
 | `time_range_retired` | `end_time_retired` | `danger` | Timeseries |
+| `time_range_inconsistent` | `time_range_inconsistent` | `warning` | Timeseries |
 | *(a later fetch supersedes a retirement)* | `end_time_cleared` | `info` | Timeseries |
 | *(per-run backoff in `refresh_dataset`, not a fetch outcome)* | `backoff_increased` | `warning` | Dataset |
 
@@ -281,6 +282,14 @@ names the platform that stopped refreshing rather than saying something is wrong
 dataset. `time_range_reported` is the same handler's other outcome: ERDDAP reported a range
 ending inside the last week, recent enough that nothing was retired. Nothing
 timeseries-specific happened, so that one is a dataset-level row.
+
+`time_range_inconsistent` is the same handler's third outcome, also in `HANDLED_ELSEWHERE` and
+also recorded per-timeseries (as `time_range_inconsistent`, `warning`): a series whose
+`value_time` is already after the range end ERDDAP just reported is left untouched instead of
+retired.`series.value_time > series.end_time` should not happen for real data, so the 500 is
+treated as more likely wrong or transient than the series actually being dead (issue #1855).
+The handler still returns `time_range_retired` if any series in the group was retired; it only
+returns `time_range_inconsistent` when every series was guarded off.
 
 ### Deduplication
 

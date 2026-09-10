@@ -291,3 +291,15 @@ class BuoyBarnPlatformAPITestCase(APITestCase):
         self.assertIn("server", response.data)
         self.assertIn("name", response.data["server"])
         refresh_dataset.assert_called_once()
+        self.assertFalse(refresh_dataset.call_args.kwargs["clear_end_time"])
+
+    @my_vcr.use_cassette("dataset_detail.yaml")
+    @patch("deployments.tasks.single_refresh_dataset.delay")
+    def test_dataset_refresh_with_clear_end_time(self, refresh_dataset):
+        response = self.client.get(
+            "/api/datasets/NERACOOS-N01_sbe37_all/refresh/?clear_end_time=true",
+            format="json",
+        )
+        self.assertIn(b"N01_sbe37_all", response.content)
+        refresh_dataset.assert_called_once()
+        self.assertTrue(refresh_dataset.call_args.kwargs["clear_end_time"])

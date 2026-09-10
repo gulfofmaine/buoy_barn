@@ -41,7 +41,7 @@ dependencies = [
   "vcrpy~=8.2",
   "verbose-csrf-middleware>=6",
   "whitenoise~=6.7",
-  "xarray~=2026.4.0",
+  "xarray~=2026.7.0",
 ]
 
 [dependency-groups]

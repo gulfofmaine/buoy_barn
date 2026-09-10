@@ -25,7 +25,7 @@ def filter_dataframe(df_to_filter: pd.DataFrame, column: str) -> pd.DataFrame:
     return filtered_df
 
 
-def setup_variables(  # noqa: PLR0913
+def setup_variables(  # noqa: PLR0913, PLR0917
     server: ERDDAP,
     dataset: str,
     variables: list[str],

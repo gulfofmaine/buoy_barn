@@ -36,6 +36,7 @@ class Outcome(StrEnum):
     FORBIDDEN = "forbidden"
     TIME_RANGE_RETIRED = "time_range_retired"
     TIME_RANGE_REPORTED = "time_range_reported"
+    TIME_RANGE_INCONSISTENT = "time_range_inconsistent"
     CONSTRAINT_OUT_OF_RANGE = "constraint_out_of_range"
     NO_MATCHING_TIME = "no_matching_time"
     UNRECOGNIZED_VARIABLE = "unrecognized_variable"
@@ -83,6 +84,7 @@ FETCH_FAILURE_MESSAGES: dict[str, tuple[str, str]] = {
 # is what lets the exhaustiveness test tell "handled elsewhere" from "forgotten".
 HANDLED_ELSEWHERE: dict[str, str] = {
     Outcome.TIME_RANGE_RETIRED: "recorded per-timeseries by handle_500_time_range_error",
+    Outcome.TIME_RANGE_INCONSISTENT: "recorded per-timeseries by handle_500_time_range_error",
     Outcome.TIMEOUT: (
         "recorded as backoff_increased by refresh_dataset's BackoffError catch, or as "
         "task_soft_time_limit when Celery's soft time limit ends the whole task"

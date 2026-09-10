@@ -1,4 +1,5 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
+from datetime import timezone as dt_timezone
 from unittest.mock import patch
 
 import pytest
@@ -571,6 +572,61 @@ class Handle500TimeRangeErrorTestCase(TestCase):
         for ts in (self.ts1, self.ts2):
             ts.refresh_from_db()
             self.assertIsNone(ts.end_time)
+
+        self.assertFalse(
+            SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).exists(),
+        )
+
+    def test_guards_off_a_series_with_a_reading_newer_than_the_reported_end_time(self):
+        """`series.value_time > series.end_time` can never happen for real data (#1855).
+
+        If ts1 already has a reading after the end_time ERDDAP just reported, retiring it
+        anyway would create exactly that impossible state -- so it should be left alone and
+        flagged, while ts2 (no newer reading) is retired as before.
+        """
+        after_end_time = datetime(2019, 4, 1, tzinfo=dt_timezone.utc)
+        self.ts1.value_time = after_end_time
+        self.ts1.save()
+
+        result = handle_500_time_range_error([self.ts1, self.ts2], self.compare_text)
+
+        # ts2 was still retired, so this is still a retirement overall.
+        self.assertEqual(result, Outcome.TIME_RANGE_RETIRED)
+
+        self.ts1.refresh_from_db()
+        self.assertIsNone(self.ts1.end_time)
+        message = SystemMessage.objects.for_object(self.ts1).get(
+            code=SystemMessage.Code.TIME_RANGE_INCONSISTENT,
+        )
+        self.assertEqual(message.level, SystemMessage.Level.WARNING)
+        self.assertIn(after_end_time.isoformat(), message.message)
+        self.assertEqual(message.context["value_time"], after_end_time.isoformat())
+        self.assertFalse(
+            SystemMessage.objects.for_object(self.ts1)
+            .filter(code=SystemMessage.Code.END_TIME_RETIRED)
+            .exists(),
+        )
+
+        self.ts2.refresh_from_db()
+        self.assertIsNotNone(self.ts2.end_time)
+        SystemMessage.objects.for_object(self.ts2).get(code=SystemMessage.Code.END_TIME_RETIRED)
+
+    def test_reports_inconsistent_when_every_series_has_a_newer_reading(self):
+        """When nothing in the group is eligible for retirement, say so rather than claim one."""
+        after_end_time = datetime(2019, 4, 1, tzinfo=dt_timezone.utc)
+        self.ts1.value_time = after_end_time
+        self.ts1.save()
+        self.ts2.value_time = after_end_time
+        self.ts2.save()
+
+        result = handle_500_time_range_error([self.ts1, self.ts2], self.compare_text)
+
+        self.assertEqual(result, Outcome.TIME_RANGE_INCONSISTENT)
+
+        for ts in (self.ts1, self.ts2):
+            ts.refresh_from_db()
+            self.assertIsNone(ts.end_time)
+            SystemMessage.objects.for_object(ts).get(code=SystemMessage.Code.TIME_RANGE_INCONSISTENT)
 
         self.assertFalse(
             SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).exists(),

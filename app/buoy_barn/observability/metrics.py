@@ -308,7 +308,7 @@ def _mirror_to_sentry(key: str, attributes: dict) -> None:
         logger.debug("Could not mirror %s to Sentry metrics", key, exc_info=True)
 
 
-def record_erddap_request(  # noqa: PLR0913 - one metric per dimension it records
+def record_erddap_request(  # noqa: PLR0913, PLR0917 - one metric per dimension it records
     server,
     dataset,
     duration_s: float | None,

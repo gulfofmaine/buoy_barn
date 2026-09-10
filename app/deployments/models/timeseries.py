@@ -9,16 +9,23 @@ from .platform import Platform
 
 
 class TimeSeriesQuerySet(models.QuerySet):
-    def refreshable(self):
+    def refreshable(self, include_retired: bool = False):
         """The timeseries the refresh path actually fetches.
 
-        One definition of "currently refreshed", used by both
+        The definition of "currently refreshed", used by both
         `ErddapDataset.group_timeseries_by_constraint_and_type` (which does the fetching) and
-        the `constraint_group.info` metric in `buoy_barn.observability.freshness` (which
-        describes it). Those two must agree or the metric describes groups that are never
-        fetched, so the predicate lives here rather than being written twice.
+        the `constraint_group.info` metric in `buoy_barn.observability.freshness`.
+
+        `include_retired`: drop the `end_time__isnull` from the filter so a series that
+        was wrongly retired (`end_time` set) can be offered back to a refresh that was asked
+        to try clearing it (see `refresh_dataset(clear_end_time=True)`). `active=True` still
+        applies, this is about recovering a mistaken retirement, not refreshing series an
+        admin deliberately turned off.
         """
-        return self.filter(active=True, end_time__isnull=True)
+        queryset = self.filter(active=True)
+        if not include_retired:
+            queryset = queryset.filter(end_time__isnull=True)
+        return queryset
 
 
 class TimeSeriesManager(models.Manager.from_queryset(TimeSeriesQuerySet)):

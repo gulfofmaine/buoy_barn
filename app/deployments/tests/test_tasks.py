@@ -143,6 +143,35 @@ class TaskTestCase(TransactionTestCase):
             "The dataset should have two groups of timeseries that have different constraints",
         )
 
+    @patch("deployments.tasks.refresh.update_values_for_timeseries")
+    def test_refresh_dataset_with_clear_end_time_includes_retired_series(
+        self,
+        update_values_for_timeseries,
+    ):
+        """`clear_end_time=True` is how `erddap_mqtt` recovers a wrongly-retired series
+
+        (issue #1855) -- so `ts5`, which is excluded by `test_refresh_dataset` above, must be
+        offered back to `update_values_for_timeseries` when a caller actually asks for that.
+        """
+        tasks.refresh_dataset(self.ds_M01_sbe37.id, clear_end_time=True)
+
+        # Still two constraint groups (depth=100 and depth=1) -- ts5 joins ts1/ts2's group
+        # rather than getting one of its own.
+        self.assertEqual(
+            2,
+            update_values_for_timeseries.call_count,
+            "ts5 should join its constraint group's call, not start a new one",
+        )
+
+        groups_seen = [call.args[0] for call in update_values_for_timeseries.call_args_list]
+        matching_group = next(
+            (group for group in groups_seen if self.ts5 in group),
+            None,
+        )
+        self.assertIsNotNone(matching_group, "ts5 should be included when clear_end_time=True")
+        self.assertIn(self.ts1, matching_group)
+        self.assertIn(self.ts2, matching_group)
+
     @my_vcr.use_cassette("tasks_update_values.yaml")
     def test_update_values(self):
         self.assertIsNone(self.ts1.value)

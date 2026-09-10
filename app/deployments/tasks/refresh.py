@@ -313,7 +313,9 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
     if healthcheck:
         dataset.healthcheck_start()
 
-    groups = dataset.group_timeseries_by_constraint_and_type()
+    # Retired series (end_time set) only rejoin the groups when this run was actually asked
+    # to try clearing end_time.
+    groups = dataset.group_timeseries_by_constraint_and_type(include_retired=clear_end_time)
 
     # Counted as the loop runs rather than worked out afterwards: a soft timeout can land
     # anywhere in it, and how far the run got is not recoverable once the exception is raised.

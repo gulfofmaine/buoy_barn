@@ -6,6 +6,7 @@ import pytest
 from celery.exceptions import SoftTimeLimitExceeded
 from django.test import TransactionTestCase
 from django.utils import timezone
+from freezegun import freeze_time
 from httpx import HTTPError, HTTPStatusError, Request, Response
 
 from buoy_barn.observability import metrics, promql
@@ -21,7 +22,7 @@ from deployments.models import (
 from deployments.tasks.error_handling import BackoffError
 from deployments.utils.system_messages import record_system_message
 
-from .vcr import my_vcr
+from .vcr import CASSETTE_RECORDED_AT, my_vcr
 
 
 def _http_status_error(status_code: int, text: str) -> HTTPError:
@@ -451,7 +452,15 @@ class TaskTestCase(TransactionTestCase):
 
 
 @pytest.mark.django_db
+@freeze_time(CASSETTE_RECORDED_AT)
 class TaskErrorTestCase(TransactionTestCase):
+    """Replay the recorded ERDDAP failures.
+
+    Frozen because the request URL `setup_variables` builds embeds `datetime.now(UTC)`:
+    without a fixed clock every run asks the cassettes for a different time range, and
+    the tests drift away from what was recorded.
+    """
+
     # Django DB Fixtures
     fixtures = ["platforms", "erddapservers", "datatypes"]
 

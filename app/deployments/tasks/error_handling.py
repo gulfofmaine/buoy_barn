@@ -4,7 +4,7 @@ from http import HTTPStatus
 
 import pandas as pd
 from django.utils import timezone
-from httpx import HTTPError, HTTPStatusError
+from requests.exceptions import HTTPError
 
 from buoy_barn.observability import metrics
 from deployments.models import SystemMessage
@@ -381,7 +381,7 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> str:  # noqa: PLR0
     the caller cannot distinguish a benign empty response from a blacklisted server by
     return value alone.
     """
-    if isinstance(error.__cause__, HTTPStatusError):
+    if isinstance(error.__cause__, HTTPError):
         try:
             if error.__cause__.response.status_code == HTTPStatus.FORBIDDEN:
                 logger.error(

@@ -8,6 +8,13 @@ Changes:
 
 Fixes:
 
+## 0.11.1 - 2026-09-11
+### Other Changes
+* Pin redis<8 to avoid RESP3 HELLO handshake failures by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1888
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.11.0...v0.11.1
+
 ## 0.11.0 - 2026-09-11
 ### Other Changes
 * Add OpenTelemetry metrics instrumentation for observability by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1834

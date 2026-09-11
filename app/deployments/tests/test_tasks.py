@@ -7,7 +7,8 @@ from celery.exceptions import SoftTimeLimitExceeded
 from django.test import TransactionTestCase
 from django.utils import timezone
 from freezegun import freeze_time
-from httpx import HTTPError, HTTPStatusError, Request, Response
+from requests import Response
+from requests.exceptions import HTTPError
 
 from buoy_barn.observability import metrics, promql
 from deployments import tasks
@@ -32,9 +33,10 @@ def _http_status_error(status_code: int, text: str) -> HTTPError:
     errors are chained -- so tests that need a specific ERDDAP response body construct one
     directly instead of recording a new VCR cassette for it.
     """
-    request = Request("GET", "http://example.com")
-    response = Response(status_code, request=request, text=text)
-    status_error = HTTPStatusError(f"{status_code} error", request=request, response=response)
+    response = Response()
+    response.status_code = status_code
+    response._content = text.encode()
+    status_error = HTTPError(f"{status_code} error", response=response)
     error = HTTPError(str(status_error))
     error.__cause__ = status_error
     return error

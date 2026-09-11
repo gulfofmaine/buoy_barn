@@ -7,8 +7,8 @@ from celery import shared_task
 from celery.exceptions import SoftTimeLimitExceeded
 from django.conf import settings
 from django.utils import timezone
-from httpcore import ConnectError
-from httpx import HTTPError, TimeoutException
+from requests.exceptions import ConnectionError as RequestsConnectionError
+from requests.exceptions import HTTPError, Timeout
 
 from buoy_barn.observability import metrics
 from deployments.models import ErddapDataset, ErddapServer, SystemMessage, TimeSeries
@@ -118,7 +118,7 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
                 timeseries,
             )
 
-        except (ConnectError, TimeoutException) as error:
+        except (RequestsConnectionError, Timeout) as error:
             outcome.set(Outcome.TIMEOUT)
             raise BackoffError(
                 f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "

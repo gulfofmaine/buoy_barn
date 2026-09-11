@@ -2,7 +2,7 @@ import json
 from http import HTTPStatus
 from unittest.mock import AsyncMock, patch
 
-import httpx
+import httpx2
 import pytest
 from rest_framework.test import APITestCase
 
@@ -31,10 +31,10 @@ class ProxyViewTestCase(APITestCase):
             assert key in data["table"]
 
     def test_proxy_view_with_content_length_header(self):
-        upstream_response = httpx.Response(
+        upstream_response = httpx2.Response(
             200,
             content=b'{"table": {}}',
-            request=httpx.Request("GET", "http://localhost:8080/tabledap/M01_met_all.json"),
+            request=httpx2.Request("GET", "http://localhost:8080/tabledap/M01_met_all.json"),
         )
         assert "content-length" in upstream_response.headers
 

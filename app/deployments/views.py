@@ -1,6 +1,6 @@
 from urllib.parse import urljoin, urlparse
 
-import httpx
+import httpx2
 from django.conf import settings
 from django.db.models import Prefetch
 from django.http import HttpRequest, HttpResponse, StreamingHttpResponse
@@ -299,7 +299,7 @@ class ProxyTimeout(APIException):
 # Lifecycle: Granian spawns workers as separate processes, so each process owns its own
 # client. Connections are released by the OS/Python runtime on process exit. No explicit
 # close is required under Granian's spawn model.
-_proxy_http_client = httpx.AsyncClient(timeout=settings.PROXY_TIMEOUT_SECONDS)
+_proxy_http_client = httpx2.AsyncClient(timeout=settings.PROXY_TIMEOUT_SECONDS)
 
 
 @cache_page(settings.PROXY_CACHE_SECONDS)
@@ -335,9 +335,9 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse | S
 
     try:
         response = await _proxy_http_client.get(request_url)
-    except httpx.TimeoutException as e:
+    except httpx2.TimeoutException as e:
         raise ProxyTimeout from e
-    except httpx.RequestError as e:
+    except httpx2.RequestError as e:
         raise APIException(
             detail=f"Error connecting to upstream ERDDAP server: {type(e).__name__}.",
         ) from e

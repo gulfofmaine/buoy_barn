@@ -35,6 +35,8 @@ dependencies = [
   "pandas>1.5.3",
   "psycopg2-binary~=2.9.9",
   "pystac~=1.15.1",
+  # 8.0 defaults to RESP3 and sends HELLO with no RESP2 fallback, which our Redis rejects.
+  "redis<8",
   "requests>=2.33",
   "scipy>=1.14.1",
   "sentry-sdk~=2.68.1",

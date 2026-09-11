@@ -25,6 +25,7 @@ import requests
 from celery.exceptions import SoftTimeLimitExceeded
 from django.test import TransactionTestCase
 from django.utils import timezone
+from freezegun import freeze_time
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import InMemoryMetricReader
 
@@ -44,7 +45,7 @@ from deployments.tasks.error_handling import BackoffError
 from deployments.tasks.outcomes import BENIGN_OUTCOMES, OUTCOMES, Outcome
 from deployments.utils.healthchecks import ping_healthcheck
 
-from .vcr import my_vcr
+from .vcr import CASSETTE_RECORDED_AT, my_vcr
 
 ERDDAP_OUTCOME = "buoybarn.erddap.outcome"
 ERDDAP_DURATION = "buoybarn.erddap.request.duration"
@@ -404,6 +405,7 @@ class TestCeleryTaskSignals:
 
 
 @pytest.mark.django_db
+@freeze_time(CASSETTE_RECORDED_AT)
 class ErddapOutcomeMetricTestCase(TransactionTestCase):
     """Replay recorded ERDDAP failures and assert the outcome counter tells the truth.
 
@@ -411,6 +413,9 @@ class ErddapOutcomeMetricTestCase(TransactionTestCase):
     expected outcome for each cassette is pinned by the log assertion the existing test
     makes: only one handler emits each of those messages, and each handler maps to one
     outcome.
+
+    Frozen for the same reason as `TaskErrorTestCase`: the ERDDAP query URL is built from
+    `datetime.now(UTC)`, so a moving clock moves the request away from the cassette.
     """
 
     fixtures = ["platforms", "erddapservers", "datatypes"]

@@ -8,6 +8,48 @@ Changes:
 
 Fixes:
 
+## 0.11.0 - 2026-09-11
+### Other Changes
+* Add OpenTelemetry metrics instrumentation for observability by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1834
+* Admin system messaging: surface what the refresh pipeline did on its own (#1856) by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1857
+* Add Celery probes, resource limits, and a /ht/celery/ endpoint by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1860
+* Add a Celery result backend and a soft task time limit by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1861
+* Record Celery soft timeouts instead of letting them vanish by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1862
+* Fix unreachable clear_end_time and mis-stamped end_time (#1855) by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1865
+* Add a generic ServiceMonitor for /ht/?format=openmetrics (#1844) by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1864
+* Secure CI by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1880
+* Freeze the clock for the VCR-backed ERDDAP error tests by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1882
+* Fix erddapy 3.3.0 requests-based exception handling by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1883
+* Migrate remaining httpx usage to httpx2 by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1886
+### Dependency Updates
+* Update dependency djangorestframework to v3.17.2 [SECURITY] by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1854
+* Bump sqlparse from 0.5.5 to 0.6.0 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1853
+* Bump tornado from 6.5.7 to 6.5.8 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1851
+* Update redis Docker tag to v7.4.11 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1850
+* Update dependency flower to ~=2.1.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1847
+* Update dependency sentry-sdk to ~=2.68.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1859
+* Update github/codeql-action digest to cdf488f by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1858
+* Update gulfofmaine/odp-releaser digest to 0671e1a by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1849
+* Update actions/checkout digest to 3d3c42e by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1820
+* Update dependency slack-sdk to ~=3.44.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1866
+* Update docker/setup-buildx-action action to v4.3.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1870
+* Update pre-commit hook zizmorcore/zizmor-pre-commit to v1.30.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1875
+* Update pre-commit hook tox-dev/pyproject-fmt to v2.29.3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1874
+* Update astral-sh/setup-uv action to v10 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1876
+* Update pre-commit hook adamchainz/django-upgrade to v1.32.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1871
+* Update docker/login-action action to v4.6.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1869
+* Update docker/dockerfile Docker tag to v1.27 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1868
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.12.9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1873
+* Update dependency django-debug-toolbar to v8 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1877
+* Update GitHub Artifact Actions (major) by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1878
+* Update j178/prek-action action to v3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1879
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.16.6 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1872
+* Update dependency xarray to ~=2026.7.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1867
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1759
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.10.7...v0.11.0
+
 ## 0.10.7 - 2026-08-18
 ### Other Changes
 * Switch to ESRI Ocean Basemap in admin by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1831

@@ -1,0 +1,158 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+{% comment %}
+Two steps in one form: "Preview" plans the import from the dataset's ERDDAP metadata and
+shows what would change, "Import selected" re-plans it and saves the ticked rows.
+
+Variable names, attributes and warnings come from ERDDAP and are untrusted, so nothing here
+is marked safe.
+{% endcomment %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .erddap-import .warning { color: var(--error-fg); }
+    .erddap-import .location-differs {
+      border: 2px solid var(--error-fg);
+      padding: 8px 12px;
+      margin: 10px 0;
+    }
+    .erddap-import .muted { color: var(--body-quiet-color); }
+    .erddap-import table { width: 100%; margin-bottom: 20px; }
+    .erddap-import td ul { margin: 0; padding-left: 16px; }
+    .erddap-import code { white-space: pre-wrap; }
+  </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+    &rsaquo; {{ title }}
+  </div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main" class="erddap-import">
+  <form method="post">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+
+    <fieldset class="module aligned">
+      <h2>Dataset</h2>
+      {% for field in form %}
+        <div class="form-row{% if field.errors %} errors{% endif %}">
+          {{ field.errors }}
+          <div class="flex-container">
+            {{ field.label_tag }} {{ field }}
+          </div>
+          {% if field.help_text %}<div class="help">{{ field.help_text }}</div>{% endif %}
+        </div>
+      {% endfor %}
+    </fieldset>
+
+    <div class="submit-row">
+      <button type="submit" name="step" value="preview" class="button">Preview</button>
+    </div>
+
+    {% if plan %}
+      <fieldset class="module">
+        <h2>Platform: {% if plan.platform %}{{ plan.platform }}{% else %}{{ form.cleaned_data.new_platform_name }} (new){% endif %}</h2>
+
+        {% for warning in plan.warnings %}<p class="warning">{{ warning }}</p>{% endfor %}
+
+        {% if plan.location_differs %}
+          <div class="location-differs">
+            <strong>The location in ERDDAP is {{ plan.location_distance|floatformat:0 }} m from this platform's current location.</strong><br>
+            Current: {{ plan.current_location.y|floatformat:5 }}, {{ plan.current_location.x|floatformat:5 }}
+            &mdash; ERDDAP: {{ plan.location.y|floatformat:5 }}, {{ plan.location.x|floatformat:5 }} ({{ plan.location_source }})<br>
+            <label><input type="checkbox" name="update_location" value="1"> Update location to the ERDDAP location</label>
+          </div>
+        {% elif plan.location %}
+          <p>
+            Location: {{ plan.location.y|floatformat:5 }}, {{ plan.location.x|floatformat:5 }}
+            <span class="muted">({{ plan.location_source }}{% if plan.location_distance is not None %}, {{ plan.location_distance|floatformat:0 }} m from the current location{% elif plan.platform %}, the platform has no location yet{% endif %})</span>
+          </p>
+        {% endif %}
+
+        {% if plan.platform_fields %}
+          <p>Fields that will be filled in:</p>
+          <ul>
+            {% for name, value in plan.platform_fields.items %}<li><strong>{{ name }}</strong>: {{ value }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+        {% if plan.platform_field_conflicts %}
+          <p class="muted">Fields that differ from ERDDAP, which will be left as they are:</p>
+          <ul class="muted">
+            {% for name, values in plan.platform_field_conflicts.items %}
+              <li><strong>{{ name }}</strong>: {{ values.0 }} &rarr; ERDDAP has {{ values.1 }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <p class="muted">
+          Dataset time range: {{ plan.start_time|default:"unknown" }} &ndash; {{ plan.end_time|default:"current" }}
+          {% if plan.buffer_type %}&middot; Buffer type: {{ plan.buffer_type }}{% endif %}
+        </p>
+      </fieldset>
+
+      {% if plan.new %}
+        <h2>New timeseries</h2>
+        <table>
+          <thead><tr><th>Create</th><th>Variable</th><th>Data type</th><th>Constraints</th><th>Tidal datums</th><th>Warnings</th></tr></thead>
+          <tbody>
+            {% for row in plan.new %}
+              <tr>
+                <td><input type="checkbox" name="create" value="{{ row.variable }}" checked></td>
+                <td>{{ row.variable }}</td>
+                <td>{{ row.data_type }}</td>
+                <td><code>{{ row.constraints }}</code></td>
+                <td>{% for name, value in row.datums.items %}{{ name }}: {{ value }}<br>{% endfor %}{% if row.datum_reference %}<span class="muted">relative to {{ row.datum_reference }}</span>{% endif %}</td>
+                <td><ul>{% for warning in row.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+
+      {% if plan.changed %}
+        <h2>Existing timeseries that differ from ERDDAP</h2>
+        <table>
+          <thead><tr><th>Update</th><th>Variable</th><th>Changes</th><th>Warnings</th></tr></thead>
+          <tbody>
+            {% for row in plan.changed %}
+              <tr>
+                <td><input type="checkbox" name="update" value="{{ row.variable }}"></td>
+                <td><a href="{% url 'admin:deployments_timeseries_change' row.existing.pk %}">{{ row.variable }}</a></td>
+                <td><ul>{% for name, values in row.changes.items %}<li><strong>{{ name }}</strong>: <code>{{ values.0 }}</code> &rarr; <code>{{ values.1 }}</code></li>{% endfor %}</ul></td>
+                <td><ul>{% for warning in row.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+
+      {% if plan.unchanged %}
+        <h2>Existing timeseries that match ERDDAP</h2>
+        <ul>{% for row in plan.unchanged %}<li>{{ row.variable }} <code class="muted">{{ row.constraints }}</code></li>{% endfor %}</ul>
+      {% endif %}
+
+      {% if plan.unable %}
+        <h2>Unable to import</h2>
+        <ul class="muted">{% for row in plan.unable %}<li><strong>{{ row.variable }}</strong>: {{ row.warnings.0 }}</li>{% endfor %}</ul>
+      {% endif %}
+
+      {% if plan.not_in_metadata %}
+        <h2>Existing timeseries not in the dataset metadata</h2>
+        <p class="muted">These are left as they are.</p>
+        <ul>{% for ts in plan.not_in_metadata %}<li>{{ ts.variable }} <code class="muted">{{ ts.constraints }}</code></li>{% endfor %}</ul>
+      {% endif %}
+
+      <div class="submit-row">
+        <button type="submit" name="step" value="apply" class="default">Import selected</button>
+      </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

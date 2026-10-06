@@ -4,6 +4,8 @@
 
 Additions:
 
+- Import platforms and datasets from ERDDAP metadata in the admin (Import from ERDDAP on the platform list, Import dataset from ERDDAP on a platform). Sets the platform location, QARTOD constraints (including aggregate/rollup flags), and tidal datums from attributes, previews new and changed timeseries before saving, and highlights platform location changes. DataTypes are no longer created by the loader.
+
 Changes:
 
 Fixes:

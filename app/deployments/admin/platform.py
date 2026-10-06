@@ -2,13 +2,20 @@
 
 from datetime import datetime, timedelta
 
+import requests
 from django.contrib.admin import BooleanFieldListFilter
 from django.contrib.gis import admin
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
 from django.http.request import HttpRequest
+from django.template.response import TemplateResponse
+from django.urls import path, reverse
 from django_object_actions import DjangoObjectActions, action
 
+from ..forms import ErddapImportForm
 from ..models import Alert, Platform, PlatformLink, ProgramAttribution, TimeSeries
 from ..tasks import refresh
+from ..utils.erddap_loader import apply_import, plan_import
 from ..widgets import EsriOceanBasemapWidget
 from .displays import timeseries_status
 from .system_messages import (
@@ -89,7 +96,8 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
         "timeseries__dataset__name",
     ]
 
-    change_actions = ["refresh_platform_datasets"]
+    change_actions = ["refresh_platform_datasets", "import_erddap_dataset"]
+    changelist_actions = ["import_from_erddap"]
 
     gis_widget = EsriOceanBasemapWidget
     gis_widget_kwargs = {
@@ -107,6 +115,113 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
             "timeseries_set__data_type",
         )
         return queryset
+
+    def get_urls(self):
+        urls = super().get_urls()
+        return [
+            path(
+                "import-erddap/",
+                self.admin_site.admin_view(self.import_erddap_view),
+                name="deployments_platform_import_erddap",
+            ),
+            *urls,
+        ]
+
+    def import_erddap_url(self, platform: Platform | None = None) -> str:
+        url = reverse(f"{self.admin_site.name}:deployments_platform_import_erddap")
+        if platform is not None:
+            url += f"?platform={platform.pk}"
+        return url
+
+    @action(
+        label="Import from ERDDAP",
+        description="Create a platform and its timeseries from an ERDDAP dataset",
+    )
+    def import_from_erddap(self, request, queryset):
+        return HttpResponseRedirect(self.import_erddap_url())
+
+    @action(
+        label="Import dataset from ERDDAP",
+        description="Add or update timeseries for this platform from an ERDDAP dataset",
+    )
+    def import_erddap_dataset(self, request, obj):
+        return HttpResponseRedirect(self.import_erddap_url(obj))
+
+    def has_import_permission(self, request) -> bool:
+        return request.user.has_perms(
+            [
+                "deployments.add_platform",
+                "deployments.change_platform",
+                "deployments.add_timeseries",
+                "deployments.change_timeseries",
+            ],
+        )
+
+    def import_erddap_view(self, request):
+        """Preview, then apply, an import from an ERDDAP dataset's metadata.
+
+        The preview is re-planned from ERDDAP when it is applied, rather than carried in
+        the session, so what is saved always matches the current metadata.
+        """
+        if not self.has_import_permission(request):
+            raise PermissionDenied
+
+        if request.method == "POST":
+            form = ErddapImportForm(request.POST)
+        else:
+            form = ErddapImportForm(initial={"platform": request.GET.get("platform")})
+
+        plan = None
+        if request.method == "POST" and form.is_valid():
+            data = form.cleaned_data
+            try:
+                plan = plan_import(
+                    data["server"],
+                    data["dataset_id"],
+                    data["constraints"],
+                    platform=data["platform"],
+                )
+            except (requests.RequestException, ValueError) as e:
+                form.add_error(
+                    None,
+                    f"Unable to load metadata for {data['dataset_id']} from {data['server']}: {e}",
+                )
+
+            if plan is not None and request.POST.get("step") == "apply":
+                result = apply_import(
+                    plan,
+                    create=request.POST.getlist("create"),
+                    update=request.POST.getlist("update"),
+                    update_location=bool(request.POST.get("update_location")),
+                    platform_name=data["new_platform_name"] or None,
+                )
+                if result.created or result.updated:
+                    refresh.refresh_dataset.delay(result.dataset.id)
+
+                self.message_user(
+                    request,
+                    (
+                        f"{'Created' if result.platform_created else 'Updated'} platform "
+                        f"{result.platform}: {len(result.created)} timeseries created, "
+                        f"{len(result.updated)} updated"
+                        f"{', location set' if result.location_updated else ''}."
+                    ),
+                )
+                return HttpResponseRedirect(
+                    reverse(
+                        f"{self.admin_site.name}:deployments_platform_change",
+                        args=[result.platform.pk],
+                    ),
+                )
+
+        context = {
+            **self.admin_site.each_context(request),
+            "opts": self.model._meta,
+            "title": "Import from ERDDAP",
+            "form": form,
+            "plan": plan,
+        }
+        return TemplateResponse(request, "admin/deployments/platform/import_erddap.html", context)
 
     @action(description="Refresh all datasets for this platform")
     def refresh_platform_datasets(self, request, obj):

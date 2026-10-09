@@ -69,8 +69,41 @@ class ErddapImportAdminTestCase(TestCase):
         self.assertContains(response, "New timeseries")
         self.assertContains(response, "significant_wave_height_qc=")
         self.assertContains(response, "m from this platform's current location")
-        self.assertContains(response, 'name="update_location"')
+        self.assertContains(response, '<input type="checkbox" name="update_location" value="1">')
+        # A blank field is selected to be filled in, a differing one is only offered
+        self.assertContains(
+            response,
+            '<input type="checkbox" name="platform_field" value="station_name" checked>',
+        )
+        self.assertContains(
+            response,
+            '<input type="checkbox" name="platform_field" value="mooring_site_desc">',
+        )
+        self.assertContains(response, "Update selected")
         self.assertEqual(self.platform.timeseries_set.count(), 0)
+
+    def test_preview_for_new_platform(self):
+        data = self.form_data(step="preview", platform="", new_platform_name="M01-NEW")
+
+        with cassette():
+            response = self.client.post(IMPORT_URL, data)
+
+        self.assertContains(response, "Import selected")
+        self.assertContains(response, '<input type="checkbox" name="update_location" value="1" checked>')
+        self.assertFalse(Platform.objects.filter(name="M01-NEW").exists())
+
+    @patch("deployments.tasks.refresh.refresh_dataset.delay")
+    def test_apply_only_selected_platform_fields(self, mock_delay):
+        original_geom = self.platform.geom.clone()
+        data = self.form_data(step="apply", platform_field=["mooring_site_desc"])
+
+        with cassette():
+            self.client.post(IMPORT_URL, data)
+
+        self.platform.refresh_from_db()
+        self.assertTrue(self.platform.mooring_site_desc.startswith("Ocean observation data"))
+        self.assertEqual(self.platform.station_name, "")
+        self.assertTrue(self.platform.geom.equals_exact(original_geom, 1e-9))
 
     @patch("deployments.tasks.refresh.refresh_dataset.delay")
     def test_apply_creates_selected_timeseries(self, mock_delay):
@@ -95,6 +128,8 @@ class ErddapImportAdminTestCase(TestCase):
     def test_apply_creates_new_platform(self, mock_delay):
         data = self.form_data(step="apply", platform="", new_platform_name="M01-NEW")
         data["create"] = ["significant_wave_height", "dominant_wave_period"]
+        data["platform_field"] = ["station_name", "mooring_site_desc", "ndbc_site_id"]
+        data["update_location"] = "1"
 
         with cassette():
             response = self.client.post(IMPORT_URL, data)
@@ -107,6 +142,7 @@ class ErddapImportAdminTestCase(TestCase):
         )
         self.assertEqual(platform.timeseries_set.count(), 2)
         self.assertIsNotNone(platform.geom)
+        self.assertEqual(platform.station_name, "M01 Jordan Basin Accelerometer")
 
     def test_requires_platform_choice(self):
         response = self.client.post(IMPORT_URL, self.form_data(step="preview", platform=""))

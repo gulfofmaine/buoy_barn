@@ -164,6 +164,38 @@ class ErddapLoaderTestCase(TestCase):
         )
         self.assertEqual(DataType.objects.count(), data_types)
 
+    def test_platform_field_changes(self):
+        with cassette():
+            plan = self.plan(self.platform)
+
+        # Blank on the platform, so selected to be filled in
+        self.assertTrue(plan.platform_fields["station_name"].selected)
+        # Already set and different, so only offered
+        mooring = plan.platform_fields["mooring_site_desc"]
+        self.assertEqual(mooring.current, "Jordan Basin")
+        self.assertFalse(mooring.selected)
+        # The same as ERDDAP, so not offered
+        self.assertNotIn("ndbc_site_id", plan.platform_fields)
+
+    def test_only_selected_platform_fields_are_set(self):
+        with cassette():
+            plan = self.plan(self.platform)
+
+        result = apply_import(plan, platform_fields=["mooring_site_desc"])
+
+        self.platform.refresh_from_db()
+        self.assertEqual(self.platform.station_name, "")
+        self.assertTrue(self.platform.mooring_site_desc.startswith("Ocean observation data"))
+        self.assertEqual(result.fields_updated, ["mooring_site_desc"])
+
+    def test_default_fills_blank_fields_only(self):
+        with cassette():
+            apply_import(self.plan(self.platform))
+
+        self.platform.refresh_from_db()
+        self.assertEqual(self.platform.station_name, "M01 Jordan Basin Accelerometer")
+        self.assertEqual(self.platform.mooring_site_desc, "Jordan Basin")
+
     def test_qc_constraints_on_all_variables(self):
         with cassette():
             plan = self.plan()

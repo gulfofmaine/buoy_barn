@@ -15,7 +15,7 @@ from django_object_actions import DjangoObjectActions, action
 from ..forms import ErddapImportForm
 from ..models import Alert, Platform, PlatformLink, ProgramAttribution, TimeSeries
 from ..tasks import refresh
-from ..utils.erddap_loader import apply_import, plan_import
+from ..utils.erddap_loader import ImportResult, apply_import, plan_import
 from ..widgets import EsriOceanBasemapWidget
 from .displays import timeseries_status
 from .system_messages import (
@@ -39,6 +39,20 @@ class AlertInline(admin.TabularInline):
 class PlatformLinkInline(admin.TabularInline):
     model = PlatformLink
     extra = 0
+
+
+def import_summary(result: ImportResult) -> str:
+    """What an ERDDAP import changed, for the admin message"""
+    action = "Created" if result.platform_created else "Updated"
+    summary = (
+        f"{action} platform {result.platform}: {len(result.created)} timeseries created, "
+        f"{len(result.updated)} updated"
+    )
+    if result.fields_updated:
+        summary += f", {', '.join(result.fields_updated)} set"
+    if result.location_updated:
+        summary += ", location set"
+    return summary + "."
 
 
 class TimeseriesActiveFilter(BooleanFieldListFilter):
@@ -192,21 +206,14 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
                     plan,
                     create=request.POST.getlist("create"),
                     update=request.POST.getlist("update"),
+                    platform_fields=request.POST.getlist("platform_field"),
                     update_location=bool(request.POST.get("update_location")),
                     platform_name=data["new_platform_name"] or None,
                 )
                 if result.created or result.updated:
                     refresh.refresh_dataset.delay(result.dataset.id)
 
-                self.message_user(
-                    request,
-                    (
-                        f"{'Created' if result.platform_created else 'Updated'} platform "
-                        f"{result.platform}: {len(result.created)} timeseries created, "
-                        f"{len(result.updated)} updated"
-                        f"{', location set' if result.location_updated else ''}."
-                    ),
-                )
+                self.message_user(request, import_summary(result))
                 return HttpResponseRedirect(
                     reverse(
                         f"{self.admin_site.name}:deployments_platform_change",

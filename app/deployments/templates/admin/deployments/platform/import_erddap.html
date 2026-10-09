@@ -2,7 +2,8 @@
 {% load i18n admin_urls %}
 {% comment %}
 Two steps in one form: "Preview" plans the import from the dataset's ERDDAP metadata and
-shows what would change, "Import selected" re-plans it and saves the ticked rows.
+shows what would change, "Import selected" ("Update selected" for an existing platform)
+re-plans it and saves the ticked rows.
 
 Variable names, attributes and warnings come from ERDDAP and are untrusted, so nothing here
 is marked safe.
@@ -12,11 +13,12 @@ is marked safe.
   {{ block.super }}
   <style>
     .erddap-import .warning { color: var(--error-fg); }
-    .erddap-import .location-differs {
+    .erddap-import p.location-differs {
       border: 2px solid var(--error-fg);
       padding: 8px 12px;
       margin: 10px 0;
     }
+    .erddap-import tr.location-differs td { color: var(--error-fg); }
     .erddap-import .muted { color: var(--body-quiet-color); }
     .erddap-import table { width: 100%; margin-bottom: 20px; }
     .erddap-import td ul { margin: 0; padding-left: 16px; }
@@ -64,32 +66,38 @@ is marked safe.
         {% for warning in plan.warnings %}<p class="warning">{{ warning }}</p>{% endfor %}
 
         {% if plan.location_differs %}
-          <div class="location-differs">
-            <strong>The location in ERDDAP is {{ plan.location_distance|floatformat:0 }} m from this platform's current location.</strong><br>
-            Current: {{ plan.current_location.y|floatformat:5 }}, {{ plan.current_location.x|floatformat:5 }}
-            &mdash; ERDDAP: {{ plan.location.y|floatformat:5 }}, {{ plan.location.x|floatformat:5 }} ({{ plan.location_source }})<br>
-            <label><input type="checkbox" name="update_location" value="1"> Update location to the ERDDAP location</label>
-          </div>
-        {% elif plan.location %}
-          <p>
-            Location: {{ plan.location.y|floatformat:5 }}, {{ plan.location.x|floatformat:5 }}
-            <span class="muted">({{ plan.location_source }}{% if plan.location_distance is not None %}, {{ plan.location_distance|floatformat:0 }} m from the current location{% elif plan.platform %}, the platform has no location yet{% endif %})</span>
+          <p class="location-differs">
+            <strong>The location in ERDDAP is {{ plan.location_distance|floatformat:0 }} m from this platform's current location.</strong>
           </p>
+        {% elif plan.location and not plan.location_changes %}
+          <p class="muted">Location matches ERDDAP: {{ plan.location.y|floatformat:5 }}, {{ plan.location.x|floatformat:5 }}</p>
         {% endif %}
 
-        {% if plan.platform_fields %}
-          <p>Fields that will be filled in:</p>
-          <ul>
-            {% for name, value in plan.platform_fields.items %}<li><strong>{{ name }}</strong>: {{ value }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-        {% if plan.platform_field_conflicts %}
-          <p class="muted">Fields that differ from ERDDAP, which will be left as they are:</p>
-          <ul class="muted">
-            {% for name, values in plan.platform_field_conflicts.items %}
-              <li><strong>{{ name }}</strong>: {{ values.0 }} &rarr; ERDDAP has {{ values.1 }}</li>
-            {% endfor %}
-          </ul>
+        {% if plan.location_changes or plan.platform_fields %}
+          <table>
+            <thead><tr><th>Update</th><th>Field</th><th>Current</th><th>ERDDAP</th></tr></thead>
+            <tbody>
+              {% if plan.location_changes %}
+                <tr{% if plan.location_differs %} class="location-differs"{% endif %}>
+                  <td><input type="checkbox" name="update_location" value="1"{% if plan.location_selected %} checked{% endif %}></td>
+                  <td>location</td>
+                  <td>{% if plan.current_location %}{{ plan.current_location.y|floatformat:5 }}, {{ plan.current_location.x|floatformat:5 }}{% else %}<span class="muted">none</span>{% endif %}</td>
+                  <td>
+                    {{ plan.location.y|floatformat:5 }}, {{ plan.location.x|floatformat:5 }}
+                    <span class="muted">({{ plan.location_source }}{% if plan.location_distance is not None %}, {{ plan.location_distance|floatformat:0 }} m away{% endif %})</span>
+                  </td>
+                </tr>
+              {% endif %}
+              {% for name, change in plan.platform_fields.items %}
+                <tr>
+                  <td><input type="checkbox" name="platform_field" value="{{ name }}"{% if change.selected %} checked{% endif %}></td>
+                  <td>{{ name }}</td>
+                  <td>{% if change.current %}{{ change.current }}{% else %}<span class="muted">blank</span>{% endif %}</td>
+                  <td>{{ change.proposed }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         {% endif %}
         <p class="muted">
           Dataset time range: {{ plan.start_time|default:"unknown" }} &ndash; {{ plan.end_time|default:"current" }}
@@ -150,7 +158,7 @@ is marked safe.
       {% endif %}
 
       <div class="submit-row">
-        <button type="submit" name="step" value="apply" class="default">Import selected</button>
+        <button type="submit" name="step" value="apply" class="default">{% if plan.platform %}Update{% else %}Import{% endif %} selected</button>
       </div>
     {% endif %}
   </form>

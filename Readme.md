@@ -67,13 +67,15 @@ Time doesn't need to be constrained.
 **Preview** shows what would change without saving anything:
 
 - The platform location, from the dataset's `latitude`/`longitude` global attributes, the position of the selected station, or the middle of the `geospatial_*` bounds.
-  For an existing platform, a location more than 500 m from its current one is highlighted, and is only changed if you tick **Update location**.
-- Platform fields that are blank are filled in from `long_name`/`title`, `mooring_site_desc`/`summary`, and `ndbc_site_id`. Fields that are already set are left alone.
+  For an existing platform, a location more than 500 m from its current one is highlighted.
+- Platform fields ERDDAP has values for: `station_name` (from `long_name`/`title`), `mooring_site_desc` (from `mooring_site_desc`/`summary`), `ndbc_site_id`, and a guessed `platform_type`.
+  Each field, and the location, has its own checkbox next to the current and ERDDAP values.
+  Blank fields and a missing location are ticked to be filled in, while values that are already set are only changed if you tick them, so importing another dataset to a platform won't rename it.
 - New timeseries, existing timeseries that differ from ERDDAP (with what would change), and ones that already match.
 - Variables that can't be imported, because no existing DataType matches their `standard_name`, `long_name` or `short_name`.
   DataTypes are never created by the import, add one in the admin and import again.
 
-**Import selected** creates the ticked timeseries, updates the ticked existing ones, and queues the dataset to be refreshed.
+**Import selected** (or **Update selected** for an existing platform) creates the ticked timeseries, updates the ticked existing ones and platform fields, and queues the dataset to be refreshed.
 
 #### Metadata conventions
 

@@ -28,6 +28,8 @@ from .erddap_metadata import DatasetInfo
 logger = logging.getLogger(__name__)
 
 LOCATION_DIFF_WARN_METERS = 500
+# Closer than this, the ERDDAP location is treated as the same as the platform's
+LOCATION_SAME_METERS = 1
 
 # Fields on an existing TimeSeries that an import can update
 UPDATABLE_FIELDS = ["constraints", *TimeSeries.DATUMS]
@@ -61,6 +63,15 @@ class VariablePlan:
 
 
 @dataclass
+class FieldChange:
+    """A platform field ERDDAP has a value for, and whether to change it by default"""
+
+    current: object
+    proposed: object
+    selected: bool
+
+
+@dataclass
 class ImportPlan:
     server: ErddapServer
     dataset_id: str
@@ -71,14 +82,23 @@ class ImportPlan:
     location_source: str = ""
     current_location: Point | None = None
     location_distance: float | None = None
-    platform_fields: dict = field(default_factory=dict)
-    platform_field_conflicts: dict[str, tuple] = field(default_factory=dict)
+    location_selected: bool = False
+    platform_fields: dict[str, FieldChange] = field(default_factory=dict)
     start_time: datetime | None = None
     end_time: datetime | None = None
     buffer_type: BufferType | None = None
     variables: list[VariablePlan] = field(default_factory=list)
     not_in_metadata: list[TimeSeries] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+
+    @property
+    def location_changes(self) -> bool:
+        """Would setting the location from ERDDAP change it"""
+        return self.location is not None and (
+            self.current_location is None
+            or self.location_distance is None
+            or self.location_distance > LOCATION_SAME_METERS
+        )
 
     @property
     def location_differs(self) -> bool:
@@ -112,6 +132,7 @@ class ImportResult:
     updated: list[TimeSeries]
     platform_created: bool
     location_updated: bool
+    fields_updated: list[str]
 
 
 def base_constraints(constraints: dict | None, info: DatasetInfo) -> dict:
@@ -151,26 +172,35 @@ def _compare_existing(row: VariablePlan, existing: TimeSeries) -> dict[str, tupl
 
 
 def _plan_platform(plan: ImportPlan, platform: Platform | None):
+    """Which platform fields and location ERDDAP would change.
+
+    A new platform takes everything ERDDAP has. On an existing platform, blank fields
+    and a missing location are selected to be filled in, while values that differ are
+    only offered: a platform with several datasets shouldn't have its name changed by
+    each one.
+    """
     defaults = metadata.platform_defaults(plan.info)
 
     if platform is None:
-        plan.platform_fields = defaults
+        plan.platform_fields = {
+            name: FieldChange(current=None, proposed=value, selected=True)
+            for name, value in defaults.items()
+        }
+        plan.location_selected = plan.location is not None
         return
 
     plan.current_location = platform.geom
+    plan.location_selected = platform.geom is None and plan.location is not None
     if platform.geom and plan.location:
         plan.location_distance = metadata.distance_meters(platform.geom, plan.location)
 
     for name, value in defaults.items():
         current = getattr(platform, name)
-        if name == "platform_type":
-            # Platforms default to a buoy, so only suggest a different type
-            if current != value:
-                plan.platform_field_conflicts[name] = (current, value)
-        elif not current:
-            plan.platform_fields[name] = value
-        elif current != value:
-            plan.platform_field_conflicts[name] = (current, value)
+        if current == value:
+            continue
+        # Platforms default to a buoy, so a different type is never a blank to fill
+        blank = not current and name != "platform_type"
+        plan.platform_fields[name] = FieldChange(current=current, proposed=value, selected=blank)
 
 
 def plan_import(
@@ -206,37 +236,60 @@ def plan_import(
         if plan.buffer_type is None:
             plan.warnings.append(f"Buffer type {buffer_name!r} does not exist")
 
-    existing_by_key = {}
-    if platform is not None and platform.pk:
-        existing = platform.timeseries_set.filter(
-            dataset__server=server,
-            dataset__name=dataset_id,
-        ).select_related("data_type")
-        for ts in existing:
-            key = (ts.variable, tuple(sorted(base_constraints(ts.constraints, info).items())))
-            existing_by_key[key] = ts
+    _plan_variables(plan)
 
-    aggregates, aggregate_warnings = metadata.aggregate_flags(info)
+    return plan
+
+
+def _existing_timeseries(plan: ImportPlan) -> dict[tuple, TimeSeries]:
+    """The platform's timeseries from this dataset, by variable and non-QC constraints"""
+    if plan.platform is None or not plan.platform.pk:
+        return {}
+
+    existing = plan.platform.timeseries_set.filter(
+        dataset__server=plan.server,
+        dataset__name=plan.dataset_id,
+    ).select_related("data_type")
+    return {
+        (ts.variable, tuple(sorted(base_constraints(ts.constraints, plan.info).items()))): ts
+        for ts in existing
+    }
+
+
+def _plan_variable(
+    plan: ImportPlan,
+    variable: str,
+    aggregates: dict,
+) -> tuple[VariablePlan, str | None]:
+    """A new timeseries for a variable, and why it can't be imported if it can't"""
+    info = plan.info
+    attrs = info.variables[variable]
+    row = VariablePlan(variable=variable, status=Status.NEW, depth=_depth(plan.constraints))
+
+    qc, qc_warnings = metadata.qartod_constraints(info, variable, aggregates)
+    row.constraints = {**plan.constraints, **qc}
+    row.warnings.extend(qc_warnings)
+
+    row.datums, datum_warnings = metadata.tidal_datums(info, variable)
+    row.warnings.extend(datum_warnings)
+    if row.datums:
+        row.datum_reference = attrs.get("datum")
+
+    row.data_type, reason = metadata.match_data_type(attrs)
+    return row, reason
+
+
+def _plan_variables(plan: ImportPlan):
+    """Plan each data variable, and compare them with the platform's existing timeseries"""
+    existing_by_key = _existing_timeseries(plan)
+    aggregates, aggregate_warnings = metadata.aggregate_flags(plan.info)
     plan.warnings.extend(aggregate_warnings)
 
     matched = set()
-    for variable in metadata.data_variables(info):
-        attrs = info.variables[variable]
-        row = VariablePlan(variable=variable, status=Status.NEW, depth=_depth(constraints))
+    for variable in metadata.data_variables(plan.info):
+        row, reason = _plan_variable(plan, variable, aggregates)
 
-        qc, qc_warnings = metadata.qartod_constraints(info, variable, aggregates)
-        row.constraints = {**constraints, **qc}
-        row.warnings.extend(qc_warnings)
-
-        row.datums, datum_warnings = metadata.tidal_datums(info, variable)
-        row.warnings.extend(datum_warnings)
-        if row.datums:
-            row.datum_reference = attrs.get("datum")
-
-        row.data_type, reason = metadata.match_data_type(attrs)
-
-        key = (variable, tuple(sorted(constraints.items())))
-        existing = existing_by_key.get(key)
+        existing = existing_by_key.get((variable, tuple(sorted(plan.constraints.items()))))
         if existing is not None:
             matched.add(existing.pk)
             row.existing = existing
@@ -250,7 +303,71 @@ def plan_import(
 
     plan.not_in_metadata = [ts for ts in existing_by_key.values() if ts.pk not in matched]
 
-    return plan
+
+def _save_platform(
+    plan: ImportPlan,
+    fields: set[str],
+    update_location: bool,
+    platform_name: str | None,
+) -> tuple[Platform, bool]:
+    """Create or update the platform, returning it and whether the location was set"""
+    platform = plan.platform
+    if platform is None:
+        if not platform_name:
+            raise ValueError("A platform name is needed to create a new platform")
+        platform = Platform(name=platform_name, mooring_site_desc="")
+
+    for name, change in plan.platform_fields.items():
+        if name in fields:
+            setattr(platform, name, change.proposed)
+
+    location_updated = bool(update_location and plan.location_changes)
+    if location_updated:
+        platform.geom = plan.location
+
+    platform.save()
+    return platform, location_updated
+
+
+def _create_timeseries(
+    plan: ImportPlan,
+    platform: Platform,
+    dataset: ErddapDataset,
+    create: set[str],
+) -> list[TimeSeries]:
+    created = []
+    for row in plan.new:
+        if row.variable not in create:
+            continue
+        ts = TimeSeries(
+            platform=platform,
+            variable=row.variable,
+            data_type=row.data_type,
+            constraints=row.constraints,
+            dataset=dataset,
+            depth=row.depth,
+            end_time=plan.end_time,
+            buffer_type=plan.buffer_type,
+            **row.datums,
+        )
+        if plan.start_time:
+            ts.start_time = plan.start_time
+        ts.save()
+        created.append(ts)
+    return created
+
+
+def _update_timeseries(plan: ImportPlan, update: set[str]) -> list[TimeSeries]:
+    updated = []
+    for row in plan.changed:
+        if row.variable not in update:
+            continue
+        ts = row.existing
+        for name, (_, value) in row.changes.items():
+            setattr(ts, name, value)
+        ts.save(update_fields=[*row.changes, "update_time"])
+        updated.append(ts)
+    return updated
 
 
 def apply_import(  # noqa: PLR0913
@@ -258,81 +375,47 @@ def apply_import(  # noqa: PLR0913
     *,
     create: list[str] | None = None,
     update: list[str] | None = None,
-    update_location: bool = False,
+    platform_fields: list[str] | None = None,
+    update_location: bool | None = None,
     platform_name: str | None = None,
 ) -> ImportResult:
     """Save the selected parts of an import plan.
 
     `create` and `update` are the variable names to create new or update existing
-    timeseries for. By default every new timeseries is created and none are updated.
+    timeseries for, and `platform_fields` the platform fields to set from ERDDAP.
+    Anything left as None uses the plan's defaults: every new timeseries is created,
+    no existing ones are updated, and only blank platform fields and a missing location
+    are filled in.
     """
-    create = {row.variable for row in plan.new} if create is None else set(create)
-    update = set(update or [])
+    if create is None:
+        create = [row.variable for row in plan.new]
+    if platform_fields is None:
+        platform_fields = [name for name, change in plan.platform_fields.items() if change.selected]
+    if update_location is None:
+        update_location = plan.location_selected
 
     with transaction.atomic():
         dataset, _ = ErddapDataset.objects.get_or_create(
             name=plan.dataset_id,
             server=plan.server,
         )
-
-        platform = plan.platform
-        platform_created = platform is None
-        location_updated = False
-
-        if platform is None:
-            if not platform_name:
-                raise ValueError("A platform name is needed to create a new platform")
-            platform = Platform(name=platform_name, mooring_site_desc="")
-            for name, value in plan.platform_fields.items():
-                setattr(platform, name, value)
-            platform.geom = plan.location
-            location_updated = plan.location is not None
-            platform.save()
-        else:
-            for name, value in plan.platform_fields.items():
-                setattr(platform, name, value)
-            if plan.location and (platform.geom is None or update_location):
-                platform.geom = plan.location
-                location_updated = True
-            platform.save()
-
-        created = []
-        for row in plan.new:
-            if row.variable not in create:
-                continue
-            ts = TimeSeries(
-                platform=platform,
-                variable=row.variable,
-                data_type=row.data_type,
-                constraints=row.constraints,
-                dataset=dataset,
-                depth=row.depth,
-                end_time=plan.end_time,
-                buffer_type=plan.buffer_type,
-                **row.datums,
-            )
-            if plan.start_time:
-                ts.start_time = plan.start_time
-            ts.save()
-            created.append(ts)
-
-        updated = []
-        for row in plan.changed:
-            if row.variable not in update:
-                continue
-            ts = row.existing
-            for name, (_, value) in row.changes.items():
-                setattr(ts, name, value)
-            ts.save(update_fields=[*row.changes, "update_time"])
-            updated.append(ts)
+        platform, location_updated = _save_platform(
+            plan,
+            set(platform_fields),
+            update_location,
+            platform_name,
+        )
+        created = _create_timeseries(plan, platform, dataset, set(create))
+        updated = _update_timeseries(plan, set(update or []))
 
     return ImportResult(
         platform=platform,
         dataset=dataset,
         created=created,
         updated=updated,
-        platform_created=platform_created,
+        platform_created=plan.platform is None,
         location_updated=location_updated,
+        fields_updated=[name for name in plan.platform_fields if name in platform_fields],
     )
 
 

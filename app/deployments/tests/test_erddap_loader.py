@@ -196,6 +196,30 @@ class ErddapLoaderTestCase(TestCase):
         self.assertEqual(self.platform.station_name, "M01 Jordan Basin Accelerometer")
         self.assertEqual(self.platform.mooring_site_desc, "Jordan Basin")
 
+    def test_depth_from_metadata_without_constraint(self):
+        with cassette():
+            plan = plan_import(self.erddap_server, DATASET, {}, platform=self.platform)
+
+        # The M01 accelerometer depth variable's actual_range is 0.0, 0.0
+        self.assertEqual({row.depth for row in plan.new}, {0.0})
+
+    def test_missing_depth_is_a_change(self):
+        with cassette():
+            add_timeseries(self.platform, self.erddap_url, DATASET, CONSTRAINTS)
+        TimeSeries.objects.filter(platform=self.platform).update(depth=None)
+
+        with cassette():
+            plan = self.plan(self.platform)
+
+        self.assertEqual(len(plan.changed), 2)
+        self.assertEqual(plan.changed[0].changes, {"depth": (None, 0.0)})
+
+        apply_import(plan, update=[row.variable for row in plan.changed])
+        self.assertEqual(
+            set(TimeSeries.objects.filter(platform=self.platform).values_list("depth", flat=True)),
+            {0.0},
+        )
+
     def test_qc_constraints_on_all_variables(self):
         with cassette():
             plan = self.plan()

@@ -86,6 +86,7 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
         ts = TimeSeries.objects.get(platform=self.platform, variable="dominant_wave_period")
         ts.pk = None
         ts.constraints = {"depth=": 20.0, "dominant_wave_period_qc=": 0}
+        ts.depth = 20.0
         ts.save()
 
         with patch(

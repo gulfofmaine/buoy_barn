@@ -93,6 +93,7 @@ Time doesn't need to be constrained.
 - **QARTOD/QC**: every variable a data variable lists in `ancillary_variables` that has `flag_values` and `flag_meanings` becomes a constraint keeping values whose meaning is `pass`, `good`, `quality_good` or `not_evaluated`.
   For NERACOOS style flags that's `salinity_qc=0`, and for IOOS QARTOD flags (`1` pass, `2` not evaluated, `3` suspect, `4` fail, `9` missing) it's `<test variable><=2`.
   Rollup flags (`standard_name = "aggregate_quality_flag"`) are also used even when they aren't listed in `ancillary_variables`: they apply to the variable whose name they start with (`<variable>_qartod_rollup`), or to every variable if there is only one in the dataset.
+- **Depth**: a `depth=` constraint sets the TimeSeries depth. Without one, it comes from the variable's `sensor_depth`, a depth variable whose `actual_range` is a single value, or equal `geospatial_vertical_min/max`, so single depth datasets like `A01_ocean_001m` don't need a constraint.
 - **Tidal datums**: a `tidal_datum_offsets_meters` variable attribute with a JSON object of offsets, such as `{"mhhw": 1.469, "mllw": -1.573}`, sets the TimeSeries `datum_<name>_meters` fields.
 
 The same import can be run from a shell (`make shell`), which creates any new timeseries for an existing platform:

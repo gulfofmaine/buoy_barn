@@ -121,6 +121,53 @@ def time_range(info: DatasetInfo) -> tuple[datetime | None, datetime | None]:
     return start_time, end_time
 
 
+def _single_value(value) -> float | None:
+    """The value of a number, or of a range that starts and ends at the same value"""
+    if isinstance(value, int | float):
+        return float(value)
+    numbers = isinstance(value, list) and value and all(isinstance(v, int | float) for v in value)
+    if numbers and math.isclose(min(value), max(value)):
+        return float(value[0])
+    return None
+
+
+def _positive_down(value: float | None, positive: str | None) -> float | None:
+    if value is None:
+        return None
+    return -value if str(positive or "").lower() == "up" else value
+
+
+def _depth_variable(info: DatasetInfo) -> str | None:
+    if "depth" in info.variables:
+        return "depth"
+    return next(
+        (name for name, attrs in info.variables.items() if attrs.get("standard_name") == "depth"),
+        None,
+    )
+
+
+def variable_depth(info: DatasetInfo, variable: str) -> float | None:
+    """The single depth (meters, positive down) a variable is measured at, if there is one.
+
+    From the variable's `sensor_depth` attribute, a depth variable whose `actual_range`
+    is a single value, or the dataset's `geospatial_vertical_min/max` when they are equal.
+    Datasets with several depths return None, those need a `depth=` constraint instead.
+    """
+    sensor_depth = _single_value(info.var_attr(variable, "sensor_depth"))
+    if sensor_depth is not None:
+        return sensor_depth
+
+    depth_variable = _depth_variable(info)
+    if depth_variable:
+        depth = _single_value(info.var_attr(depth_variable, "actual_range"))
+        if depth is not None:
+            return _positive_down(depth, info.var_attr(depth_variable, "positive"))
+
+    vertical = [info.globals.get("geospatial_vertical_min"), info.globals.get("geospatial_vertical_max")]
+    depth = _single_value(vertical) if all(v is not None for v in vertical) else None
+    return _positive_down(depth, info.globals.get("geospatial_vertical_positive"))
+
+
 def station_constraint(constraints: dict | None) -> tuple[str, str] | None:
     for key in STATION_CONSTRAINT_KEYS:
         if constraints and key in constraints:

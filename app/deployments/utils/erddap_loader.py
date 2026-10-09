@@ -32,7 +32,7 @@ LOCATION_DIFF_WARN_METERS = 500
 LOCATION_SAME_METERS = 1
 
 # Fields on an existing TimeSeries that an import can update
-UPDATABLE_FIELDS = ["constraints", *TimeSeries.DATUMS]
+UPDATABLE_FIELDS = ["constraints", "depth", *TimeSeries.DATUMS]
 
 CONSTRAINT_KEY = re.compile(r"^(?P<variable>.+?)(?P<operator>=~|!=|<=|>=|=|<|>)$")
 
@@ -159,6 +159,7 @@ def _depth(constraints: dict) -> float | None:
 
 
 def _datums_close(a, b) -> bool:
+    """Whether two optional floats (datums or depths) are the same"""
     if a is None or b is None:
         return a is b
     return math.isclose(a, b, abs_tol=1e-6)
@@ -168,6 +169,8 @@ def _compare_existing(row: VariablePlan, existing: TimeSeries) -> dict[str, tupl
     changes = {}
     if (existing.constraints or {}) != row.constraints:
         changes["constraints"] = (existing.constraints, row.constraints)
+    if row.depth is not None and not _datums_close(existing.depth, row.depth):
+        changes["depth"] = (existing.depth, row.depth)
     for datum_field, value in row.datums.items():
         current = getattr(existing, datum_field)
         if not _datums_close(current, value):
@@ -277,7 +280,10 @@ def _plan_variable(
     """A new timeseries for a variable, and why it can't be imported if it can't"""
     info = plan.info
     attrs = info.variables[variable]
-    row = VariablePlan(variable=variable, status=Status.NEW, depth=_depth(plan.constraints))
+    depth = _depth(plan.constraints)
+    if depth is None:
+        depth = metadata.variable_depth(info, variable)
+    row = VariablePlan(variable=variable, status=Status.NEW, depth=depth)
 
     qc, qc_warnings = metadata.qartod_constraints(info, variable, aggregates)
     row.constraints = {**plan.constraints, **qc}

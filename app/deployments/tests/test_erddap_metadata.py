@@ -289,6 +289,60 @@ class PlatformLocationTestCase(TestCase):
         self.assertAlmostEqual(distance, 11_119, delta=5)
 
 
+class VariableDepthTestCase(TestCase):
+    def test_sensor_depth(self):
+        info = make_info(variables={"temp": [("sensor_depth", "double", "2.5")]})
+
+        self.assertEqual(metadata.variable_depth(info, "temp"), 2.5)
+
+    def test_single_depth_variable(self):
+        info = make_info(
+            variables={
+                "temp": [],
+                "depth": [("actual_range", "float", "1.0, 1.0"), ("positive", "String", "down")],
+            },
+        )
+
+        self.assertEqual(metadata.variable_depth(info, "temp"), 1.0)
+
+    def test_depth_positive_up(self):
+        info = make_info(
+            variables={
+                "temp": [],
+                "z": [
+                    ("standard_name", "String", "depth"),
+                    ("actual_range", "float", "-50.0, -50.0"),
+                    ("positive", "String", "up"),
+                ],
+            },
+        )
+
+        self.assertEqual(metadata.variable_depth(info, "temp"), 50.0)
+
+    def test_geospatial_vertical(self):
+        info = make_info(
+            [
+                ("geospatial_vertical_min", "double", "20.0"),
+                ("geospatial_vertical_max", "double", "20.0"),
+                ("geospatial_vertical_positive", "String", "down"),
+            ],
+            {"temp": []},
+        )
+
+        self.assertEqual(metadata.variable_depth(info, "temp"), 20.0)
+
+    def test_several_depths(self):
+        info = make_info(
+            [
+                ("geospatial_vertical_min", "double", "1.0"),
+                ("geospatial_vertical_max", "double", "50.0"),
+            ],
+            {"temp": [], "depth": [("actual_range", "float", "1.0, 50.0")]},
+        )
+
+        self.assertIsNone(metadata.variable_depth(info, "temp"))
+
+
 @pytest.mark.django_db
 class MatchDataTypeTestCase(TestCase):
     def setUp(self):

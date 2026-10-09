@@ -9,13 +9,14 @@ is marked safe.
 {% if plan.new %}
   <h3>New timeseries</h3>
   <table>
-    <thead><tr><th>Create</th><th>Variable</th><th>Data type</th><th>Constraints</th><th>Tidal datums</th><th>Warnings</th></tr></thead>
+    <thead><tr><th>Create</th><th>Variable</th><th>Data type</th><th>Depth</th><th>Constraints</th><th>Tidal datums</th><th>Warnings</th></tr></thead>
     <tbody>
       {% for row in plan.new %}
         <tr>
           <td><input type="checkbox" name="create" value="{{ prefix }}{{ row.variable }}"{% if row.selected %} checked{% endif %}></td>
           <td>{{ row.variable }}</td>
           <td>{{ row.data_type }}</td>
+      <td>{% if row.depth is not None %}{{ row.depth }} m{% else %}<span class="muted">none</span>{% endif %}</td>
           <td><code>{{ row.constraints }}</code></td>
           <td>{% for name, value in row.datums.items %}{{ name }}: {{ value }}<br>{% endfor %}{% if row.datum_reference %}<span class="muted">relative to {{ row.datum_reference }}</span>{% endif %}</td>
           <td><ul>{% for warning in row.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></td>

@@ -96,7 +96,8 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
 
         fetch.assert_called_once()
         self.assertEqual(
-            [group.constraints for group in sync.groups], [{"depth=": 0.0}, {"depth=": 20.0}]
+            [group.constraints for group in sync.groups],
+            [{"depth=": 0.0}, {"depth=": 20.0}],
         )
         self.assertNotEqual(sync.groups[0].id, sync.groups[1].id)
         for group in sync.groups:
@@ -136,7 +137,8 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
         self.assertEqual(station.current, "")
         self.assertEqual(station.default, station.options[0].id)
         self.assertEqual(
-            station.options[0].sources, [f'{self.server.name} - {DATASET} {{"depth=": 0.0}}']
+            station.options[0].sources,
+            [f'{self.server.name} - {DATASET} {{"depth=": 0.0}}'],
         )
 
         mooring = choices["mooring_site_desc"]
@@ -251,7 +253,8 @@ class SyncAdminTestCase(SyncTestMixin, TestCase):
             TimeSeries.objects.filter(platform=self.platform).values_list("variable", "constraints"),
         )
         self.assertEqual(
-            constraints["dominant_wave_period"], {"depth=": 0.0, "dominant_wave_period_qc=": 0}
+            constraints["dominant_wave_period"],
+            {"depth=": 0.0, "dominant_wave_period_qc=": 0},
         )
         self.assertEqual(constraints["significant_wave_height"], CONSTRAINTS)
         self.platform.refresh_from_db()

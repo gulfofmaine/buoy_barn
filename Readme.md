@@ -66,9 +66,9 @@ Time doesn't need to be constrained.
 
 **Preview** shows what would change without saving anything:
 
-- The platform location, from the dataset's `latitude`/`longitude` global attributes, the position of the selected station, or the middle of the `geospatial_*` bounds.
+- The platform location, from the dataset's `latitude`/`longitude` (or `site_latitude`/`site_longitude`) global attributes, the position of the selected station, or the middle of the `geospatial_*` bounds.
   For an existing platform, a location more than 500 m from its current one is highlighted.
-- Platform fields ERDDAP has values for: `station_name` (from `long_name`/`title`), `mooring_site_desc` (from `mooring_site_desc`/`summary`), `ndbc_site_id`, and a guessed `platform_type`.
+- Platform fields ERDDAP has values for: `station_name` (from `platform_name`/`long_name`/`title`), `mooring_site_desc` (from `mooring_site_desc`/`summary`), `ndbc_site_id` (from `ndbc_site_id`/`wmo_platform_code`), and a guessed `platform_type`.
   Each field, and the location, has its own checkbox next to the current and ERDDAP values.
   Blank fields and a missing location are ticked to be filled in, while values that are already set are only changed if you tick them, so importing another dataset to a platform won't rename it.
 - New timeseries, existing timeseries that differ from ERDDAP (with what would change), and ones that already match.
@@ -90,7 +90,7 @@ Time doesn't need to be constrained.
 
 #### Metadata conventions
 
-- **QARTOD/QC**: every variable a data variable lists in `ancillary_variables` that has `flag_values` and `flag_meanings` becomes a constraint keeping values whose meaning is `pass`, `good`, `quality_good` or `not_evaluated`.
+- **QARTOD/QC**: every numeric QC flag variable (with `intent = data_quality`, a `quality` standard name, or `qc`/`qartod` in its name) a data variable lists in `ancillary_variables` that has `flag_values` and `flag_meanings` becomes a constraint keeping values whose meaning is `pass`, `good`, `quality_good` or `not_evaluated`.
   For NERACOOS style flags that's `salinity_qc=0`, and for IOOS QARTOD flags (`1` pass, `2` not evaluated, `3` suspect, `4` fail, `9` missing) it's `<test variable><=2`.
   Rollup flags (`standard_name = "aggregate_quality_flag"`) are also used even when they aren't listed in `ancillary_variables`: they apply to the variable whose name they start with (`<variable>_qartod_rollup`), or to every variable if there is only one in the dataset.
 - **Depth**: a `depth=` constraint sets the TimeSeries depth. Without one, it comes from the variable's `sensor_depth`, a depth variable whose `actual_range` is a single value, or equal `geospatial_vertical_min/max`, so single depth datasets like `A01_ocean_001m` don't need a constraint.

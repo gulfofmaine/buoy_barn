@@ -15,6 +15,7 @@ conventions they follow can be tested from small handwritten tables:
 import io
 import json
 import math
+import re
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 
@@ -53,6 +54,8 @@ class DatasetInfo:
     dataset_id: str
     globals: dict = field(default_factory=dict)
     variables: dict[str, dict] = field(default_factory=dict)
+    # ERDDAP's data type for each variable, such as "float" or "String"
+    types: dict[str, str] = field(default_factory=dict)
 
     def var_attr(self, variable: str, attribute: str, default=None):
         return self.variables.get(variable, {}).get(attribute, default)
@@ -83,6 +86,7 @@ def parse_info_csv(dataset_id: str, csv_text: str) -> DatasetInfo:
         row_type, variable, attribute, data_type, value = row[:5]
         if row_type == "variable":
             info.variables.setdefault(variable, {})
+            info.types[variable] = data_type
         elif row_type == "attribute":
             target = info.globals if variable == GLOBAL else info.variables.setdefault(variable, {})
             target[attribute] = _cast(value, data_type)
@@ -200,10 +204,11 @@ def platform_location(
     constraints: dict | None = None,
 ) -> tuple[Point | None, str]:
     """Where the platform is, and which metadata it came from"""
-    lat = info.globals.get("latitude")
-    lon = info.globals.get("longitude")
-    if isinstance(lat, float | int) and isinstance(lon, float | int):
-        return Point(float(lon), float(lat), srid=4326), "latitude/longitude attributes"
+    for lat_name, lon_name in (("latitude", "longitude"), ("site_latitude", "site_longitude")):
+        lat = info.globals.get(lat_name)
+        lon = info.globals.get(lon_name)
+        if isinstance(lat, float | int) and isinstance(lon, float | int):
+            return Point(float(lon), float(lat), srid=4326), f"{lat_name}/{lon_name} attributes"
 
     if server is not None and station_constraint(constraints):
         try:
@@ -251,7 +256,9 @@ def platform_defaults(info: DatasetInfo) -> dict:
     """Platform fields that can be filled in from global attributes"""
     defaults = {}
 
-    station_name = info.globals.get("long_name") or info.globals.get("title")
+    station_name = (
+        info.globals.get("platform_name") or info.globals.get("long_name") or info.globals.get("title")
+    )
     if station_name:
         defaults["station_name"] = str(station_name)[:100]
 
@@ -259,8 +266,9 @@ def platform_defaults(info: DatasetInfo) -> dict:
     if description:
         defaults["mooring_site_desc"] = str(description)
 
-    if info.globals.get("ndbc_site_id"):
-        defaults["ndbc_site_id"] = str(info.globals["ndbc_site_id"])[:100]
+    ndbc_site_id = info.globals.get("ndbc_site_id") or info.globals.get("wmo_platform_code")
+    if ndbc_site_id:
+        defaults["ndbc_site_id"] = str(ndbc_site_id)[:100]
 
     if any(name.startswith("sea_surface_height") for name in _standard_names(info)):
         defaults["platform_type"] = Platform.PlatformTypes.TIDE_STATION
@@ -283,21 +291,50 @@ def is_flag_variable(info: DatasetInfo, variable: str) -> bool:
     )
 
 
+QC_NAME = re.compile(r"(^|_)(qc|qartod)(_|$)")
+
+
+def is_numeric(info: DatasetInfo, variable: str) -> bool:
+    data_type = info.types.get(variable, "").lower()
+    return data_type in NUMERIC_TYPES or data_type in FLOAT_TYPES
+
+
+def is_quality_flag(info: DatasetInfo, variable: str) -> bool:
+    """A numeric QC flag that values can be constrained on.
+
+    Excludes other flag variables (such as a `data_source` record) and string arrays of
+    individual test results, which can't be compared to a single flag value.
+    """
+    if not is_flag_variable(info, variable) or not is_numeric(info, variable):
+        return False
+    attrs = info.variables[variable]
+    return (
+        attrs.get("intent") == "data_quality"
+        or "quality" in str(attrs.get("standard_name", ""))
+        or QC_NAME.search(variable) is not None
+    )
+
+
+def _referenced(info: DatasetInfo) -> set[str]:
+    """Variables other variables point to as ancillary data, coordinates or instruments"""
+    referenced = set()
+    for attrs in info.variables.values():
+        for attribute in ("ancillary_variables", "coordinates", "instrument", "grid_mapping"):
+            referenced.update(str(attrs.get(attribute, "")).split())
+    return referenced
+
+
 def data_variables(info: DatasetInfo) -> list[str]:
     """Variables that could become timeseries"""
-    excluded = set(COORDINATE_VARIABLES) | NON_DATA_VARIABLES
+    excluded = set(COORDINATE_VARIABLES) | NON_DATA_VARIABLES | _referenced(info)
     for attr in ("cdm_timeseries_variables", "cdm_profile_variables", "cdm_trajectory_variables"):
         excluded.update(name.strip() for name in str(info.globals.get(attr, "")).split(","))
-
-    referenced = set()
-    for variable in info.variables:
-        referenced.update(_ancillary(info, variable))
 
     return [
         variable
         for variable, attrs in info.variables.items()
         if variable not in excluded
-        and variable not in referenced
+        and is_numeric(info, variable)
         and not is_flag_variable(info, variable)
         and attrs.get("cf_role") is None
         and str(attrs.get("standard_name", "")) not in COORDINATE_VARIABLES
@@ -393,7 +430,7 @@ def qartod_constraints(
     flag_variables = [
         name
         for name in _ancillary(info, variable)
-        if name in info.variables and is_flag_variable(info, name)
+        if name in info.variables and is_quality_flag(info, name)
     ]
     for aggregate in aggregates.get(variable, []):
         if aggregate not in flag_variables:

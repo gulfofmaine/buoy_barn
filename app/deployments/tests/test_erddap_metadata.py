@@ -1,12 +1,14 @@
 import csv
 import io
+from pathlib import Path
 
 import pytest
 from django.contrib.gis.geos import Point
 from django.test import TestCase
 
-from deployments.models import DataType
+from deployments.models import DataType, ErddapServer
 from deployments.utils import erddap_metadata as metadata
+from deployments.utils.erddap_loader import plan_import
 
 IOOS_FLAGS = [
     ("flag_values", "byte", "1, 2, 3, 4, 9"),
@@ -384,3 +386,61 @@ class MatchDataTypeTestCase(TestCase):
         self.assertIsNone(data_type)
         self.assertIn("Unable to import", reason)
         self.assertEqual(DataType.objects.count(), count)
+
+
+@pytest.mark.django_db
+class A01OceanMetadataTestCase(TestCase):
+    """Real metadata from NERACOOS' A01_ocean_001m, a single depth dataset with both
+    legacy NERACOOS and QARTOD aggregate flags, and no latitude/longitude attributes."""
+
+    fixtures = ["erddapservers", "datatypes"]
+
+    def setUp(self):
+        path = Path(__file__).parent / "erddap_info" / "A01_ocean_001m.csv"
+        self.info = metadata.parse_info_csv("A01_ocean_001m", path.read_text())
+
+    def test_data_variables(self):
+        # Not the deployment string, the actual_time coordinate, or the instrument record
+        self.assertEqual(
+            metadata.data_variables(self.info),
+            ["conductivity", "salinity", "sigma_t", "temperature"],
+        )
+
+    def test_qc_constraints(self):
+        constraints, warnings = metadata.qartod_constraints(self.info, "temperature")
+
+        # Not the string array of individual tests, or the data_source flag
+        self.assertEqual(constraints, {"temperature_qc=": 0, "temperature_qc_agg<=": 2})
+        self.assertEqual(warnings, [])
+
+    def test_depth(self):
+        self.assertEqual(metadata.variable_depth(self.info, "temperature"), 1.0)
+
+    def test_location_from_site_attributes(self):
+        point, source = metadata.platform_location(self.info)
+
+        self.assertEqual((point.x, point.y), (-70.5652, 42.5223))
+        self.assertEqual(source, "site_latitude/site_longitude attributes")
+
+    def test_platform_defaults(self):
+        self.assertEqual(
+            metadata.platform_defaults(self.info),
+            {
+                "station_name": "A01 - Massachusetts Bay",
+                "mooring_site_desc": "SE of Gloucester",
+                "ndbc_site_id": "44029",
+            },
+        )
+
+    def test_import_plan(self):
+        server = ErddapServer.objects.first()
+
+        plan = plan_import(server, "A01_ocean_001m", {}, info=self.info)
+
+        self.assertEqual(plan.unable, [])
+        self.assertEqual(plan.warnings, [])
+        rows = {row.variable: row for row in plan.new}
+        self.assertEqual(set(rows), {"conductivity", "salinity", "sigma_t", "temperature"})
+        self.assertTrue(all(row.depth == 1.0 for row in rows.values()))
+        self.assertTrue(all(row.warnings == [] for row in rows.values()))
+        self.assertEqual(rows["temperature"].data_type.standard_name, "sea_water_temperature")

@@ -77,6 +77,17 @@ Time doesn't need to be constrained.
 
 **Import selected** (or **Update selected** for an existing platform) creates the ticked timeseries, updates the ticked existing ones and platform fields, and queues the dataset to be refreshed.
 
+#### Syncing a platform with ERDDAP
+
+**Sync with ERDDAP** on a platform's page re-checks every ERDDAP dataset (and set of constraints, such as each depth) that the platform's timeseries already use, and shows them together:
+
+- Existing timeseries that differ from ERDDAP (for example new QC flags or changed tidal datums) are ticked to be updated.
+- Variables in those datasets without a timeseries yet are listed, but not ticked, as the existing setup is assumed to be deliberate.
+- Each platform field, and the location, can be kept as it is or set to the value from any of the datasets, as they can disagree. Only blank fields, or a missing location, that every dataset agrees on are filled in by default.
+- Datasets that can't be loaded from ERDDAP are listed, and the rest are still synced.
+
+**Update selected** saves the ticked changes and queues the changed datasets to be refreshed.
+
 #### Metadata conventions
 
 - **QARTOD/QC**: every variable a data variable lists in `ancillary_variables` that has `flag_values` and `flag_meanings` becomes a constraint keeping values whose meaning is `pass`, `good`, `quality_good` or `not_evaluated`.

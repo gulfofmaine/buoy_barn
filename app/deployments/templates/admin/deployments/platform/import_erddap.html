@@ -11,19 +11,7 @@ is marked safe.
 
 {% block extrastyle %}
   {{ block.super }}
-  <style>
-    .erddap-import .warning { color: var(--error-fg); }
-    .erddap-import p.location-differs {
-      border: 2px solid var(--error-fg);
-      padding: 8px 12px;
-      margin: 10px 0;
-    }
-    .erddap-import tr.location-differs td { color: var(--error-fg); }
-    .erddap-import .muted { color: var(--body-quiet-color); }
-    .erddap-import table { width: 100%; margin-bottom: 20px; }
-    .erddap-import td ul { margin: 0; padding-left: 16px; }
-    .erddap-import code { white-space: pre-wrap; }
-  </style>
+  {% include "admin/deployments/platform/_import_styles.html" %}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -105,57 +93,7 @@ is marked safe.
         </p>
       </fieldset>
 
-      {% if plan.new %}
-        <h2>New timeseries</h2>
-        <table>
-          <thead><tr><th>Create</th><th>Variable</th><th>Data type</th><th>Constraints</th><th>Tidal datums</th><th>Warnings</th></tr></thead>
-          <tbody>
-            {% for row in plan.new %}
-              <tr>
-                <td><input type="checkbox" name="create" value="{{ row.variable }}" checked></td>
-                <td>{{ row.variable }}</td>
-                <td>{{ row.data_type }}</td>
-                <td><code>{{ row.constraints }}</code></td>
-                <td>{% for name, value in row.datums.items %}{{ name }}: {{ value }}<br>{% endfor %}{% if row.datum_reference %}<span class="muted">relative to {{ row.datum_reference }}</span>{% endif %}</td>
-                <td><ul>{% for warning in row.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% endif %}
-
-      {% if plan.changed %}
-        <h2>Existing timeseries that differ from ERDDAP</h2>
-        <table>
-          <thead><tr><th>Update</th><th>Variable</th><th>Changes</th><th>Warnings</th></tr></thead>
-          <tbody>
-            {% for row in plan.changed %}
-              <tr>
-                <td><input type="checkbox" name="update" value="{{ row.variable }}"></td>
-                <td><a href="{% url 'admin:deployments_timeseries_change' row.existing.pk %}">{{ row.variable }}</a></td>
-                <td><ul>{% for name, values in row.changes.items %}<li><strong>{{ name }}</strong>: <code>{{ values.0 }}</code> &rarr; <code>{{ values.1 }}</code></li>{% endfor %}</ul></td>
-                <td><ul>{% for warning in row.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% endif %}
-
-      {% if plan.unchanged %}
-        <h2>Existing timeseries that match ERDDAP</h2>
-        <ul>{% for row in plan.unchanged %}<li>{{ row.variable }} <code class="muted">{{ row.constraints }}</code></li>{% endfor %}</ul>
-      {% endif %}
-
-      {% if plan.unable %}
-        <h2>Unable to import</h2>
-        <ul class="muted">{% for row in plan.unable %}<li><strong>{{ row.variable }}</strong>: {{ row.warnings.0 }}</li>{% endfor %}</ul>
-      {% endif %}
-
-      {% if plan.not_in_metadata %}
-        <h2>Existing timeseries not in the dataset metadata</h2>
-        <p class="muted">These are left as they are.</p>
-        <ul>{% for ts in plan.not_in_metadata %}<li>{{ ts.variable }} <code class="muted">{{ ts.constraints }}</code></li>{% endfor %}</ul>
-      {% endif %}
+      {% include "admin/deployments/platform/_plan_variables.html" with prefix="" %}
 
       <div class="submit-row">
         <button type="submit" name="step" value="apply" class="default">{% if plan.platform %}Update{% else %}Import{% endif %} selected</button>

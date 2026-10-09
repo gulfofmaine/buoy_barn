@@ -4,9 +4,10 @@ from datetime import datetime, timedelta
 
 import requests
 from django.contrib.admin import BooleanFieldListFilter
+from django.contrib.admin.utils import unquote
 from django.contrib.gis import admin
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.http.request import HttpRequest
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
@@ -16,6 +17,7 @@ from ..forms import ErddapImportForm
 from ..models import Alert, Platform, PlatformLink, ProgramAttribution, TimeSeries
 from ..tasks import refresh
 from ..utils.erddap_loader import ImportResult, apply_import, plan_import
+from ..utils.erddap_sync import SyncResult, apply_sync, plan_sync
 from ..widgets import EsriOceanBasemapWidget
 from .displays import timeseries_status
 from .system_messages import (
@@ -41,9 +43,9 @@ class PlatformLinkInline(admin.TabularInline):
     extra = 0
 
 
-def import_summary(result: ImportResult) -> str:
-    """What an ERDDAP import changed, for the admin message"""
-    action = "Created" if result.platform_created else "Updated"
+def import_summary(result: ImportResult | SyncResult) -> str:
+    """What an ERDDAP import or sync changed, for the admin message"""
+    action = "Created" if getattr(result, "platform_created", False) else "Updated"
     summary = (
         f"{action} platform {result.platform}: {len(result.created)} timeseries created, "
         f"{len(result.updated)} updated"
@@ -53,6 +55,11 @@ def import_summary(result: ImportResult) -> str:
     if result.location_updated:
         summary += ", location set"
     return summary + "."
+
+
+def _selected_pairs(values: list[str]) -> set[tuple[str, str]]:
+    """`<group id>:<variable>` checkbox values as pairs"""
+    return {tuple(value.split(":", 1)) for value in values if ":" in value}
 
 
 class TimeseriesActiveFilter(BooleanFieldListFilter):
@@ -110,7 +117,7 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
         "timeseries__dataset__name",
     ]
 
-    change_actions = ["refresh_platform_datasets", "import_erddap_dataset"]
+    change_actions = ["refresh_platform_datasets", "import_erddap_dataset", "sync_with_erddap"]
     changelist_actions = ["import_from_erddap"]
 
     gis_widget = EsriOceanBasemapWidget
@@ -138,6 +145,11 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
                 self.admin_site.admin_view(self.import_erddap_view),
                 name="deployments_platform_import_erddap",
             ),
+            path(
+                "<path:object_id>/sync-erddap/",
+                self.admin_site.admin_view(self.sync_erddap_view),
+                name="deployments_platform_sync_erddap",
+            ),
             *urls,
         ]
 
@@ -160,6 +172,55 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
     )
     def import_erddap_dataset(self, request, obj):
         return HttpResponseRedirect(self.import_erddap_url(obj))
+
+    @action(
+        label="Sync with ERDDAP",
+        description="Update this platform and its timeseries from the ERDDAP datasets it uses",
+    )
+    def sync_with_erddap(self, request, obj):
+        return HttpResponseRedirect(
+            reverse(f"{self.admin_site.name}:deployments_platform_sync_erddap", args=[obj.pk]),
+        )
+
+    def sync_erddap_view(self, request, object_id):
+        """Preview, then apply, syncing a platform with all its ERDDAP datasets.
+
+        Like the import, the sync is re-planned from ERDDAP when it is applied.
+        """
+        if not self.has_import_permission(request):
+            raise PermissionDenied
+        platform = self.get_object(request, unquote(object_id))
+        if platform is None:
+            raise Http404
+
+        sync = plan_sync(platform)
+
+        if request.method == "POST" and request.POST.get("step") == "apply":
+            result = apply_sync(
+                sync,
+                create=_selected_pairs(request.POST.getlist("create")),
+                update=_selected_pairs(request.POST.getlist("update")),
+                fields={
+                    choice.name: request.POST.get(f"field__{choice.name}") for choice in sync.fields
+                },
+                location=request.POST.get("location"),
+            )
+            for dataset in result.datasets:
+                refresh.refresh_dataset.delay(dataset.id)
+
+            self.message_user(request, import_summary(result))
+            return HttpResponseRedirect(
+                reverse(f"{self.admin_site.name}:deployments_platform_change", args=[platform.pk]),
+            )
+
+        context = {
+            **self.admin_site.each_context(request),
+            "opts": self.model._meta,
+            "original": platform,
+            "title": f"Sync {platform} with ERDDAP",
+            "sync": sync,
+        }
+        return TemplateResponse(request, "admin/deployments/platform/sync_erddap.html", context)
 
     def has_import_permission(self, request) -> bool:
         return request.user.has_perms(

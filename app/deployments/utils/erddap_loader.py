@@ -56,6 +56,8 @@ class VariablePlan:
     warnings: list[str] = field(default_factory=list)
     existing: TimeSeries | None = None
     changes: dict[str, tuple] = field(default_factory=dict)
+    # Whether the row is ticked in the preview
+    selected: bool = False
 
     @property
     def long_name(self):
@@ -84,6 +86,8 @@ class ImportPlan:
     location_distance: float | None = None
     location_selected: bool = False
     platform_fields: dict[str, FieldChange] = field(default_factory=dict)
+    select_new: bool = True
+    select_changed: bool = False
     start_time: datetime | None = None
     end_time: datetime | None = None
     buffer_type: BufferType | None = None
@@ -203,14 +207,21 @@ def _plan_platform(plan: ImportPlan, platform: Platform | None):
         plan.platform_fields[name] = FieldChange(current=current, proposed=value, selected=blank)
 
 
-def plan_import(
+def plan_import(  # noqa: PLR0913
     server: ErddapServer,
     dataset_id: str,
     constraints: dict | None = None,
     platform: Platform | None = None,
     info: DatasetInfo | None = None,
+    *,
+    select_new: bool = True,
+    select_changed: bool = False,
 ) -> ImportPlan:
-    """Work out what importing a dataset would create or change. Nothing is saved."""
+    """Work out what importing a dataset would create or change. Nothing is saved.
+
+    `select_new` and `select_changed` are whether new and changed timeseries are ticked
+    in the preview by default.
+    """
     constraints = dict(constraints or {})
     if info is None:
         info = metadata.fetch_dataset_info(server, dataset_id)
@@ -221,6 +232,8 @@ def plan_import(
         constraints=constraints,
         platform=platform,
         info=info,
+        select_new=select_new,
+        select_changed=select_changed,
     )
     plan.location, plan.location_source = metadata.platform_location(info, server, constraints)
     if plan.location is None:
@@ -285,23 +298,33 @@ def _plan_variables(plan: ImportPlan):
     aggregates, aggregate_warnings = metadata.aggregate_flags(plan.info)
     plan.warnings.extend(aggregate_warnings)
 
+    own_constraints = tuple(sorted(plan.constraints.items()))
     matched = set()
     for variable in metadata.data_variables(plan.info):
         row, reason = _plan_variable(plan, variable, aggregates)
+        row.selected = plan.select_new
 
-        existing = existing_by_key.get((variable, tuple(sorted(plan.constraints.items()))))
+        existing = existing_by_key.get((variable, own_constraints))
         if existing is not None:
             matched.add(existing.pk)
             row.existing = existing
             row.changes = _compare_existing(row, existing)
             row.status = Status.CHANGED if row.changes else Status.UNCHANGED
+            row.selected = bool(row.changes) and plan.select_changed
         elif row.data_type is None:
             row.status = Status.UNABLE
+            row.selected = False
             row.warnings.insert(0, reason)
 
         plan.variables.append(row)
 
-    plan.not_in_metadata = [ts for ts in existing_by_key.values() if ts.pk not in matched]
+    # Only this constraint group's timeseries, the platform may use the dataset at other
+    # depths or stations too
+    plan.not_in_metadata = [
+        ts
+        for (_, constraints), ts in existing_by_key.items()
+        if constraints == own_constraints and ts.pk not in matched
+    ]
 
 
 def _save_platform(

@@ -1,0 +1,118 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+{% comment %}
+Sync a platform with every ERDDAP dataset its timeseries use. Each dataset and set of
+constraints is planned like a single import, with checkboxes prefixed by the group's id.
+Datasets can disagree about platform fields and location, so each is a radio choice between
+keeping the current value and each value ERDDAP has.
+
+Values, names and warnings come from ERDDAP and are untrusted, so nothing here is marked safe.
+{% endcomment %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  {% include "admin/deployments/platform/_import_styles.html" %}
+{% endblock %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+    &rsaquo; <a href="{% url opts|admin_urlname:'change' original.pk %}">{{ original }}</a>
+    &rsaquo; Sync with ERDDAP
+  </div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main" class="erddap-import">
+  <form method="post">
+    {% csrf_token %}
+
+    {% for error in sync.errors %}
+      <p class="warning">Unable to load metadata for {{ error.dataset }}: {{ error.message }}</p>
+    {% endfor %}
+
+    {% if not sync.groups and not sync.errors %}
+      <p>This platform has no timeseries from ERDDAP datasets to sync.</p>
+    {% endif %}
+
+    {% if sync.location or sync.fields %}
+      <fieldset class="module">
+        <h2>Platform</h2>
+        {% if sync.location.differs %}
+          <p class="location-differs"><strong>A dataset's location is more than 500 m from this platform's current location.</strong></p>
+        {% endif %}
+        <table>
+          <thead><tr><th>Field</th><th>Keep current</th><th>ERDDAP</th></tr></thead>
+          <tbody>
+            {% if sync.location %}
+              <tr>
+                <td>location</td>
+                <td>
+                  <label>
+                    <input type="radio" name="location" value=""{% if not sync.location.default %} checked{% endif %}>
+                    {% if sync.location.current %}{{ sync.location.current.y|floatformat:5 }}, {{ sync.location.current.x|floatformat:5 }}{% else %}<span class="muted">none</span>{% endif %}
+                  </label>
+                </td>
+                <td>
+                  {% for option in sync.location.options %}
+                    <div{% if option.far %} class="warning"{% endif %}>
+                      <label>
+                        <input type="radio" name="location" value="{{ option.id }}"{% if option.id == sync.location.default %} checked{% endif %}>
+                        {{ option.value.y|floatformat:5 }}, {{ option.value.x|floatformat:5 }}
+                        {% if option.distance is not None %}({{ option.distance|floatformat:0 }} m away){% endif %}
+                      </label>
+                      <div class="muted">from {{ option.sources|join:", " }}</div>
+                    </div>
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endif %}
+            {% for choice in sync.fields %}
+              <tr>
+                <td>{{ choice.name }}</td>
+                <td>
+                  <label>
+                    <input type="radio" name="field__{{ choice.name }}" value=""{% if not choice.default %} checked{% endif %}>
+                    {% if choice.current %}{{ choice.current }}{% else %}<span class="muted">blank</span>{% endif %}
+                  </label>
+                </td>
+                <td>
+                  {% for option in choice.options %}
+                    <div>
+                      <label>
+                        <input type="radio" name="field__{{ choice.name }}" value="{{ option.id }}"{% if option.id == choice.default %} checked{% endif %}>
+                        {{ option.value }}
+                      </label>
+                      <div class="muted">from {{ option.sources|join:", " }}</div>
+                    </div>
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </fieldset>
+    {% endif %}
+
+    {% for group in sync.groups %}
+      {% with plan=group.plan %}
+        <fieldset class="module">
+          <h2>{{ group.label }}</h2>
+          {% for warning in plan.warnings %}<p class="warning">{{ warning }}</p>{% endfor %}
+          {% with prefix=group.id|add:":" %}
+            {% include "admin/deployments/platform/_plan_variables.html" %}
+          {% endwith %}
+        </fieldset>
+      {% endwith %}
+    {% endfor %}
+
+    {% if sync.groups %}
+      <div class="submit-row">
+        <button type="submit" name="step" value="apply" class="default">Update selected</button>
+      </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

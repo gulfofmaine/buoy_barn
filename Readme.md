@@ -52,31 +52,51 @@ See below for adding a timeseries to a platform.
 
 If you wish to keep track of deployments for particular platforms, you can manage them at [admin/deployments/platform](http://localhost:8090/admin/deployments/platform/).
 
-### Adding new TimeSeries
+### Importing a platform or dataset from ERDDAP
 
-You can manage different which TimeSeries are associated with a Platform from the admin, or you can attempt to automatically add them from the python shell.
+Platforms and their TimeSeries can be imported from an ERDDAP dataset's metadata:
 
-Lets use the automatic loader.
+- For a new platform, use **Import from ERDDAP** on the [platform list](http://localhost:8090/admin/deployments/platform/).
+- To add a dataset to an existing platform (or to bring its timeseries up to date with ERDDAP), use **Import dataset from ERDDAP** on that platform's page.
 
-From a dataset page (for example [N01 Sbe](http://www.neracoos.org/erddap/tabledap/N01_sbe37_all.html)) the first thing to do is figure out our constraints.
+Choose the ERDDAP server and enter the Dataset ID (for example `N01_sbe37_all`).
+If the dataset has more than one depth or station, add constraints to pick one out, as a JSON object of the ERDDAP constraint (variable and operator) and value, such as `{"depth=": 50.0}` or `{"station=": "44027"}`.
+You can find them from the dataset's ERDDAP page, by choosing a value in the optional constraint dropdowns.
+Time doesn't need to be constrained.
 
-For this we are worried about a specific depth, so let's choose that from the dropdown.
-You'll notice the optional constraint 1 for depth has changed to an `=` and our depth is in the field next to it.
+**Preview** shows what would change without saving anything:
 
-We don't need to worry about time as a constraint, the loader will automatically find that.
-In some cases we may need to select a specific station, but we don't need to do that here.
+- The platform location, from the dataset's `latitude`/`longitude` (or `site_latitude`/`site_longitude`) global attributes, the position of the selected station, or the middle of the `geospatial_*` bounds.
+  For an existing platform, a location more than 500 m from its current one is highlighted.
+- Platform fields ERDDAP has values for: `station_name` (from `platform_name`/`long_name`/`title`), `mooring_site_desc` (from `mooring_site_desc`/`summary`), `ndbc_site_id` (from `ndbc_site_id`/`wmo_platform_code`), and a guessed `platform_type`.
+  Each field, and the location, has its own checkbox next to the current and ERDDAP values.
+  Blank fields and a missing location are ticked to be filled in, while values that are already set are only changed if you tick them, so importing another dataset to a platform won't rename it.
+- New timeseries, existing timeseries that differ from ERDDAP (with what would change), and ones that already match.
+- Variables that can't be imported, because no existing DataType matches their `standard_name`, `long_name` or `short_name`.
+  DataTypes are never created by the import, add one in the admin and import again.
 
-We pass our constraints as a dict with the key being the variable and the `=` sign, and the value being the selected value.
-Therefore our constraints are `{'depth=': 50.0}`.
+**Import selected** (or **Update selected** for an existing platform) creates the ticked timeseries, updates the ticked existing ones and platform fields, and queues the dataset to be refreshed.
 
-To do that we will use `add_timeseries(platform, erddap_url, dataset, constraints)`.
+#### Syncing a platform with ERDDAP
 
-- `platform` takes a `Platform` instance
-- `erddap_url` takes the base url for the ERDDAP server
-- `dataset` takes the Dataset ID
-- `constraints` uses the constraints that you just figured out
+**Sync with ERDDAP** on a platform's page re-checks every ERDDAP dataset (and set of constraints, such as each depth) that the platform's timeseries already use, and shows them together:
 
-Now with a shell (`make shell`).
+- Existing timeseries that differ from ERDDAP (for example new QC flags or changed tidal datums) are ticked to be updated.
+- Variables in those datasets without a timeseries yet are listed, but not ticked, as the existing setup is assumed to be deliberate.
+- Each platform field, and the location, can be kept as it is or set to the value from any of the datasets, as they can disagree. Only blank fields, or a missing location, that every dataset agrees on are filled in by default.
+- Datasets that can't be loaded from ERDDAP are listed, and the rest are still synced.
+
+**Update selected** saves the ticked changes and queues the changed datasets to be refreshed.
+
+#### Metadata conventions
+
+- **QARTOD/QC**: every numeric QC flag variable (with `intent = data_quality`, a `quality` standard name, or `qc`/`qartod` in its name) a data variable lists in `ancillary_variables` that has `flag_values` and `flag_meanings` becomes a constraint keeping values whose meaning is `pass`, `good`, `quality_good` or `not_evaluated`.
+  For NERACOOS style flags that's `salinity_qc=0`, and for IOOS QARTOD flags (`1` pass, `2` not evaluated, `3` suspect, `4` fail, `9` missing) it's `<test variable><=2`.
+  Rollup flags (`standard_name = "aggregate_quality_flag"`) are also used even when they aren't listed in `ancillary_variables`: they apply to the variable whose name they start with (`<variable>_qartod_rollup`), or to every variable if there is only one in the dataset.
+- **Depth**: a `depth=` constraint sets the TimeSeries depth. Without one, it comes from the variable's `sensor_depth`, a depth variable whose `actual_range` is a single value, or equal `geospatial_vertical_min/max`, so single depth datasets like `A01_ocean_001m` don't need a constraint.
+- **Tidal datums**: a `tidal_datum_offsets_meters` variable attribute with a JSON object of offsets, such as `{"mhhw": 1.469, "mllw": -1.573}`, sets the TimeSeries `datum_<name>_meters` fields.
+
+The same import can be run from a shell (`make shell`), which creates any new timeseries for an existing platform:
 
 ```python
 >>> from deployments.utils.erddap_loader import add_timeseries
@@ -86,8 +106,6 @@ Now with a shell (`make shell`).
 
 >>> add_timeseries(n01, 'http://www.neracoos.org/erddap', 'N01_accelerometer_all', {'depth=': 50.0})
 ```
-
-`add_timeseries` will retireve the dataset info, figure out the time range the dataset is valid for, find which variables are avaliabe, find or create data_types for those variables, and add the `TimeSeries` to the given platforms.
 
 ## Testing
 

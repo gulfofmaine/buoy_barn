@@ -1,0 +1,60 @@
+{% comment %}
+The timeseries an ERDDAP import plan would create or change, for one dataset and set of
+constraints. `prefix` is put in front of each checkbox's variable name, so the sync preview
+can tell apart the same variable in several datasets or constraint groups.
+
+Variable names, constraints and warnings come from ERDDAP and are untrusted, so nothing here
+is marked safe.
+{% endcomment %}
+{% if plan.new %}
+  <h3>New timeseries</h3>
+  <table>
+    <thead><tr><th>Create</th><th>Variable</th><th>Data type</th><th>Depth</th><th>Constraints</th><th>Tidal datums</th><th>Warnings</th></tr></thead>
+    <tbody>
+      {% for row in plan.new %}
+        <tr>
+          <td><input type="checkbox" name="create" value="{{ prefix }}{{ row.variable }}"{% if row.selected %} checked{% endif %}></td>
+          <td>{{ row.variable }}</td>
+          <td>{{ row.data_type }}</td>
+      <td>{% if row.depth is not None %}{{ row.depth }} m{% else %}<span class="muted">none</span>{% endif %}</td>
+          <td><code>{{ row.constraints }}</code></td>
+          <td>{% for name, value in row.datums.items %}{{ name }}: {{ value }}<br>{% endfor %}{% if row.datum_reference %}<span class="muted">relative to {{ row.datum_reference }}</span>{% endif %}</td>
+          <td><ul>{% for warning in row.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if plan.changed %}
+  <h3>Existing timeseries that differ from ERDDAP</h3>
+  <table>
+    <thead><tr><th>Update</th><th>Variable</th><th>Changes</th><th>Warnings</th></tr></thead>
+    <tbody>
+      {% for row in plan.changed %}
+        <tr>
+          <td><input type="checkbox" name="update" value="{{ prefix }}{{ row.variable }}"{% if row.selected %} checked{% endif %}></td>
+          <td><a href="{% url 'admin:deployments_timeseries_change' row.existing.pk %}">{{ row.variable }}</a></td>
+          <td><ul>{% for name, values in row.changes.items %}<li><strong>{{ name }}</strong>: <code>{{ values.0 }}</code> &rarr; <code>{{ values.1 }}</code></li>{% endfor %}</ul></td>
+          <td><ul>{% for warning in row.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+{% if plan.unchanged %}
+  <h3>Existing timeseries that match ERDDAP</h3>
+  <ul>{% for row in plan.unchanged %}<li>{{ row.variable }} <code class="muted">{{ row.constraints }}</code></li>{% endfor %}</ul>
+{% endif %}
+
+{% if plan.unable %}
+  <h3>Unable to import</h3>
+  <ul class="muted">{% for row in plan.unable %}<li><strong>{{ row.variable }}</strong>: {{ row.warnings.0 }}</li>{% endfor %}</ul>
+{% endif %}
+
+{% if plan.not_in_metadata %}
+  <h3>Existing timeseries not in the dataset metadata</h3>
+  <p class="muted">These are left as they are.</p>
+  <ul>{% for ts in plan.not_in_metadata %}<li>{{ ts.variable }} <code class="muted">{{ ts.constraints }}</code></li>{% endfor %}</ul>
+{% endif %}

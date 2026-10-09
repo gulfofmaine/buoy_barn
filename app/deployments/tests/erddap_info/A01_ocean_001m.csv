@@ -1,0 +1,536 @@
+Row Type,Variable Name,Attribute Name,Data Type,Value
+attribute,NC_GLOBAL,acknowledgment,String,Buoys operated by the University of Maine Physical Oceanography Group (PhOG) are funded in part through the National Oceanic and Atmospheric Administration (NOAA) as a Regional Association within the U.S. Integrated Ocean Observing System (IOOS).
+attribute,NC_GLOBAL,breakout_id,int,4
+attribute,NC_GLOBAL,buffer_type,String,sbe37
+attribute,NC_GLOBAL,cdm_data_type,String,TimeSeries
+attribute,NC_GLOBAL,cdm_timeseries_variables,String,"station, longitude, latitude, depth"
+attribute,NC_GLOBAL,clock_time,String,Center of period
+attribute,NC_GLOBAL,comment,String,"University of Maine, Physical Oceanography Group"
+attribute,NC_GLOBAL,contact,String,um_phog_dmac@umeoce.maine.edu
+attribute,NC_GLOBAL,contributor_email,String,"info@neracoos.org,info@gmri.org"
+attribute,NC_GLOBAL,contributor_name,String,"NERACOOS,Gulf of Maine Research Institute"
+attribute,NC_GLOBAL,contributor_role,String,"funder,distributor"
+attribute,NC_GLOBAL,contributor_role_vocabulary,String,https://vocab.nerc.ac.uk/collection/G04/current/
+attribute,NC_GLOBAL,contributor_url,String,"http://neracoos.org,http://www.gmri.org"
+attribute,NC_GLOBAL,Conventions,String,"CF-1.8,ACDD-1.3,IOOS-1.2"
+attribute,NC_GLOBAL,creator_address,String,101 MacKay Lab
+attribute,NC_GLOBAL,creator_city,String,Orono
+attribute,NC_GLOBAL,creator_country,String,USA
+attribute,NC_GLOBAL,creator_email,String,um_phog_dmac@umeoce.maine.edu
+attribute,NC_GLOBAL,creator_institution,String,University of Maine
+attribute,NC_GLOBAL,creator_name,String,UMaine/Physical Oceanography Group
+attribute,NC_GLOBAL,creator_phone,String,207-581-4379
+attribute,NC_GLOBAL,creator_postalcode,String,04469
+attribute,NC_GLOBAL,creator_sector,String,academic
+attribute,NC_GLOBAL,creator_state,String,Maine
+attribute,NC_GLOBAL,creator_type,String,institution
+attribute,NC_GLOBAL,creator_url,String,http://gyre.umeoce.maine.edu
+attribute,NC_GLOBAL,date_created,String,2004-05-14T16:00:00Z
+attribute,NC_GLOBAL,date_issued,String,2004-05-14T16:00:00Z
+attribute,NC_GLOBAL,date_metadata_modified,String,2026-02-09T17:44:24Z
+attribute,NC_GLOBAL,date_modified,String,2004-05-14T16:00:00Z
+attribute,NC_GLOBAL,delta_t,int,30
+attribute,NC_GLOBAL,depth_datum,String,Sea Level
+attribute,NC_GLOBAL,Easternmost_Easting,double,-70.5645
+attribute,NC_GLOBAL,ending_time,double,1.0845504E9
+attribute,NC_GLOBAL,ending_time_string,String,2004-05-14T16:00:00Z
+attribute,NC_GLOBAL,featureType,String,TimeSeries
+attribute,NC_GLOBAL,geospatial_bounds,String,POINT (-70.5652 42.5223)
+attribute,NC_GLOBAL,geospatial_bounds_crs,String,EPSG:4326
+attribute,NC_GLOBAL,geospatial_bounds_vertical_crs,String,EPSG:5831
+attribute,NC_GLOBAL,geospatial_lat_max,double,42.5277
+attribute,NC_GLOBAL,geospatial_lat_min,double,42.5183
+attribute,NC_GLOBAL,geospatial_lat_resolution,String,0.01 degrees
+attribute,NC_GLOBAL,geospatial_lat_units,String,degrees_north
+attribute,NC_GLOBAL,geospatial_lon_max,double,-70.5645
+attribute,NC_GLOBAL,geospatial_lon_min,double,-70.5681
+attribute,NC_GLOBAL,geospatial_lon_resolution,String,0.001 degrees
+attribute,NC_GLOBAL,geospatial_lon_units,String,degrees_east
+attribute,NC_GLOBAL,geospatial_vertical_max,double,1.0
+attribute,NC_GLOBAL,geospatial_vertical_min,double,1.0
+attribute,NC_GLOBAL,geospatial_vertical_positive,String,down
+attribute,NC_GLOBAL,geospatial_vertical_resolution,String,0.5 meter
+attribute,NC_GLOBAL,geospatial_vertical_units,String,m
+attribute,NC_GLOBAL,grid_mapping_epsg_code,String,EPSG:4326
+attribute,NC_GLOBAL,grid_mapping_inverse_flattening,double,298.257223563
+attribute,NC_GLOBAL,grid_mapping_long_name,String,coordinate_reference_system
+attribute,NC_GLOBAL,grid_mapping_longitude_of_prime_meridian,double,0.0
+attribute,NC_GLOBAL,grid_mapping_name,String,latitude_longitude
+attribute,NC_GLOBAL,grid_mapping_semi_major_axis,double,6378137.0
+attribute,NC_GLOBAL,gts_ingest,String,true
+attribute,NC_GLOBAL,id,String,A0108.ocean.001m.merged_20260209T174424.511.nc
+attribute,NC_GLOBAL,infoUrl,String,https://oceandata.umeoce.maine.edu/buoy/A01
+attribute,NC_GLOBAL,institution,String,"Physical Oceanography Group, School of Marine Sciences, University of Maine"
+attribute,NC_GLOBAL,institution_url,String,http://gyre.umeoce.maine.edu
+attribute,NC_GLOBAL,instrument,String,In Situ/Laboratory Instruments > Profilers/Sounders > STC
+attribute,NC_GLOBAL,instrument_number,int,0
+attribute,NC_GLOBAL,instrument_vocabulary,String,NASA/GCMD Instrument Keywords Version 8.1
+attribute,NC_GLOBAL,ioos_ingest,String,true
+attribute,NC_GLOBAL,julian_day_convention,String,Julian date convention begins at 00:00:00 UTC on 17 November 1858 AD
+attribute,NC_GLOBAL,keywords,String,"Earth Science > Oceans > Ocean Temperature > Water Temperature, Earth Science > Oceans > Salinity/Density > Conductivity, Earth Science > Oceans > Salinity/Density > Density, Earth Science > Oceans > Salinity/Density > Salinity"
+attribute,NC_GLOBAL,keywords_vocabulary,String,NASA/GCMD Science Keywords Version 8.1
+attribute,NC_GLOBAL,last_modified,String,2004-05-14T16:00:00Z
+attribute,NC_GLOBAL,license,String,"The data may be used and redistributed for free but is not intended for legal use, since it may contain inaccuracies. Neither the data Contributor, University of Maine, IOOS, NOAA, State of Maine nor the United States Government, nor any of their employees or contractors, makes any warranty, express or implied, including warranties of merchantability and fitness for a particular purpose, or assumes any legal liability for the accuracy, completeness, or usefulness, of this information."
+attribute,NC_GLOBAL,magnetic_variation,double,-16.0
+attribute,NC_GLOBAL,metadata_link,String,https://oceandata.umeoce.maine.edu/buoy/A01/metadata
+attribute,NC_GLOBAL,mooring_history,String,"2004-03-22T12:10Z Redeployed by R/V Argo Maine.\n2004-03-22T13:00Z (sbe16) (s/n=SBEDO430307) Oxygen readings too low, data invalid.\n2004-05-01T18:00Z (goes) (s/n=GOETR55638) (-3m) Last Goes transmission received.  Cell phone is working fine.\n2004-05-07T19:00Z (s/n=ALL) Last cellphone transmission received from this buoy.\n2004-05-14T16:30Z Control box failure.\n2004-05-14T16:30Z (s/n=ALL) Recovered with help of USCG (Gloucester), new control box and goes GPS antenna.\n"
+attribute,NC_GLOBAL,mooring_site_desc,String,SE of Gloucester
+attribute,NC_GLOBAL,mooring_site_id,String,A0108
+attribute,NC_GLOBAL,naming_authority,String,edu.maine
+attribute,NC_GLOBAL,ncei_template_version,String,NCEI_NetCDF_TimeSeries_Orthogonal_Template_v2.0
+attribute,NC_GLOBAL,nco_openmp_thread_number,int,1
+attribute,NC_GLOBAL,Northernmost_Northing,double,42.5277
+attribute,NC_GLOBAL,number_observations_per_hour,int,2
+attribute,NC_GLOBAL,operator_sector,String,academic
+attribute,NC_GLOBAL,platform,String,station
+attribute,NC_GLOBAL,platform_id,String,A01
+attribute,NC_GLOBAL,platform_name,String,A01 - Massachusetts Bay
+attribute,NC_GLOBAL,platform_vocabulary,String,https://mmisw.org/ont/ioos/platform
+attribute,NC_GLOBAL,position_datum,String,WGS 84
+attribute,NC_GLOBAL,principal_investigator,String,Dr. Neal R. Pettigrew
+attribute,NC_GLOBAL,principal_investigator_email,String,nealp@maine.edu
+attribute,NC_GLOBAL,principal_investigator_institution,String,"University of Maine, School of Marine Sciences"
+attribute,NC_GLOBAL,processing,String,merged
+attribute,NC_GLOBAL,processing_level,String,Realtime preliminary QC
+attribute,NC_GLOBAL,product_version,String,UMO5.0
+attribute,NC_GLOBAL,program,String,Integrated Ocean Observing System
+attribute,NC_GLOBAL,project,String,GoMOOS
+attribute,NC_GLOBAL,project_url,String,http://www.neracoos.org
+attribute,NC_GLOBAL,publisher_address,String,195 New Hampshire Ave Suite 240
+attribute,NC_GLOBAL,publisher_city,String,Portsmouth
+attribute,NC_GLOBAL,publisher_country,String,USA
+attribute,NC_GLOBAL,publisher_email,String,um_phog_dmac@umeoce.maine.edu
+attribute,NC_GLOBAL,publisher_institution,String,University of Maine
+attribute,NC_GLOBAL,publisher_name,String,Bob Fleming
+attribute,NC_GLOBAL,publisher_phone,String,207-581-4379
+attribute,NC_GLOBAL,publisher_postalcode,String,03801
+attribute,NC_GLOBAL,publisher_state,String,New Hampshire
+attribute,NC_GLOBAL,publisher_type,String,person
+attribute,NC_GLOBAL,publisher_url,String,http://gyre.umoece.maine.edu
+attribute,NC_GLOBAL,references,String,http://gyre.umeoce.maine.edu/data/gomoos/buoy/doc/buoy_system_doc/buoy_system/book1.html
+attribute,NC_GLOBAL,sea_name,String,Gulf of Maine
+attribute,NC_GLOBAL,site_id,String,A01
+attribute,NC_GLOBAL,site_latitude,double,42.5223
+attribute,NC_GLOBAL,site_longitude,double,-70.5652
+attribute,NC_GLOBAL,source,String,Ocean Data Acquisition Systems (ODAS) Buoy
+attribute,NC_GLOBAL,sourceUrl,String,(local files)
+attribute,NC_GLOBAL,Southernmost_Northing,double,42.5183
+attribute,NC_GLOBAL,sponsor,String,NOAA
+attribute,NC_GLOBAL,standard_name_vocabulary,String,CF Standard Name Table v72
+attribute,NC_GLOBAL,starting_time,double,1.0799568E9
+attribute,NC_GLOBAL,starting_time_string,String,2004-03-22T12:00:00Z
+attribute,NC_GLOBAL,station_photo_url,String,http://gyre.umeoce.maine.edu/images/gomoosbuoy.jpg
+attribute,NC_GLOBAL,station_type,String,Surface Mooring
+attribute,NC_GLOBAL,summary,String,"University of Maine real-time buoy observations in the Gulf of Maine at NERACOOS site A01 - Massachusetts Bay, located at 42d 31.338m N, 70d 33.912m W, SE of Gloucester. GoMOOS buoy A0108 was deployed from 2004-03-22 12:10:00 until 2004-05-14 16:30:00 UTC.  Oceanographic near-surface measurements of temperature, conductivity,salinity, and density at a depth of 1 meter were taken hourly."
+attribute,NC_GLOBAL,time_coverage_duration,String,P53DT3H59M60.00S
+attribute,NC_GLOBAL,time_coverage_end,String,2026-10-09T17:00:00Z
+attribute,NC_GLOBAL,time_coverage_resolution,String,PT30M
+attribute,NC_GLOBAL,time_coverage_start,String,2001-07-10T02:30:00Z
+attribute,NC_GLOBAL,time_deployed,String,2004-03-22T12:10Zs
+attribute,NC_GLOBAL,time_recovered,String,2004-05-14T16:30Zs
+attribute,NC_GLOBAL,time_zone,String,UTC
+attribute,NC_GLOBAL,title,String,A01 Ocean - 1 meter
+attribute,NC_GLOBAL,uuid,String,88ce555b-0cf1-4e98-a1aa-20cddc7b0801
+attribute,NC_GLOBAL,Westernmost_Easting,double,-70.5681
+attribute,NC_GLOBAL,wmo_platform_code,String,44029
+variable,station,,String,
+attribute,station,cf_role,String,timeseries_id
+attribute,station,ioos_category,String,Identifier
+attribute,station,long_name,String,Station A01
+variable,time,,double,
+attribute,time,_CoordinateAxisType,String,Time
+attribute,time,actual_range,double,"9.947322E8, 1.7915652E9"
+attribute,time,axis,String,T
+attribute,time,calendar,String,gregorian
+attribute,time,comment,String,"Coordinate variable, nominal time of observation"
+attribute,time,epic_code,int,624
+attribute,time,ioos_category,String,Time
+attribute,time,long_name,String,Time
+attribute,time,short_name,String,time
+attribute,time,standard_name,String,time
+attribute,time,standard_name_url,String,https://vocab.nerc.ac.uk/collection/P07/current/CFSN0115
+attribute,time,time_origin,String,01-JAN-1970 00:00:00
+attribute,time,units,String,seconds since 1970-01-01T00:00:00Z
+attribute,time,valid_range,double,"0.0, 2.147483647E9"
+variable,longitude,,float,
+attribute,longitude,_CoordinateAxisType,String,Lon
+attribute,longitude,actual_range,float,"-70.5681, -70.5645"
+attribute,longitude,axis,String,X
+attribute,longitude,comment,String,Coordinate variable
+attribute,longitude,echo,double,-70.5652
+attribute,longitude,epic_code,int,502
+attribute,longitude,ioos_category,String,Location
+attribute,longitude,long_name,String,Longitude in decimal degrees east
+attribute,longitude,modulo,double,360.0
+attribute,longitude,short_name,String,lon
+attribute,longitude,standard_name,String,longitude
+attribute,longitude,standard_name_url,String,https://vocab.nerc.ac.uk/collection/P07/current/CFSN0554
+attribute,longitude,units,String,degrees_east
+attribute,longitude,valid_range,float,"-180.0, 180.0"
+variable,latitude,,float,
+attribute,latitude,_CoordinateAxisType,String,Lat
+attribute,latitude,actual_range,float,"42.5183, 42.5277"
+attribute,latitude,axis,String,Y
+attribute,latitude,comment,String,Coordinate variable
+attribute,latitude,echo,double,42.5223
+attribute,latitude,epic_code,int,500
+attribute,latitude,ioos_category,String,Location
+attribute,latitude,long_name,String,Latitude in decimal degrees north
+attribute,latitude,short_name,String,lat
+attribute,latitude,standard_name,String,latitude
+attribute,latitude,standard_name_url,String,https://vocab.nerc.ac.uk/collection/P07/current/CFSN0600
+attribute,latitude,units,String,degrees_north
+attribute,latitude,valid_range,float,"-90.0, 90.0"
+variable,depth,,double,
+attribute,depth,_CoordinateAxisType,String,Height
+attribute,depth,_CoordinateZisPositive,String,down
+attribute,depth,actual_range,double,"1.0, 1.0"
+attribute,depth,axis,String,Z
+attribute,depth,comment,String,Coordinate variable
+attribute,depth,echo,double,1.0
+attribute,depth,epic_code,int,3
+attribute,depth,ioos_category,String,Location
+attribute,depth,long_name,String,Depth
+attribute,depth,positive,String,down
+attribute,depth,short_name,String,D
+attribute,depth,standard_name,String,depth
+attribute,depth,standard_name_url,String,https://vocab.nerc.ac.uk/collection/P07/current/CFSN0721
+attribute,depth,units,String,m
+attribute,depth,valid_range,double,"-1.0, 350.0"
+variable,deployment,,String,
+attribute,deployment,comment,String,Deployment refers to a specific mooring deployed at a station (site location)
+attribute,deployment,goes_platform_id,String,04405528
+attribute,deployment,long_name,String,A0108: Massachusetts Bay
+attribute,deployment,mooring_id,String,A0108
+attribute,deployment,mooring_type,String,Slack
+attribute,deployment,platform_photo_url,String,http://gyre.umeoce.maine.edu/images/gomoosbuoy.jpg
+attribute,deployment,short_name,String,plat
+attribute,deployment,uscg_light_list,String,A
+attribute,deployment,uscg_light_list_number,String,367
+attribute,deployment,watch_circle_radius,int,45
+attribute,deployment,water_depth,double,65.0
+variable,conductivity,,float,
+attribute,conductivity,_FillValue,float,-999.0
+attribute,conductivity,accuracy,double,0.01
+attribute,conductivity,actual_range,float,"22.2758, 47.7425"
+attribute,conductivity,ancillary_variables,String,conductivity_qc conductivity_qc_agg conductivity_qc_tests data_source
+attribute,conductivity,cell_methods,String,time: point
+attribute,conductivity,comment,String,Measured by SBE37SM
+attribute,conductivity,computed_by,String,instrument
+attribute,conductivity,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,conductivity,coverage_content_type,String,physicalMeasurement
+attribute,conductivity,epic_code,int,51
+attribute,conductivity,grid_mapping,String,crs
+attribute,conductivity,gts_ingest,String,True
+attribute,conductivity,instrument,String,instrument_1
+attribute,conductivity,instrument_range,double,"0.0, 60.0"
+attribute,conductivity,ioos_category,String,physical_oceanography
+attribute,conductivity,is_dead,double,0.0
+attribute,conductivity,is_off_station,double,0.0
+attribute,conductivity,long_name,String,Conductivity
+attribute,conductivity,missing_value,float,-999.0
+attribute,conductivity,ncei_name,String,WATER CONDUCTIVITY
+attribute,conductivity,platform,String,station
+attribute,conductivity,references,String,http://www.seabird.com/sbe37sm-microcat-ctd
+attribute,conductivity,resolution,double,0.001
+attribute,conductivity,short_name,String,COND
+attribute,conductivity,source,String,buoy subsurface observation
+attribute,conductivity,standard_name,String,sea_water_electrical_conductivity
+attribute,conductivity,standard_name_url,String,https://vocab.nerc.ac.uk/collection/P07/current/CFSN0394
+attribute,conductivity,units,String,mS cm-1
+attribute,conductivity,valid_range,float,"15.0, 60.0"
+variable,salinity,,float,
+attribute,salinity,_FillValue,float,-999.0
+attribute,salinity,accuracy,double,0.01
+attribute,salinity,actual_range,float,"21.17684, 33.40538"
+attribute,salinity,ancillary_variables,String,salinity_qc salinity_qc_agg salinity_qc_tests data_source
+attribute,salinity,cell_methods,String,time: point
+attribute,salinity,comment,String,Computed using SW_SALT
+attribute,salinity,computed_by,String,shore
+attribute,salinity,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,salinity,coverage_content_type,String,physicalMeasurement
+attribute,salinity,epic_code,int,41
+attribute,salinity,grid_mapping,String,crs
+attribute,salinity,gts_ingest,String,true
+attribute,salinity,instrument,String,instrument_1
+attribute,salinity,instrument_range,double,"0.0, 60.0"
+attribute,salinity,ioos_category,String,salinity
+attribute,salinity,is_dead,double,0.0
+attribute,salinity,is_off_station,double,0.0
+attribute,salinity,long_name,String,Salinity
+attribute,salinity,missing_value,float,-999.0
+attribute,salinity,ncei_name,String,SALINITY
+attribute,salinity,platform,String,station
+attribute,salinity,references,String,http://www.marine.csiro.au/~mansbrid/local_use/toolbox_local/seawater/1.seawater/index.html
+attribute,salinity,resolution,double,0.001
+attribute,salinity,short_name,String,SAL
+attribute,salinity,source,String,buoy subsurface observation
+attribute,salinity,standard_name,String,sea_water_practical_salinity
+attribute,salinity,standard_name_url,String,https://vocab.nerc.ac.uk/collection/P07/current/CFSN0331
+attribute,salinity,units,String,0.001
+attribute,salinity,valid_range,float,"15.0, 37.0"
+variable,sigma_t,,float,
+attribute,sigma_t,_FillValue,float,-999.0
+attribute,sigma_t,accuracy,double,0.01
+attribute,sigma_t,actual_range,float,"14.369259, 26.404463"
+attribute,sigma_t,ancillary_variables,String,sigma_t_qc sigma_t_qc_agg sigma_t_qc_tests data_source
+attribute,sigma_t,cell_methods,String,time: point
+attribute,sigma_t,comment,String,Computed using SW_SIGT0
+attribute,sigma_t,computed_by,String,shore
+attribute,sigma_t,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,sigma_t,coverage_content_type,String,physicalMeasurement
+attribute,sigma_t,epic_code,int,70
+attribute,sigma_t,grid_mapping,String,crs
+attribute,sigma_t,instrument,String,instrument_1
+attribute,sigma_t,instrument_range,double,"0.0, 40.0"
+attribute,sigma_t,ioos_category,String,physical_oceanography
+attribute,sigma_t,is_dead,double,0.0
+attribute,sigma_t,is_off_station,double,0.0
+attribute,sigma_t,long_name,String,Sigma_t
+attribute,sigma_t,missing_value,float,-999.0
+attribute,sigma_t,ncei_name,String,DENSITY
+attribute,sigma_t,platform,String,station
+attribute,sigma_t,references,String,http://www.marine.csiro.au/~mansbrid/local_use/toolbox_local/seawater/1.seawater/index.html
+attribute,sigma_t,resolution,double,0.001
+attribute,sigma_t,short_name,String,SIGT
+attribute,sigma_t,source,String,buoy subsurface observation
+attribute,sigma_t,standard_name,String,sea_water_density
+attribute,sigma_t,standard_name_url,String,https://vocab.nerc.ac.uk/collection/P07/current/CFSN0332
+attribute,sigma_t,units,String,kg m-3
+attribute,sigma_t,valid_range,float,"10.0, 30.0"
+variable,temperature,,float,
+attribute,temperature,_FillValue,float,-999.0
+attribute,temperature,accuracy,double,0.005
+attribute,temperature,actual_range,float,"0.5255, 24.1889"
+attribute,temperature,ancillary_variables,String,temperature_qc temperature_qc_agg temperature_qc_tests data_source
+attribute,temperature,cell_methods,String,time: point
+attribute,temperature,comment,String,Measured by SBE37SM
+attribute,temperature,computed_by,String,instrument
+attribute,temperature,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,temperature,coverage_content_type,String,physicalMeasurement
+attribute,temperature,epic_code,int,20
+attribute,temperature,grid_mapping,String,crs
+attribute,temperature,gts_ingest,String,true
+attribute,temperature,instrument,String,instrument_1
+attribute,temperature,instrument_range,double,"-5.0, 40.0"
+attribute,temperature,ioos_category,String,temperature
+attribute,temperature,is_dead,double,0.0
+attribute,temperature,is_off_station,double,0.0
+attribute,temperature,long_name,String,Temperature
+attribute,temperature,missing_value,float,-999.0
+attribute,temperature,ncei_name,String,WATER TEMPERATURE
+attribute,temperature,platform,String,station
+attribute,temperature,references,String,http://www.seabird.com/sbe37sm-microcat-ctd
+attribute,temperature,resolution,double,0.001
+attribute,temperature,short_name,String,WT
+attribute,temperature,source,String,buoy subsurface observation
+attribute,temperature,standard_name,String,sea_water_temperature
+attribute,temperature,standard_name_url,String,https://vocab.nerc.ac.uk/collection/P07/current/CFSN0335
+attribute,temperature,units,String,degree_Celsius
+attribute,temperature,valid_range,float,"-2.0, 32.0"
+variable,actual_time,,double,
+attribute,actual_time,actual_range,double,"9.947322E8, 1.7915652E9"
+attribute,actual_time,calendar,String,gregorian
+attribute,actual_time,comment,String,"auxiliary coordinate variable, may differ slightly from regularly spaced nominal time"
+attribute,actual_time,epic_code,int,624
+attribute,actual_time,ioos_category,String,Time
+attribute,actual_time,long_name,String,Actual time of observation
+attribute,actual_time,short_name,String,AC_TIME
+attribute,actual_time,time_origin,String,01-JAN-1970 00:00:00
+attribute,actual_time,units,String,seconds since 1970-01-01T00:00:00Z
+attribute,actual_time,valid_range,double,"0.0, 2.147483647E9"
+variable,time_modified,,double,
+attribute,time_modified,actual_range,double,"1.352344392E9, 1.791566068E9"
+attribute,time_modified,calendar,String,julian
+attribute,time_modified,comment,String,time of last update to record
+attribute,time_modified,ioos_category,String,Time
+attribute,time_modified,long_name,String,Time Record Last Modified
+attribute,time_modified,short_name,String,time_mod
+attribute,time_modified,time_origin,String,01-JAN-1970 00:00:00
+attribute,time_modified,units,String,seconds since 1970-01-01T00:00:00Z
+attribute,time_modified,valid_range,double,"0.0, 2.147483647E9"
+variable,crs,,double,
+attribute,crs,actual_range,double,"9.969209968386869E36, 9.969209968386869E36"
+attribute,crs,epsg_code,String,EPSG:4326
+attribute,crs,grid_mapping_name,String,latitude_longitude
+attribute,crs,inverse_flattening,double,298.257223563
+attribute,crs,long_name,String,coordinate_reference_system
+attribute,crs,longitude_of_prime_meridian,double,0.0
+attribute,crs,semi_major_axis,double,6378137.0
+variable,data_source,,byte,
+attribute,data_source,_FillValue,byte,-128
+attribute,data_source,actual_range,byte,"0, 30"
+attribute,data_source,comment,String,Source of each record of data
+attribute,data_source,flag_meanings,String,missing goes_realtime realtime post-recovery post-calibration
+attribute,data_source,flag_values,byte,"0, 10, 20, 30, 40"
+attribute,data_source,long_name,String,Source of data for each record
+attribute,data_source,missing_value,byte,-128
+attribute,data_source,short_name,String,DATASRC
+attribute,data_source,units,String,1
+attribute,data_source,valid_range,byte,"0, 100"
+variable,instrument_1,,byte,
+attribute,instrument_1,actual_range,byte,"-127, -127"
+attribute,instrument_1,averaging_period,int,4
+attribute,instrument_1,averaging_period_units,String,seconds
+attribute,instrument_1,clock_time,String,Center of period
+attribute,instrument_1,comment,String,"CT Sensor "
+attribute,instrument_1,component,String,"CTD,Sea-Bird_Electronics_Inc,SBEIM2589"
+attribute,instrument_1,id,String,"urn:ioos:sensor:edu.maine.umeoce:A0108:CTD,Sea-Bird_Electronics_Inc,SBEIM2589"
+attribute,instrument_1,last_calibration_date,byte,32
+attribute,instrument_1,last_calibration_facility,byte,32
+attribute,instrument_1,long_name,String,Conductivity Temperature Sensor (CTD)
+attribute,instrument_1,make_model,String,"Sea-Bird_Electronics_Inc,SBE37IM"
+attribute,instrument_1,manufacturer,String,Sea-Bird_Electronics_Inc
+attribute,instrument_1,model,String,SBE37IM
+attribute,instrument_1,ncei_name,String,CTD
+attribute,instrument_1,number_samples_per_observation,int,4
+attribute,instrument_1,serial_number,String,SBEIM2589
+attribute,instrument_1,short_name,String,SM
+variable,conductivity_qc,,byte,
+attribute,conductivity_qc,_FillValue,byte,-128
+attribute,conductivity_qc,actual_range,byte,"0, 99"
+attribute,conductivity_qc,comment,String,original QC quality flag
+attribute,conductivity_qc,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,conductivity_qc,flag_meanings,String,quality_good out_of_range sensor_non_functional off_station manually_flagged
+attribute,conductivity_qc,flag_values,byte,"0, 1, 2, 60, 99"
+attribute,conductivity_qc,intent,String,data_quality
+attribute,conductivity_qc,long_name,String,Conductivity QC
+attribute,conductivity_qc,missing_value,byte,-128
+attribute,conductivity_qc,short_name,String,CONDQC
+attribute,conductivity_qc,standard_name,String,quality_flag
+attribute,conductivity_qc,valid_range,byte,"-127, 127"
+variable,conductivity_qc_agg,,byte,
+attribute,conductivity_qc_agg,_FillValue,byte,-128
+attribute,conductivity_qc_agg,actual_range,byte,"1, 9"
+attribute,conductivity_qc_agg,comment,String,QARTOD QC flag
+attribute,conductivity_qc_agg,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,conductivity_qc_agg,flag_meanings,String,PASS NOT_EVALUATED SUSPECT FAIL MISSING
+attribute,conductivity_qc_agg,flag_values,byte,"1, 2, 3, 4, 9"
+attribute,conductivity_qc_agg,intent,String,data_quality
+attribute,conductivity_qc_agg,ioos_category,String,quality
+attribute,conductivity_qc_agg,long_name,String,conductivity QARTOD Aggregate Flag
+attribute,conductivity_qc_agg,missing_value,byte,-128
+attribute,conductivity_qc_agg,references,String,https://oceandata.umeoce.maine.edu/doc/qc_references.html
+attribute,conductivity_qc_agg,short_name,String,CONDQAG
+attribute,conductivity_qc_agg,standard_name,String,quality_flag
+variable,salinity_qc,,byte,
+attribute,salinity_qc,_FillValue,byte,-128
+attribute,salinity_qc,actual_range,byte,"0, 99"
+attribute,salinity_qc,comment,String,original QC quality flag
+attribute,salinity_qc,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,salinity_qc,flag_meanings,String,quality_good out_of_range sensor_non_functional off_station manually_flagged
+attribute,salinity_qc,flag_values,byte,"0, 1, 2, 60, 99"
+attribute,salinity_qc,intent,String,data_quality
+attribute,salinity_qc,long_name,String,Salinity QC
+attribute,salinity_qc,missing_value,byte,-128
+attribute,salinity_qc,short_name,String,SALQC
+attribute,salinity_qc,standard_name,String,quality_flag
+attribute,salinity_qc,valid_range,byte,"-127, 127"
+variable,salinity_qc_agg,,byte,
+attribute,salinity_qc_agg,_FillValue,byte,-128
+attribute,salinity_qc_agg,actual_range,byte,"1, 9"
+attribute,salinity_qc_agg,comment,String,QARTOD QC flag
+attribute,salinity_qc_agg,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,salinity_qc_agg,flag_meanings,String,PASS NOT_EVALUATED SUSPECT FAIL MISSING
+attribute,salinity_qc_agg,flag_values,byte,"1, 2, 3, 4, 9"
+attribute,salinity_qc_agg,intent,String,data_quality
+attribute,salinity_qc_agg,ioos_category,String,quality
+attribute,salinity_qc_agg,long_name,String,salinity QARTOD Aggregate Flag
+attribute,salinity_qc_agg,missing_value,byte,-128
+attribute,salinity_qc_agg,references,String,https://oceandata.umeoce.maine.edu/doc/qc_references.html
+attribute,salinity_qc_agg,short_name,String,SALQAG
+attribute,salinity_qc_agg,standard_name,String,quality_flag
+variable,sigma_t_qc,,byte,
+attribute,sigma_t_qc,_FillValue,byte,-128
+attribute,sigma_t_qc,actual_range,byte,"0, 99"
+attribute,sigma_t_qc,comment,String,original QC quality flag
+attribute,sigma_t_qc,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,sigma_t_qc,flag_meanings,String,quality_good out_of_range sensor_non_functional off_station manually_flagged
+attribute,sigma_t_qc,flag_values,byte,"0, 1, 2, 60, 99"
+attribute,sigma_t_qc,intent,String,data_quality
+attribute,sigma_t_qc,long_name,String,Sigma_t QC
+attribute,sigma_t_qc,missing_value,byte,-128
+attribute,sigma_t_qc,short_name,String,SIGTQC
+attribute,sigma_t_qc,standard_name,String,quality_flag
+attribute,sigma_t_qc,valid_range,byte,"-127, 127"
+variable,sigma_t_qc_agg,,byte,
+attribute,sigma_t_qc_agg,_FillValue,byte,-128
+attribute,sigma_t_qc_agg,actual_range,byte,"1, 9"
+attribute,sigma_t_qc_agg,comment,String,QARTOD QC flag
+attribute,sigma_t_qc_agg,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,sigma_t_qc_agg,flag_meanings,String,PASS NOT_EVALUATED SUSPECT FAIL MISSING
+attribute,sigma_t_qc_agg,flag_values,byte,"1, 2, 3, 4, 9"
+attribute,sigma_t_qc_agg,intent,String,data_quality
+attribute,sigma_t_qc_agg,ioos_category,String,quality
+attribute,sigma_t_qc_agg,long_name,String,sigma_t QARTOD Aggregate Flag
+attribute,sigma_t_qc_agg,missing_value,byte,-128
+attribute,sigma_t_qc_agg,references,String,https://oceandata.umeoce.maine.edu/doc/qc_references.html
+attribute,sigma_t_qc_agg,short_name,String,SIGTQAG
+attribute,sigma_t_qc_agg,standard_name,String,quality_flag
+variable,temperature_qc,,byte,
+attribute,temperature_qc,_FillValue,byte,-128
+attribute,temperature_qc,actual_range,byte,"0, 99"
+attribute,temperature_qc,comment,String,original QC quality flag
+attribute,temperature_qc,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,temperature_qc,flag_meanings,String,quality_good out_of_range sensor_non_functional off_station manually_flagged
+attribute,temperature_qc,flag_values,byte,"0, 1, 2, 60, 99"
+attribute,temperature_qc,intent,String,data_quality
+attribute,temperature_qc,long_name,String,Temperature QC
+attribute,temperature_qc,missing_value,byte,-128
+attribute,temperature_qc,short_name,String,WTQC
+attribute,temperature_qc,standard_name,String,quality_flag
+attribute,temperature_qc,valid_range,byte,"-127, 127"
+variable,temperature_qc_agg,,byte,
+attribute,temperature_qc_agg,_FillValue,byte,-128
+attribute,temperature_qc_agg,actual_range,byte,"1, 9"
+attribute,temperature_qc_agg,comment,String,QARTOD QC flag
+attribute,temperature_qc_agg,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,temperature_qc_agg,flag_meanings,String,PASS NOT_EVALUATED SUSPECT FAIL MISSING
+attribute,temperature_qc_agg,flag_values,byte,"1, 2, 3, 4, 9"
+attribute,temperature_qc_agg,intent,String,data_quality
+attribute,temperature_qc_agg,ioos_category,String,quality
+attribute,temperature_qc_agg,long_name,String,temperature QARTOD Aggregate Flag
+attribute,temperature_qc_agg,missing_value,byte,-128
+attribute,temperature_qc_agg,references,String,https://oceandata.umeoce.maine.edu/doc/qc_references.html
+attribute,temperature_qc_agg,short_name,String,WTQAG
+attribute,temperature_qc_agg,standard_name,String,quality_flag
+variable,conductivity_qc_tests,,String,
+attribute,conductivity_qc_tests,comments,String,"14-character array with results of individual QARTOD tests.  1:Gap, 2:Syntax, 3:Location, 4:Gross Range, 5:Climatology, 6:Spike, 7:Rate of Change, 8:Flat-line, 9:Multi-variate, 10:Attenuated Signal, 11:Neighbor, 12:Associated variable, 13:Manual, 14:Other"
+attribute,conductivity_qc_tests,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,conductivity_qc_tests,flag_meanings,String,PASS NOT_EVALUATED SUSPECT FAIL MISSING
+attribute,conductivity_qc_tests,flag_values,String,"1, 2, 3, 4, 9"
+attribute,conductivity_qc_tests,intent,String,data_quality
+attribute,conductivity_qc_tests,ioos_category,String,quality
+attribute,conductivity_qc_tests,long_name,String,conductivity QARTOD Individual Tests
+attribute,conductivity_qc_tests,short_name,String,CONDQTST
+attribute,conductivity_qc_tests,standard_name,String,quality_flag
+variable,salinity_qc_tests,,String,
+attribute,salinity_qc_tests,comments,String,"14-character array with results of individual QARTOD tests.  1:Gap, 2:Syntax, 3:Location, 4:Gross Range, 5:Climatology, 6:Spike, 7:Rate of Change, 8:Flat-line, 9:Multi-variate, 10:Attenuated Signal, 11:Neighbor, 12:Associated variable, 13:Manual, 14:Other"
+attribute,salinity_qc_tests,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,salinity_qc_tests,flag_meanings,String,PASS NOT_EVALUATED SUSPECT FAIL MISSING
+attribute,salinity_qc_tests,flag_values,String,"1, 2, 3, 4, 9"
+attribute,salinity_qc_tests,intent,String,data_quality
+attribute,salinity_qc_tests,ioos_category,String,quality
+attribute,salinity_qc_tests,long_name,String,salinity QARTOD Individual Tests
+attribute,salinity_qc_tests,short_name,String,SALQTST
+attribute,salinity_qc_tests,standard_name,String,quality_flag
+variable,sigma_t_qc_tests,,String,
+attribute,sigma_t_qc_tests,comments,String,"14-character array with results of individual QARTOD tests.  1:Gap, 2:Syntax, 3:Location, 4:Gross Range, 5:Climatology, 6:Spike, 7:Rate of Change, 8:Flat-line, 9:Multi-variate, 10:Attenuated Signal, 11:Neighbor, 12:Associated variable, 13:Manual, 14:Other"
+attribute,sigma_t_qc_tests,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,sigma_t_qc_tests,flag_meanings,String,PASS NOT_EVALUATED SUSPECT FAIL MISSING
+attribute,sigma_t_qc_tests,flag_values,String,"1, 2, 3, 4, 9"
+attribute,sigma_t_qc_tests,intent,String,data_quality
+attribute,sigma_t_qc_tests,ioos_category,String,quality
+attribute,sigma_t_qc_tests,long_name,String,sigma_t QARTOD Individual Tests
+attribute,sigma_t_qc_tests,short_name,String,SIGTQTST
+attribute,sigma_t_qc_tests,standard_name,String,quality_flag
+variable,temperature_qc_tests,,String,
+attribute,temperature_qc_tests,comments,String,"14-character array with results of individual QARTOD tests.  1:Gap, 2:Syntax, 3:Location, 4:Gross Range, 5:Climatology, 6:Spike, 7:Rate of Change, 8:Flat-line, 9:Multi-variate, 10:Attenuated Signal, 11:Neighbor, 12:Associated variable, 13:Manual, 14:Other"
+attribute,temperature_qc_tests,coordinates,String,time depth lat lon station actual_time time_modified time_processed
+attribute,temperature_qc_tests,flag_meanings,String,PASS NOT_EVALUATED SUSPECT FAIL MISSING
+attribute,temperature_qc_tests,flag_values,String,"1, 2, 3, 4, 9"
+attribute,temperature_qc_tests,intent,String,data_quality
+attribute,temperature_qc_tests,ioos_category,String,quality
+attribute,temperature_qc_tests,long_name,String,temperature QARTOD Individual Tests
+attribute,temperature_qc_tests,short_name,String,WTQTST
+attribute,temperature_qc_tests,standard_name,String,quality_flag

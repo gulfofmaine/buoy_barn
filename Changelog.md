@@ -4,12 +4,40 @@
 
 Additions:
 
-- Import platforms and datasets from ERDDAP metadata in the admin (Import from ERDDAP on the platform list, Import dataset from ERDDAP on a platform). Sets the platform location, QARTOD constraints (including aggregate/rollup flags), and tidal datums from attributes, previews new and changed timeseries before saving, and highlights platform location changes. DataTypes are no longer created by the loader.
-- Sync with ERDDAP on a platform re-checks every dataset and set of constraints the platform already uses, offering timeseries updates, new variables, and a choice of each dataset's platform field and location values.
-
 Changes:
 
 Fixes:
+
+## 0.12.0 - 2026-10-09
+
+### Additions
+
+- Import platforms and datasets from ERDDAP metadata in the admin (Import from ERDDAP on the platform list, Import dataset from ERDDAP on a platform). Sets the platform location, QARTOD constraints (including aggregate/rollup flags), and tidal datums from attributes, previews new and changed timeseries before saving, and highlights platform location changes. https://github.com/gulfofmaine/buoy_barn/pull/1897
+- Sync with ERDDAP on a platform re-checks every dataset and set of constraints the platform already uses, offering timeseries updates, new variables, and a choice of each dataset's platform field and location values. https://github.com/gulfofmaine/buoy_barn/pull/1897
+
+### Dependency Updates
+
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1890
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.16.8 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1893
+* Update redis:7.4.11-alpine Docker digest to 858f009 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1892
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1891
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1894
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.16.9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1896
+* Update dependency django-health-check to ~=4.8.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1901
+* Update docker/build-push-action action to v7.4.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1906
+* Update astral-sh/setup-uv action to v10.2.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1900
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.16.10 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1898
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.12.22 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1899
+* Update dependency flower to ~=2.2.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1902
+* Update dependency xarray to ~=2026.9.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1905
+* Update dependency slack-sdk to ~=3.45.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1904
+* Update docker/setup-buildx-action action to v4.4.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1907
+* Update otel/opentelemetry-collector-contrib Docker tag to v0.161.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1908
+* Update dependency sentry-sdk to ~=2.71.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1903
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1909
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.11.1...v0.12.0
 
 ## 0.11.1 - 2026-09-11
 ### Other Changes

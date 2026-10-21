@@ -8,6 +8,32 @@ Changes:
 
 Fixes:
 
+## 0.12.1 - 2026-10-21
+### Other Changes
+* Secure CI by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1928
+* Update certifi to 2026.10.19 by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1929
+### Dependency Updates
+* Update gulfofmaine/odp-releaser digest to 64116bc by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1913
+* Update getsentry/action-release digest to 6fb9aea by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1912
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1911
+* Update pre-commit hook tox-dev/pyproject-fmt to v2.30.3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1925
+* Update pre-commit hook adamchainz/django-upgrade to v1.33.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1922
+* Update otel/opentelemetry-collector-contrib Docker tag to v0.162.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1921
+* Update docker/dockerfile Docker tag to v1.28 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1920
+* Update dependency sentry-sdk to ~=2.72.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1919
+* Update astral-sh/setup-uv action to v10.3.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1917
+* Update actions/download-artifact action to v8.0.2 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1914
+* Update dependency django-health-check to ~=4.10.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1918
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.13.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1924
+* Update dependency ubuntu to v26 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1926
+* Update actions/upload-artifact action to v7.0.2 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1915
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1927
+* Update github/codeql-action digest to 2892aa5 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1895
+* Update j178/prek-action action to v3.0.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1916
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.12.0...v0.12.1
+
 ## 0.12.0 - 2026-10-09
 
 ### Additions

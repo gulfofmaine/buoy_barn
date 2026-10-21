@@ -5,7 +5,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("deployments", "0057_platform_visible_climatology_platform_visible_dev_and_more"),
+        (
+            "deployments",
+            "0057_platform_visible_climatology_platform_visible_dev_and_more",
+        ),
     ]
 
     operations = [

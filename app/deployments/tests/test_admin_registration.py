@@ -39,4 +39,4 @@ from deployments.models import (
     ],
 )
 def test_model_is_registered_with_admin(model):
-    assert model in admin.site._registry  # noqa: SLF001 - no public "is this registered?" API
+    assert model in admin.site._registry

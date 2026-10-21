@@ -48,7 +48,9 @@ class PlatformSerializer(GeoFeatureModelSerializer):
 
             flood_levels = [
                 {
-                    "name": fl.level_other if fl.level_other else FloodLevel.Level[fl.level].value,
+                    "name": fl.level_other
+                    if fl.level_other
+                    else FloodLevel.Level[fl.level].value,
                     "min_value": fl.min_value,
                     "description": fl.description,
                 }

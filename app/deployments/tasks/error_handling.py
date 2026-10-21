@@ -74,7 +74,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
             try:
                 time = pd.to_datetime(potential_time)
                 times.append(time)
-            except ValueError:  # noqa: PERF203
+            except ValueError:
                 pass
         times.sort(reverse=True)
 
@@ -95,7 +95,9 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
         week_ago = timezone.now() - timedelta(days=7)
 
         if end_time < week_ago:
-            constraint_group = metrics.constraint_group_id(timeseries_group[0].constraints)
+            constraint_group = metrics.constraint_group_id(
+                timeseries_group[0].constraints,
+            )
 
             # `series.value_time > series.end_time` should not happen for real data. If it
             # would, Buoy Barn already has a reading newer than what ERDDAP is now reporting
@@ -173,7 +175,11 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
 
             # Every series in the group got guarded off, nothing was actually retired, so
             # say so rather than claim TIME_RANGE_RETIRED for a no-op.
-            return Outcome.TIME_RANGE_RETIRED if any_retired else Outcome.TIME_RANGE_INCONSISTENT
+            return (
+                Outcome.TIME_RANGE_RETIRED
+                if any_retired
+                else Outcome.TIME_RANGE_INCONSISTENT
+            )
 
         # ERDDAP reported an actual_range ending inside the last week, recent enough that
         # nothing was retired. Distinct from TIME_RANGE_RETIRED so a dataset map lookup
@@ -183,7 +189,7 @@ def handle_500_time_range_error(timeseries_group, compare_text: str) -> str:
     return NOT_HANDLED
 
 
-def error_extra(timeseries_group, compare_text: str = None):
+def error_extra(timeseries_group, compare_text: str | None = None):
     """Return dictionary of extra values for timeseries group errors"""
     extra = {
         "timeseries": timeseries_group,
@@ -359,7 +365,10 @@ def handle_404_no_matching_station(timeseries_group, compare_text: str) -> str:
 
 def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> str:
     """Handle when the Dataset does not exist on the ERDDAP server"""
-    if "Resource not found" in compare_text and "Currently unknown datasetID" in compare_text:
+    if (
+        "Resource not found" in compare_text
+        and "Currently unknown datasetID" in compare_text
+    ):
         logger.error(
             (
                 f"{timeseries_group[0].dataset.name} is currently unknown by the server. "
@@ -373,7 +382,7 @@ def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> st
     return NOT_HANDLED
 
 
-def handle_http_errors(timeseries_group, error: HTTPError) -> str:  # noqa: PLR0911
+def handle_http_errors(timeseries_group, error: HTTPError) -> str:
     """Handle various types of HTTPErrors.
 
     Returns the outcome that was recognised, or NOT_HANDLED (falsy) if it was not. Every
@@ -397,7 +406,10 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> str:  # noqa: PLR0
                 return Outcome.FORBIDDEN
 
             if error.__cause__.response.status_code == HTTPStatus.NOT_FOUND:
-                outcome = handle_404_errors(timeseries_group, error.__cause__.response.text)
+                outcome = handle_404_errors(
+                    timeseries_group,
+                    error.__cause__.response.text,
+                )
                 if outcome:
                     return outcome
 
@@ -405,7 +417,10 @@ def handle_http_errors(timeseries_group, error: HTTPError) -> str:  # noqa: PLR0
                 raise BackoffError("408 Backoff encountered") from error
 
             if error.__cause__.response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
-                outcome = handle_500_errors(timeseries_group, error.__cause__.response.text)
+                outcome = handle_500_errors(
+                    timeseries_group,
+                    error.__cause__.response.text,
+                )
                 if outcome:
                     return outcome
 

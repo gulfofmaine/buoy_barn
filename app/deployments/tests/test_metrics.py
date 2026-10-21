@@ -32,7 +32,9 @@ from opentelemetry.sdk.metrics.export import InMemoryMetricReader
 from buoy_barn.observability import bootstrap, celery_signals, freshness, metrics
 from buoy_barn.observability.log_metrics import MetricsLogHandler
 from deployments import tasks
-from deployments.management.commands.export_metrics import Command as ExportMetricsCommand
+from deployments.management.commands.export_metrics import (
+    Command as ExportMetricsCommand,
+)
 from deployments.models import (
     DataType,
     ErddapDataset,
@@ -118,7 +120,10 @@ class TestRole:
 
     def test_role_guessed_from_argv(self, monkeypatch):
         monkeypatch.delenv("BUOY_BARN_OTEL_ROLE", raising=False)
-        monkeypatch.setattr("sys.argv", ["celery", "-A", "buoy_barn", "worker", "-l", "info"])
+        monkeypatch.setattr(
+            "sys.argv",
+            ["celery", "-A", "buoy_barn", "worker", "-l", "info"],
+        )
         assert bootstrap.guess_role() == "worker"
 
     def test_granian_is_web_despite_its_workers_flag(self, monkeypatch):
@@ -162,7 +167,12 @@ class TestCardinalityGuards:
     """Attribute values must stay inside their declared sets."""
 
     def test_unknown_outcome_collapses_to_other(self, metric_reader):
-        metrics.record_erddap_request("neracoos", "A01_all", 1.0, "some ERDDAP error text")
+        metrics.record_erddap_request(
+            "neracoos",
+            "A01_all",
+            1.0,
+            "some ERDDAP error text",
+        )
 
         outcomes = metric_reader.counts(ERDDAP_OUTCOME, "outcome")
         assert "other" in outcomes
@@ -178,7 +188,8 @@ class TestCardinalityGuards:
 
         # The counter is where per-dataset detail belongs.
         assert any(
-            "erddap.dataset" in point.attributes for point in metric_reader.points(ERDDAP_OUTCOME)
+            "erddap.dataset" in point.attributes
+            for point in metric_reader.points(ERDDAP_OUTCOME)
         )
 
     def test_unknown_celery_state_collapses_to_other(self, metric_reader):
@@ -226,7 +237,10 @@ class TestErddapRequestContextManager:
         It means the run ran out of time, so it belongs with the other timeouts rather than
         in `unknown_error`, which is meant for failures nobody has classified yet.
         """
-        with pytest.raises(SoftTimeLimitExceeded), metrics.erddap_request("neracoos", "A01_all"):
+        with (
+            pytest.raises(SoftTimeLimitExceeded),
+            metrics.erddap_request("neracoos", "A01_all"),
+        ):
             raise SoftTimeLimitExceeded
 
         assert metric_reader.counts(ERDDAP_OUTCOME, "outcome") == {"timeout": 1}
@@ -275,7 +289,11 @@ class TestHealthcheckPing:
 
     def test_successful_ping_hits_the_right_url(self, metric_reader):
         with patch("requests.get") as get:
-            assert ping_healthcheck("https://hc.example/token", "hourly_refresh", start=True)
+            assert ping_healthcheck(
+                "https://hc.example/token",
+                "hourly_refresh",
+                start=True,
+            )
             assert ping_healthcheck("https://hc.example/token", "hourly_refresh")
 
         assert [call.args[0] for call in get.call_args_list] == [
@@ -288,21 +306,34 @@ class TestHealthcheckPing:
     def test_failure_ping_hits_the_fail_url(self, metric_reader):
         """`/fail` records the run as failed now, rather than after the grace period lapses."""
         with patch("requests.get") as get:
-            assert ping_healthcheck("https://hc.example/token", "hourly_refresh", fail=True)
+            assert ping_healthcheck(
+                "https://hc.example/token",
+                "hourly_refresh",
+                fail=True,
+            )
 
-        assert [call.args[0] for call in get.call_args_list] == ["https://hc.example/token/fail"]
+        assert [call.args[0] for call in get.call_args_list] == [
+            "https://hc.example/token/fail",
+        ]
         pings = metric_reader.counts("buoybarn.healthcheck.ping", "monitor", "outcome")
         assert pings[("hourly_refresh", "ok")] == 1
 
     def test_start_and_fail_together_raises(self):
         """A call site asking for both is a bug, not a runtime condition, so it is loud."""
         with pytest.raises(ValueError, match="start or fail"):
-            ping_healthcheck("https://hc.example/token", "hourly_refresh", start=True, fail=True)
+            ping_healthcheck(
+                "https://hc.example/token",
+                "hourly_refresh",
+                start=True,
+                fail=True,
+            )
 
     def test_failed_ping_is_counted_and_swallowed(self, metric_reader):
         with patch("requests.get", side_effect=requests.ConnectionError("boom")):
             # Must not raise: a monitoring side channel cannot be allowed to fail a refresh.
-            assert ping_healthcheck("https://hc.example/token", "hourly_refresh") is False
+            assert (
+                ping_healthcheck("https://hc.example/token", "hourly_refresh") is False
+            )
 
         pings = metric_reader.counts("buoybarn.healthcheck.ping", "monitor", "outcome")
         assert pings[("hourly_refresh", "error")] == 1
@@ -361,13 +392,24 @@ class TestCeleryTaskSignals:
         task = self._fake_task(name)
 
         celery_signals._on_task_prerun(task_id="abc", task=task, sender=None)
-        celery_signals._on_task_postrun(task_id="abc", task=task, sender=None, state="SUCCESS")
+        celery_signals._on_task_postrun(
+            task_id="abc",
+            task=task,
+            sender=None,
+            state="SUCCESS",
+        )
 
         states = metric_reader.counts("buoybarn.celery.task.count", "celery.state")
         assert states == {"started": 1, "success": 1}
         assert metric_reader.points("buoybarn.celery.task.duration")[0].count == 1
         # Balanced back to zero, so the gauge shows genuinely stuck tasks.
-        assert sum(p.value for p in metric_reader.points("buoybarn.celery.task.in_progress")) == 0
+        assert (
+            sum(
+                p.value
+                for p in metric_reader.points("buoybarn.celery.task.in_progress")
+            )
+            == 0
+        )
         # And the start-time map is drained rather than leaking an entry per task.
         assert "abc" not in celery_signals._start_times
 
@@ -427,9 +469,18 @@ class ErddapOutcomeMetricTestCase(TransactionTestCase):
 
     def setUp(self):
         self.platform = Platform.objects.get(name="M01")
-        self.erddap = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.erddap = ErddapServer.objects.get(
+            base_url="http://www.neracoos.org/erddap",
+        )
 
-    def _timeseries(self, platform_name, dataset_name, standard_name, variable, **kwargs):
+    def _timeseries(
+        self,
+        platform_name,
+        dataset_name,
+        standard_name,
+        variable,
+        **kwargs,
+    ):
         dataset = ErddapDataset.objects.create(name=dataset_name, server=self.erddap)
         return TimeSeries.objects.create(
             platform=Platform.objects.get(name=platform_name),
@@ -442,7 +493,9 @@ class ErddapOutcomeMetricTestCase(TransactionTestCase):
 
     def assert_outcome(self, expected):
         outcomes = self.metrics.counts(ERDDAP_OUTCOME, "outcome")
-        assert outcomes == {expected: 1}, f"expected {expected!r}, recorded {outcomes!r}"
+        assert outcomes == {expected: 1}, (
+            f"expected {expected!r}, recorded {outcomes!r}"
+        )
         # Duration is recorded for failures too, so a slow-failing server is visible.
         assert self.metrics.points(ERDDAP_DURATION)[0].count == 1
 
@@ -584,12 +637,17 @@ class TestConstraintGroupId:
         assert first == metrics.constraint_group_id({"depth=": 1.0, "salinity_qc=": 0})
 
     def test_distinct_constraints_are_distinct_ids(self):
-        assert metrics.constraint_group_id({"stationID=": "8447387"}) != metrics.constraint_group_id(
+        assert metrics.constraint_group_id(
+            {"stationID=": "8447387"},
+        ) != metrics.constraint_group_id(
             {"depth=": 1.0},
         )
 
     def test_id_shape(self):
-        assert re.fullmatch(r"[0-9a-f]{8}", metrics.constraint_group_id({"depth=": 1.0}))
+        assert re.fullmatch(
+            r"[0-9a-f]{8}",
+            metrics.constraint_group_id({"depth=": 1.0}),
+        )
 
     def test_shape_validation_rejects_free_text(self):
         """The value is a hash, so it cannot be checked against a frozenset like the other
@@ -597,7 +655,13 @@ class TestConstraintGroupId:
         assert metrics._bounded_group_id("a1b2c3d4") == "a1b2c3d4"
         assert metrics._bounded_group_id(None) == metrics.NO_CONSTRAINTS
 
-        for rejected in ('{"depth=": 1.0}', "NOTAHASH", "a1b2c3d", "A1B2C3D4", "a1b2c3d4e"):
+        for rejected in (
+            '{"depth=": 1.0}',
+            "NOTAHASH",
+            "a1b2c3d",
+            "A1B2C3D4",
+            "a1b2c3d4e",
+        ):
             assert metrics._bounded_group_id(rejected) == metrics.OTHER, rejected
 
 
@@ -641,7 +705,10 @@ class TestConstraintGroupLabels:
             timeseries_type="NotAChoice",
         )
 
-        assert metric_reader.points(ERDDAP_OUTCOME)[0].attributes["timeseries.type"] == metrics.OTHER
+        assert (
+            metric_reader.points(ERDDAP_OUTCOME)[0].attributes["timeseries.type"]
+            == metrics.OTHER
+        )
 
 
 class TestConstraintGroupInfo:
@@ -650,7 +717,10 @@ class TestConstraintGroupInfo:
 
     def test_exporter_label_is_the_canonical_form_the_id_hashes(self):
         """Assert the relationship directly rather than trusting that both call one helper."""
-        for constraints in ({"depth=": 1.0, "salinity_qc=": 0}, {"stationID=": "8447387 "}):
+        for constraints in (
+            {"depth=": 1.0, "salinity_qc=": 0},
+            {"stationID=": "8447387 "},
+        ):
             group_id = metrics.constraint_group_id(constraints)
             label = freshness._constraints_label(constraints)
 
@@ -697,7 +767,9 @@ class FreshnessGaugeTestCase(TransactionTestCase):
         self.now = timezone.now()
         self.platform = Platform.objects.get(name="M01")
         self.data_type = DataType.objects.get(standard_name="sea_water_temperature")
-        self.server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.server = ErddapServer.objects.get(
+            base_url="http://www.neracoos.org/erddap",
+        )
         self.dataset = ErddapDataset.objects.create(
             name="M01_sbe37_all",
             server=self.server,
@@ -721,7 +793,9 @@ class FreshnessGaugeTestCase(TransactionTestCase):
         observation = observations[0]
         assert observation.attributes["erddap.dataset"] == "M01_sbe37_all"
         # Two hours ago, give or take the time this test takes to run.
-        assert TWO_HOURS_SECONDS <= observation.value < TWO_HOURS_SECONDS + LEEWAY_SECONDS
+        assert (
+            TWO_HOURS_SECONDS <= observation.value < TWO_HOURS_SECONDS + LEEWAY_SECONDS
+        )
 
     def test_datasets_never_refreshed_are_counted(self):
         ErddapDataset.objects.create(name="never_run", server=self.server)
@@ -751,7 +825,10 @@ class FreshnessGaugeTestCase(TransactionTestCase):
 
         observations = freshness._observations(freshness._timeseries_value_ages)
 
-        by_agg = {observation.attributes["agg"]: observation.value for observation in observations}
+        by_agg = {
+            observation.attributes["agg"]: observation.value
+            for observation in observations
+        }
         assert set(by_agg) == {"min", "max"}
         # agg=min is the *freshest* reading: one hour, not four hundred days.
         assert ONE_HOUR_SECONDS <= by_agg["min"] < ONE_HOUR_SECONDS + LEEWAY_SECONDS
@@ -764,14 +841,27 @@ class FreshnessGaugeTestCase(TransactionTestCase):
         `_observations` turned that into an empty list, so the gauge never published at all.
         """
         self._timeseries(value_time=self.now, value=1.0)
-        self._timeseries(variable="inactive", active=False, value_time=self.now, value=2.0)
-        self._timeseries(variable="retired", end_time=self.now, value_time=self.now, value=3.0)
+        self._timeseries(
+            variable="inactive",
+            active=False,
+            value_time=self.now,
+            value=2.0,
+        )
+        self._timeseries(
+            variable="retired",
+            end_time=self.now,
+            value_time=self.now,
+            value=3.0,
+        )
         self._timeseries(variable="fresh")  # never populated: no value_time
 
         observations = freshness._observations(freshness._timeseries_counts)
 
         assert observations, "the gauge published nothing at all"
-        by_state = {observation.attributes["state"]: observation.value for observation in observations}
+        by_state = {
+            observation.attributes["state"]: observation.value
+            for observation in observations
+        }
         assert by_state == {
             "active": 2,  # the populated one and the never-populated one
             "inactive": 1,
@@ -792,7 +882,9 @@ class FreshnessGaugeTestCase(TransactionTestCase):
 
         assert len(observations) == EXPECTED_GROUP_COUNT
         assert {observation.value for observation in observations} == {1}
-        assert {observation.attributes["constraints"] for observation in observations} == {
+        assert {
+            observation.attributes["constraints"] for observation in observations
+        } == {
             '{"depth=":1.0}',
             '{"depth=":50.0}',
         }
@@ -815,7 +907,10 @@ class FreshnessGaugeTestCase(TransactionTestCase):
             for constraints, _type in self.dataset.group_timeseries_by_constraint_and_type()
         }
         from_exporter = {
-            (observation.attributes["erddap.dataset"], observation.attributes["constraint_group"])
+            (
+                observation.attributes["erddap.dataset"],
+                observation.attributes["constraint_group"],
+            )
             for observation in freshness._observations(freshness._constraint_group_info)
         }
 
@@ -830,7 +925,10 @@ class FreshnessGaugeTestCase(TransactionTestCase):
         used the name alone, falling back to "unknown". So for a server without a name the
         `constraint_group.info` join returned nothing at all.
         """
-        nameless = ErddapServer.objects.create(name=None, base_url="http://example.com/erddap")
+        nameless = ErddapServer.objects.create(
+            name=None,
+            base_url="http://example.com/erddap",
+        )
         ErddapDataset.objects.create(
             name="nameless_dataset",
             server=nameless,
@@ -880,7 +978,9 @@ class TestLoggingRecursion:
         try:
             for _ in range(3):
                 assert bootstrap.configure() is False
-                logging.getLogger("deployments.tasks").warning("a later, unrelated warning")
+                logging.getLogger("deployments.tasks").warning(
+                    "a later, unrelated warning",
+                )
         finally:
             logging.getLogger().removeHandler(handler)
             bootstrap.reset_for_testing(None)
@@ -968,7 +1068,9 @@ class TestExporterCommand:
         try:
             # Returning immediately means the container exits 0 and gets restarted, which is
             # the crash loop the command exists to avoid.
-            assert not finished.wait(timeout=0.5), "the command returned instead of idling"
+            assert not finished.wait(timeout=0.5), (
+                "the command returned instead of idling"
+            )
             stop.set()
             assert finished.wait(timeout=5), "the command ignored its stop event"
         finally:
@@ -1047,7 +1149,10 @@ class TestOutcomeIsNotRewrittenAfterASuccessfulFetch:
     """
 
     def test_explicit_success_survives_a_later_exception(self, metric_reader):
-        with pytest.raises(RuntimeError), metrics.erddap_request("server", "dataset") as outcome:
+        with (
+            pytest.raises(RuntimeError),
+            metrics.erddap_request("server", "dataset") as outcome,
+        ):
             outcome.set("success", rows=ROW_COUNT)
             # Stands in for the per-series save loop after a good fetch.
             raise RuntimeError("the database went away while saving")
@@ -1056,7 +1161,10 @@ class TestOutcomeIsNotRewrittenAfterASuccessfulFetch:
         # The row count from the successful fetch is still recorded.
         assert metric_reader.points(ERDDAP_ROWS)[0].sum == ROW_COUNT
 
-    def test_an_unnamed_outcome_is_still_classified_from_the_exception(self, metric_reader):
+    def test_an_unnamed_outcome_is_still_classified_from_the_exception(
+        self,
+        metric_reader,
+    ):
         """The behaviour the `success` sentinel was there for, which must not regress."""
         with pytest.raises(BackoffError), metrics.erddap_request("server", "dataset"):
             raise BackoffError("429 from the server")
@@ -1064,7 +1172,10 @@ class TestOutcomeIsNotRewrittenAfterASuccessfulFetch:
         assert metric_reader.counts(ERDDAP_OUTCOME, "outcome") == {"backoff": 1}
 
     def test_explicit_empty_dataframe_also_survives(self, metric_reader):
-        with pytest.raises(RuntimeError), metrics.erddap_request("server", "dataset") as outcome:
+        with (
+            pytest.raises(RuntimeError),
+            metrics.erddap_request("server", "dataset") as outcome,
+        ):
             outcome.set("empty_dataframe", rows=0)
             raise RuntimeError("boom")
 
@@ -1159,7 +1270,15 @@ class TestTelemetryFailuresAreNotCountedAsApplicationErrors:
                 "buoy_barn.observability.freshness",
             ):
                 handler.emit(
-                    logging.LogRecord(name, logging.ERROR, __file__, 1, "export failed", (), None),
+                    logging.LogRecord(
+                        name,
+                        logging.ERROR,
+                        __file__,
+                        1,
+                        "export failed",
+                        (),
+                        None,
+                    ),
                 )
             # A real application error still counts.
             handler.emit(
@@ -1176,7 +1295,9 @@ class TestTelemetryFailuresAreNotCountedAsApplicationErrors:
         finally:
             isolated.removeHandler(handler)
 
-        assert metric_reader.counts(LOG_RECORDS, "logger") == {"deployments.tasks.refresh": 1}
+        assert metric_reader.counts(LOG_RECORDS, "logger") == {
+            "deployments.tasks.refresh": 1,
+        }
 
 
 class TestOutcomeVocabularyOwnership:
@@ -1214,7 +1335,9 @@ class TestOutcomeVocabularyOwnership:
                 ):
                     referenced.add(node.attr)
 
-        assert referenced, "no Outcome members referenced -- has the enum been bypassed?"
+        assert referenced, (
+            "no Outcome members referenced -- has the enum been bypassed?"
+        )
         unknown = referenced - {member.name for member in Outcome}
         assert not unknown, f"Outcome members named but not defined: {unknown}"
 
@@ -1229,7 +1352,10 @@ class TestOutcomeVocabularyOwnership:
             tree = ast.parse(pathlib.Path(module.__file__).read_text())
             for node in ast.walk(tree):
                 literals = []
-                if isinstance(node, ast.Return) and isinstance(node.value, ast.Constant):
+                if isinstance(node, ast.Return) and isinstance(
+                    node.value,
+                    ast.Constant,
+                ):
                     literals.append(node.value.value)
                 if (
                     isinstance(node, ast.Call)
@@ -1246,7 +1372,9 @@ class TestOutcomeVocabularyOwnership:
                     if isinstance(literal, str) and literal in OUTCOMES
                 )
 
-        assert not offenders, f"outcomes reported as bare strings instead of Outcome: {offenders}"
+        assert not offenders, (
+            f"outcomes reported as bare strings instead of Outcome: {offenders}"
+        )
 
     def test_the_exception_map_only_names_declared_outcomes(self):
         """`_OUTCOME_BY_EXCEPTION` cannot use the enum, so pin its values instead.

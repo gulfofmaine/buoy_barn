@@ -29,9 +29,7 @@ class Alert(models.Model):
     )
 
     def __str__(self):
-        return (
-            f"{self.platform.name} - {self.level} - {self.start_time}:{self.end_time} - {self.message}"
-        )
+        return f"{self.platform.name} - {self.level} - {self.start_time}:{self.end_time} - {self.message}"
 
     @property
     def json(self):

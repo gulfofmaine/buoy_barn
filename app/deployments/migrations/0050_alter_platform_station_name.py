@@ -12,6 +12,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="platform",
             name="station_name",
-            field=models.CharField(blank=True, default="", max_length=100, verbose_name="Platform name"),
+            field=models.CharField(
+                blank=True,
+                default="",
+                max_length=100,
+                verbose_name="Platform name",
+            ),
         ),
     ]

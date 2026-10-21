@@ -7,13 +7,30 @@ from .program import Program
 
 class Platform(models.Model):
     name = models.CharField("Platform slug/station_id", max_length=50)
-    station_name = models.CharField("Platform name", max_length=100, default="", blank=True)
+    station_name = models.CharField(
+        "Platform name",
+        max_length=100,
+        default="",
+        blank=True,
+    )
     mooring_site_desc = models.TextField("Mooring Site Description")
 
-    visible_mariners = models.BooleanField("Visible on Mariner's Dashboard", default=True)
-    visible_dev = models.BooleanField("Visible on dev Mariner's Dashboard", default=True)
-    visible_climatology = models.BooleanField("Visible on Climatology tool", default=False)
-    visible_graph_download = models.BooleanField("Visible on Graph Download tool", default=True)
+    visible_mariners = models.BooleanField(
+        "Visible on Mariner's Dashboard",
+        default=True,
+    )
+    visible_dev = models.BooleanField(
+        "Visible on dev Mariner's Dashboard",
+        default=True,
+    )
+    visible_climatology = models.BooleanField(
+        "Visible on Climatology tool",
+        default=False,
+    )
+    visible_graph_download = models.BooleanField(
+        "Visible on Graph Download tool",
+        default=True,
+    )
 
     class PlatformTypes(models.TextChoices):
         BUOY = "Buoy"
@@ -47,6 +64,8 @@ class Platform(models.Model):
 
     def current_alerts(self):
         alerts = [
-            alert for alert in self.alerts.all() if not alert.end_time or date.today() < alert.end_time
+            alert
+            for alert in self.alerts.all()
+            if not alert.end_time or date.today() < alert.end_time
         ]
         return alerts

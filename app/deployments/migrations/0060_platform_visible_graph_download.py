@@ -12,6 +12,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="platform",
             name="visible_graph_download",
-            field=models.BooleanField(default=True, verbose_name="Visible on Graph Download tool"),
+            field=models.BooleanField(
+                default=True,
+                verbose_name="Visible on Graph Download tool",
+            ),
         ),
     ]

@@ -57,7 +57,11 @@ class Migration(migrations.Migration):
                 (
                     "level",
                     models.CharField(
-                        choices=[("info", "Info"), ("warning", "Warning"), ("danger", "Danger")],
+                        choices=[
+                            ("info", "Info"),
+                            ("warning", "Warning"),
+                            ("danger", "Danger"),
+                        ],
                         max_length=16,
                     ),
                 ),

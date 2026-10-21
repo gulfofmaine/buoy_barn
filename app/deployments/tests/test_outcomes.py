@@ -13,13 +13,21 @@ class FetchFailureVocabularyTestCase(TestCase):
     """
 
     def test_fetch_failure_messages_is_exhaustive(self):
-        classified = set(outcomes.FETCH_FAILURE_MESSAGES) | set(outcomes.HANDLED_ELSEWHERE)
+        classified = set(outcomes.FETCH_FAILURE_MESSAGES) | set(
+            outcomes.HANDLED_ELSEWHERE,
+        )
         all_outcomes = set(outcomes.Outcome)
 
         unclassified = all_outcomes - outcomes.BENIGN_OUTCOMES - classified
-        self.assertEqual(unclassified, set(), "outcome(s) not in the map or HANDLED_ELSEWHERE")
+        self.assertEqual(
+            unclassified,
+            set(),
+            "outcome(s) not in the map or HANDLED_ELSEWHERE",
+        )
 
-        expected = all_outcomes - outcomes.BENIGN_OUTCOMES - set(outcomes.HANDLED_ELSEWHERE)
+        expected = (
+            all_outcomes - outcomes.BENIGN_OUTCOMES - set(outcomes.HANDLED_ELSEWHERE)
+        )
         self.assertEqual(expected, set(outcomes.FETCH_FAILURE_MESSAGES))
 
     def test_handled_elsewhere_entries_carry_a_reason(self):

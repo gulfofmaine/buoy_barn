@@ -14,7 +14,16 @@ from django.contrib.admin.utils import unquote
 from django.contrib.admin.views.main import ChangeList
 from django.contrib.gis import admin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Case, Exists, IntegerField, OuterRef, Q, Subquery, Value, When
+from django.db.models import (
+    Case,
+    Exists,
+    IntegerField,
+    OuterRef,
+    Q,
+    Subquery,
+    Value,
+    When,
+)
 from django.db.models.functions import Coalesce, Greatest
 from django.db.models.query import QuerySet
 from django.http import HttpResponseNotAllowed, HttpResponseRedirect
@@ -109,7 +118,8 @@ _REACH_COLUMNS = tuple(
 # Where each reach attribute lands in a `_reach_rows` row, so `compute_message_reach` can read
 # a row by name instead of by position.
 _REACH_COLUMN_ATTRS = tuple(
-    (_REACH_COLUMNS.index(kind.timeseries_column), kind.reach_attr) for kind in SUBJECT_KINDS.values()
+    (_REACH_COLUMNS.index(kind.timeseries_column), kind.reach_attr)
+    for kind in SUBJECT_KINDS.values()
 )
 
 _LEVEL_COLORS = {
@@ -159,7 +169,9 @@ _EMPTY_REACH = MessageReach(frozenset(), frozenset(), frozenset(), frozenset())
 
 def _reach_rows(column, ids):
     """One query resolving a whole group of same-typed subjects to what they touch."""
-    return TimeSeries.objects.filter(**{f"{column}__in": list(ids)}).values_list(*_REACH_COLUMNS)
+    return TimeSeries.objects.filter(**{f"{column}__in": list(ids)}).values_list(
+        *_REACH_COLUMNS,
+    )
 
 
 def compute_message_reach(messages) -> dict[int, MessageReach]:
@@ -384,7 +396,10 @@ def annotate_system_message_badges(objs, page_model) -> list:
 
     reaching = messages_reaching(page_model, [obj.pk for obj in objs])
     message_pks = set().union(*reaching.values()) if reaching else set()
-    messages = {message.pk: message for message in SystemMessage.objects.filter(pk__in=message_pks)}
+    messages = {
+        message.pk: message
+        for message in SystemMessage.objects.filter(pk__in=message_pks)
+    }
     reach_by_message = compute_message_reach(messages.values())
 
     for obj in objs:
@@ -400,8 +415,12 @@ def annotate_system_message_badges(objs, page_model) -> list:
             else:
                 contained[message.level] += 1
 
-        obj._system_message_badge = SystemMessageBadge(  # noqa: SLF001 - carrier for the display fn
-            contained=[(level, contained[level]) for level in _LEVEL_ORDER if contained.get(level)],
+        obj._system_message_badge = SystemMessageBadge(
+            contained=[
+                (level, contained[level])
+                for level in _LEVEL_ORDER
+                if contained.get(level)
+            ],
             spilling=sorted(spilling.items()),
         )
 
@@ -487,7 +506,9 @@ def system_message_status(obj: ErddapDataset | Platform | TimeSeries):
     """
     badge = getattr(obj, "_system_message_badge", None)
     if badge is None:
-        badge = annotate_system_message_badges([obj], obj._meta.model)[0]._system_message_badge  # noqa: SLF001
+        badge = annotate_system_message_badges([obj], obj._meta.model)[
+            0
+        ]._system_message_badge
 
     if not badge.contained and not badge.spilling:
         return format_html("<span style='color: gray;'>{}</span>", "None")
@@ -496,7 +517,11 @@ def system_message_status(obj: ErddapDataset | Platform | TimeSeries):
         " ",
         "<span style='color: {};'>{} {}</span>",
         (
-            (_LEVEL_COLORS.get(level, "gray"), count, SystemMessage.Level(level).label.lower())
+            (
+                _LEVEL_COLORS.get(level, "gray"),
+                count,
+                SystemMessage.Level(level).label.lower(),
+            )
             for level, count in badge.contained
         ),
     )
@@ -523,7 +548,10 @@ class SystemMessageChangeList(ChangeList):
     def get_results(self, request):
         super().get_results(request)
         if system_message_status in self.model_admin.list_display:
-            self.result_list = annotate_system_message_badges(self.result_list, self.model)
+            self.result_list = annotate_system_message_badges(
+                self.result_list,
+                self.model,
+            )
 
 
 class SystemMessageListFilter(SimpleListFilter):
@@ -575,14 +603,19 @@ class SystemMessageSidebarMixin:
         """
         queryset = super().get_queryset(request)
         if system_message_status in self.list_display:
-            queryset = queryset.annotate(**{SYSTEM_MESSAGE_RANK: system_message_rank(self.model)})
+            queryset = queryset.annotate(
+                **{SYSTEM_MESSAGE_RANK: system_message_rank(self.model)},
+            )
         return queryset
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         extra_context = {**(extra_context or {})}
         obj = self.get_object(request, unquote(object_id))
         if obj is not None:
-            extra_context["system_messages"] = build_system_message_rows(obj, self.admin_site)
+            extra_context["system_messages"] = build_system_message_rows(
+                obj,
+                self.admin_site,
+            )
         return super().change_view(request, object_id, form_url, extra_context)
 
 
@@ -612,7 +645,9 @@ class SystemMessageStateFilter(SimpleListFilter):
         for lookup, title in self.lookup_choices:
             yield {
                 "selected": selected == str(lookup),
-                "query_string": changelist.get_query_string({self.parameter_name: lookup}),
+                "query_string": changelist.get_query_string(
+                    {self.parameter_name: lookup},
+                ),
                 "display": title,
             }
 
@@ -621,7 +656,10 @@ class SystemMessageStateFilter(SimpleListFilter):
         if value == "outstanding":
             return queryset.outstanding()
         if value == "acknowledged":
-            return queryset.filter(acknowledged_at__isnull=False, resolved_at__isnull=True)
+            return queryset.filter(
+                acknowledged_at__isnull=False,
+                resolved_at__isnull=True,
+            )
         if value == "resolved":
             return queryset.filter(resolved_at__isnull=False)
         return queryset
@@ -661,7 +699,12 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
         "last_seen",
         "state",
     ]
-    list_filter = [SystemMessageStateFilter, "level", "code", SystemMessageSubjectFilter]
+    list_filter = [
+        SystemMessageStateFilter,
+        "level",
+        "code",
+        SystemMessageSubjectFilter,
+    ]
     search_fields = ["message", "code"]
     date_hierarchy = "last_seen"
 
@@ -749,14 +792,22 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
             ),
         )
 
-    @action(description="Acknowledge this message", button_type="form", methods=("POST",))
+    @action(
+        description="Acknowledge this message",
+        button_type="form",
+        methods=("POST",),
+    )
     def acknowledge(self, request, obj):
         if not self._may_acknowledge(request):
             raise PermissionDenied
         _stamp_acknowledgement(obj, request.user)
         self.message_user(request, f"Acknowledged '{obj}'.")
 
-    @action(description="Clear this message's acknowledgement", button_type="form", methods=("POST",))
+    @action(
+        description="Clear this message's acknowledgement",
+        button_type="form",
+        methods=("POST",),
+    )
     def unacknowledge(self, request, obj):
         if not self._may_acknowledge(request):
             raise PermissionDenied
@@ -782,7 +833,10 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
     @admin.display(description="State")
     def state(self, obj: SystemMessage):
         if obj.resolved_at is not None:
-            return format_html("<span style='color: gray;' title='{}'>Resolved</span>", obj.resolved_at)
+            return format_html(
+                "<span style='color: gray;' title='{}'>Resolved</span>",
+                obj.resolved_at,
+            )
         if obj.acknowledged_at is not None and obj.acknowledged_at >= obj.last_seen:
             return format_html(
                 "<span style='color: gray;' title='{}'>Acknowledged</span>",
@@ -826,7 +880,10 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
         reach = compute_message_reach([obj]).get(obj.pk, _EMPTY_REACH)
 
         sections = [
-            ("Platforms", Platform.objects.filter(pk__in=reach.platform_ids).order_by("name")),
+            (
+                "Platforms",
+                Platform.objects.filter(pk__in=reach.platform_ids).order_by("name"),
+            ),
             (
                 "Datasets",
                 ErddapDataset.objects.filter(pk__in=reach.dataset_ids)
@@ -853,7 +910,12 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
                 ((_admin_url(self.admin_site, item), str(item)) for item in items),
             )
             rendered.append(
-                format_html("<p><strong>{} ({})</strong></p><ul>{}</ul>", title, len(items), links),
+                format_html(
+                    "<p><strong>{} ({})</strong></p><ul>{}</ul>",
+                    title,
+                    len(items),
+                    links,
+                ),
             )
 
         if not rendered:
@@ -863,7 +925,10 @@ class SystemMessageAdmin(DjangoObjectActions, admin.ModelAdmin):
 
     @admin.action(description="Acknowledge selected system messages")
     def acknowledge_messages(self, request, queryset):
-        count = queryset.update(acknowledged_at=timezone.now(), acknowledged_by=request.user)
+        count = queryset.update(
+            acknowledged_at=timezone.now(),
+            acknowledged_by=request.user,
+        )
         self.message_user(request, f"Acknowledged {count} system messages.")
 
     @admin.action(description="Un-acknowledge selected system messages")

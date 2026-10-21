@@ -102,9 +102,15 @@ class TimeSeriesAdmin(SystemMessageSidebarMixin, admin.ModelAdmin):
         if instance.value_time is None:
             return format_html("<span style='color: gray;'>{}</span>", "No data")
         if instance.value_time < day_ago:
-            return format_html("<span style='color: red;'>{}</span>", instance.value_time)
+            return format_html(
+                "<span style='color: red;'>{}</span>",
+                instance.value_time,
+            )
         if instance.value_time < hour_ago:
-            return format_html("<span style='color: yellow;'>{}</span>", instance.value_time)
+            return format_html(
+                "<span style='color: yellow;'>{}</span>",
+                instance.value_time,
+            )
         return format_html("<span style='color: green;'>{}</span>", instance.value_time)
 
     @admin.display(

@@ -58,3 +58,6 @@ dev = [
 
 [tool.uv]
 exclude-newer = "7 days"
+
+[tool.ruff]
+lint.ignore = [ "DTZ003", "G201", "ICN001", "ISC004", "LOG014", "N999", "PIE810", "RUF012", "RUF015", "RUF059" ]

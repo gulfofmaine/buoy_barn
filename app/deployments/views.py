@@ -120,9 +120,16 @@ class DatasetViewSet(viewsets.ReadOnlyModelViewSet):
         # `?clear_end_time=true` is how a human (or erddap_mqtt, recovering a wrongly-retired
         # series on an MQTT "dataset updated" notification) asks this refresh to also try
         # un-retiring series (see TimeSeriesQuerySet.refreshable).
-        clear_end_time = request.query_params.get("clear_end_time", "").lower() in {"true", "1"}
+        clear_end_time = request.query_params.get("clear_end_time", "").lower() in {
+            "true",
+            "1",
+        }
 
-        tasks.single_refresh_dataset.delay(dataset.id, healthcheck=True, clear_end_time=clear_end_time)
+        tasks.single_refresh_dataset.delay(
+            dataset.id,
+            healthcheck=True,
+            clear_end_time=clear_end_time,
+        )
 
         serializer = self.serializer_class(dataset, context={"request": request})
         return Response(serializer.data)
@@ -303,7 +310,10 @@ _proxy_http_client = httpx2.AsyncClient(timeout=settings.PROXY_TIMEOUT_SECONDS)
 
 
 @cache_page(settings.PROXY_CACHE_SECONDS)
-async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse | StreamingHttpResponse:
+async def server_proxy(
+    request: HttpRequest,
+    server_id: int,
+) -> HttpResponse | StreamingHttpResponse:
     server = await ErddapServer.objects.aget(id=server_id)
     path = request.get_full_path().split("proxy/")[1]
 
@@ -324,7 +334,9 @@ async def server_proxy(request: HttpRequest, server_id: int) -> HttpResponse | S
     # Defence-in-depth: confirm the resolved URL still targets the trusted server
     # by matching exact origin (scheme + hostname + effective port).
     base_port = parsed_base.port or (443 if parsed_base.scheme == "https" else 80)
-    req_port = parsed_request_url.port or (443 if parsed_request_url.scheme == "https" else 80)
+    req_port = parsed_request_url.port or (
+        443 if parsed_request_url.scheme == "https" else 80
+    )
     if (
         parsed_request_url.scheme not in {"http", "https"}
         or parsed_request_url.scheme != parsed_base.scheme

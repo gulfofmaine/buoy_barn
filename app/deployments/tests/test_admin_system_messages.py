@@ -36,7 +36,13 @@ from deployments.models import (
 from deployments.models.system_message import subject_field
 
 
-def _message(subject, *, code=SystemMessage.Code.NOT_FOUND, level=SystemMessage.Level.DANGER, **kwargs):
+def _message(
+    subject,
+    *,
+    code=SystemMessage.Code.NOT_FOUND,
+    level=SystemMessage.Level.DANGER,
+    **kwargs,
+):
     return SystemMessage.objects.create(
         **{subject_field(subject): subject},
         code=code,
@@ -55,16 +61,21 @@ class SystemMessageAdminTestCase(TestCase):
         self.user = get_user_model().objects.create_superuser(
             username="admin",
             email="admin@example.com",
-            password="password",  # noqa: S106
+            password="password",
         )
         self.client.force_login(self.user)
 
         self.platform = Platform.objects.get(name="M01")
-        self.server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.server = ErddapServer.objects.get(
+            base_url="http://www.neracoos.org/erddap",
+        )
         self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
         self.water_temp = DataType.objects.get(standard_name="sea_water_temperature")
 
-        self.dataset = ErddapDataset.objects.create(name="M01_sbe37_all", server=self.server)
+        self.dataset = ErddapDataset.objects.create(
+            name="M01_sbe37_all",
+            server=self.server,
+        )
         self.timeseries = TimeSeries.objects.create(
             platform=self.platform,
             data_type=self.salinity,
@@ -175,7 +186,8 @@ class PromqlCopyAffordanceTestCase(SystemMessageAdminTestCase):
         self.assertNotIn("defer", html[script_at - 120 : script_at])
 
         source = (
-            Path(settings.BASE_DIR) / "deployments/static/deployments/js/system_messages.js"
+            Path(settings.BASE_DIR)
+            / "deployments/static/deployments/js/system_messages.js"
         ).read_text()
         self.assertIn('document.addEventListener("click"', source)
         self.assertNotIn("document.querySelectorAll", source)
@@ -233,7 +245,10 @@ class PromqlCopyAffordanceTestCase(SystemMessageAdminTestCase):
 class ContainmentGateTestCase(SystemMessageAdminTestCase):
     def second_platform_timeseries(self):
         """A timeseries on `self.dataset` belonging to a *different* platform."""
-        other = Platform.objects.create(name="OTHER", mooring_site_desc="Somewhere else")
+        other = Platform.objects.create(
+            name="OTHER",
+            mooring_site_desc="Somewhere else",
+        )
         return TimeSeries.objects.create(
             platform=other,
             data_type=self.water_temp,
@@ -250,7 +265,9 @@ class ContainmentGateTestCase(SystemMessageAdminTestCase):
         self.assertTrue(row.can_acknowledge)
         self.assertEqual(row.spill_count, 0)
 
-    def test_dataset_message_is_dismissable_when_the_dataset_is_this_platforms_alone(self):
+    def test_dataset_message_is_dismissable_when_the_dataset_is_this_platforms_alone(
+        self,
+    ):
         message = _message(self.dataset)
 
         row = self.row_for(self.platform_page(), message)
@@ -258,7 +275,9 @@ class ContainmentGateTestCase(SystemMessageAdminTestCase):
         self.assertTrue(row.can_acknowledge)
         self.assertEqual(row.spill_count, 0)
 
-    def test_same_dataset_message_stops_being_dismissable_once_a_second_platform_joins(self):
+    def test_same_dataset_message_stops_being_dismissable_once_a_second_platform_joins(
+        self,
+    ):
         """Nothing about the message row changes -- only the dataset's reach does."""
         message = _message(self.dataset)
         self.assertTrue(self.row_for(self.platform_page(), message).can_acknowledge)
@@ -272,8 +291,14 @@ class ContainmentGateTestCase(SystemMessageAdminTestCase):
         self.assertEqual(row.reach_label, "platforms")
 
     def test_server_message_spanning_two_platforms_is_not_dismissable(self):
-        other_platform = Platform.objects.create(name="OTHER", mooring_site_desc="Elsewhere")
-        other_dataset = ErddapDataset.objects.create(name="B01_sbe37_all", server=self.server)
+        other_platform = Platform.objects.create(
+            name="OTHER",
+            mooring_site_desc="Elsewhere",
+        )
+        other_dataset = ErddapDataset.objects.create(
+            name="B01_sbe37_all",
+            server=self.server,
+        )
         TimeSeries.objects.create(
             platform=other_platform,
             data_type=self.water_temp,
@@ -296,7 +321,9 @@ class ContainmentGateTestCase(SystemMessageAdminTestCase):
 
         self.assertTrue(row.can_acknowledge)
 
-    def test_server_message_is_dismissable_on_the_dataset_page_when_it_reaches_one_dataset(self):
+    def test_server_message_is_dismissable_on_the_dataset_page_when_it_reaches_one_dataset(
+        self,
+    ):
         """Containment is measured in datasets on a dataset page, not in platforms."""
         message = _message(self.server)
 
@@ -321,7 +348,10 @@ class ContainmentGateTestCase(SystemMessageAdminTestCase):
         # Containment on a timeseries page is measured in timeseries, and this dataset has
         # only the one.
         self.assertTrue(self.row_for(response, dataset_message).can_acknowledge)
-        self.assertEqual(self.row_for(response, dataset_message).reach_label, "timeseries")
+        self.assertEqual(
+            self.row_for(response, dataset_message).reach_label,
+            "timeseries",
+        )
 
     def test_server_page_gathers_its_datasets(self):
         _message(self.dataset, message="Dataset rung")
@@ -420,7 +450,7 @@ class AcknowledgeViewTestCase(SystemMessageAdminTestCase):
         peon = get_user_model().objects.create_user(
             username="peon",
             email="peon@example.com",
-            password="password",  # noqa: S106
+            password="password",
             is_staff=True,
         )
         self.client.force_login(peon)
@@ -501,7 +531,9 @@ class SystemMessageAdminActionsTestCase(SystemMessageAdminTestCase):
         _message(self.timeseries, message="Still a problem")
         _message(self.dataset, message="Long since fixed", resolved_at=timezone.now())
 
-        response = self.client.get(reverse("admin:deployments_systemmessage_changelist"))
+        response = self.client.get(
+            reverse("admin:deployments_systemmessage_changelist"),
+        )
 
         self.assertContains(response, "Still a problem")
         self.assertNotContains(response, "Long since fixed")
@@ -591,7 +623,9 @@ class ChangePageActionButtonsTestCase(SystemMessageAdminTestCase):
         self.message.refresh_from_db()
         self.assertIsNotNone(self.message.acknowledged_at)
         self.assertEqual(self.message.acknowledged_by, self.user)
-        self.assertFalse(SystemMessage.objects.outstanding().filter(pk=self.message.pk).exists())
+        self.assertFalse(
+            SystemMessage.objects.outstanding().filter(pk=self.message.pk).exists(),
+        )
 
     def test_unacknowledge_button_clears_the_stamp_and_returns_to_outstanding(self):
         self.message.acknowledged_at = timezone.now()
@@ -604,7 +638,9 @@ class ChangePageActionButtonsTestCase(SystemMessageAdminTestCase):
         self.message.refresh_from_db()
         self.assertIsNone(self.message.acknowledged_at)
         self.assertIsNone(self.message.acknowledged_by)
-        self.assertTrue(SystemMessage.objects.outstanding().filter(pk=self.message.pk).exists())
+        self.assertTrue(
+            SystemMessage.objects.outstanding().filter(pk=self.message.pk).exists(),
+        )
 
     def test_a_get_does_not_acknowledge(self):
         """The action is wired as a POST-only form, same as the sidebar's own button."""
@@ -618,8 +654,14 @@ class ChangePageActionButtonsTestCase(SystemMessageAdminTestCase):
 @pytest.mark.django_db
 class SplitBadgeTestCase(SystemMessageAdminTestCase):
     def test_badge_separates_contained_from_spilling(self):
-        other_platform = Platform.objects.create(name="OTHER", mooring_site_desc="Elsewhere")
-        other_dataset = ErddapDataset.objects.create(name="B01_sbe37_all", server=self.server)
+        other_platform = Platform.objects.create(
+            name="OTHER",
+            mooring_site_desc="Elsewhere",
+        )
+        other_dataset = ErddapDataset.objects.create(
+            name="B01_sbe37_all",
+            server=self.server,
+        )
         TimeSeries.objects.create(
             platform=other_platform,
             data_type=self.water_temp,
@@ -696,7 +738,10 @@ class SystemMessageListFilterTestCase(SystemMessageAdminTestCase):
     def platform_with_chain(self, name, level=None, subject_rung=None):
         """A platform with a server, dataset and timeseries all its own."""
         platform = Platform.objects.create(name=name, mooring_site_desc=name)
-        server = ErddapServer.objects.create(name=f"{name}-server", base_url=f"http://{name}.test")
+        server = ErddapServer.objects.create(
+            name=f"{name}-server",
+            base_url=f"http://{name}.test",
+        )
         dataset = ErddapDataset.objects.create(name=f"{name}_all", server=server)
         timeseries = TimeSeries.objects.create(
             platform=platform,
@@ -759,7 +804,10 @@ class SystemMessageListFilterTestCase(SystemMessageAdminTestCase):
         self.assertEqual(self.matched("danger"), {"VIASERVER"})
 
     def test_acknowledged_message_stops_matching_until_it_recurs(self):
-        message = SystemMessage.objects.get(platform=self.own["platform"], level="warning")
+        message = SystemMessage.objects.get(
+            platform=self.own["platform"],
+            level="warning",
+        )
         message.acknowledged_at = timezone.now()
         message.save(update_fields=["acknowledged_at"])
 
@@ -833,7 +881,10 @@ class SystemMessageListFilterTestCase(SystemMessageAdminTestCase):
         self.assertLess(descending["VIADATASET"], descending["QUIET"])
 
     def test_ordering_is_stable_between_requests(self):
-        self.assertEqual(self.names(o=str(self.order_index())), self.names(o=str(self.order_index())))
+        self.assertEqual(
+            self.names(o=str(self.order_index())),
+            self.names(o=str(self.order_index())),
+        )
 
     def test_query_count_does_not_grow_with_rows(self):
         def count(**params):
@@ -950,7 +1001,9 @@ class MessagesReachingTestCase(SystemMessageAdminTestCase):
 
     def test_resolved_messages_are_not_gathered(self):
         messages = self.one_message_per_rung()
-        SystemMessage.objects.filter(pk=messages["server"].pk).update(resolved_at=timezone.now())
+        SystemMessage.objects.filter(pk=messages["server"].pk).update(
+            resolved_at=timezone.now(),
+        )
 
         self.assertNotIn(messages["server"].pk, self.reaching(Platform, self.platform))
 
@@ -986,7 +1039,10 @@ class MessageReachTestCase(SystemMessageAdminTestCase):
         self.assertEqual(reach.platform_ids, frozenset())
 
     def test_a_platform_message_reaches_no_dataset_it_has_no_timeseries_on(self):
-        lonely = Platform.objects.create(name="LONELY", mooring_site_desc="No timeseries")
+        lonely = Platform.objects.create(
+            name="LONELY",
+            mooring_site_desc="No timeseries",
+        )
         message = _message(lonely)
 
         reach = compute_message_reach([message])[message.pk]

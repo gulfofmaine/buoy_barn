@@ -161,16 +161,16 @@ def guess_role() -> str:
 def _app_version() -> str:
     """Version string for the ``service.version`` resource attribute."""
     try:
-        from django.conf import settings  # noqa: PLC0415
+        from django.conf import settings
 
         return str(settings.APP_VERSION)
-    except Exception:
+    except Exception:  # noqa: BLE001
         # Resource attributes are cosmetic; never let one break process startup.
         return "unknown"
 
 
 def _build_resource(role: str):
-    from opentelemetry.sdk.resources import Resource  # noqa: PLC0415
+    from opentelemetry.sdk.resources import Resource
 
     # HOSTNAME is the pod name under Kubernetes. Including the pid keeps prefork children
     # and granian workers distinguishable rather than clobbering each other's series.
@@ -188,17 +188,19 @@ def _build_resource(role: str):
 def _build_provider(role: str):
     """Build a MeterProvider, or return None if the SDK is unusable here."""
     try:
-        from opentelemetry.exporter.otlp.proto.http.metric_exporter import (  # noqa: PLC0415
+        from opentelemetry.exporter.otlp.proto.http.metric_exporter import (
             OTLPMetricExporter,
         )
-        from opentelemetry.sdk.metrics import MeterProvider  # noqa: PLC0415
-        from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader  # noqa: PLC0415
+        from opentelemetry.sdk.metrics import MeterProvider
+        from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
     except ImportError:
         if not _state.warned_unavailable:
             # Set before logging, not after: the log record travels through the metrics log
             # handler, which can lead back here before the flag would have been set.
             _state.warned_unavailable = True
-            logger.warning("OpenTelemetry packages are unavailable; metrics are disabled")
+            logger.warning(
+                "OpenTelemetry packages are unavailable; metrics are disabled",
+            )
         return None
 
     try:
@@ -206,7 +208,9 @@ def _build_provider(role: str):
         reader = PeriodicExportingMetricReader(OTLPMetricExporter())
         return MeterProvider(resource=_build_resource(role), metric_readers=[reader])
     except Exception:
-        logger.exception("Could not configure OpenTelemetry metrics; continuing without them")
+        logger.exception(
+            "Could not configure OpenTelemetry metrics; continuing without them",
+        )
         return None
 
 
@@ -217,10 +221,10 @@ def _publish_globally(provider) -> None:
     exactly why callers use :func:`get_meter` rather than the global API.
     """
     try:
-        from opentelemetry import metrics as otel_metrics  # noqa: PLC0415
+        from opentelemetry import metrics as otel_metrics
 
         otel_metrics.set_meter_provider(provider)
-    except Exception:
+    except Exception:  # noqa: BLE001
         logger.debug("Global meter provider was already set; using the local provider")
 
 

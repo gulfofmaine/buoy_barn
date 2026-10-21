@@ -18,11 +18,19 @@ from deployments.utils.erddap_datasets import (
     filter_dataframe,
     retrieve_dataframe,
 )
-from deployments.utils.system_messages import record_system_message, resolve_system_messages
+from deployments.utils.system_messages import (
+    record_system_message,
+    resolve_system_messages,
+)
 
 from .error_handling import BackoffError, handle_http_errors
 from .extrema import extrema_for_timeseries
-from .outcomes import FETCH_FAILURE_CODES, FETCH_FAILURE_MESSAGES, RESOLVED_ON_SUCCESS, Outcome
+from .outcomes import (
+    FETCH_FAILURE_CODES,
+    FETCH_FAILURE_MESSAGES,
+    RESOLVED_ON_SUCCESS,
+    Outcome,
+)
 from .queue import task_queued
 
 logger = logging.getLogger(__name__)
@@ -46,7 +54,13 @@ _SOFT_TIME_LIMIT_MESSAGE = (
 )
 
 
-def _record_soft_time_limit(subject, unit: str, processed: int, total: int, context: dict) -> None:
+def _record_soft_time_limit(
+    subject,
+    unit: str,
+    processed: int,
+    total: int,
+    context: dict,
+) -> None:
     """Record the `task_soft_time_limit` message for a run Celery cut short.
 
     `unit` names what `processed`/`total` count -- constraint groups for a dataset, datasets
@@ -56,7 +70,12 @@ def _record_soft_time_limit(subject, unit: str, processed: int, total: int, cont
     record_system_message(
         subject,
         SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
-        _SOFT_TIME_LIMIT_MESSAGE.format(limit=limit, processed=processed, total=total, unit=unit),
+        _SOFT_TIME_LIMIT_MESSAGE.format(
+            limit=limit,
+            processed=processed,
+            total=total,
+            unit=unit,
+        ),
         level=SystemMessage.Level.DANGER,
         context={
             "processed": processed,
@@ -85,7 +104,10 @@ def _resolve_stale_fetch_failures(dataset, constraint_group, codes, keep=None):
         resolve_system_messages(dataset, *codes, constraint_group=constraint_group)
 
 
-def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: bool = False):  # noqa: PLR0912 PLR0915
+def update_values_for_timeseries(
+    timeseries: list[TimeSeries],
+    clear_end_time: bool = False,
+):
     """Update values and most recent times for a group of timeseries that have the same constraints
 
     Args:
@@ -244,7 +266,11 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
 
                 # Only clear end_time when the new data is actually newer than it, so a
                 # dataset reload that returns the same old rows does not un-retire a series.
-                if clear_end_time and series.end_time is not None and (new_value_time > series.end_time):
+                if (
+                    clear_end_time
+                    and series.end_time is not None
+                    and (new_value_time > series.end_time)
+                ):
                     previous_end_time = series.end_time
                     logger.info(
                         f"Clearing end_time for {series} - new data at {new_value_time} is after "
@@ -295,7 +321,11 @@ def update_values_for_timeseries(timeseries: list[TimeSeries], clear_end_time: b
 
 
 @shared_task
-def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: bool = False):
+def refresh_dataset(
+    dataset_id: int,
+    healthcheck: bool = False,
+    clear_end_time: bool = False,
+):
     """Refresh the values for all timeseries associated with a specific dataset
 
     Params:
@@ -315,7 +345,9 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
 
     # Retired series (end_time set) only rejoin the groups when this run was actually asked
     # to try clearing end_time.
-    groups = dataset.group_timeseries_by_constraint_and_type(include_retired=clear_end_time)
+    groups = dataset.group_timeseries_by_constraint_and_type(
+        include_retired=clear_end_time,
+    )
 
     # Counted as the loop runs rather than worked out afterwards: a soft timeout can land
     # anywhere in it, and how far the run got is not recoverable once the exception is raised.
@@ -328,7 +360,9 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
             try:
                 update_values_for_timeseries(timeseries, clear_end_time=clear_end_time)
             except BackoffError:
-                new_request_refresh_time_seconds = max(request_refresh_time_seconds, 1) * 2
+                new_request_refresh_time_seconds = (
+                    max(request_refresh_time_seconds, 1) * 2
+                )
                 logger.error(
                     f"Some form of timeout encountered while refreshing dataset {dataset_id}"
                     f"Increasing backoff from {request_refresh_time_seconds} to "
@@ -388,7 +422,11 @@ def refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: 
 
 
 @shared_task
-def single_refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end_time: bool = False):
+def single_refresh_dataset(
+    dataset_id: int,
+    healthcheck: bool = False,
+    clear_end_time: bool = False,
+):
     """Schedule dataset refresh, only if it does not already exist
 
     Args:
@@ -412,7 +450,11 @@ def single_refresh_dataset(dataset_id: int, healthcheck: bool = False, clear_end
                 exc_info=True,
             )
         else:
-            refresh_dataset.delay(dataset_id, healthcheck=healthcheck, clear_end_time=clear_end_time)
+            refresh_dataset.delay(
+                dataset_id,
+                healthcheck=healthcheck,
+                clear_end_time=clear_end_time,
+            )
 
 
 @shared_task
@@ -441,7 +483,13 @@ def refresh_server(server_id: int, healthcheck: bool = False):
         # The limit applies to this task, so it fires here even though the work was being
         # done inside `refresh_dataset`, which records its own dataset-scoped message on the
         # way past. See `refresh_dataset` for why the monitor is failed rather than completed.
-        _record_soft_time_limit(server, "datasets", processed, len(datasets), {"server": str(server)})
+        _record_soft_time_limit(
+            server,
+            "datasets",
+            processed,
+            len(datasets),
+            {"server": str(server)},
+        )
         if healthcheck:
             server.healthcheck_fail()
         raise

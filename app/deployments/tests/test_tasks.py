@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta
-from datetime import timezone as dt_timezone
+from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
 
 import pytest
@@ -166,12 +165,17 @@ class TaskTestCase(TransactionTestCase):
             "ts5 should join its constraint group's call, not start a new one",
         )
 
-        groups_seen = [call.args[0] for call in update_values_for_timeseries.call_args_list]
+        groups_seen = [
+            call.args[0] for call in update_values_for_timeseries.call_args_list
+        ]
         matching_group = next(
             (group for group in groups_seen if self.ts5 in group),
             None,
         )
-        self.assertIsNotNone(matching_group, "ts5 should be included when clear_end_time=True")
+        self.assertIsNotNone(
+            matching_group,
+            "ts5 should be included when clear_end_time=True",
+        )
         self.assertIn(self.ts1, matching_group)
         self.assertIn(self.ts2, matching_group)
 
@@ -244,12 +248,14 @@ class TaskTestCase(TransactionTestCase):
         self.ts1.refresh_from_db()
         self.assertIsNone(self.ts1.end_time)
         self.assertFalse(
-            SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).exists(),
+            SystemMessage.objects.filter(
+                code=SystemMessage.Code.END_TIME_RETIRED,
+            ).exists(),
         )
 
     @my_vcr.use_cassette("tasks_update_values.yaml")
     def test_update_values_clears_end_time_and_resolves_retirement(self):
-        self.ts1.end_time = datetime(2020, 1, 1, tzinfo=dt_timezone.utc)
+        self.ts1.end_time = datetime(2020, 1, 1, tzinfo=UTC)
         self.ts1.save()
 
         SystemMessage.objects.create(
@@ -275,7 +281,10 @@ class TaskTestCase(TransactionTestCase):
         self.assertIsNotNone(retired.resolved_at)
 
     @patch("deployments.tasks.refresh.update_values_for_timeseries")
-    def test_refresh_dataset_records_backoff_increase(self, update_values_for_timeseries):
+    def test_refresh_dataset_records_backoff_increase(
+        self,
+        update_values_for_timeseries,
+    ):
         update_values_for_timeseries.side_effect = BackoffError("timeout")
 
         tasks.refresh_dataset(self.ds_M01_sbe37.id)
@@ -309,7 +318,11 @@ class TaskTestCase(TransactionTestCase):
 
     @patch("requests.get")
     @patch("deployments.tasks.refresh.update_values_for_timeseries")
-    def test_refresh_dataset_records_a_soft_time_limit(self, update_values_for_timeseries, get):
+    def test_refresh_dataset_records_a_soft_time_limit(
+        self,
+        update_values_for_timeseries,
+        get,
+    ):
         """A soft timeout used to vanish: nothing caught it, so nothing said the run stopped."""
         update_values_for_timeseries.side_effect = SoftTimeLimitExceeded()
         self.ds_M01_sbe37.healthcheck_url = "https://hc.example/dataset"
@@ -324,7 +337,11 @@ class TaskTestCase(TransactionTestCase):
         )
         self.assertEqual(message.level, SystemMessage.Level.DANGER)
         self.assertEqual(message.context["processed"], 0)
-        self.assertEqual(message.context["total"], 2, "sbe37 has two refreshable constraint groups")
+        self.assertEqual(
+            message.context["total"],
+            2,
+            "sbe37 has two refreshable constraint groups",
+        )
         self.assertIn("soft_time_limit_seconds", message.context)
 
         # `/fail` and never the bare completion URL: a run that timed out did not complete,
@@ -335,7 +352,10 @@ class TaskTestCase(TransactionTestCase):
         )
 
     @patch("deployments.tasks.refresh.update_values_for_timeseries")
-    def test_refresh_dataset_resolves_a_previous_soft_time_limit(self, update_values_for_timeseries):
+    def test_refresh_dataset_resolves_a_previous_soft_time_limit(
+        self,
+        update_values_for_timeseries,
+    ):
         record_system_message(
             self.ds_M01_sbe37,
             SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
@@ -352,7 +372,11 @@ class TaskTestCase(TransactionTestCase):
 
     @patch("requests.get")
     @patch("deployments.tasks.refresh.update_values_for_timeseries")
-    def test_refresh_server_records_a_soft_time_limit(self, update_values_for_timeseries, get):
+    def test_refresh_server_records_a_soft_time_limit(
+        self,
+        update_values_for_timeseries,
+        get,
+    ):
         update_values_for_timeseries.side_effect = SoftTimeLimitExceeded()
         self.erddap.healthcheck_url = "https://hc.example/server"
         self.erddap.save()
@@ -365,7 +389,11 @@ class TaskTestCase(TransactionTestCase):
         )
         self.assertEqual(message.level, SystemMessage.Level.DANGER)
         self.assertEqual(message.context["processed"], 0)
-        self.assertEqual(message.context["total"], 2, "the server has two datasets to refresh")
+        self.assertEqual(
+            message.context["total"],
+            2,
+            "the server has two datasets to refresh",
+        )
 
         # The nested `refresh_dataset` call records its own dataset-scoped message on the way
         # past, so an operator can see which dataset the run was stuck on. Which dataset that
@@ -384,7 +412,10 @@ class TaskTestCase(TransactionTestCase):
         )
 
     @patch("deployments.tasks.refresh.update_values_for_timeseries")
-    def test_refresh_server_resolves_a_previous_soft_time_limit(self, update_values_for_timeseries):
+    def test_refresh_server_resolves_a_previous_soft_time_limit(
+        self,
+        update_values_for_timeseries,
+    ):
         record_system_message(
             self.erddap,
             SystemMessage.Code.TASK_SOFT_TIME_LIMIT,
@@ -401,7 +432,11 @@ class TaskTestCase(TransactionTestCase):
 
     @patch("deployments.tasks.refresh.refresh_dataset.delay")
     @patch("deployments.tasks.refresh.task_queued")
-    def test_single_refresh_dataset_skips_when_queued(self, task_queued, refresh_dataset_delay):
+    def test_single_refresh_dataset_skips_when_queued(
+        self,
+        task_queued,
+        refresh_dataset_delay,
+    ):
         task_queued.return_value = True
 
         tasks.single_refresh_dataset(self.ds_M01_sbe37.id)
@@ -410,10 +445,18 @@ class TaskTestCase(TransactionTestCase):
 
     @patch("deployments.tasks.refresh.refresh_dataset.delay")
     @patch("deployments.tasks.refresh.task_queued")
-    def test_single_refresh_dataset_enqueues_when_not_queued(self, task_queued, refresh_dataset_delay):
+    def test_single_refresh_dataset_enqueues_when_not_queued(
+        self,
+        task_queued,
+        refresh_dataset_delay,
+    ):
         task_queued.return_value = False
 
-        tasks.single_refresh_dataset(self.ds_M01_sbe37.id, healthcheck=True, clear_end_time=True)
+        tasks.single_refresh_dataset(
+            self.ds_M01_sbe37.id,
+            healthcheck=True,
+            clear_end_time=True,
+        )
 
         refresh_dataset_delay.assert_called_once_with(
             self.ds_M01_sbe37.id,
@@ -429,7 +472,11 @@ class TaskTestCase(TransactionTestCase):
 
     @patch("deployments.tasks.refresh.refresh_server.delay")
     @patch("deployments.tasks.refresh.task_queued")
-    def test_single_refresh_server_skips_when_queued(self, task_queued, refresh_server_delay):
+    def test_single_refresh_server_skips_when_queued(
+        self,
+        task_queued,
+        refresh_server_delay,
+    ):
         task_queued.return_value = True
 
         tasks.single_refresh_server(self.erddap.id)
@@ -438,7 +485,11 @@ class TaskTestCase(TransactionTestCase):
 
     @patch("deployments.tasks.refresh.refresh_server.delay")
     @patch("deployments.tasks.refresh.task_queued")
-    def test_single_refresh_server_enqueues_when_not_queued(self, task_queued, refresh_server_delay):
+    def test_single_refresh_server_enqueues_when_not_queued(
+        self,
+        task_queued,
+        refresh_server_delay,
+    ):
         task_queued.return_value = False
 
         tasks.single_refresh_server(self.erddap.id, healthcheck=True)
@@ -657,7 +708,9 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
-        assert "Unable to parse datetimes in error processing dataset" in self.caplog.text
+        assert (
+            "Unable to parse datetimes in error processing dataset" in self.caplog.text
+        )
 
     @my_vcr.use_cassette("500_unrecognized_constraint.yaml")
     def test_500_unrecognized_contraint(self):
@@ -790,7 +843,10 @@ class TaskErrorTestCase(TransactionTestCase):
         ts.refresh_from_db()
 
         assert ts.value is None
-        assert "does not have a requested station. Please check the constraints" in self.caplog.text
+        assert (
+            "does not have a requested station. Please check the constraints"
+            in self.caplog.text
+        )
 
     # @my_vcr.use_cassette("404_no_data_matches_time")
     # def test_404_no_data_matches_time(self):

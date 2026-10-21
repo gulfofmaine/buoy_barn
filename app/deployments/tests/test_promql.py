@@ -28,7 +28,10 @@ class TestQueryForOutcomeCodes(SimpleTestCase):
         assert 'constraint_group="abc12345"' in query
 
     def test_no_constraint_group_omits_the_matcher_but_is_still_valid(self):
-        query = promql.query_for("not_found", {"dataset": "my_dataset", "constraint_group": ""})
+        query = promql.query_for(
+            "not_found",
+            {"dataset": "my_dataset", "constraint_group": ""},
+        )
 
         assert query is not None
         assert "buoybarn_erddap_outcome_total" in query
@@ -64,7 +67,7 @@ class TestQueryForOutcomeCodes(SimpleTestCase):
 
         They used to be listed, and the codes added afterwards silently got no query at all.
         """
-        from deployments.models import SystemMessage  # noqa: PLC0415
+        from deployments.models import SystemMessage
 
         for code in SystemMessage.Code:
             context = {"dataset": "my_dataset", "server": "my_server"}
@@ -76,7 +79,11 @@ class TestQueryForOutcomeCodes(SimpleTestCase):
         """
         query = promql.query_for(
             "end_time_retired",
-            {"dataset": "my_dataset", "server": "erddap.example.org", "constraint_group": ""},
+            {
+                "dataset": "my_dataset",
+                "server": "erddap.example.org",
+                "constraint_group": "",
+            },
         )
 
         assert query is not None
@@ -132,7 +139,10 @@ class TestQueryForMissingOrUnknown(SimpleTestCase):
 
 class TestQueryForEscaping(SimpleTestCase):
     def test_dataset_name_with_quote_is_escaped(self):
-        query = promql.query_for("not_found", {"dataset": 'evil"} or 1==1 {"', "constraint_group": ""})
+        query = promql.query_for(
+            "not_found",
+            {"dataset": 'evil"} or 1==1 {"', "constraint_group": ""},
+        )
 
         assert query is not None
         # The literal quote must be escaped, not left free to terminate the string early.
@@ -151,7 +161,10 @@ class TestExploreUrl(SimpleTestCase):
     def test_returns_none_when_grafana_is_unconfigured(self):
         assert promql.explore_url("up") is None
 
-    @override_settings(GRAFANA_BASE_URL="https://grafana.example.org", GRAFANA_PROMETHEUS_UID="")
+    @override_settings(
+        GRAFANA_BASE_URL="https://grafana.example.org",
+        GRAFANA_PROMETHEUS_UID="",
+    )
     def test_returns_none_when_only_base_url_is_set(self):
         assert promql.explore_url("up") is None
 

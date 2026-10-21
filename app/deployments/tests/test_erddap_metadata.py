@@ -20,7 +20,9 @@ def info_csv(global_attrs=(), variables=None) -> str:
     """Build an ERDDAP info CSV from (name, type, value) attribute tuples"""
     out = io.StringIO()
     writer = csv.writer(out)
-    writer.writerow(["Row Type", "Variable Name", "Attribute Name", "Data Type", "Value"])
+    writer.writerow(
+        ["Row Type", "Variable Name", "Attribute Name", "Data Type", "Value"],
+    )
     for name, data_type, value in global_attrs:
         writer.writerow(["attribute", "NC_GLOBAL", name, data_type, value])
     for variable, attrs in (variables or {}).items():
@@ -166,8 +168,14 @@ class QartodConstraintsTestCase(TestCase):
             },
         )
 
-        self.assertEqual(metadata.qartod_constraints(info, "temp")[0], {"qc_rollup<=": 2})
-        self.assertEqual(metadata.qartod_constraints(info, "salinity")[0], {"qc_rollup<=": 2})
+        self.assertEqual(
+            metadata.qartod_constraints(info, "temp")[0],
+            {"qc_rollup<=": 2},
+        )
+        self.assertEqual(
+            metadata.qartod_constraints(info, "salinity")[0],
+            {"qc_rollup<=": 2},
+        )
 
     def test_several_unassignable_aggregates_warn(self):
         aggregate = [("standard_name", "String", "aggregate_quality_flag"), *IOOS_FLAGS]
@@ -215,7 +223,10 @@ class DataVariablesTestCase(TestCase):
                 **NAVD88_VARIABLES,
                 "station": [("cf_role", "String", "timeseries_id")],
                 "depth": [("standard_name", "String", "depth")],
-                "rollup": [("standard_name", "String", "aggregate_quality_flag"), *IOOS_FLAGS],
+                "rollup": [
+                    ("standard_name", "String", "aggregate_quality_flag"),
+                    *IOOS_FLAGS,
+                ],
             },
         )
 
@@ -228,12 +239,19 @@ class TidalDatumsTestCase(TestCase):
 
         datums, warnings = metadata.tidal_datums(info, "navd88_meters")
 
-        self.assertEqual(datums, {"datum_mhhw_meters": 1.469, "datum_mllw_meters": -1.573})
+        self.assertEqual(
+            datums,
+            {"datum_mhhw_meters": 1.469, "datum_mllw_meters": -1.573},
+        )
         self.assertEqual(warnings, [])
 
     def test_unknown_datum_warns(self):
         info = make_info(
-            variables={"wl": [("tidal_datum_offsets_meters", "String", '{"mhhw": 1, "stnd": 2}')]},
+            variables={
+                "wl": [
+                    ("tidal_datum_offsets_meters", "String", '{"mhhw": 1, "stnd": 2}'),
+                ],
+            },
         )
 
         datums, warnings = metadata.tidal_datums(info, "wl")
@@ -242,7 +260,9 @@ class TidalDatumsTestCase(TestCase):
         self.assertEqual(warnings, ["Unknown tidal datum 'stnd'"])
 
     def test_malformed_json_warns(self):
-        info = make_info(variables={"wl": [("tidal_datum_offsets_meters", "String", "{mhhw: 1")]})
+        info = make_info(
+            variables={"wl": [("tidal_datum_offsets_meters", "String", "{mhhw: 1")]},
+        )
 
         datums, warnings = metadata.tidal_datums(info, "wl")
 
@@ -257,7 +277,9 @@ class TidalDatumsTestCase(TestCase):
 
 class PlatformLocationTestCase(TestCase):
     def test_latitude_longitude_attributes(self):
-        info = make_info([("latitude", "double", "43.5"), ("longitude", "double", "-70.1")])
+        info = make_info(
+            [("latitude", "double", "43.5"), ("longitude", "double", "-70.1")],
+        )
 
         point, source = metadata.platform_location(info)
 
@@ -301,7 +323,10 @@ class VariableDepthTestCase(TestCase):
         info = make_info(
             variables={
                 "temp": [],
-                "depth": [("actual_range", "float", "1.0, 1.0"), ("positive", "String", "down")],
+                "depth": [
+                    ("actual_range", "float", "1.0, 1.0"),
+                    ("positive", "String", "down"),
+                ],
             },
         )
 
@@ -440,7 +465,13 @@ class A01OceanMetadataTestCase(TestCase):
         self.assertEqual(plan.unable, [])
         self.assertEqual(plan.warnings, [])
         rows = {row.variable: row for row in plan.new}
-        self.assertEqual(set(rows), {"conductivity", "salinity", "sigma_t", "temperature"})
+        self.assertEqual(
+            set(rows),
+            {"conductivity", "salinity", "sigma_t", "temperature"},
+        )
         self.assertTrue(all(row.depth == 1.0 for row in rows.values()))
         self.assertTrue(all(row.warnings == [] for row in rows.values()))
-        self.assertEqual(rows["temperature"].data_type.standard_name, "sea_water_temperature")
+        self.assertEqual(
+            rows["temperature"].data_type.standard_name,
+            "sea_water_temperature",
+        )

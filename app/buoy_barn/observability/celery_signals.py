@@ -40,7 +40,11 @@ _start_times: dict[str, float] = {}
 
 
 def _task_name(task, sender) -> str:
-    for candidate in (getattr(task, "name", None), getattr(sender, "name", None), sender):
+    for candidate in (
+        getattr(task, "name", None),
+        getattr(sender, "name", None),
+        sender,
+    ):
         if candidate:
             return str(candidate)
     return "unknown"
@@ -94,7 +98,7 @@ def _queue_latency(task) -> float | None:
         # Clamped at zero: publisher and worker are different pods, so a little clock
         # skew is expected and a negative wait is meaningless.
         return max(time.time() - float(published_at), 0.0)
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         return None
 
 
@@ -113,7 +117,13 @@ def _on_task_prerun(task_id=None, task=None, sender=None, **_kwargs) -> None:
 
 
 @task_postrun.connect
-def _on_task_postrun(task_id=None, task=None, sender=None, state=None, **_kwargs) -> None:
+def _on_task_postrun(
+    task_id=None,
+    task=None,
+    sender=None,
+    state=None,
+    **_kwargs,
+) -> None:
     name = _task_name(task, sender)
     started = _start_times.pop(task_id, None) if task_id else None
     duration = time.time() - started if started is not None else None
@@ -130,5 +140,7 @@ def _on_task_revoked(sender=None, request=None, **_kwargs) -> None:
     Revocation is rare enough here (nothing in the codebase calls ``revoke``) that the
     duplicate is worth less than losing the signal entirely.
     """
-    name = str(getattr(request, "name", None) or getattr(sender, "name", None) or "unknown")
+    name = str(
+        getattr(request, "name", None) or getattr(sender, "name", None) or "unknown",
+    )
     metrics.record_task(name, "revoked")

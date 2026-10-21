@@ -53,7 +53,8 @@ class SystemMessageQuerySet(models.QuerySet):
         messages are never outstanding, regardless of acknowledgement.
         """
         return self.filter(resolved_at__isnull=True).filter(
-            Q(acknowledged_at__isnull=True) | Q(acknowledged_at__lt=models.F("last_seen")),
+            Q(acknowledged_at__isnull=True)
+            | Q(acknowledged_at__lt=models.F("last_seen")),
         )
 
     def for_object(self, obj):

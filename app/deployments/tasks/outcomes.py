@@ -64,8 +64,14 @@ FETCH_FAILURE_MESSAGES: dict[str, tuple[str, str]] = {
         SystemMessage.Code.UNRECOGNIZED_CONSTRAINT,
         SystemMessage.Level.WARNING,
     ),
-    Outcome.SERVER_ERROR: (SystemMessage.Code.SERVER_ERROR, SystemMessage.Level.WARNING),
-    Outcome.UNKNOWN_ERROR: (SystemMessage.Code.UNKNOWN_ERROR, SystemMessage.Level.WARNING),
+    Outcome.SERVER_ERROR: (
+        SystemMessage.Code.SERVER_ERROR,
+        SystemMessage.Level.WARNING,
+    ),
+    Outcome.UNKNOWN_ERROR: (
+        SystemMessage.Code.UNKNOWN_ERROR,
+        SystemMessage.Level.WARNING,
+    ),
     Outcome.CONSTRAINT_OUT_OF_RANGE: (
         SystemMessage.Code.CONSTRAINT_OUT_OF_RANGE,
         SystemMessage.Level.WARNING,

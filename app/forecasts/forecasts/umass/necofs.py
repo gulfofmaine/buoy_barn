@@ -3,14 +3,18 @@
 from forecasts.forecasts.base_forecast import ForecastTypes
 from forecasts.forecasts.base_stac_edr_forecast import BaseSTACEDRForecast
 
-NECOFS_CATALOG_URL = "http://www.smast.umassd.edu:8080/thredds/forecasts.html?dataset=necofs_gom3_wave"
+NECOFS_CATALOG_URL = (
+    "http://www.smast.umassd.edu:8080/thredds/forecasts.html?dataset=necofs_gom3_wave"
+)
 
 
 class BaseNECOFSForecast(BaseSTACEDRForecast):
     """NECOFS FVCOM dataset info"""
 
     source_url = NECOFS_CATALOG_URL
-    source_collection_url = "https://data.neracoos.org/stac/FVCOM_GOM3_WAVE/collection.json"
+    source_collection_url = (
+        "https://data.neracoos.org/stac/FVCOM_GOM3_WAVE/collection.json"
+    )
     date_pattern = "FVCOM_GOM3_Wave_%Y%m%d%H"
 
 

@@ -106,7 +106,10 @@ class ImportPlan:
 
     @property
     def location_differs(self) -> bool:
-        return self.location_distance is not None and self.location_distance > LOCATION_DIFF_WARN_METERS
+        return (
+            self.location_distance is not None
+            and self.location_distance > LOCATION_DIFF_WARN_METERS
+        )
 
     def by_status(self, status: str) -> list[VariablePlan]:
         return [row for row in self.variables if row.status == status]
@@ -154,7 +157,7 @@ def base_constraints(constraints: dict | None, info: DatasetInfo) -> dict:
 def _depth(constraints: dict) -> float | None:
     try:
         return float(constraints["depth="])
-    except (KeyError, TypeError, ValueError):
+    except KeyError, TypeError, ValueError:
         return None
 
 
@@ -207,10 +210,14 @@ def _plan_platform(plan: ImportPlan, platform: Platform | None):
             continue
         # Platforms default to a buoy, so a different type is never a blank to fill
         blank = not current and name != "platform_type"
-        plan.platform_fields[name] = FieldChange(current=current, proposed=value, selected=blank)
+        plan.platform_fields[name] = FieldChange(
+            current=current,
+            proposed=value,
+            selected=blank,
+        )
 
 
-def plan_import(  # noqa: PLR0913
+def plan_import(
     server: ErddapServer,
     dataset_id: str,
     constraints: dict | None = None,
@@ -238,7 +245,11 @@ def plan_import(  # noqa: PLR0913
         select_new=select_new,
         select_changed=select_changed,
     )
-    plan.location, plan.location_source = metadata.platform_location(info, server, constraints)
+    plan.location, plan.location_source = metadata.platform_location(
+        info,
+        server,
+        constraints,
+    )
     if plan.location is None:
         plan.warnings.append("Unable to find a location in the dataset metadata")
 
@@ -267,7 +278,10 @@ def _existing_timeseries(plan: ImportPlan) -> dict[tuple, TimeSeries]:
         dataset__name=plan.dataset_id,
     ).select_related("data_type")
     return {
-        (ts.variable, tuple(sorted(base_constraints(ts.constraints, plan.info).items()))): ts
+        (
+            ts.variable,
+            tuple(sorted(base_constraints(ts.constraints, plan.info).items())),
+        ): ts
         for ts in existing
     }
 
@@ -399,7 +413,7 @@ def _update_timeseries(plan: ImportPlan, update: set[str]) -> list[TimeSeries]:
     return updated
 
 
-def apply_import(  # noqa: PLR0913
+def apply_import(
     plan: ImportPlan,
     *,
     create: list[str] | None = None,
@@ -419,7 +433,9 @@ def apply_import(  # noqa: PLR0913
     if create is None:
         create = [row.variable for row in plan.new]
     if platform_fields is None:
-        platform_fields = [name for name, change in plan.platform_fields.items() if change.selected]
+        platform_fields = [
+            name for name, change in plan.platform_fields.items() if change.selected
+        ]
     if update_location is None:
         update_location = plan.location_selected
 
@@ -444,7 +460,9 @@ def apply_import(  # noqa: PLR0913
         updated=updated,
         platform_created=plan.platform is None,
         location_updated=location_updated,
-        fields_updated=[name for name in plan.platform_fields if name in platform_fields],
+        fields_updated=[
+            name for name in plan.platform_fields if name in platform_fields
+        ],
     )
 
 

@@ -51,7 +51,9 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
         self.assertEqual(sync.errors, [])
 
     def test_changed_timeseries_are_selected(self):
-        TimeSeries.objects.filter(platform=self.platform).update(constraints=CONSTRAINTS)
+        TimeSeries.objects.filter(platform=self.platform).update(
+            constraints=CONSTRAINTS,
+        )
 
         sync = self.sync()
         group = sync.groups[0]
@@ -61,7 +63,10 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
 
         apply_sync(
             sync,
-            update={(group.id, "significant_wave_height"), (group.id, "dominant_wave_period")},
+            update={
+                (group.id, "significant_wave_height"),
+                (group.id, "dominant_wave_period"),
+            },
         )
 
         for ts in TimeSeries.objects.filter(platform=self.platform):
@@ -73,7 +78,10 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
         sync = self.sync()
         group = sync.groups[0]
 
-        self.assertEqual([row.variable for row in group.plan.new], ["dominant_wave_period"])
+        self.assertEqual(
+            [row.variable for row in group.plan.new],
+            ["dominant_wave_period"],
+        )
         self.assertFalse(group.plan.new[0].selected)
 
         apply_sync(sync)
@@ -83,7 +91,10 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
         self.assertEqual(self.platform.timeseries_set.count(), 2)
 
     def test_constraint_groups_are_planned_separately(self):
-        ts = TimeSeries.objects.get(platform=self.platform, variable="dominant_wave_period")
+        ts = TimeSeries.objects.get(
+            platform=self.platform,
+            variable="dominant_wave_period",
+        )
         ts.pk = None
         ts.constraints = {"depth=": 20.0, "dominant_wave_period_qc=": 0}
         ts.depth = 20.0
@@ -105,8 +116,14 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
             self.assertEqual(group.plan.not_in_metadata, [])
 
         deep = sync.groups[1].plan
-        self.assertEqual([row.variable for row in deep.unchanged], ["dominant_wave_period"])
-        self.assertEqual([row.variable for row in deep.new], ["significant_wave_height"])
+        self.assertEqual(
+            [row.variable for row in deep.unchanged],
+            ["dominant_wave_period"],
+        )
+        self.assertEqual(
+            [row.variable for row in deep.new],
+            ["significant_wave_height"],
+        )
 
     def test_unavailable_dataset_is_reported(self):
         other = ErddapDataset.objects.create(name="gone", server=self.server)
@@ -124,7 +141,10 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
                 raise requests.HTTPError("404 Not Found")
             return real_fetch(server, dataset_id)
 
-        with patch("deployments.utils.erddap_sync.metadata.fetch_dataset_info", side_effect=fetch):
+        with patch(
+            "deployments.utils.erddap_sync.metadata.fetch_dataset_info",
+            side_effect=fetch,
+        ):
             sync = self.sync()
 
         self.assertEqual([error.dataset for error in sync.errors], [other])
@@ -149,7 +169,9 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
         apply_sync(sync, fields={"mooring_site_desc": mooring.options[0].id})
 
         self.platform.refresh_from_db()
-        self.assertTrue(self.platform.mooring_site_desc.startswith("Ocean observation data"))
+        self.assertTrue(
+            self.platform.mooring_site_desc.startswith("Ocean observation data"),
+        )
         self.assertEqual(self.platform.station_name, "")
 
     def test_location_choice(self):
@@ -180,10 +202,15 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
 
     def test_single_import_defaults_are_unchanged(self):
         TimeSeries.objects.filter(variable="dominant_wave_period").delete()
-        from deployments.utils.erddap_loader import plan_import  # noqa: PLC0415
+        from deployments.utils.erddap_loader import plan_import
 
         with cassette():
-            plan = plan_import(self.server, DATASET, CONSTRAINTS, platform=self.platform)
+            plan = plan_import(
+                self.server,
+                DATASET,
+                CONSTRAINTS,
+                platform=self.platform,
+            )
 
         self.assertTrue(plan.new[0].selected)
         self.assertEqual(plan.new[0].status, Status.NEW)
@@ -193,24 +220,38 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
 class SyncAdminTestCase(SyncTestMixin, TestCase):
     def setUp(self):
         super().setUp()
-        self.user = get_user_model().objects.create_superuser("admin", "admin@example.com", "pw")
+        self.user = get_user_model().objects.create_superuser(
+            "admin",
+            "admin@example.com",
+            "pw",
+        )
         self.client.force_login(self.user)
-        self.url = reverse("admin:deployments_platform_sync_erddap", args=[self.platform.pk])
+        self.url = reverse(
+            "admin:deployments_platform_sync_erddap",
+            args=[self.platform.pk],
+        )
 
     def test_change_page_has_sync_button(self):
-        response = self.client.get(reverse("admin:deployments_platform_change", args=[self.platform.pk]))
+        response = self.client.get(
+            reverse("admin:deployments_platform_change", args=[self.platform.pk]),
+        )
 
         self.assertContains(response, "Sync with ERDDAP")
 
     def test_sync_action_redirects(self):
         response = self.client.get(
-            reverse("admin:deployments_platform_actions", args=[self.platform.pk, "sync_with_erddap"]),
+            reverse(
+                "admin:deployments_platform_actions",
+                args=[self.platform.pk, "sync_with_erddap"],
+            ),
         )
 
         self.assertRedirects(response, self.url, fetch_redirect_response=False)
 
     def test_preview(self):
-        TimeSeries.objects.filter(platform=self.platform).update(constraints=CONSTRAINTS)
+        TimeSeries.objects.filter(platform=self.platform).update(
+            constraints=CONSTRAINTS,
+        )
 
         with cassette():
             response = self.client.get(self.url)
@@ -228,11 +269,15 @@ class SyncAdminTestCase(SyncTestMixin, TestCase):
 
     @patch("deployments.tasks.refresh.refresh_dataset.delay")
     def test_apply_selected(self, mock_delay):
-        TimeSeries.objects.filter(platform=self.platform).update(constraints=CONSTRAINTS)
+        TimeSeries.objects.filter(platform=self.platform).update(
+            constraints=CONSTRAINTS,
+        )
         with cassette():
             sync = plan_sync(self.platform)
         group = sync.groups[0]
-        station = next(choice for choice in sync.fields if choice.name == "station_name")
+        station = next(
+            choice for choice in sync.fields if choice.name == "station_name"
+        )
 
         with cassette():
             response = self.client.post(
@@ -251,7 +296,10 @@ class SyncAdminTestCase(SyncTestMixin, TestCase):
             fetch_redirect_response=False,
         )
         constraints = dict(
-            TimeSeries.objects.filter(platform=self.platform).values_list("variable", "constraints"),
+            TimeSeries.objects.filter(platform=self.platform).values_list(
+                "variable",
+                "constraints",
+            ),
         )
         self.assertEqual(
             constraints["dominant_wave_period"],
@@ -263,7 +311,11 @@ class SyncAdminTestCase(SyncTestMixin, TestCase):
         mock_delay.assert_called_once()
 
     def test_requires_permissions(self):
-        staff = get_user_model().objects.create_user("staff", password="pw", is_staff=True)
+        staff = get_user_model().objects.create_user(
+            "staff",
+            password="pw",
+            is_staff=True,
+        )
         self.client.force_login(staff)
 
         self.assertEqual(self.client.get(self.url).status_code, 403)

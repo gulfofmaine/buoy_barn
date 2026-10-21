@@ -74,7 +74,12 @@ def canonical_constraints(constraints) -> str:
     ``sort_keys`` makes this stable: the same constraints built in a different order
     must produce the same string, or the same group would be counted under two ids.
     """
-    return json.dumps(constraints or {}, sort_keys=True, separators=(",", ":"), default=str)
+    return json.dumps(
+        constraints or {},
+        sort_keys=True,
+        separators=(",", ":"),
+        default=str,
+    )
 
 
 def constraint_group_id(constraints) -> str:
@@ -91,7 +96,9 @@ def constraint_group_id(constraints) -> str:
     """
     if not constraints:
         return NO_CONSTRAINTS
-    digest = hashlib.sha256(canonical_constraints(constraints).encode("utf-8")).hexdigest()
+    digest = hashlib.sha256(
+        canonical_constraints(constraints).encode("utf-8"),
+    ).hexdigest()
     return digest[:_GROUP_ID_LENGTH]
 
 
@@ -133,7 +140,7 @@ def erddap_outcomes() -> frozenset[str]:
     """
 
     def load():
-        from deployments.tasks.outcomes import OUTCOMES  # noqa: PLC0415
+        from deployments.tasks.outcomes import OUTCOMES
 
         return OUTCOMES
 
@@ -144,7 +151,7 @@ def timeseries_types() -> frozenset[str]:
     """``TimeSeries.timeseries_type`` choices, plus "unknown" for an unsupplied one."""
 
     def load():
-        from deployments.models import TimeSeries  # noqa: PLC0415
+        from deployments.models import TimeSeries
 
         return set(TimeSeries.TimeSeriesType.values) | {"unknown"}
 
@@ -270,7 +277,10 @@ def instruments() -> _Instruments | None:
     try:
         meter = bootstrap.get_meter()
     except Exception:
-        logger.debug("Could not acquire a meter; skipping this recording", exc_info=True)
+        logger.debug(
+            "Could not acquire a meter; skipping this recording",
+            exc_info=True,
+        )
         return None
 
     if meter is None:
@@ -301,14 +311,14 @@ def _mirror_to_sentry(key: str, attributes: dict) -> None:
     if not sentry_mirror_enabled():
         return
     try:
-        import sentry_sdk  # noqa: PLC0415
+        import sentry_sdk
 
         sentry_sdk.metrics.count(key, 1, attributes=attributes)
     except Exception:
         logger.debug("Could not mirror %s to Sentry metrics", key, exc_info=True)
 
 
-def record_erddap_request(  # noqa: PLR0913, PLR0917 - one metric per dimension it records
+def record_erddap_request(
     server,
     dataset,
     duration_s: float | None,
@@ -344,7 +354,10 @@ def record_erddap_request(  # noqa: PLR0913, PLR0917 - one metric per dimension 
             # Always present, even when a caller supplies neither, so a query never meets the
             # same metric both with and without these labels.
             "constraint_group": _bounded_group_id(constraint_group),
-            "timeseries.type": _bounded(timeseries_type or "unknown", timeseries_types()),
+            "timeseries.type": _bounded(
+                timeseries_type or "unknown",
+                timeseries_types(),
+            ),
         }
         inst.erddap_outcome.add(1, attributes)
         if safe_outcome != "success":
@@ -430,7 +443,10 @@ def record_task(task_name: str, state: str, duration_s: float | None = None) -> 
         return
 
     try:
-        attributes = {"celery.task": str(task_name), "celery.state": _bounded(state, CELERY_STATES)}
+        attributes = {
+            "celery.task": str(task_name),
+            "celery.state": _bounded(state, CELERY_STATES),
+        }
         inst.task_count.add(1, attributes)
         if duration_s is not None:
             inst.task_duration.record(max(float(duration_s), 0.0), attributes)
@@ -499,7 +515,10 @@ def record_log(logger_name: str, level: str) -> None:
     try:
         inst.log_records.add(
             1,
-            {"logger": str(logger_name), "level": _bounded(str(level).lower(), LOG_LEVELS)},
+            {
+                "logger": str(logger_name),
+                "level": _bounded(str(level).lower(), LOG_LEVELS),
+            },
         )
     except Exception:
         logger.debug("Failed to record log metrics", exc_info=True)

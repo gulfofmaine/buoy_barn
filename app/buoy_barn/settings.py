@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import logging
 import os
+import tomllib
 from pathlib import Path
 
 import sentry_sdk
-import tomllib
 from celery.schedules import crontab
 from corsheaders.defaults import default_headers
 from sentry_sdk.integrations.celery import CeleryIntegration
@@ -113,7 +113,7 @@ def _app_version() -> str:
     try:
         with (BASE_DIR / "pyproject.toml").open("rb") as f:
             return tomllib.load(f)["project"]["version"]
-    except (OSError, KeyError, tomllib.TOMLDecodeError):
+    except OSError, KeyError, tomllib.TOMLDecodeError:
         logger.warning("Unable to read the project version from pyproject.toml")
         return "unknown"
 
@@ -127,7 +127,8 @@ if os.environ.get("DJANGO_ENV", "").lower() != "test":
         environment="dev" if DEBUG else "prod",
         release=f"v{APP_VERSION}",
         traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
-        spotlight=(os.environ.get("DJANGO_ENV") == "dev") and "http://spotlight:8969/stream",
+        spotlight=(os.environ.get("DJANGO_ENV") == "dev")
+        and "http://spotlight:8969/stream",
         traces_sampler=trace_filter,
         before_send=before_send,
     )
@@ -256,7 +257,9 @@ DJ_REDIS_PANEL_SETTINGS = {
 PROXY_CACHE_SECONDS = int(os.environ.get("PROXY_CACHE_SECONDS", 5 * 60))  # noqa: PLW1508
 
 # How big of a response (in bytes) should be streamed rather than cached in memory
-PROXY_STREAM_THRESHOLD_BYTES = int(os.environ.get("PROXY_STREAM_THRESHOLD_BYTES", 1_000_000))  # noqa: PLW1508
+PROXY_STREAM_THRESHOLD_BYTES = int(
+    os.environ.get("PROXY_STREAM_THRESHOLD_BYTES", "1_000_000"),
+)
 
 # How many seconds should requests wait before timing out connecting to a proxy
 PROXY_TIMEOUT_SECONDS = int(os.environ.get("PROXY_TIMEOUT_SECONDS", 30))  # noqa: PLW1508

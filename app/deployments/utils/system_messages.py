@@ -15,7 +15,7 @@ from deployments.models.system_message import SystemMessage, subject_field
 logger = logging.getLogger(__name__)
 
 
-def record_system_message(  # noqa: PLR0913 - one parameter per SystemMessage field it sets
+def record_system_message(
     subject,
     code,
     message,
@@ -55,7 +55,9 @@ def record_system_message(  # noqa: PLR0913 - one parameter per SystemMessage fi
         )
 
         if not created:
-            SystemMessage.objects.filter(pk=row.pk).update(occurrences=F("occurrences") + 1)
+            SystemMessage.objects.filter(pk=row.pk).update(
+                occurrences=F("occurrences") + 1,
+            )
             row.refresh_from_db(fields=["occurrences"])
     except Exception:
         logger.warning(

@@ -6,7 +6,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("deployments", "0061_erddapserver_mqtt_broker_erddapserver_mqtt_password_and_more"),
+        (
+            "deployments",
+            "0061_erddapserver_mqtt_broker_erddapserver_mqtt_password_and_more",
+        ),
     ]
 
     operations = [

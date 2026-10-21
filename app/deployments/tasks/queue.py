@@ -1,8 +1,8 @@
-def task_queued(task_name: str, task_args: list, task_kwargs: dict) -> bool:  # noqa: PLR0912
+def task_queued(task_name: str, task_args: list, task_kwargs: dict) -> bool:
     """Returns true if the task is already scheduled"""
-    from celery.app.control import Control  # noqa: PLC0415
+    from celery.app.control import Control
 
-    from buoy_barn.celery import app  # noqa: PLC0415
+    from buoy_barn.celery import app
 
     control = Control(app)
     inspect = control.inspect()

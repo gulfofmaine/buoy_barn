@@ -9,7 +9,7 @@ from deployments.models import TimeSeries
 from deployments.utils.erddap_datasets import TIME_COLUMN, VALUE_COLUMN
 
 
-def encode_value(value):  # noqa: PLR0911
+def encode_value(value):
     """Make Pandas and Numpy values json serializable"""
     if isinstance(value, np.bool_):
         return bool(value)

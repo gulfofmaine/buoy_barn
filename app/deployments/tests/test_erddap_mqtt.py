@@ -79,7 +79,10 @@ class TestErddapMqttCommand:
 
     def test_server_not_found(self):
         """Command should raise error when server slug doesn't exist."""
-        with pytest.raises(CommandError, match="ERDDAP server with slug 'nonexistent' not found"):
+        with pytest.raises(
+            CommandError,
+            match="ERDDAP server with slug 'nonexistent' not found",
+        ):
             call_command("erddap_mqtt", "nonexistent")
 
     def test_no_mqtt_broker_configured(self, erddap_server_no_mqtt):
@@ -99,7 +102,10 @@ class TestErddapMqttCommand:
 
     def test_get_erddap_server_not_found(self, command):
         """get_erddap_server should raise CommandError when server not found."""
-        with pytest.raises(CommandError, match="ERDDAP server with slug 'nonexistent' not found"):
+        with pytest.raises(
+            CommandError,
+            match="ERDDAP server with slug 'nonexistent' not found",
+        ):
             command.get_erddap_server("nonexistent")
 
     def test_get_erddap_server_no_broker(self, command, erddap_server_no_mqtt):
@@ -107,7 +113,11 @@ class TestErddapMqttCommand:
         with pytest.raises(CommandError, match="No MQTT broker configured"):
             command.get_erddap_server("no-mqtt-server")
 
-    def test_get_erddap_server_no_credentials(self, command, erddap_server_no_credentials):
+    def test_get_erddap_server_no_credentials(
+        self,
+        command,
+        erddap_server_no_credentials,
+    ):
         """get_erddap_server should raise CommandError when no credentials configured."""
         with pytest.raises(CommandError, match="No MQTT credentials configured"):
             command.get_erddap_server("no-creds-server")
@@ -197,7 +207,9 @@ class TestOnMessageCallback:
         mock_msg = MagicMock()
         mock_msg.topic = "change/test_dataset"
 
-        with patch("deployments.management.commands.erddap_mqtt.single_refresh_dataset") as _:
+        with patch(
+            "deployments.management.commands.erddap_mqtt.single_refresh_dataset",
+        ) as _:
             on_message(None, None, mock_msg)
 
         output = command.stdout.getvalue()
@@ -223,7 +235,10 @@ class TestOnMessageCallback:
 
         on_message(None, None, mock_msg)
 
-        mock_refresh.delay.assert_called_once_with(erddap_dataset.id, clear_end_time=True)
+        mock_refresh.delay.assert_called_once_with(
+            erddap_dataset.id,
+            clear_end_time=True,
+        )
 
     @patch("deployments.management.commands.erddap_mqtt.single_refresh_dataset")
     def test_on_message_ignores_unknown_dataset(self, mock_refresh, erddap_server):
@@ -256,7 +271,9 @@ class TestOnMessageCallback:
         mock_msg = MagicMock()
         mock_msg.topic = "change/unknown_dataset"
 
-        with patch("deployments.management.commands.erddap_mqtt.single_refresh_dataset"):
+        with patch(
+            "deployments.management.commands.erddap_mqtt.single_refresh_dataset",
+        ):
             on_message(None, None, mock_msg)
 
         output = command.stdout.getvalue()
@@ -264,7 +281,12 @@ class TestOnMessageCallback:
         assert "unknown_dataset" in output
 
     @patch("deployments.management.commands.erddap_mqtt.single_refresh_dataset")
-    def test_on_message_handles_nested_topic(self, mock_refresh, erddap_server, erddap_dataset):
+    def test_on_message_handles_nested_topic(
+        self,
+        mock_refresh,
+        erddap_server,
+        erddap_dataset,
+    ):
         """on_message should extract dataset name from nested topics."""
         command = Command()
         command.stdout = StringIO()
@@ -278,7 +300,10 @@ class TestOnMessageCallback:
 
         on_message(None, None, mock_msg)
 
-        mock_refresh.delay.assert_called_once_with(erddap_dataset.id, clear_end_time=True)
+        mock_refresh.delay.assert_called_once_with(
+            erddap_dataset.id,
+            clear_end_time=True,
+        )
 
 
 @pytest.mark.django_db
@@ -298,9 +323,13 @@ class TestCreateMqttClient:
         )
 
     @patch("deployments.management.commands.erddap_mqtt.mqtt.Client")
-    def test_creates_client_with_correct_api_version(self, mock_client_class, erddap_server):
+    def test_creates_client_with_correct_api_version(
+        self,
+        mock_client_class,
+        erddap_server,
+    ):
         """create_mqtt_client should create client with CallbackAPIVersion.VERSION2."""
-        import paho.mqtt.client as mqtt  # noqa: PLC0415
+        import paho.mqtt.client as mqtt
 
         command = Command()
         command.stdout = StringIO()

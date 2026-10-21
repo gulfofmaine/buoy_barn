@@ -43,7 +43,13 @@ ACCEPTABLE_FLAG_MEANINGS = {"pass", "good", "quality_good", "not_evaluated"}
 DATUM_ATTRIBUTE = "tidal_datum_offsets_meters"
 
 # Constraints that select a single station out of a multi-station dataset.
-STATION_CONSTRAINT_KEYS = ("station=", "stationID=", "station_id=", "platform=", "platform_id=")
+STATION_CONSTRAINT_KEYS = (
+    "station=",
+    "stationID=",
+    "station_id=",
+    "platform=",
+    "platform_id=",
+)
 
 NUMERIC_TYPES = {"byte", "ubyte", "short", "ushort", "int", "uint", "long", "ulong"}
 FLOAT_TYPES = {"float", "double"}
@@ -88,7 +94,11 @@ def parse_info_csv(dataset_id: str, csv_text: str) -> DatasetInfo:
             info.variables.setdefault(variable, {})
             info.types[variable] = data_type
         elif row_type == "attribute":
-            target = info.globals if variable == GLOBAL else info.variables.setdefault(variable, {})
+            target = (
+                info.globals
+                if variable == GLOBAL
+                else info.variables.setdefault(variable, {})
+            )
             target[attribute] = _cast(value, data_type)
 
     return info
@@ -129,7 +139,11 @@ def _single_value(value) -> float | None:
     """The value of a number, or of a range that starts and ends at the same value"""
     if isinstance(value, int | float):
         return float(value)
-    numbers = isinstance(value, list) and value and all(isinstance(v, int | float) for v in value)
+    numbers = (
+        isinstance(value, list)
+        and value
+        and all(isinstance(v, int | float) for v in value)
+    )
     if numbers and math.isclose(min(value), max(value)):
         return float(value[0])
     return None
@@ -145,7 +159,11 @@ def _depth_variable(info: DatasetInfo) -> str | None:
     if "depth" in info.variables:
         return "depth"
     return next(
-        (name for name, attrs in info.variables.items() if attrs.get("standard_name") == "depth"),
+        (
+            name
+            for name, attrs in info.variables.items()
+            if attrs.get("standard_name") == "depth"
+        ),
         None,
     )
 
@@ -167,7 +185,10 @@ def variable_depth(info: DatasetInfo, variable: str) -> float | None:
         if depth is not None:
             return _positive_down(depth, info.var_attr(depth_variable, "positive"))
 
-    vertical = [info.globals.get("geospatial_vertical_min"), info.globals.get("geospatial_vertical_max")]
+    vertical = [
+        info.globals.get("geospatial_vertical_min"),
+        info.globals.get("geospatial_vertical_max"),
+    ]
     depth = _single_value(vertical) if all(v is not None for v in vertical) else None
     return _positive_down(depth, info.globals.get("geospatial_vertical_positive"))
 
@@ -179,7 +200,11 @@ def station_constraint(constraints: dict | None) -> tuple[str, str] | None:
     return None
 
 
-def _station_location(server: ErddapServer, dataset_id: str, constraints: dict) -> Point | None:
+def _station_location(
+    server: ErddapServer,
+    dataset_id: str,
+    constraints: dict,
+) -> Point | None:
     e = server.connection()
     url = e.get_download_url(
         dataset_id=dataset_id,
@@ -204,16 +229,23 @@ def platform_location(
     constraints: dict | None = None,
 ) -> tuple[Point | None, str]:
     """Where the platform is, and which metadata it came from"""
-    for lat_name, lon_name in (("latitude", "longitude"), ("site_latitude", "site_longitude")):
+    for lat_name, lon_name in (
+        ("latitude", "longitude"),
+        ("site_latitude", "site_longitude"),
+    ):
         lat = info.globals.get(lat_name)
         lon = info.globals.get(lon_name)
         if isinstance(lat, float | int) and isinstance(lon, float | int):
-            return Point(float(lon), float(lat), srid=4326), f"{lat_name}/{lon_name} attributes"
+            return Point(
+                float(lon),
+                float(lat),
+                srid=4326,
+            ), f"{lat_name}/{lon_name} attributes"
 
     if server is not None and station_constraint(constraints):
         try:
             point = _station_location(server, info.dataset_id, constraints)
-        except (requests.RequestException, KeyError, ValueError):
+        except requests.RequestException, KeyError, ValueError:
             point = None
         if point:
             return point, "station position in data"
@@ -257,7 +289,9 @@ def platform_defaults(info: DatasetInfo) -> dict:
     defaults = {}
 
     station_name = (
-        info.globals.get("platform_name") or info.globals.get("long_name") or info.globals.get("title")
+        info.globals.get("platform_name")
+        or info.globals.get("long_name")
+        or info.globals.get("title")
     )
     if station_name:
         defaults["station_name"] = str(station_name)[:100]
@@ -266,7 +300,9 @@ def platform_defaults(info: DatasetInfo) -> dict:
     if description:
         defaults["mooring_site_desc"] = str(description)
 
-    ndbc_site_id = info.globals.get("ndbc_site_id") or info.globals.get("wmo_platform_code")
+    ndbc_site_id = info.globals.get("ndbc_site_id") or info.globals.get(
+        "wmo_platform_code",
+    )
     if ndbc_site_id:
         defaults["ndbc_site_id"] = str(ndbc_site_id)[:100]
 
@@ -319,7 +355,12 @@ def _referenced(info: DatasetInfo) -> set[str]:
     """Variables other variables point to as ancillary data, coordinates or instruments"""
     referenced = set()
     for attrs in info.variables.values():
-        for attribute in ("ancillary_variables", "coordinates", "instrument", "grid_mapping"):
+        for attribute in (
+            "ancillary_variables",
+            "coordinates",
+            "instrument",
+            "grid_mapping",
+        ):
             referenced.update(str(attrs.get(attribute, "")).split())
     return referenced
 
@@ -327,8 +368,14 @@ def _referenced(info: DatasetInfo) -> set[str]:
 def data_variables(info: DatasetInfo) -> list[str]:
     """Variables that could become timeseries"""
     excluded = set(COORDINATE_VARIABLES) | NON_DATA_VARIABLES | _referenced(info)
-    for attr in ("cdm_timeseries_variables", "cdm_profile_variables", "cdm_trajectory_variables"):
-        excluded.update(name.strip() for name in str(info.globals.get(attr, "")).split(","))
+    for attr in (
+        "cdm_timeseries_variables",
+        "cdm_profile_variables",
+        "cdm_trajectory_variables",
+    ):
+        excluded.update(
+            name.strip() for name in str(info.globals.get(attr, "")).split(",")
+        )
 
     return [
         variable
@@ -358,13 +405,19 @@ def aggregate_flags(info: DatasetInfo) -> tuple[dict[str, list[str]], list[str]]
     unclaimed = []
 
     for aggregate in aggregates:
-        listed_by = [variable for variable in variables if aggregate in _ancillary(info, variable)]
+        listed_by = [
+            variable
+            for variable in variables
+            if aggregate in _ancillary(info, variable)
+        ]
         if listed_by:
             for variable in listed_by:
                 assigned[variable].append(aggregate)
             continue
 
-        prefixed = [variable for variable in variables if aggregate.startswith(f"{variable}_")]
+        prefixed = [
+            variable for variable in variables if aggregate.startswith(f"{variable}_")
+        ]
         if prefixed:
             assigned[max(prefixed, key=len)].append(aggregate)
             continue
@@ -401,10 +454,15 @@ def flag_constraint(info: DatasetInfo, flag_variable: str) -> tuple[dict, str | 
 
     values = _as_list(values)
     if len(values) != len(meanings):
-        return {}, f"{flag_variable} has a different number of flag_values and flag_meanings"
+        return (
+            {},
+            f"{flag_variable} has a different number of flag_values and flag_meanings",
+        )
 
     flags = sorted(zip(values, meanings, strict=True))
-    acceptable = [value for value, meaning in flags if meaning.lower() in ACCEPTABLE_FLAG_MEANINGS]
+    acceptable = [
+        value for value, meaning in flags if meaning.lower() in ACCEPTABLE_FLAG_MEANINGS
+    ]
 
     if not acceptable:
         return {}, f"{flag_variable} has no flag meaning pass or good"
@@ -415,7 +473,10 @@ def flag_constraint(info: DatasetInfo, flag_variable: str) -> tuple[dict, str | 
     if lowest == acceptable:
         return {f"{flag_variable}<=": acceptable[-1]}, None
 
-    return {}, f"{flag_variable} acceptable flags {acceptable} cannot be expressed as one constraint"
+    return (
+        {},
+        f"{flag_variable} acceptable flags {acceptable} cannot be expressed as one constraint",
+    )
 
 
 def qartod_constraints(
@@ -450,7 +511,10 @@ def qartod_constraints(
     return constraints, warnings
 
 
-def tidal_datums(info: DatasetInfo, variable: str) -> tuple[dict[str, float], list[str]]:
+def tidal_datums(
+    info: DatasetInfo,
+    variable: str,
+) -> tuple[dict[str, float], list[str]]:
     """Tidal datum offsets from the `tidal_datum_offsets_meters` attribute"""
     raw = info.var_attr(variable, DATUM_ATTRIBUTE)
     if raw is None:
@@ -458,7 +522,7 @@ def tidal_datums(info: DatasetInfo, variable: str) -> tuple[dict[str, float], li
 
     try:
         offsets = json.loads(raw)
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         return {}, [f"Unable to read {DATUM_ATTRIBUTE}: {raw!r}"]
     if not isinstance(offsets, dict):
         return {}, [f"{DATUM_ATTRIBUTE} is not a JSON object: {raw!r}"]
@@ -472,7 +536,7 @@ def tidal_datums(info: DatasetInfo, variable: str) -> tuple[dict[str, float], li
             continue
         try:
             datums[field_name] = float(value)
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             warnings.append(f"Tidal datum {key!r} is not a number: {value!r}")
 
     return datums, warnings
@@ -488,7 +552,11 @@ def match_data_type(attrs: dict) -> tuple[DataType | None, str | None]:
         if not candidates:
             continue
         # The same name can be stored with different units, prefer the matching one
-        same_units = [candidate for candidate in candidates if candidate.units == attrs.get("units")]
+        same_units = [
+            candidate
+            for candidate in candidates
+            if candidate.units == attrs.get("units")
+        ]
         return (same_units or candidates)[0], None
 
     return None, (

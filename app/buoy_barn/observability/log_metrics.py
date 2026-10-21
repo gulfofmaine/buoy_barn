@@ -75,7 +75,7 @@ class MetricsLogHandler(logging.Handler):
         _recording.active = True
         try:
             metrics.record_log(record.name, record.levelname)
-        except Exception:  # pragma: no cover - defensive; record_log already guards
+        except Exception:  # pragma: no cover - defensive; record_log already guards # noqa: BLE001
             self.handleError(record)
         finally:
             _recording.active = False

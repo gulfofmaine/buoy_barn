@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta
-from datetime import timezone as dt_timezone
+from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
 
 import pytest
@@ -19,7 +18,10 @@ from deployments.models import (
 from deployments.models.system_message import subject_field
 from deployments.tasks.error_handling import handle_500_time_range_error
 from deployments.tasks.outcomes import Outcome
-from deployments.utils.system_messages import record_system_message, resolve_system_messages
+from deployments.utils.system_messages import (
+    record_system_message,
+    resolve_system_messages,
+)
 
 
 @pytest.mark.django_db
@@ -28,7 +30,9 @@ class SystemMessageTestCase(TestCase):
 
     def setUp(self):
         self.platform = Platform.objects.get(name="M01")
-        self.erddap_server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.erddap_server = ErddapServer.objects.get(
+            base_url="http://www.neracoos.org/erddap",
+        )
         self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
 
         self.dataset = ErddapDataset.objects.create(
@@ -85,7 +89,9 @@ class SystemMessageTestCase(TestCase):
             "server": self.erddap_server,
         }
 
-    def test_duplicate_subject_code_constraint_group_raises_for_every_subject_type(self):
+    def test_duplicate_subject_code_constraint_group_raises_for_every_subject_type(
+        self,
+    ):
         """Every subject column needs its own partial unique index, not one combined one.
 
         Postgres treats NULLs as distinct, so a single unique constraint over all four
@@ -239,7 +245,9 @@ class SystemMessageTestCase(TestCase):
 
         with self.assertNumQueries(1):
             results = list(
-                SystemMessage.objects.for_objects([self.platform, self.dataset, self.timeseries]),
+                SystemMessage.objects.for_objects(
+                    [self.platform, self.dataset, self.timeseries],
+                ),
             )
 
         self.assertCountEqual(
@@ -260,7 +268,9 @@ class SystemMessageUtilsTestCase(TestCase):
 
     def setUp(self):
         self.platform = Platform.objects.get(name="M01")
-        self.erddap_server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.erddap_server = ErddapServer.objects.get(
+            base_url="http://www.neracoos.org/erddap",
+        )
         self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
 
         self.dataset = ErddapDataset.objects.create(
@@ -497,7 +507,9 @@ class Handle500TimeRangeErrorTestCase(TestCase):
 
     def setUp(self):
         self.platform = Platform.objects.get(name="M01")
-        self.erddap_server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.erddap_server = ErddapServer.objects.get(
+            base_url="http://www.neracoos.org/erddap",
+        )
         self.salinity = DataType.objects.get(standard_name="sea_water_salinity")
         self.water_temp = DataType.objects.get(standard_name="sea_water_temperature")
 
@@ -547,7 +559,9 @@ class Handle500TimeRangeErrorTestCase(TestCase):
 
         # One message per retired timeseries, not one for the whole group.
         self.assertEqual(
-            SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).count(),
+            SystemMessage.objects.filter(
+                code=SystemMessage.Code.END_TIME_RETIRED,
+            ).count(),
             2,
         )
 
@@ -574,7 +588,9 @@ class Handle500TimeRangeErrorTestCase(TestCase):
             self.assertIsNone(ts.end_time)
 
         self.assertFalse(
-            SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).exists(),
+            SystemMessage.objects.filter(
+                code=SystemMessage.Code.END_TIME_RETIRED,
+            ).exists(),
         )
 
     def test_guards_off_a_series_with_a_reading_newer_than_the_reported_end_time(self):
@@ -584,7 +600,7 @@ class Handle500TimeRangeErrorTestCase(TestCase):
         anyway would create exactly that impossible state -- so it should be left alone and
         flagged, while ts2 (no newer reading) is retired as before.
         """
-        after_end_time = datetime(2019, 4, 1, tzinfo=dt_timezone.utc)
+        after_end_time = datetime(2019, 4, 1, tzinfo=UTC)
         self.ts1.value_time = after_end_time
         self.ts1.save()
 
@@ -609,11 +625,13 @@ class Handle500TimeRangeErrorTestCase(TestCase):
 
         self.ts2.refresh_from_db()
         self.assertIsNotNone(self.ts2.end_time)
-        SystemMessage.objects.for_object(self.ts2).get(code=SystemMessage.Code.END_TIME_RETIRED)
+        SystemMessage.objects.for_object(self.ts2).get(
+            code=SystemMessage.Code.END_TIME_RETIRED,
+        )
 
     def test_reports_inconsistent_when_every_series_has_a_newer_reading(self):
         """When nothing in the group is eligible for retirement, say so rather than claim one."""
-        after_end_time = datetime(2019, 4, 1, tzinfo=dt_timezone.utc)
+        after_end_time = datetime(2019, 4, 1, tzinfo=UTC)
         self.ts1.value_time = after_end_time
         self.ts1.save()
         self.ts2.value_time = after_end_time
@@ -626,8 +644,12 @@ class Handle500TimeRangeErrorTestCase(TestCase):
         for ts in (self.ts1, self.ts2):
             ts.refresh_from_db()
             self.assertIsNone(ts.end_time)
-            SystemMessage.objects.for_object(ts).get(code=SystemMessage.Code.TIME_RANGE_INCONSISTENT)
+            SystemMessage.objects.for_object(ts).get(
+                code=SystemMessage.Code.TIME_RANGE_INCONSISTENT,
+            )
 
         self.assertFalse(
-            SystemMessage.objects.filter(code=SystemMessage.Code.END_TIME_RETIRED).exists(),
+            SystemMessage.objects.filter(
+                code=SystemMessage.Code.END_TIME_RETIRED,
+            ).exists(),
         )

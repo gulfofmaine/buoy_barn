@@ -70,24 +70,24 @@ class ErddapServer(models.Model):
         return self.base_url
 
     def connection(self):
-        from erddapy import ERDDAP  # noqa: PLC0415
+        from erddapy import ERDDAP
 
         return ERDDAP(self.base_url)
 
     def healthcheck_start(self):
         """Signal that a process has started with Healthchecks.io"""
-        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
+        from deployments.utils.healthchecks import ping_healthcheck
 
         ping_healthcheck(self.healthcheck_url, self.name, start=True)
 
     def healthcheck_complete(self):
         """Signal that a process has completed with Healthchecks.io"""
-        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
+        from deployments.utils.healthchecks import ping_healthcheck
 
         ping_healthcheck(self.healthcheck_url, self.name)
 
     def healthcheck_fail(self):
         """Signal that a process has failed with Healthchecks.io"""
-        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
+        from deployments.utils.healthchecks import ping_healthcheck
 
         ping_healthcheck(self.healthcheck_url, self.name, fail=True)

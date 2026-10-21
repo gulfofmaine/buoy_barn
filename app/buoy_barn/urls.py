@@ -73,7 +73,10 @@ urlpatterns = [
         # fail the inspect leg and take down whatever this is attached to.
         HealthCheckView.as_view(
             checks=[
-                ("health_check.contrib.celery.Ping", {"timeout": timedelta(seconds=10)}),
+                (
+                    "health_check.contrib.celery.Ping",
+                    {"timeout": timedelta(seconds=10)},
+                ),
             ],
         ),
     ),

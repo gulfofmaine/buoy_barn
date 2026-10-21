@@ -36,7 +36,9 @@ class ErddapImportForm(forms.Form):
         if constraints in (None, ""):
             return {}
         if not isinstance(constraints, dict):
-            raise forms.ValidationError('Constraints must be a JSON object, like {"depth=": 1.0}')
+            raise forms.ValidationError(
+                'Constraints must be a JSON object, like {"depth=": 1.0}',
+            )
         return constraints
 
     def clean(self):
@@ -46,9 +48,13 @@ class ErddapImportForm(forms.Form):
         cleaned["new_platform_name"] = name
 
         if platform and name:
-            raise forms.ValidationError("Choose an existing platform or a new platform name, not both")
+            raise forms.ValidationError(
+                "Choose an existing platform or a new platform name, not both",
+            )
         if not platform and not name:
-            raise forms.ValidationError("Choose an existing platform or enter a new platform name")
+            raise forms.ValidationError(
+                "Choose an existing platform or enter a new platform name",
+            )
         if name and Platform.objects.filter(name=name).exists():
             self.add_error(
                 "new_platform_name",

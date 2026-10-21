@@ -109,7 +109,12 @@ def _timeseries_by_dataset(platform: Platform) -> dict[ErddapDataset, list[TimeS
     by_dataset = defaultdict(list)
     for ts in platform.timeseries_set.select_related("dataset__server"):
         by_dataset[ts.dataset].append(ts)
-    return dict(sorted(by_dataset.items(), key=lambda item: (str(item[0].server), item[0].name)))
+    return dict(
+        sorted(
+            by_dataset.items(),
+            key=lambda item: (str(item[0].server), item[0].name),
+        ),
+    )
 
 
 def _plan_dataset(
@@ -119,7 +124,8 @@ def _plan_dataset(
 ) -> list[SyncGroup]:
     info = metadata.fetch_dataset_info(dataset.server, dataset.name)
     constraint_sets = {
-        json.dumps(base_constraints(ts.constraints, info), sort_keys=True) for ts in timeseries
+        json.dumps(base_constraints(ts.constraints, info), sort_keys=True)
+        for ts in timeseries
     }
 
     groups = []
@@ -135,7 +141,9 @@ def _plan_dataset(
             select_changed=True,
         )
         group_id = _short_hash(f"{dataset.server_id}|{dataset.name}|{key}")
-        groups.append(SyncGroup(id=group_id, dataset=dataset, constraints=constraints, plan=plan))
+        groups.append(
+            SyncGroup(id=group_id, dataset=dataset, constraints=constraints, plan=plan),
+        )
     return groups
 
 
@@ -143,7 +151,10 @@ def _field_choices(platform: Platform, groups: list[SyncGroup]) -> list[Choice]:
     choices: dict[str, Choice] = {}
     for group in groups:
         for name, change in group.plan.platform_fields.items():
-            choice = choices.setdefault(name, Choice(name=name, current=getattr(platform, name)))
+            choice = choices.setdefault(
+                name,
+                Choice(name=name, current=getattr(platform, name)),
+            )
             option_id = _short_hash(repr(change.proposed))
             option = choice.option(option_id)
             if option is None:
@@ -169,7 +180,8 @@ def _location_choice(platform: Platform, groups: list[SyncGroup]) -> Choice | No
             (
                 option
                 for option in choice.options
-                if metadata.distance_meters(option.value, plan.location) <= LOCATION_SAME_METERS
+                if metadata.distance_meters(option.value, plan.location)
+                <= LOCATION_SAME_METERS
             ),
             None,
         )
@@ -196,7 +208,7 @@ def plan_sync(platform: Platform) -> SyncPlan:
     for dataset, timeseries in _timeseries_by_dataset(platform).items():
         try:
             sync.groups.extend(_plan_dataset(platform, dataset, timeseries))
-        except (requests.RequestException, ValueError) as e:  # noqa: PERF203
+        except (requests.RequestException, ValueError) as e:
             sync.errors.append(DatasetError(dataset=dataset, message=str(e)))
 
     sync.fields = _field_choices(platform, sync.groups)
@@ -246,8 +258,12 @@ def apply_sync(
     created, updated, datasets = [], [], []
     with transaction.atomic():
         for group in sync.groups:
-            to_create = [variable for group_id, variable in create if group_id == group.id]
-            to_update = [variable for group_id, variable in update if group_id == group.id]
+            to_create = [
+                variable for group_id, variable in create if group_id == group.id
+            ]
+            to_update = [
+                variable for group_id, variable in update if group_id == group.id
+            ]
             if not to_create and not to_update:
                 continue
 
@@ -263,7 +279,11 @@ def apply_sync(
             if (result.created or result.updated) and result.dataset not in datasets:
                 datasets.append(result.dataset)
 
-        fields_updated, location_updated = _apply_platform_choices(sync, fields or {}, location)
+        fields_updated, location_updated = _apply_platform_choices(
+            sync,
+            fields or {},
+            location,
+        )
 
     return SyncResult(
         platform=sync.platform,

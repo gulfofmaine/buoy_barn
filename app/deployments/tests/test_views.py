@@ -34,7 +34,10 @@ class ProxyViewTestCase(APITestCase):
         upstream_response = httpx2.Response(
             200,
             content=b'{"table": {}}',
-            request=httpx2.Request("GET", "http://localhost:8080/tabledap/M01_met_all.json"),
+            request=httpx2.Request(
+                "GET",
+                "http://localhost:8080/tabledap/M01_met_all.json",
+            ),
         )
         assert "content-length" in upstream_response.headers
 

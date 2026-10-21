@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 @cache
 def _duration_codes() -> frozenset[str]:
     """Codes whose signal is server latency rather than a fetch outcome."""
-    from deployments.models import SystemMessage  # noqa: PLC0415
+    from deployments.models import SystemMessage
 
     return frozenset({SystemMessage.Code.BACKOFF_INCREASED.value})
 
@@ -31,7 +31,7 @@ def _outcome_codes() -> frozenset[str]:
 
     Derived by subtraction rather than listed, so a new `Code` gets a query automatically.
     """
-    from deployments.models import SystemMessage  # noqa: PLC0415
+    from deployments.models import SystemMessage
 
     return frozenset(code.value for code in SystemMessage.Code) - _duration_codes()
 
@@ -96,7 +96,10 @@ def query_for(code, context) -> str | None:
             dataset = context.get("dataset")
             if not dataset:
                 return None
-            return _build_outcome_query(str(dataset), str(context.get("constraint_group") or ""))
+            return _build_outcome_query(
+                str(dataset),
+                str(context.get("constraint_group") or ""),
+            )
 
         if code_value in _duration_codes():
             server = context.get("server")

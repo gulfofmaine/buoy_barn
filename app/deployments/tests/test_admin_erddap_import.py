@@ -22,10 +22,16 @@ class ErddapImportAdminTestCase(TestCase):
     fixtures = ["platforms", "erddapservers", "datatypes"]
 
     def setUp(self):
-        self.user = get_user_model().objects.create_superuser("admin", "admin@example.com", "pw")
+        self.user = get_user_model().objects.create_superuser(
+            "admin",
+            "admin@example.com",
+            "pw",
+        )
         self.client.force_login(self.user)
         self.platform = Platform.objects.get(name="M01")
-        self.server = ErddapServer.objects.get(base_url="http://www.neracoos.org/erddap")
+        self.server = ErddapServer.objects.get(
+            base_url="http://www.neracoos.org/erddap",
+        )
 
     def form_data(self, **extra):
         return {
@@ -69,7 +75,10 @@ class ErddapImportAdminTestCase(TestCase):
         self.assertContains(response, "New timeseries")
         self.assertContains(response, "significant_wave_height_qc=")
         self.assertContains(response, "m from this platform's current location")
-        self.assertContains(response, '<input type="checkbox" name="update_location" value="1">')
+        self.assertContains(
+            response,
+            '<input type="checkbox" name="update_location" value="1">',
+        )
         # A blank field is selected to be filled in, a differing one is only offered
         self.assertContains(
             response,
@@ -89,7 +98,10 @@ class ErddapImportAdminTestCase(TestCase):
             response = self.client.post(IMPORT_URL, data)
 
         self.assertContains(response, "Import selected")
-        self.assertContains(response, '<input type="checkbox" name="update_location" value="1" checked>')
+        self.assertContains(
+            response,
+            '<input type="checkbox" name="update_location" value="1" checked>',
+        )
         self.assertFalse(Platform.objects.filter(name="M01-NEW").exists())
 
     @patch("deployments.tasks.refresh.refresh_dataset.delay")
@@ -101,7 +113,9 @@ class ErddapImportAdminTestCase(TestCase):
             self.client.post(IMPORT_URL, data)
 
         self.platform.refresh_from_db()
-        self.assertTrue(self.platform.mooring_site_desc.startswith("Ocean observation data"))
+        self.assertTrue(
+            self.platform.mooring_site_desc.startswith("Ocean observation data"),
+        )
         self.assertEqual(self.platform.station_name, "")
         self.assertTrue(self.platform.geom.equals_exact(original_geom, 1e-9))
 
@@ -145,9 +159,15 @@ class ErddapImportAdminTestCase(TestCase):
         self.assertEqual(platform.station_name, "M01 Jordan Basin Accelerometer")
 
     def test_requires_platform_choice(self):
-        response = self.client.post(IMPORT_URL, self.form_data(step="preview", platform=""))
+        response = self.client.post(
+            IMPORT_URL,
+            self.form_data(step="preview", platform=""),
+        )
 
-        self.assertContains(response, "Choose an existing platform or enter a new platform name")
+        self.assertContains(
+            response,
+            "Choose an existing platform or enter a new platform name",
+        )
 
     def test_rejects_existing_platform_name(self):
         response = self.client.post(
@@ -163,7 +183,11 @@ class ErddapImportAdminTestCase(TestCase):
         self.assertContains(response, "Constraints must be a JSON object")
 
     def test_requires_permissions(self):
-        staff = get_user_model().objects.create_user("staff", password="pw", is_staff=True)
+        staff = get_user_model().objects.create_user(
+            "staff",
+            password="pw",
+            is_staff=True,
+        )
         self.client.force_login(staff)
 
         response = self.client.get(IMPORT_URL)

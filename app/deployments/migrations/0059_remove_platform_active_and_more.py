@@ -31,6 +31,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="platform",
             name="visible_climatology",
-            field=models.BooleanField(default=False, verbose_name="Visible on Climatology tool"),
+            field=models.BooleanField(
+                default=False,
+                verbose_name="Visible on Climatology tool",
+            ),
         ),
     ]

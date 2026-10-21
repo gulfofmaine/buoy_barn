@@ -20,17 +20,19 @@ def filter_dataframe(df_to_filter: pd.DataFrame, column: str) -> pd.DataFrame:
     column_name = [col for col in filtered_df.columns if col.split(" ")[0] == column][0]
     filtered_df = filtered_df[filtered_df[column_name].notna()]
     filtered_df = filtered_df[[ERDDAP_TIME_COLUMN, column_name]]
-    filtered_df = filtered_df.rename(columns={column_name: VALUE_COLUMN, ERDDAP_TIME_COLUMN: "time"})
+    filtered_df = filtered_df.rename(
+        columns={column_name: VALUE_COLUMN, ERDDAP_TIME_COLUMN: "time"},
+    )
     filtered_df[TIME_COLUMN] = pd.to_datetime(filtered_df[TIME_COLUMN])
     return filtered_df
 
 
-def setup_variables(  # noqa: PLR0913, PLR0917
+def setup_variables(
     server: ERDDAP,
     dataset: str,
     variables: list[str],
     constraints=None,
-    time: datetime = None,
+    time: datetime | None = None,
     forecast: bool = False,
 ) -> ERDDAP:
     """Configure ERDDAP variable for requests.

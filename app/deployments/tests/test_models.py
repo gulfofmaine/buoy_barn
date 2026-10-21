@@ -195,7 +195,7 @@ class ErddapServerTestCase(TestCase):
         )
 
     def test_server_connection(self):
-        from erddapy import ERDDAP  # noqa: PLC0415
+        from erddapy import ERDDAP
 
         self.assertIsInstance(self.server_with_name.connection(), ERDDAP)
 

@@ -27,13 +27,19 @@ class Command(BaseCommand):
         try:
             erddap_server = ErddapServer.objects.get(name=server_slug)
         except ErddapServer.DoesNotExist:
-            raise CommandError(f"ERDDAP server with slug '{server_slug}' not found") from None
+            raise CommandError(
+                f"ERDDAP server with slug '{server_slug}' not found",
+            ) from None
 
         if not erddap_server.mqtt_broker:
-            raise CommandError(f"No MQTT broker configured for ERDDAP server {erddap_server}")
+            raise CommandError(
+                f"No MQTT broker configured for ERDDAP server {erddap_server}",
+            )
 
         if not erddap_server.mqtt_username or not erddap_server.mqtt_password:
-            raise CommandError(f"No MQTT credentials configured for ERDDAP server {erddap_server}")
+            raise CommandError(
+                f"No MQTT credentials configured for ERDDAP server {erddap_server}",
+            )
 
         return erddap_server
 
@@ -45,7 +51,11 @@ class Command(BaseCommand):
                 f"Connected to MQTT broker ({erddap_server.mqtt_broker}) for {erddap_server}",
             )
             client.subscribe("change/#")
-            self.stdout.write(self.style.SUCCESS(f"Subscribed to change/# topics for {erddap_server}"))
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f"Subscribed to change/# topics for {erddap_server}",
+                ),
+            )
 
         return on_connect
 
@@ -56,7 +66,10 @@ class Command(BaseCommand):
             dataset_name = msg.topic.split("/")[-1]
             self.stdout.write(f"ERDDAP dataset updated: {dataset_name}")
             try:
-                dataset = ErddapDataset.objects.get(name=dataset_name, server=erddap_server)
+                dataset = ErddapDataset.objects.get(
+                    name=dataset_name,
+                    server=erddap_server,
+                )
             except ErddapDataset.DoesNotExist:
                 self.stdout.write(
                     self.style.NOTICE(
@@ -66,7 +79,9 @@ class Command(BaseCommand):
                 return
             # Clear end_time since MQTT notification indicates new data is available
             single_refresh_dataset.delay(dataset.id, clear_end_time=True)
-            self.stdout.write(self.style.SUCCESS(f"Scheduled refresh for dataset {dataset}"))
+            self.stdout.write(
+                self.style.SUCCESS(f"Scheduled refresh for dataset {dataset}"),
+            )
 
         return on_message
 
@@ -75,14 +90,17 @@ class Command(BaseCommand):
         mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=get_client_id())
         mqttc.on_connect = self.create_on_connect_callback(erddap_server)
         mqttc.on_message = self.create_on_message_callback(erddap_server)
-        mqttc.username_pw_set(username=erddap_server.mqtt_username, password=erddap_server.mqtt_password)
+        mqttc.username_pw_set(
+            username=erddap_server.mqtt_username,
+            password=erddap_server.mqtt_password,
+        )
         return mqttc
 
     def connect_and_run(self, mqttc: mqtt.Client, erddap_server: ErddapServer) -> None:
         """Connect to the MQTT broker and start the message loop."""
         try:
             mqttc.connect(erddap_server.mqtt_broker, erddap_server.mqtt_port, 60)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             raise CommandError(f"Unable to connect to MQTT broker: {e}") from None
 
         mqttc.loop_forever()

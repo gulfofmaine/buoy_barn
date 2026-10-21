@@ -12,12 +12,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="erddapserver",
             name="mqtt_broker",
-            field=models.CharField(blank=True, max_length=128, null=True, verbose_name="MQTT broker"),
+            field=models.CharField(
+                blank=True,
+                max_length=128,
+                null=True,
+                verbose_name="MQTT broker",
+            ),
         ),
         migrations.AddField(
             model_name="erddapserver",
             name="mqtt_password",
-            field=models.CharField(blank=True, max_length=64, null=True, verbose_name="MQTT Password"),
+            field=models.CharField(
+                blank=True,
+                max_length=64,
+                null=True,
+                verbose_name="MQTT Password",
+            ),
         ),
         migrations.AddField(
             model_name="erddapserver",
@@ -27,6 +37,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="erddapserver",
             name="mqtt_username",
-            field=models.CharField(blank=True, max_length=64, null=True, verbose_name="MQTT Username"),
+            field=models.CharField(
+                blank=True,
+                max_length=64,
+                null=True,
+                verbose_name="MQTT Username",
+            ),
         ),
     ]

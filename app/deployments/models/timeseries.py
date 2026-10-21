@@ -170,7 +170,7 @@ class TimeSeries(models.Model):
     def __str__(self):
         return f"{self.platform.name} - {self.data_type.standard_name} - {self.depth}"
 
-    def dataset_url(self, file_type: str, time_after: datetime = None) -> str:
+    def dataset_url(self, file_type: str, time_after: datetime | None = None) -> str:
         server = self.dataset.server.connection()
         server.dataset_id = self.dataset.name
         server.response = file_type

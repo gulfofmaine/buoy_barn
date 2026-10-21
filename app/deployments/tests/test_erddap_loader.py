@@ -3,7 +3,12 @@ from django.contrib.gis.geos import Point
 from django.test import TestCase
 
 from deployments.models import DataType, ErddapServer, Platform, TimeSeries
-from deployments.utils.erddap_loader import Status, add_timeseries, apply_import, plan_import
+from deployments.utils.erddap_loader import (
+    Status,
+    add_timeseries,
+    apply_import,
+    plan_import,
+)
 
 from .vcr import my_vcr
 
@@ -66,13 +71,17 @@ class ErddapLoaderTestCase(TestCase):
     def test_existing_timeseries_without_qc_is_changed(self):
         with cassette():
             add_timeseries(self.platform, self.erddap_url, DATASET, CONSTRAINTS)
-        TimeSeries.objects.filter(platform=self.platform).update(constraints=CONSTRAINTS)
+        TimeSeries.objects.filter(platform=self.platform).update(
+            constraints=CONSTRAINTS,
+        )
 
         with cassette():
             plan = self.plan(self.platform)
 
         self.assertEqual(len(plan.changed), 2)
-        row = next(row for row in plan.changed if row.variable == "dominant_wave_period")
+        row = next(
+            row for row in plan.changed if row.variable == "dominant_wave_period"
+        )
         self.assertEqual(
             row.changes["constraints"],
             (CONSTRAINTS, {"depth=": 0.0, "dominant_wave_period_qc=": 0}),
@@ -81,7 +90,10 @@ class ErddapLoaderTestCase(TestCase):
         apply_import(plan, update=["dominant_wave_period"])
 
         constraints = dict(
-            TimeSeries.objects.filter(platform=self.platform).values_list("variable", "constraints"),
+            TimeSeries.objects.filter(platform=self.platform).values_list(
+                "variable",
+                "constraints",
+            ),
         )
         self.assertEqual(
             constraints["dominant_wave_period"],
@@ -92,7 +104,9 @@ class ErddapLoaderTestCase(TestCase):
     def test_existing_timeseries_missing_from_metadata(self):
         with cassette():
             add_timeseries(self.platform, self.erddap_url, DATASET, CONSTRAINTS)
-        TimeSeries.objects.filter(variable="dominant_wave_period").update(variable="old_variable")
+        TimeSeries.objects.filter(variable="dominant_wave_period").update(
+            variable="old_variable",
+        )
 
         with cassette():
             plan = self.plan(self.platform)
@@ -156,7 +170,10 @@ class ErddapLoaderTestCase(TestCase):
             plan = self.plan(self.platform)
         apply_import(plan)
 
-        self.assertEqual([row.variable for row in plan.unable], ["dominant_wave_period"])
+        self.assertEqual(
+            [row.variable for row in plan.unable],
+            ["dominant_wave_period"],
+        )
         self.assertEqual(plan.unable[0].status, Status.UNABLE)
         self.assertEqual(
             list(self.platform.timeseries_set.values_list("variable", flat=True)),
@@ -185,7 +202,9 @@ class ErddapLoaderTestCase(TestCase):
 
         self.platform.refresh_from_db()
         self.assertEqual(self.platform.station_name, "")
-        self.assertTrue(self.platform.mooring_site_desc.startswith("Ocean observation data"))
+        self.assertTrue(
+            self.platform.mooring_site_desc.startswith("Ocean observation data"),
+        )
         self.assertEqual(result.fields_updated, ["mooring_site_desc"])
 
     def test_default_fills_blank_fields_only(self):
@@ -216,7 +235,12 @@ class ErddapLoaderTestCase(TestCase):
 
         apply_import(plan, update=[row.variable for row in plan.changed])
         self.assertEqual(
-            set(TimeSeries.objects.filter(platform=self.platform).values_list("depth", flat=True)),
+            set(
+                TimeSeries.objects.filter(platform=self.platform).values_list(
+                    "depth",
+                    flat=True,
+                ),
+            ),
             {0.0},
         )
 

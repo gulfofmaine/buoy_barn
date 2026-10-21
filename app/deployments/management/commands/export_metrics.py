@@ -53,7 +53,10 @@ class Command(BaseCommand):
         stop = threading.Event()
 
         def _stop(signum, _frame):
-            logger.info("Received signal %s; shutting down the metrics exporter", signum)
+            logger.info(
+                "Received signal %s; shutting down the metrics exporter",
+                signum,
+            )
             stop.set()
 
         signal.signal(signal.SIGTERM, _stop)

@@ -58,26 +58,26 @@ class ErddapDataset(models.Model):
 
     def healthcheck_start(self):
         """Signal that a process has started with Healthchecks.io"""
-        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
+        from deployments.utils.healthchecks import ping_healthcheck
 
         ping_healthcheck(self.healthcheck_url, self.name, start=True)
 
     def healthcheck_complete(self):
         """Signal that a process has completed with Healthchecks.io"""
-        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
+        from deployments.utils.healthchecks import ping_healthcheck
 
         ping_healthcheck(self.healthcheck_url, self.name)
 
     def healthcheck_fail(self):
         """Signal that a process has failed with Healthchecks.io"""
-        from deployments.utils.healthchecks import ping_healthcheck  # noqa: PLC0415
+        from deployments.utils.healthchecks import ping_healthcheck
 
         ping_healthcheck(self.healthcheck_url, self.name, fail=True)
 
     def group_timeseries_by_constraint_and_type(
         self,
         include_retired: bool = False,
-    ) -> dict[tuple[tuple, str], list["TimeSeries"]]:
+    ) -> dict[tuple[tuple, str], list[TimeSeries]]:
         """Groups the datasets active timeseries by constraints and types
 
         `include_retired` is passed through to `TimeSeriesQuerySet.refreshable`.
@@ -90,8 +90,12 @@ class ErddapDataset(models.Model):
             .prefetch_related("data_type")
         ):
             try:
-                groups[(tuple((ts.constraints or {}).items()), ts.timeseries_type)].append(ts)
-            except AttributeError as e:  # noqa: PERF203
-                logger.error(f"Unable to set constraints for timeseries {ts} due to {e}")
+                groups[
+                    (tuple((ts.constraints or {}).items()), ts.timeseries_type)
+                ].append(ts)
+            except AttributeError as e:
+                logger.error(
+                    f"Unable to set constraints for timeseries {ts} due to {e}",
+                )
 
         return groups

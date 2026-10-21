@@ -15,7 +15,13 @@ from buoy_barn.observability import metrics
 logger = logging.getLogger(__name__)
 
 
-def ping_healthcheck(url: str | None, monitor: str, *, start: bool = False, fail: bool = False) -> bool:
+def ping_healthcheck(
+    url: str | None,
+    monitor: str,
+    *,
+    start: bool = False,
+    fail: bool = False,
+) -> bool:
     """Ping a Healthchecks.io monitor. Returns True if the ping was accepted.
 
     Args:
@@ -37,7 +43,7 @@ def ping_healthcheck(url: str | None, monitor: str, *, start: bool = False, fail
     if not url:
         return False
 
-    import requests  # noqa: PLC0415
+    import requests
 
     if start:
         target = url + "/start"

@@ -12,16 +12,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="platform",
             name="visible_climatology",
-            field=models.BooleanField(default=True, verbose_name="Visible on Climatology tool"),
+            field=models.BooleanField(
+                default=True,
+                verbose_name="Visible on Climatology tool",
+            ),
         ),
         migrations.AddField(
             model_name="platform",
             name="visible_dev",
-            field=models.BooleanField(default=True, verbose_name="Visible on dev Mariner's Dashboard"),
+            field=models.BooleanField(
+                default=True,
+                verbose_name="Visible on dev Mariner's Dashboard",
+            ),
         ),
         migrations.AddField(
             model_name="platform",
             name="visible_mariners",
-            field=models.BooleanField(default=True, verbose_name="Visible on Mariner's Dashboard"),
+            field=models.BooleanField(
+                default=True,
+                verbose_name="Visible on Mariner's Dashboard",
+            ),
         ),
     ]

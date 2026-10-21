@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 class ForecastViewSet(viewsets.ViewSet):
     """A viewset for forecasts"""
 
-    def list(self, request):  # noqa: A003
+    def list(self, request):
         """List all forecasts"""
         serializer = ForecastSerializer(forecast_list, many=True)
         return Response(serializer.data)
@@ -72,7 +72,8 @@ class ForecastViewSet(viewsets.ViewSet):
                 ) from None
 
             data["time_series"] = [
-                {"time": time.replace(tzinfo=UTC), "reading": reading} for time, reading in time_series
+                {"time": time.replace(tzinfo=UTC), "reading": reading}
+                for time, reading in time_series
             ]
 
         else:

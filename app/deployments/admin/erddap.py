@@ -23,7 +23,11 @@ from .timeseries import TimeSeriesInline
 
 
 @admin.register(ErddapServer)
-class ErddapServerAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.ModelAdmin):
+class ErddapServerAdmin(
+    SystemMessageSidebarMixin,
+    DjangoObjectActions,
+    admin.ModelAdmin,
+):
     ordering = ["name"]
 
     actions = ["disable_timeseries", "enable_timeseries", "refresh_server"]
@@ -103,14 +107,18 @@ class RefreshStatusListFilter(SimpleListFilter):
 
     def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
         if self.value() == "last_hour":
-            return queryset.filter(refresh_attempted__gte=timezone.now() - timedelta(hours=1))
+            return queryset.filter(
+                refresh_attempted__gte=timezone.now() - timedelta(hours=1),
+            )
         elif self.value() == "last_day":
             return queryset.filter(
                 refresh_attempted__gte=timezone.now() - timedelta(days=1),
                 refresh_attempted__lt=timezone.now() - timedelta(hours=1),
             )
         elif self.value() == "more_than_day":
-            return queryset.filter(refresh_attempted__lt=timezone.now() - timedelta(days=1))
+            return queryset.filter(
+                refresh_attempted__lt=timezone.now() - timedelta(days=1),
+            )
         elif self.value() == "never":
             return queryset.filter(refresh_attempted__isnull=True)
         else:
@@ -118,7 +126,11 @@ class RefreshStatusListFilter(SimpleListFilter):
 
 
 @admin.register(ErddapDataset)
-class ErddapDatasetAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.ModelAdmin):
+class ErddapDatasetAdmin(
+    SystemMessageSidebarMixin,
+    DjangoObjectActions,
+    admin.ModelAdmin,
+):
     ordering = ["name"]
     search_fields = ["name", "server__name", "server__base_url"]
     list_display = [

@@ -63,14 +63,18 @@ def _selected_pairs(values: list[str]) -> set[tuple[str, str]]:
 
 
 class TimeseriesActiveFilter(BooleanFieldListFilter):
-    def __init__(self, field, request, params, model, model_admin, field_path) -> None:  # noqa: PLR0913, PLR0917
+    def __init__(self, field, request, params, model, model_admin, field_path) -> None:
         super().__init__(field, request, params, model, model_admin, field_path)
 
         self.title = "Timeseries Active"
 
 
 @admin.register(Platform)
-class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISModelAdmin):
+class PlatformAdmin(
+    SystemMessageSidebarMixin,
+    DjangoObjectActions,
+    admin.GISModelAdmin,
+):
     ordering = ["name", "mooring_site_desc", "ndbc_site_id"]
     inlines = [
         AlertInline,
@@ -117,7 +121,11 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
         "timeseries__dataset__name",
     ]
 
-    change_actions = ["refresh_platform_datasets", "import_erddap_dataset", "sync_with_erddap"]
+    change_actions = [
+        "refresh_platform_datasets",
+        "import_erddap_dataset",
+        "sync_with_erddap",
+    ]
     changelist_actions = ["import_from_erddap"]
 
     gis_widget = EsriOceanBasemapWidget
@@ -179,7 +187,10 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
     )
     def sync_with_erddap(self, request, obj):
         return HttpResponseRedirect(
-            reverse(f"{self.admin_site.name}:deployments_platform_sync_erddap", args=[obj.pk]),
+            reverse(
+                f"{self.admin_site.name}:deployments_platform_sync_erddap",
+                args=[obj.pk],
+            ),
         )
 
     def sync_erddap_view(self, request, object_id):
@@ -201,7 +212,8 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
                 create=_selected_pairs(request.POST.getlist("create")),
                 update=_selected_pairs(request.POST.getlist("update")),
                 fields={
-                    choice.name: request.POST.get(f"field__{choice.name}") for choice in sync.fields
+                    choice.name: request.POST.get(f"field__{choice.name}")
+                    for choice in sync.fields
                 },
                 location=request.POST.get("location"),
             )
@@ -210,7 +222,10 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
 
             self.message_user(request, import_summary(result))
             return HttpResponseRedirect(
-                reverse(f"{self.admin_site.name}:deployments_platform_change", args=[platform.pk]),
+                reverse(
+                    f"{self.admin_site.name}:deployments_platform_change",
+                    args=[platform.pk],
+                ),
             )
 
         context = {
@@ -220,7 +235,11 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
             "title": f"Sync {platform} with ERDDAP",
             "sync": sync,
         }
-        return TemplateResponse(request, "admin/deployments/platform/sync_erddap.html", context)
+        return TemplateResponse(
+            request,
+            "admin/deployments/platform/sync_erddap.html",
+            context,
+        )
 
     def has_import_permission(self, request) -> bool:
         return request.user.has_perms(
@@ -289,7 +308,11 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
             "form": form,
             "plan": plan,
         }
-        return TemplateResponse(request, "admin/deployments/platform/import_erddap.html", context)
+        return TemplateResponse(
+            request,
+            "admin/deployments/platform/import_erddap.html",
+            context,
+        )
 
     @action(description="Refresh all datasets for this platform")
     def refresh_platform_datasets(self, request, obj):
@@ -305,7 +328,9 @@ class PlatformAdmin(SystemMessageSidebarMixin, DjangoObjectActions, admin.GISMod
             f"Queued {len(datasets_to_queue)} datasets for refresh.",
         )
 
-    @admin.action(description="Disable timeseries that are more than a week out of date")
+    @admin.action(
+        description="Disable timeseries that are more than a week out of date",
+    )
     def disable_old_timeseries(self, request, queryset):
         platforms_ids = [platform.id for platform in queryset.iterator(chunk_size=100)]
         timeseries_to_update = []

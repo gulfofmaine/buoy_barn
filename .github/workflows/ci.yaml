@@ -17,7 +17,7 @@ permissions:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
 
     steps:
@@ -70,7 +70,7 @@ jobs:
 
   test:
     name: Unit Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     needs: build
 
@@ -104,7 +104,7 @@ jobs:
 
   push_image:
     name: Build and Push tagged image to Docker Hub
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: test
     permissions:
       contents: read

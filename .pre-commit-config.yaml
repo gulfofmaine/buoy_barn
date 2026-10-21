@@ -88,3 +88,6 @@ repos:
 update:
   cooldown_days: 7
   freeze: true
+
+default_language_version:
+  python: python3.14

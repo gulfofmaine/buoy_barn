@@ -4,6 +4,8 @@
 
 Additions:
 
+- `buoybarn.dataset.value_age` gauge (`buoybarn_dataset_value_age_seconds` in Prometheus): the age of the newest stored value per dataset, labelled by `erddap_server` and `erddap_dataset`, for comparing against the latest data on ERDDAP.
+
 Changes:
 
 Fixes:

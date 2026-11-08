@@ -179,6 +179,7 @@ per-task code. `duration` answers "how close is `refresh_server` to the 1800s ha
 | --- | --- | --- | --- |
 | `buoybarn.dataset.refresh_age` | gauge (s) | `erddap.server`, `erddap.dataset` | all datasets — **no active filter** |
 | `buoybarn.dataset.never_refreshed` | gauge | `erddap.server` | all datasets — **no active filter** |
+| `buoybarn.dataset.value_age` | gauge (s) | `erddap.server`, `erddap.dataset` | filtered to `active=True`, not retired, populated |
 | `buoybarn.timeseries.value_age` | gauge (s) | `platform`, `erddap.server`, `timeseries.type`, `agg` | filtered to `active=True`, not retired, populated |
 | `buoybarn.timeseries.count` | gauge | `erddap.server`, `state` | all series, **split** by state |
 
@@ -187,11 +188,17 @@ per-task code. `duration` answers "how close is `refresh_server` to the 1800s ha
 Per-series detail stays in the admin, because there are thousands of timeseries and they
 churn as series are retired.
 
+`dataset.value_age` is the age of the newest stored value per dataset, across the same
+active, non-retired, populated series. Compare it with the newest time ERDDAP reports for
+that dataset to tell "Buoy Barn is behind ERDDAP" (refreshes failing or lagging) apart from
+"ERDDAP itself has gone quiet" (both ages old). A dataset with no such series publishes
+nothing.
+
 ### How `active` and retired series are treated
 
 Not uniformly, so it is worth being explicit — the rightmost column above is the short version.
 
-- `value_age` filters. Only `active=True` series with `end_time IS NULL` and a non-null
+- `value_age` and `dataset.value_age` filter. Only `active=True` series with `end_time IS NULL` and a non-null
   `value_time` are included. So a retired or deactivated series can never drag the gauge into
   looking stale — but it is also invisible here, which is the point: this metric answers "is
   the data we are still trying to collect arriving?".
@@ -385,6 +392,9 @@ reporting at all":
 
 ```promql
 max by (platform) (buoybarn_timeseries_value_age_seconds{agg="min"}) > 86400
+
+# Datasets whose newest stored value is over a day old
+max by (erddap_server, erddap_dataset) (buoybarn_dataset_value_age_seconds) > 86400
 
 # Datasets not refreshed in over two hours, against a nominally hourly schedule
 max by (erddap_server, erddap_dataset) (buoybarn_dataset_refresh_age_seconds) > 7200

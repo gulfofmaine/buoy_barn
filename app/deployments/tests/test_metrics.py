@@ -59,7 +59,7 @@ ROW_COUNT = 12
 EXPECTED_OK_PINGS = 2
 SIMULATED_QUEUE_WAIT_SECONDS = 5
 MINIMUM_OBSERVED_WAIT_SECONDS = 4.5
-EXPECTED_GAUGE_COUNT = 6
+EXPECTED_GAUGE_COUNT = 7
 
 # Ages the freshness tests set up, in seconds, with a generous allowance for how long the
 # test itself takes between building the rows and reading the gauge.
@@ -833,6 +833,53 @@ class FreshnessGaugeTestCase(TransactionTestCase):
         # agg=min is the *freshest* reading: one hour, not four hundred days.
         assert ONE_HOUR_SECONDS <= by_agg["min"] < ONE_HOUR_SECONDS + LEEWAY_SECONDS
         assert SIX_HOURS_SECONDS <= by_agg["max"] < SIX_HOURS_SECONDS + LEEWAY_SECONDS
+
+    def test_dataset_value_ages_report_the_newest_value_per_dataset(self):
+        self._timeseries(value_time=self.now - timedelta(hours=1), value=10.0)
+        self._timeseries(
+            variable="temperature2",
+            value_time=self.now - timedelta(hours=6),
+            value=11.0,
+        )
+        # Retired and inactive series must not make the dataset look fresher.
+        self._timeseries(
+            variable="retired",
+            value_time=self.now,
+            end_time=self.now,
+        )
+        self._timeseries(variable="inactive", value_time=self.now, active=False)
+        other = ErddapDataset.objects.create(name="other_dataset", server=self.server)
+        self._timeseries(
+            variable="other",
+            dataset=other,
+            value_time=self.now - timedelta(hours=6),
+            value=12.0,
+        )
+        # A dataset with no populated active series publishes nothing.
+        ErddapDataset.objects.create(name="empty_dataset", server=self.server)
+
+        observations = freshness._observations(freshness._dataset_value_ages)
+
+        by_dataset = {
+            observation.attributes["erddap.dataset"]: observation.value
+            for observation in observations
+        }
+        assert set(by_dataset) == {"M01_sbe37_all", "other_dataset"}
+        assert (
+            ONE_HOUR_SECONDS
+            <= by_dataset["M01_sbe37_all"]
+            < ONE_HOUR_SECONDS + LEEWAY_SECONDS
+        )
+        assert (
+            SIX_HOURS_SECONDS
+            <= by_dataset["other_dataset"]
+            < SIX_HOURS_SECONDS + LEEWAY_SECONDS
+        )
+        assert {
+            observation.attributes["erddap.server"] for observation in observations
+        } == {
+            metrics.server_label(self.server),
+        }
 
     def test_timeseries_counts_publishes_every_state(self):
         """The regression test for the annotation-alias collision.

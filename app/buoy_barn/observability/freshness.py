@@ -163,6 +163,52 @@ def _timeseries_value_ages():
     return observations
 
 
+def _dataset_value_ages():
+    """Age of the newest stored observation per dataset.
+
+    The Buoy Barn side of "is ERDDAP ahead of us?": compare it with the newest time ERDDAP
+    itself reports for the dataset. A gap means refreshes are not keeping up; matching ages
+    that are both old mean the upstream source has gone quiet.
+
+    Uses the same filter as :func:`_timeseries_value_ages` (active, not retired, populated),
+    so a retired or deactivated series cannot make a dataset look fresher or staler than the
+    data still being collected from it. A dataset with no such series publishes nothing.
+    """
+    from django.db.models import Max
+    from django.utils import timezone
+    from opentelemetry.metrics import Observation
+
+    from deployments.models import TimeSeries
+
+    now = timezone.now()
+    rows = (
+        TimeSeries.objects.filter(
+            active=True,
+            end_time__isnull=True,
+            value_time__isnull=False,
+        )
+        .values(
+            "dataset__server__name",
+            "dataset__server__base_url",
+            "dataset__name",
+        )
+        .annotate(newest=Max("value_time"))
+    )
+    return [
+        Observation(
+            max((now - row["newest"]).total_seconds(), 0.0),
+            {
+                "erddap.server": _server_label(
+                    row["dataset__server__name"],
+                    row["dataset__server__base_url"],
+                ),
+                "erddap.dataset": _label(row["dataset__name"]),
+            },
+        )
+        for row in rows
+    ]
+
+
 # ``state`` label value -> the filter that counts it, and the annotation alias holding the
 # count. Every alias needs its ``_count`` suffix: an ``annotate(active=...)`` shadows
 # ``TimeSeries.active``, so a later ``Q(active=False)`` resolves to the annotation and
@@ -338,6 +384,11 @@ GAUGES = {
         "{dataset}",
         "Datasets that have never had a refresh attempted",
         _datasets_never_refreshed,
+    ),
+    "buoybarn.dataset.value_age": (
+        "s",
+        "Age of the newest stored observation per dataset, across its active timeseries",
+        _dataset_value_ages,
     ),
     "buoybarn.timeseries.value_age": (
         "s",

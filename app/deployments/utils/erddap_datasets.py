@@ -85,7 +85,6 @@ def retrieve_dataframe(
         forecast=forecast,
     )
 
-    # erddapy fetches with `requests`, so only use it to build the URL and fetch ourselves.
     response = http.get(
         e.get_download_url(response="csvp"),
         timeout=server.request_timeout_seconds,

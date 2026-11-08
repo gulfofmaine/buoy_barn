@@ -39,7 +39,7 @@ dependencies = [
   "redis<8",
   "requests>=2.33",
   "scipy>=1.14.1",
-  "sentry-sdk~=2.72.0",
+  "sentry-sdk~=2.73.0",
   "slack-sdk~=3.45.0",
   "vcrpy~=9.4",
   "verbose-csrf-middleware>=6",

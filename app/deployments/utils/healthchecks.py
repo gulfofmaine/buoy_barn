@@ -43,7 +43,9 @@ def ping_healthcheck(
     if not url:
         return False
 
-    import requests
+    import httpx2
+
+    from buoy_barn import http
 
     if start:
         target = url + "/start"
@@ -53,8 +55,8 @@ def ping_healthcheck(
         target = url
 
     try:
-        requests.get(target, timeout=5)
-    except requests.RequestException as error:
+        http.get(target, timeout=5)
+    except httpx2.HTTPError as error:
         if start:
             message = f"Unable to send healthcheck start for {monitor} due to: {error}"
         elif fail:

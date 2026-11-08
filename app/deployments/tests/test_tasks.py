@@ -1,14 +1,14 @@
 from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
 
+import httpx2
 import pytest
 from celery.exceptions import SoftTimeLimitExceeded
 from django.test import TransactionTestCase
 from django.utils import timezone
 from freezegun import freeze_time
-from requests import Response
-from requests.exceptions import HTTPError
 
+from buoy_barn.http import ERDDAPHTTPError
 from buoy_barn.observability import metrics, promql
 from deployments import tasks
 from deployments.models import (
@@ -25,18 +25,21 @@ from deployments.utils.system_messages import record_system_message
 from .vcr import CASSETTE_RECORDED_AT, my_vcr
 
 
-def _http_status_error(status_code: int, text: str) -> HTTPError:
-    """Build an `HTTPError` shaped the way `handle_http_errors` expects to unwrap it.
+def _http_status_error(status_code: int, text: str) -> ERDDAPHTTPError:
+    """Build an `ERDDAPHTTPError` shaped the way `handle_http_errors` expects to unwrap it.
 
-    `handle_http_errors` reads `error.__cause__.response`, which is how erddapy's real
-    errors are chained -- so tests that need a specific ERDDAP response body construct one
-    directly instead of recording a new VCR cassette for it.
+    `handle_http_errors` reads `error.__cause__.response`, which is how
+    `raise_for_erddap_status` chains real errors -- so tests that need a specific ERDDAP
+    response body construct one directly instead of recording a new VCR cassette for it.
     """
-    response = Response()
-    response.status_code = status_code
-    response._content = text.encode()
-    status_error = HTTPError(f"{status_code} error", response=response)
-    error = HTTPError(str(status_error))
+    request = httpx2.Request("GET", "https://erddap.example/tabledap/test.csvp")
+    response = httpx2.Response(status_code, text=text, request=request)
+    status_error = httpx2.HTTPStatusError(
+        f"{status_code} error",
+        request=request,
+        response=response,
+    )
+    error = ERDDAPHTTPError(text)
     error.__cause__ = status_error
     return error
 
@@ -316,7 +319,7 @@ class TaskTestCase(TransactionTestCase):
         )
         self.assertEqual(message.constraint_group, expected_group)
 
-    @patch("requests.get")
+    @patch("buoy_barn.http.get")
     @patch("deployments.tasks.refresh.update_values_for_timeseries")
     def test_refresh_dataset_records_a_soft_time_limit(
         self,
@@ -370,7 +373,7 @@ class TaskTestCase(TransactionTestCase):
         )
         self.assertIsNotNone(message.resolved_at)
 
-    @patch("requests.get")
+    @patch("buoy_barn.http.get")
     @patch("deployments.tasks.refresh.update_values_for_timeseries")
     def test_refresh_server_records_a_soft_time_limit(
         self,

@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
+import httpx2
 import pytest
-import requests
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -138,7 +138,12 @@ class PlanSyncTestCase(SyncTestMixin, TestCase):
 
         def fetch(server, dataset_id):
             if dataset_id == "gone":
-                raise requests.HTTPError("404 Not Found")
+                request = httpx2.Request("GET", "https://erddap.example/info")
+                raise httpx2.HTTPStatusError(
+                    "404 Not Found",
+                    request=request,
+                    response=httpx2.Response(404, request=request),
+                )
             return real_fetch(server, dataset_id)
 
         with patch(

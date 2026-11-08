@@ -486,7 +486,7 @@ def task_in_progress(task_name: str, delta: int) -> None:
 def record_healthcheck_ping(monitor: str, outcome: str) -> None:
     """Record a Healthchecks.io ping attempt.
 
-    Every ping call site swallows ``requests.RequestException``, so without this a monitor
+    Every ping call site swallows ``httpx2.HTTPError``, so without this a monitor
     that stopped being pinged looks healthy until the monitor itself alerts.
     """
     inst = instruments()

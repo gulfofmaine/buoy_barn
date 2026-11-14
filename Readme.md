@@ -154,6 +154,9 @@ querying ERDDAP servers.
 
 `PROXY_CACHE_SECONDS` can be set to override the default caching time for CORS proxy requests to ERDDAP servers.
 
+`USER_AGENT_CONTACT` is appended to the `User-Agent` Buoy Barn sends on outbound requests, which looks like `buoy-barn/0.12.1 (+https://github.com/gulfofmaine/buoy_barn/)`.
+Set it to an email address or URL that ERDDAP operators can use to reach whoever runs the deployment.
+
 ### Observability
 
 Metrics are exported over OTLP to an OpenTelemetry collector, and are a no-op unless

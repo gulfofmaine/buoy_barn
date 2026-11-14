@@ -19,9 +19,11 @@ import re
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
 
+import httpx2
 import pandas as pd
-import requests
 from django.contrib.gis.geos import Point
+
+from buoy_barn import http
 
 from ..models import DataType, ErddapServer, Platform, TimeSeries
 
@@ -107,7 +109,7 @@ def parse_info_csv(dataset_id: str, csv_text: str) -> DatasetInfo:
 def fetch_dataset_info(server: ErddapServer, dataset_id: str) -> DatasetInfo:
     """Load a dataset's metadata from its ERDDAP server"""
     url = server.connection().get_info_url(dataset_id, response="csv")
-    response = requests.get(url, timeout=server.request_timeout_seconds)
+    response = http.get(url, timeout=server.request_timeout_seconds)
     response.raise_for_status()
     return parse_info_csv(dataset_id, response.text)
 
@@ -214,7 +216,7 @@ def _station_location(
         constraints=constraints,
         distinct=True,
     )
-    response = requests.get(url, timeout=server.request_timeout_seconds)
+    response = http.get(url, timeout=server.request_timeout_seconds)
     response.raise_for_status()
     df = pd.read_csv(io.StringIO(response.text), skiprows=[1])
     df = df.dropna()
@@ -245,7 +247,7 @@ def platform_location(
     if server is not None and station_constraint(constraints):
         try:
             point = _station_location(server, info.dataset_id, constraints)
-        except requests.RequestException, KeyError, ValueError:
+        except httpx2.HTTPError, KeyError, ValueError:
             point = None
         if point:
             return point, "station position in data"

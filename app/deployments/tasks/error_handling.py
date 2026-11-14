@@ -2,10 +2,11 @@ import logging
 from datetime import timedelta
 from http import HTTPStatus
 
+import httpx2
 import pandas as pd
 from django.utils import timezone
-from requests.exceptions import HTTPError
 
+from buoy_barn.http import ERDDAPHTTPError
 from buoy_barn.observability import metrics
 from deployments.models import SystemMessage
 from deployments.utils.system_messages import record_system_message
@@ -382,71 +383,55 @@ def handle_404_no_matching_dataset_id(timeseries_group, compare_text: str) -> st
     return NOT_HANDLED
 
 
-def handle_http_errors(timeseries_group, error: HTTPError) -> str:
-    """Handle various types of HTTPErrors.
+def handle_http_errors(timeseries_group, error: ERDDAPHTTPError) -> str:
+    """Handle various types of ERDDAPHTTPErrors.
 
     Returns the outcome that was recognised, or NOT_HANDLED (falsy) if it was not. Every
     branch below is currently "handled", which is exactly why the outcome string matters:
     the caller cannot distinguish a benign empty response from a blacklisted server by
     return value alone.
     """
-    if isinstance(error.__cause__, HTTPError):
-        try:
-            if error.__cause__.response.status_code == HTTPStatus.FORBIDDEN:
-                logger.error(
-                    (
-                        f"403 error loading dataset {timeseries_group[0].dataset.name}. "
-                        "NOAA Coastwatch most likely blacklisted us. "
-                        "Try running the request manually from the worker pod to "
-                        f"replicate the error and access the returned text. {error}"
-                    ),
-                    extra=error_extra(timeseries_group),
-                    exc_info=True,
-                )
-                return Outcome.FORBIDDEN
+    cause = error.__cause__
+    if isinstance(cause, httpx2.HTTPStatusError):
+        status_code = cause.response.status_code
 
-            if error.__cause__.response.status_code == HTTPStatus.NOT_FOUND:
-                outcome = handle_404_errors(
-                    timeseries_group,
-                    error.__cause__.response.text,
-                )
-                if outcome:
-                    return outcome
-
-            if error.__cause__.response.status_code == HTTPStatus.REQUEST_TIMEOUT:
-                raise BackoffError("408 Backoff encountered") from error
-
-            if error.__cause__.response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
-                outcome = handle_500_errors(
-                    timeseries_group,
-                    error.__cause__.response.text,
-                )
-                if outcome:
-                    return outcome
-
-                logger.error(
-                    (
-                        f"500 error loading dataset {timeseries_group[0].dataset.name} "
-                        f"with constraint {timeseries_group[0].constraints}: {error} "
-                    ),
-                    extra=error_extra(timeseries_group, error.__cause__.response.text),
-                    exc_info=True,
-                )
-                return Outcome.SERVER_ERROR
-
+        if status_code == HTTPStatus.FORBIDDEN:
             logger.error(
                 (
-                    f"{error.response.status_code} error loading dataset "
-                    + timeseries_group[0].dataset.name
-                    + f" with constraint {timeseries_group[0].constraints}: {error}"
+                    f"403 error loading dataset {timeseries_group[0].dataset.name}. "
+                    "NOAA Coastwatch most likely blacklisted us. "
+                    "Try running the request manually from the worker pod to "
+                    f"replicate the error and access the returned text. {error}"
                 ),
                 extra=error_extra(timeseries_group),
                 exc_info=True,
             )
-            return Outcome.UNKNOWN_ERROR
+            return Outcome.FORBIDDEN
 
-        except AttributeError:
-            pass
+        if status_code == HTTPStatus.NOT_FOUND:
+            outcome = handle_404_errors(timeseries_group, cause.response.text)
+            if outcome:
+                return outcome
+
+        if status_code == HTTPStatus.REQUEST_TIMEOUT:
+            raise BackoffError("408 Backoff encountered") from error
+
+        if status_code == HTTPStatus.INTERNAL_SERVER_ERROR:
+            outcome = handle_500_errors(timeseries_group, cause.response.text)
+            if outcome:
+                return outcome
+
+            logger.error(
+                (
+                    f"500 error loading dataset {timeseries_group[0].dataset.name} "
+                    f"with constraint {timeseries_group[0].constraints}: {error} "
+                ),
+                extra=error_extra(timeseries_group, cause.response.text),
+                exc_info=True,
+            )
+            return Outcome.SERVER_ERROR
+
+        # Other statuses (e.g. 400) fall through to the response text matchers below.
 
     outcome = handle_400_errors(timeseries_group, str(error), error)
     if outcome:

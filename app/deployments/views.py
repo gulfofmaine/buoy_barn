@@ -18,6 +18,8 @@ from rest_framework.exceptions import APIException, ParseError
 # from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from buoy_barn.http import client_kwargs
+
 from . import tasks
 from .models import ErddapDataset, ErddapServer, Platform, TimeSeries
 from .serializers import (  # TimeSeriesUpdateResponseSerializer,
@@ -306,7 +308,9 @@ class ProxyTimeout(APIException):
 # Lifecycle: Granian spawns workers as separate processes, so each process owns its own
 # client. Connections are released by the OS/Python runtime on process exit. No explicit
 # close is required under Granian's spawn model.
-_proxy_http_client = httpx2.AsyncClient(timeout=settings.PROXY_TIMEOUT_SECONDS)
+_proxy_http_client = httpx2.AsyncClient(
+    **client_kwargs(timeout=settings.PROXY_TIMEOUT_SECONDS),
+)
 
 
 @cache_page(settings.PROXY_CACHE_SECONDS)

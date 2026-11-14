@@ -21,6 +21,7 @@ lint.select = [
   "PTH",  # flake8-pathlib
   # "RUF", # ruff specific rules
   "SIM", # flake8-simplify
+  "TID251", # flake8-tidy-imports banned-api
   "T20", # flake8-print
   "UP",  # upgrade
   "W",   # pycodestyle
@@ -30,6 +31,8 @@ lint.ignore = [
   "EXE003",
 ]
 lint.extend-per-file-ignores."**/migrations/*.py" = [ "E501" ]
+lint.flake8-tidy-imports.banned-api."requests".msg = "use buoy_barn.http"
+lint.flake8-tidy-imports.banned-api."urllib.request".msg = "use buoy_barn.http"
 lint.isort.known-first-party = [
   "buoy_barn",
   "deployments",

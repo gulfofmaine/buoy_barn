@@ -1,8 +1,12 @@
+import io
 from datetime import UTC, datetime, timedelta
 from logging import getLogger
 
 import pandas as pd
 from erddapy import ERDDAP
+
+from buoy_barn import http
+from buoy_barn.http import raise_for_erddap_status
 
 from ..models import ErddapServer, TimeSeries
 
@@ -81,10 +85,12 @@ def retrieve_dataframe(
         forecast=forecast,
     )
 
-    timeout_seconds = server.request_timeout_seconds
-    e.requests_kwargs["timeout"] = timeout_seconds
-
-    erddap_df = e.to_pandas(parse_dates=True)
+    response = http.get(
+        e.get_download_url(response="csvp"),
+        timeout=server.request_timeout_seconds,
+    )
+    raise_for_erddap_status(response)
+    erddap_df = pd.read_csv(io.BytesIO(response.content), parse_dates=True)
 
     try:
         erddap_df = erddap_df.sort_values("time (UTC)")

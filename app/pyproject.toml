@@ -34,7 +34,7 @@ dependencies = [
   "paho-mqtt>=2.1",
   "pandas>1.5.3",
   "psycopg2-binary~=2.9.9",
-  "pystac~=1.15.1",
+  "pystac~=1.16.0",
   # 8.0 defaults to RESP3 and sends HELLO with no RESP2 fallback, which our Redis rejects.
   "redis<8",
   "requests>=2.33",

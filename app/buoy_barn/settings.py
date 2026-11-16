@@ -120,6 +120,14 @@ def _app_version() -> str:
 
 APP_VERSION = _app_version()
 
+# Identifies Buoy Barn to upstream servers (ERDDAP logs, etc.)
+# Set USER_AGENT_CONTACT to an email or URL operators can reach.
+USER_AGENT_CONTACT = os.environ.get(
+    "USER_AGENT_CONTACT",
+    "+https://github.com/gulfofmaine/buoy_barn/",
+)
+USER_AGENT = f"buoy-barn/{APP_VERSION} ({USER_AGENT_CONTACT})"
+
 if os.environ.get("DJANGO_ENV", "").lower() != "test":
     sentry_sdk.init(
         dsn=os.environ.get("SENTRY_DSN"),

@@ -4,10 +4,11 @@ import os
 from datetime import datetime
 
 import pandas as pd
-import requests
 from memoize import memoize
 from pystac import Collection, Item, Link
 
+from buoy_barn import http
+from buoy_barn.http import BuoyBarnStacIO
 from forecasts.forecasts.base_forecast import BaseForecast
 
 RETRIEVE_FORECAST_CACHE_SECONDS = float(
@@ -29,7 +30,10 @@ class BaseSTACEDRForecast(BaseForecast):
     @memoize(timeout=RETRIEVE_FORECAST_CACHE_SECONDS)
     def collection(self) -> Collection:
         """Returns the PySTAC Collection for the forecast"""
-        return Collection.from_file(self.source_collection_url)
+        return Collection.from_file(
+            self.source_collection_url,
+            stac_io=BuoyBarnStacIO(),
+        )
 
     @memoize(timeout=RETRIEVE_FORECAST_CACHE_SECONDS)
     def latest_item(self) -> Item:
@@ -43,7 +47,7 @@ class BaseSTACEDRForecast(BaseForecast):
         latest_item = self.latest_item()
         base_edr_url = latest_item.assets[self.edr_asset_key].href
         edr_url = edr_url_for_field(base_edr_url, self.field, lat, lon)
-        response = requests.get(edr_url, timeout=RETRIEVE_FORECAST_TIMEOUT_SECONDS)
+        response = http.get(edr_url, timeout=RETRIEVE_FORECAST_TIMEOUT_SECONDS)
         forecast = forecast_from_response(response.json(), self.field)
         return forecast
 

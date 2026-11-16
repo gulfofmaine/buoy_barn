@@ -1,15 +1,15 @@
 import logging
 import time
 
+import httpx2
 import pandas as pd
 import sentry_sdk
 from celery import shared_task
 from celery.exceptions import SoftTimeLimitExceeded
 from django.conf import settings
 from django.utils import timezone
-from requests.exceptions import ConnectionError as RequestsConnectionError
-from requests.exceptions import HTTPError, Timeout
 
+from buoy_barn.http import ERDDAPHTTPError
 from buoy_barn.observability import metrics
 from deployments.models import ErddapDataset, ErddapServer, SystemMessage, TimeSeries
 from deployments.utils.erddap_datasets import (
@@ -140,14 +140,14 @@ def update_values_for_timeseries(
                 timeseries,
             )
 
-        except (RequestsConnectionError, Timeout) as error:
+        except httpx2.TransportError as error:
             outcome.set(Outcome.TIMEOUT)
             raise BackoffError(
                 f"Timeout when trying to retrieve dataset {timeseries[0].dataset.name} "
                 f"with constraint {timeseries[0].constraints}: {error}",
             ) from error
 
-        except HTTPError as error:
+        except ERDDAPHTTPError as error:
             # The handlers return the specific outcome they recognised ("not_found",
             # "no_rows", ...) or "" when they did not, and may raise BackoffError -- which
             # the context manager classifies on its way out.

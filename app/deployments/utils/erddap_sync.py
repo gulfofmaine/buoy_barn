@@ -12,7 +12,7 @@ import json
 from collections import defaultdict
 from dataclasses import dataclass, field
 
-import requests
+import httpx2
 from django.db import transaction
 
 from ..models import ErddapDataset, Platform, TimeSeries
@@ -208,7 +208,7 @@ def plan_sync(platform: Platform) -> SyncPlan:
     for dataset, timeseries in _timeseries_by_dataset(platform).items():
         try:
             sync.groups.extend(_plan_dataset(platform, dataset, timeseries))
-        except (requests.RequestException, ValueError) as e:
+        except (httpx2.HTTPError, ValueError) as e:
             sync.errors.append(DatasetError(dataset=dataset, message=str(e)))
 
     sync.fields = _field_choices(platform, sync.groups)

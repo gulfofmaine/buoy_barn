@@ -20,8 +20,8 @@ import time
 from datetime import timedelta
 from unittest.mock import patch
 
+import httpx2
 import pytest
-import requests
 from celery.exceptions import SoftTimeLimitExceeded
 from django.test import TransactionTestCase
 from django.utils import timezone
@@ -288,7 +288,7 @@ class TestHealthcheckPing:
         assert metric_reader.points("buoybarn.healthcheck.ping") == []
 
     def test_successful_ping_hits_the_right_url(self, metric_reader):
-        with patch("requests.get") as get:
+        with patch("buoy_barn.http.get") as get:
             assert ping_healthcheck(
                 "https://hc.example/token",
                 "hourly_refresh",
@@ -305,7 +305,7 @@ class TestHealthcheckPing:
 
     def test_failure_ping_hits_the_fail_url(self, metric_reader):
         """`/fail` records the run as failed now, rather than after the grace period lapses."""
-        with patch("requests.get") as get:
+        with patch("buoy_barn.http.get") as get:
             assert ping_healthcheck(
                 "https://hc.example/token",
                 "hourly_refresh",
@@ -329,7 +329,7 @@ class TestHealthcheckPing:
             )
 
     def test_failed_ping_is_counted_and_swallowed(self, metric_reader):
-        with patch("requests.get", side_effect=requests.ConnectionError("boom")):
+        with patch("buoy_barn.http.get", side_effect=httpx2.ConnectError("boom")):
             # Must not raise: a monitoring side channel cannot be allowed to fail a refresh.
             assert (
                 ping_healthcheck("https://hc.example/token", "hourly_refresh") is False

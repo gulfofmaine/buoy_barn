@@ -1,17 +1,16 @@
+import io
 import os
 from datetime import datetime
 from json import JSONDecodeError
 
 # from memoize import memoize
 import pandas as pd
-import requests
 import sentry_sdk
 from erddapy import ERDDAP
 
+from buoy_barn import http
 from forecasts.forecasts.base_forecast import BaseForecast
 from forecasts.utils import erddap as erddap_utils
-
-# from requests import HTTPError
 
 
 class BaseERDDAPForecast(BaseForecast):
@@ -99,7 +98,7 @@ class BaseERDDAPForecast(BaseForecast):
         sentry_sdk.set_tag("forecast_dataset_id", self.dataset)
         url = self.dataset_url(lat, lon)
         timeout = float(os.environ.get("RETRIEVE_FORECAST_TIMEOUT_SECONDS", 60))  # noqa: PLW1508
-        response = requests.get(url, timeout=timeout)
+        response = http.get(url, timeout=timeout)
         try:
             return response.json()["table"]
         except JSONDecodeError as e:
@@ -120,7 +119,9 @@ class BaseERDDAPForecast(BaseForecast):
 
         info_csv_url = conn.get_info_url(response="csv")
 
-        return pd.read_csv(info_csv_url)
+        response = http.get(info_csv_url)
+        response.raise_for_status()
+        return pd.read_csv(io.StringIO(response.text))
 
     def dataset_url(self, lat: float, lon: float) -> str:
         """Return the full url of the dataset with query string for a given latitude and longitude.

@@ -8,7 +8,12 @@ Additions:
 
 Changes:
 
+- Outbound requests now send a `buoy-barn/<version> (<contact>)` User-Agent, configurable with `USER_AGENT_CONTACT`, so Buoy Barn is identifiable in ERDDAP and other upstream logs (#1937).
+- ERDDAP, forecast, STAC, and healthcheck requests now use `httpx2` through `buoy_barn.http` instead of `requests` and `urllib`. `requests` is no longer a direct dependency (#1937).
+
 Fixes:
+
+- The per-server ERDDAP request timeout is now honored when refreshing datasets. It was set but never read, so refreshes always used erddapy's 60 second default (#1937).
 
 ## 0.12.1 - 2026-10-21
 ### Other Changes

@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta
 
-import requests
+import httpx2
 from django.contrib.admin import BooleanFieldListFilter
 from django.contrib.admin.utils import unquote
 from django.contrib.gis import admin
@@ -275,7 +275,7 @@ class PlatformAdmin(
                     data["constraints"],
                     platform=data["platform"],
                 )
-            except (requests.RequestException, ValueError) as e:
+            except (httpx2.HTTPError, ValueError) as e:
                 form.add_error(
                     None,
                     f"Unable to load metadata for {data['dataset_id']} from {data['server']}: {e}",

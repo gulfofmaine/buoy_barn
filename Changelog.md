@@ -4,16 +4,47 @@
 
 Additions:
 
-- `buoybarn.dataset.value_age` gauge (`buoybarn_dataset_value_age_seconds` in Prometheus): the age of the newest stored value per dataset, labelled by `erddap_server` and `erddap_dataset`, for comparing against the latest data on ERDDAP.
-
 Changes:
-
-- Outbound requests now send a `buoy-barn/<version> (<contact>)` User-Agent, configurable with `USER_AGENT_CONTACT`, so Buoy Barn is identifiable in ERDDAP and other upstream logs (#1937).
-- ERDDAP, forecast, STAC, and healthcheck requests now use `httpx2` through `buoy_barn.http` instead of `requests` and `urllib`. `requests` is no longer a direct dependency (#1937).
 
 Fixes:
 
-- The per-server ERDDAP request timeout is now honored when refreshing datasets. It was set but never read, so refreshes always used erddapy's 60 second default (#1937).
+## 0.12.2 - 2026-11-16
+
+### Other Changes
+* Add dataset-level value age observability metric by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1938
+* Identify Buoy Barn traffic with a User-Agent and standardize on httpx2 by @abkfenris in https://github.com/gulfofmaine/buoy_barn/pull/1952
+
+### Dependency Updates
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1931
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.17.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1933
+* Update j178/prek-action action to v3.0.2 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1932
+* Lock file maintenance by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1934
+* Update dependency vcrpy to v9 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1950
+* Update pre-commit hook zizmorcore/zizmor-pre-commit to v1.31.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1949
+* Update otel/opentelemetry-collector-contrib Docker tag to v0.164.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1948
+* Update j178/prek-action action to v3.1.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1947
+* Update github/codeql-action action to v4.39.1 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1946
+* Update docker/login-action action to v4.7.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1945
+* Update dependency sentry-sdk to ~=2.73.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1943
+* Update dependency django-health-check to ~=4.11.3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1942
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.13.6 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1941
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.17.3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1940
+* Update astral-sh/setup-uv action to v10.3.3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1939
+* Update dependency slack-sdk to ~=3.46.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1944
+* Update pre-commit hook zizmorcore/zizmor-pre-commit to v1.32.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1953
+* Bump opentelemetry-api from 1.45.1 to 1.45.2 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1954
+* Bump dnspython from 2.9.0 to 2.9.2 in /app by @dependabot[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1955
+* Update pre-commit hook tox-dev/pyproject-fmt to v2.30.6 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1961
+* Update pre-commit hook astral-sh/uv-pre-commit to v0.13.7 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1960
+* Update pre-commit hook astral-sh/ruff-pre-commit to v0.17.4 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1959
+* Update github/codeql-action action to v4.39.3 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1958
+* Update dependency pystac to ~=1.16.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1962
+* Update dependency sentry-sdk to ~=2.74.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1963
+* Update docker/login-action action to v4.8.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1964
+* Update otel/opentelemetry-collector-contrib Docker tag to v0.165.0 by @renovate[bot] in https://github.com/gulfofmaine/buoy_barn/pull/1965
+
+
+**Full Changelog**: https://github.com/gulfofmaine/buoy_barn/compare/v0.12.1...v0.12.2
 
 ## 0.12.1 - 2026-10-21
 ### Other Changes

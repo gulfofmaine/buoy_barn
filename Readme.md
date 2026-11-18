@@ -295,5 +295,22 @@ Two manually-triggered workflows mirror the local `nox` sessions, for cutting a 
 
 ## Kubernetes
 
-As we are moving towards using Kubernetes, you can launch Buoy Barn in a Kubernetes cluster.
-See the `/k8s/` directory to see the configs.
+`k8s/base` includes the core Kubernetes deployment for Buoy Barn using Kustomize.
+
+`k8s/mqtt` includes a mqtt subscriber for a single ERDDAP server. It can be deployed multiple times and customized by creating a patch that specifies `MQTT_ERDDAP_SERVER`.
+
+```yaml
+resources:
+  - github.com/gulfofmaine/buoy_barn/k8s/mqtt?ref=<tag>
+
+# differentiates each mqtt deployment
+nameSuffix: -neracoos
+
+# Set the ERDDAP server MQTT target
+patches:
+  - target: {kind: Deployment, name: mqtt}
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: MQTT_ERDDAP_SERVER, value: NERACOOS}
+```

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: mqtt
+    tier: backend
+    role: mqtt
+  name: mqtt
+spec:
+  selector:
+    matchLabels:
+      service: mqtt
+      tier: backend
+      role: mqtt
+  template:
+    metadata:
+      labels:
+        service: mqtt
+        tier: backend
+        role: mqtt
+    spec:
+      containers:
+        - name: worker
+          image: gmri/neracoos-buoy-barn
+          args:
+            - uv
+            - run
+            - manage.py
+            - erddap_mqtt
+            - $(MQTT_ERDDAP_SERVER)
+          envFrom:
+            - secretRef:
+                name: buoy-barn-secrets
+            - configMapRef:
+                name: buoy-barn-config
+          env:
+            # Tags every metric with which kind of process produced it.
+            - name: BUOY_BARN_OTEL_ROLE
+              value: "mqtt"
+            - name: DJANGO_MANAGEPY_MIGRATE
+              value: "off"
+            - name: DJANGO_MANAGEPY_COLLECTSTATIC
+              value: "off"
+          volumeMounts:
+            - name: django-static
+              mountPath: /static
+      volumes:
+        - name: django-static
+          emptyDir: {}
